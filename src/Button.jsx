@@ -13,11 +13,7 @@ var Button = React.createClass({
 
     propTypes: {
         disabled: React.PropTypes.bool,
-        type: React.PropTypes.string,
-        onKeyboardFocus: React.PropTypes.func,
-        onMouseEnter: React.PropTypes.func,
-        onMouseLeave: React.PropTypes.func,
-        onTouchStart: React.PropTypes.func
+        type: React.PropTypes.string
     },
 
     render: function() {
@@ -25,10 +21,7 @@ var Button = React.createClass({
         var props = this.props;
 
         return (
-            <button
-                className={props.className}
-                disabled={props.disabled}
-                type={props.type}>
+            <button {...props}>
                 {props.label || props.children}
             </button>
         );
