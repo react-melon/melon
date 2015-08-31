@@ -83,6 +83,18 @@ var View = React.createClass({
                     </Button>
                 </div>
 
+                <div className="ui-buttongroup">
+                    <Button variants={['raised', 'info']}>
+                        添加
+                    </Button>
+                    <Button variants={['raised', 'info']}>
+                        删除
+                    </Button>
+                    <Button variants={['raised', 'info']}>
+                        启用
+                    </Button>
+                </div>
+
             </div>
         );
     },
