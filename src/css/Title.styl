@@ -1,0 +1,8 @@
+@import "./base.styl"
+
+.{$-melon-class-prefix}-title
+    {$-melon-title}
+
+for level, value in $-melon-title-levels
+    h{level}.{$-melon-class-prefix}-title
+        font-size: value * $-melon-small-font-size

@@ -1,0 +1,163 @@
+@require './colors.styl'
+@require './variable.styl'
+@require './mixin.styl'
+
+$-melon-button = {
+
+    padding: 0 1em
+    height: 2em
+    min-width: 4em
+
+    font-size: $-melon-medium-font-size
+    line-height: 2em
+    text-transform: uppercase
+
+    text-align: center
+
+    outline: 0
+    vertical-align: middle
+
+
+    border-radius: 2px
+    border: none
+
+    cursor: pointer
+    user-select: none
+
+    '&:disabled': {
+        cursor: not-allowed
+    }
+
+    transition: all .3s
+
+    // Gets rid of tap active state
+    -webkit-tap-highlight-color: transparent
+
+}
+
+$-melon-button-swatches = {
+
+    default: {
+        color: $-melon-colors.grey500
+        color-hover: $-melon-colors.grey500
+        color-active: $-melon-colors.grey500
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.grey500
+        background-color-active: $-melon-colors.grey500
+        backgorund-color-disabled: $-melon-colors.transparent
+    },
+
+    primary: {
+        color: $-melon-colors.pinkA200
+        color-hover: $-melon-colors.pinkA200
+        color-active: $-melon-colors.pinkA200
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.pinkA200
+        background-color-active: $-melon-colors.pinkA200
+        backgorund-color-disabled: $-melon-colors.grey200
+    },
+
+    secondery: {
+        color: $-melon-colors.cyan500
+        color-hover: $-melon-colors.cyan500
+        color-active: $-melon-colors.cyan500
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.cyan500
+        background-color-active: $-melon-colors.cyan500
+        backgorund-color-disabled: $-melon-colors.grey200
+    },
+
+    danger: {
+        color: $-melon-colors.red600
+        color-hover: $-melon-colors.red600
+        color-active: $-melon-colors.red600
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.red600
+        background-color-active: $-melon-colors.red600
+        backgorund-color-disabled: $-melon-colors.grey200
+    },
+
+    success: {
+        color: $-melon-colors.green500
+        color-hover: $-melon-colors.green500
+        color-active: $-melon-colors.green500
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.green500
+        background-color-active: $-melon-colors.green500
+        backgorund-color-disabled: $-melon-colors.grey200
+    },
+
+    info: {
+        color: $-melon-colors.blue500
+        color-hover: $-melon-colors.blue500
+        color-active: $-melon-colors.blue500
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.blue500
+        background-color-active: $-melon-colors.blue500
+        backgorund-color-disabled: $-melon-colors.grey200
+    },
+
+    warning: {
+        color: $-melon-colors.orange500
+        color-hover: $-melon-colors.orange500
+        color-active: $-melon-colors.orange500
+        color-disabled: $-melon-colors.grey900
+        background-color: $-melon-colors.transparent
+        background-color-hover: $-melon-colors.orange500
+        background-color-active: $-melon-colors.orange500
+        backgorund-color-disabled: $-melon-colors.grey200
+    }
+
+}
+
+melon-button-swatch($swatches, $revert = false)
+
+    color: $revert ? $-melon-colors.white : $swatches.color
+    background-color: $revert ? $swatches.color : $swatches.background-color
+
+    &:hover
+        color: $revert ? $-melon-colors.white : $swatches.color-hover
+        background-color: rgba($swatches.background-color-hover, $revert ? .6 : .2)
+
+    &:active
+        color: $revert ? $-melon-colors.white : $swatches.color-active
+        background-color: rgba($swatches.background-color-active, $revert ? .8 : .4)
+
+    &:disabled
+        color: $swatches.color-disabled
+        background-color: backgorund-color-disabled
+
+
+$-melon-button-raised = {
+
+    box-shadow: melon-get-z-depth('1')
+
+    '&:active': {
+        box-shadow: melon-get-z-depth('2')
+    }
+
+    '&:disabled': {
+        box-shadow: none
+    }
+
+}
+
+$-melon-button-variants = {
+    'raised': $-melon-button-raised
+}
+
+.ui-button
+    for $swatch, $hashes in $-melon-button-swatches
+        &.variant-{$swatch}
+            melon-button-swatch($hashes)
+
+            &.variant-raised
+                melon-button-swatch($hashes, true)
+
+

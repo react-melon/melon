@@ -1,0 +1,15 @@
+@import "./variable.styl"
+
+melon-get-theme()
+    return typeof($melon-theme) == 'ident' ? material : $melon-theme
+
+// make a circle
+melon-circular()
+    border-radius 500em
+
+melon-clearfix()
+    &:after
+        display table
+        clear both
+        content ""
+
