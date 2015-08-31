@@ -1,0 +1,7 @@
+node_modules
+dep
+.edpproj
+lib
+npm-debug.log
+output
+coverage

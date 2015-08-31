@@ -1,0 +1,12 @@
+@import "./base.styl"
+
+.{$-melon-class-prefix}-button
+
+    display: inline-block
+
+    {$-melon-button}
+
+    for $variant, $hashes in $-melon-button-variants
+        &.{$-melon-variant-prefix}-{$variant}
+            {$hashes}
+

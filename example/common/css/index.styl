@@ -1,0 +1,40 @@
+@require 'nib'
+
+global-reset()
+
+body
+    font-size: 16px
+    padding-left: 210px
+    font-family: 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Arial, '宋体', SimSun, sans-serif
+
+.nav
+    fixed: top left bottom
+    width: 200px
+    background: #1b1c1d
+    text-align right
+
+
+    > h1
+        height: 2em
+        color: rgb(0, 159, 147)
+        font-size: 32px
+        line-height: @height
+        padding-right 10px
+
+    > ul
+
+        border: 1px solid rgba(255, 255, 255, .3)
+        border-width: 1px 0 1px 0
+
+        a
+            display block
+            height 3em
+            padding-right 10px
+            color #888
+            line-height @height
+            text-decoration none
+            transition all .3s
+
+            &:hover
+                background-color #1b1c1d + 10%
+                color: #fff

@@ -1,0 +1,31 @@
+{
+  "name": "melon",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jinzhubaofu/melon",
+  "authors": [
+    "ludafa@outlook.com"
+  ],
+  "description": "react ui components",
+  "main": "src/main",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dep",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "classnames": "~2.1.3",
+    "react": "~0.13.3"
+  }
+}
