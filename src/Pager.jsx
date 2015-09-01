@@ -6,6 +6,14 @@
 var React = require('react');
 var _     = require('underscore');
 var cx    = require('./common/util/classname');
+var Icon  = require('./Icon.jsx');
+
+
+var ICONS = {
+    prev: 'navigate-before',
+    next: 'navigate-next',
+    ellipsis: 'keyboard-control'
+};
 
 var Pager = React.createClass({
 
@@ -23,6 +31,7 @@ var Pager = React.createClass({
         showCount: React.PropTypes.number,
         total: React.PropTypes.number,
         anchor: React.PropTypes.bool,
+        icon: React.PropTypes.bool,
         lang: React.PropTypes.shape({
             prev: React.PropTypes.string,
             ellipsis: React.PropTypes.string,
@@ -48,6 +57,8 @@ var Pager = React.createClass({
 
             // 当页数较多时，中间显示页码的个数
             showCount: 5,
+
+            icon: false,
 
             // 总页数
             total: 0,
@@ -134,8 +145,7 @@ var Pager = React.createClass({
             page: page,
             states: {
                 current: true
-            },
-            part: 'current'
+            }
         }).concat(right).concat({
             page: Math.min(page + 1, total - 1),
             states: {
@@ -202,19 +212,33 @@ var Pager = React.createClass({
     renderItem: function (conf) {
         var page = conf.page;
         var part = conf.part;
+
+        var props = this.props;
+
+        var anchor = props.anchor;
+        var icon = props.icon;
+        var lang = props.lang;
+
         var classNames = cx.createComponentClass(
             'pager-item',
             [],
             conf.states
         );
-        var pageText = this.props.lang[part] || page + 1;
+        var pageText;
 
-        var children = this.props.anchor ?
+        if (icon && part) {
+            pageText = (<Icon icon={ICONS[part]} />);
+        }
+        else {
+            pageText = lang[part] || page + 1;
+        }
+
+        var children = anchor ?
             (
                 <a href="!#">
                     {pageText}
                 </a>
-            ) : ({pageText})
+            ) : ({pageText});
 
         var item = React.createElement(
             'li',
