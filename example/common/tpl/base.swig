@@ -14,7 +14,7 @@
         <ul>
             {% for component in components %}
             <li>
-                <a href="{{feRoot}}/example/{{component.name||lower}}/index.swig">
+                <a href="{{feRoot}}/{{component.name}}.jsx">
                     {{component.name}}
                 </a>
             </li>

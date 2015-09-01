@@ -1,0 +1,2412 @@
+@require './base.styl'
+
+@font-face
+    font-family: 'melon'
+    src:url('../font/melon.eot?4d6t69')
+    src:url('../font/melon.eot?#iefix4d6t69') format('embedded-opentype'),
+        url('../font/melon.ttf?4d6t69') format('truetype'),
+        url('../font/melon.woff?4d6t69') format('woff'),
+        url('../font/melon.svg?4d6t69#melon') format('svg')
+    font-weight: normal
+    font-style: normal
+
+
+.ui-icon
+    font-family: 'melon'
+    speak: none
+    font-style: normal
+    font-weight: normal
+    font-variant: normal
+    text-transform: none
+    line-height: 1
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+
+
+[data-icon=error]:before
+    content: "\e000"
+
+[data-icon=error-outline]:before
+    content: "\e001"
+
+[data-icon=warning]:before
+    content: "\e002"
+
+[data-icon=add-alert]:before
+    content: "\e003"
+
+[data-icon=album]:before
+    content: "\e004"
+
+[data-icon=av-timer]:before
+    content: "\e005"
+
+[data-icon=closed-caption]:before
+    content: "\e006"
+
+[data-icon=equalizer]:before
+    content: "\e007"
+
+[data-icon=explicit]:before
+    content: "\e008"
+
+[data-icon=fast-forward]:before
+    content: "\e009"
+
+[data-icon=fast-rewind]:before
+    content: "\e00a"
+
+[data-icon=games]:before
+    content: "\e00b"
+
+[data-icon=hearing]:before
+    content: "\e00c"
+
+[data-icon=high-quality]:before
+    content: "\e00d"
+
+[data-icon=loop]:before
+    content: "\e00e"
+
+[data-icon=mic]:before
+    content: "\e00f"
+
+[data-icon=mic-none]:before
+    content: "\e010"
+
+[data-icon=mic-off]:before
+    content: "\e011"
+
+[data-icon=movie]:before
+    content: "\e012"
+
+[data-icon=library-add]:before
+    content: "\e013"
+
+[data-icon=library-books]:before
+    content: "\e014"
+
+[data-icon=library-music]:before
+    content: "\e015"
+
+[data-icon=new-releases]:before
+    content: "\e016"
+
+[data-icon=not-interested]:before
+    content: "\e017"
+
+[data-icon=pause]:before
+    content: "\e018"
+
+[data-icon=pause-circle-filled]:before
+    content: "\e019"
+
+[data-icon=pause-circle-outline]:before
+    content: "\e01a"
+
+[data-icon=play-arrow]:before
+    content: "\e01b"
+
+[data-icon=play-circle-filled]:before
+    content: "\e01c"
+
+[data-icon=play-circle-outline]:before
+    content: "\e01d"
+
+[data-icon=playlist-add]:before
+    content: "\e01e"
+
+[data-icon=queue]:before
+    content: "\e01f"
+
+[data-icon=queue-music]:before
+    content: "\e020"
+
+[data-icon=radio]:before
+    content: "\e021"
+
+[data-icon=recent-actors]:before
+    content: "\e022"
+
+[data-icon=repeat]:before
+    content: "\e023"
+
+[data-icon=repeat-one]:before
+    content: "\e024"
+
+[data-icon=replay]:before
+    content: "\e025"
+
+[data-icon=shuffle]:before
+    content: "\e026"
+
+[data-icon=skip-next]:before
+    content: "\e027"
+
+[data-icon=skip-previous]:before
+    content: "\e028"
+
+[data-icon=snooze]:before
+    content: "\e029"
+
+[data-icon=stop]:before
+    content: "\e02a"
+
+[data-icon=subtitles]:before
+    content: "\e02b"
+
+[data-icon=surround-sound]:before
+    content: "\e02c"
+
+[data-icon=video-collection]:before
+    content: "\e02d"
+
+[data-icon=videocam]:before
+    content: "\e02e"
+
+[data-icon=videocam-off]:before
+    content: "\e02f"
+
+[data-icon=volume-down]:before
+    content: "\e030"
+
+[data-icon=volume-mute]:before
+    content: "\e031"
+
+[data-icon=volume-off]:before
+    content: "\e032"
+
+[data-icon=volume-up]:before
+    content: "\e033"
+
+[data-icon=web]:before
+    content: "\e034"
+
+[data-icon=hd]:before
+    content: "\e035"
+
+[data-icon=sort-by-alpha]:before
+    content: "\e036"
+
+[data-icon=airplay]:before
+    content: "\e037"
+
+[data-icon=forward-10]:before
+    content: "\e038"
+
+[data-icon=forward-30]:before
+    content: "\e039"
+
+[data-icon=forward-5]:before
+    content: "\e03a"
+
+[data-icon=replay-10]:before
+    content: "\e03b"
+
+[data-icon=replay-30]:before
+    content: "\e03c"
+
+[data-icon=replay-5]:before
+    content: "\e03d"
+
+[data-icon=business]:before
+    content: "\e03e"
+
+[data-icon=call]:before
+    content: "\e03f"
+
+[data-icon=call-end]:before
+    content: "\e040"
+
+[data-icon=call-made]:before
+    content: "\e041"
+
+[data-icon=call-merge]:before
+    content: "\e042"
+
+[data-icon=call-missed]:before
+    content: "\e043"
+
+[data-icon=call-received]:before
+    content: "\e044"
+
+[data-icon=call-split]:before
+    content: "\e045"
+
+[data-icon=chat]:before
+    content: "\e046"
+
+[data-icon=clear-all]:before
+    content: "\e047"
+
+[data-icon=comment]:before
+    content: "\e048"
+
+[data-icon=contacts]:before
+    content: "\e049"
+
+[data-icon=dialer-sip]:before
+    content: "\e04a"
+
+[data-icon=dialpad]:before
+    content: "\e04b"
+
+[data-icon=email]:before
+    content: "\e04c"
+
+[data-icon=forum]:before
+    content: "\e04d"
+
+[data-icon=import-export]:before
+    content: "\e04e"
+
+[data-icon=invert-colors-off]:before
+    content: "\e04f"
+
+[data-icon=live-help]:before
+    content: "\e050"
+
+[data-icon=location-off]:before
+    content: "\e051"
+
+[data-icon=location-on]:before
+    content: "\e052"
+
+[data-icon=message]:before
+    content: "\e053"
+
+[data-icon=chat-bubble]:before
+    content: "\e054"
+
+[data-icon=chat-bubble-outline]:before
+    content: "\e055"
+
+[data-icon=no-sim]:before
+    content: "\e056"
+
+[data-icon=phone]:before
+    content: "\e057"
+
+[data-icon=portable-wifi-off]:before
+    content: "\e058"
+
+[data-icon=contact-phone]:before
+    content: "\e059"
+
+[data-icon=ring-volume]:before
+    content: "\e05a"
+
+[data-icon=speaker-phone]:before
+    content: "\e05b"
+
+[data-icon=stay-current-landscape]:before
+    content: "\e05c"
+
+[data-icon=stay-current-portrait]:before
+    content: "\e05d"
+
+[data-icon=stay-primary-landscape]:before
+    content: "\e05e"
+
+[data-icon=stay-primary-portrait]:before
+    content: "\e05f"
+
+[data-icon=swap-calls]:before
+    content: "\e060"
+
+[data-icon=textsms]:before
+    content: "\e061"
+
+[data-icon=voicemail]:before
+    content: "\e062"
+
+[data-icon=vpn-key]:before
+    content: "\e063"
+
+[data-icon=phonelink-erase]:before
+    content: "\e064"
+
+[data-icon=phonelink-lock]:before
+    content: "\e065"
+
+[data-icon=phonelink-ring]:before
+    content: "\e066"
+
+[data-icon=phonelink-setup]:before
+    content: "\e067"
+
+[data-icon=present-to-all]:before
+    content: "\e068"
+
+[data-icon=add]:before
+    content: "\e069"
+
+[data-icon=add-box]:before
+    content: "\e06a"
+
+[data-icon=add-circle]:before
+    content: "\e06b"
+
+[data-icon=add-circle-outline]:before
+    content: "\e06c"
+
+[data-icon=archive]:before
+    content: "\e06d"
+
+[data-icon=backspace]:before
+    content: "\e06e"
+
+[data-icon=block]:before
+    content: "\e06f"
+
+[data-icon=clear]:before
+    content: "\e070"
+
+[data-icon=content-copy]:before
+    content: "\e071"
+
+[data-icon=content-cut]:before
+    content: "\e072"
+
+[data-icon=content-paste]:before
+    content: "\e073"
+
+[data-icon=create]:before
+    content: "\e074"
+
+[data-icon=drafts]:before
+    content: "\e075"
+
+[data-icon=filter-list]:before
+    content: "\e076"
+
+[data-icon=flag]:before
+    content: "\e077"
+
+[data-icon=forward]:before
+    content: "\e078"
+
+[data-icon=gesture]:before
+    content: "\e079"
+
+[data-icon=inbox]:before
+    content: "\e07a"
+
+[data-icon=link]:before
+    content: "\e07b"
+
+[data-icon=mail]:before
+    content: "\e07c"
+
+[data-icon=markunread]:before
+    content: "\e07d"
+
+[data-icon=redo]:before
+    content: "\e07e"
+
+[data-icon=remove]:before
+    content: "\e07f"
+
+[data-icon=remove-circle]:before
+    content: "\e080"
+
+[data-icon=remove-circle-outline]:before
+    content: "\e081"
+
+[data-icon=reply]:before
+    content: "\e082"
+
+[data-icon=reply-all]:before
+    content: "\e083"
+
+[data-icon=report]:before
+    content: "\e084"
+
+[data-icon=save]:before
+    content: "\e085"
+
+[data-icon=select-all]:before
+    content: "\e086"
+
+[data-icon=send]:before
+    content: "\e087"
+
+[data-icon=sort]:before
+    content: "\e088"
+
+[data-icon=text-format]:before
+    content: "\e089"
+
+[data-icon=undo]:before
+    content: "\e08a"
+
+[data-icon=font-download]:before
+    content: "\e08b"
+
+[data-icon=access-alarm]:before
+    content: "\e08c"
+
+[data-icon=access-alarms]:before
+    content: "\e08d"
+
+[data-icon=access-time]:before
+    content: "\e08e"
+
+[data-icon=add-alarm]:before
+    content: "\e08f"
+
+[data-icon=airplanemode-inactive]:before
+    content: "\e090"
+
+[data-icon=airplanemode-active]:before
+    content: "\e091"
+
+[data-icon=battery-alert]:before
+    content: "\e092"
+
+[data-icon=battery-charging-full]:before
+    content: "\e093"
+
+[data-icon=battery-full]:before
+    content: "\e094"
+
+[data-icon=battery-std]:before
+    content: "\e095"
+
+[data-icon=battery-unknown]:before
+    content: "\e096"
+
+[data-icon=bluetooth]:before
+    content: "\e097"
+
+[data-icon=bluetooth-connected]:before
+    content: "\e098"
+
+[data-icon=bluetooth-disabled]:before
+    content: "\e099"
+
+[data-icon=bluetooth-searching]:before
+    content: "\e09a"
+
+[data-icon=brightness-auto]:before
+    content: "\e09b"
+
+[data-icon=brightness-high]:before
+    content: "\e09c"
+
+[data-icon=brightness-low]:before
+    content: "\e09d"
+
+[data-icon=brightness-medium]:before
+    content: "\e09e"
+
+[data-icon=data-usage]:before
+    content: "\e09f"
+
+[data-icon=developer-mode]:before
+    content: "\e0a0"
+
+[data-icon=devices]:before
+    content: "\e0a1"
+
+[data-icon=dvr]:before
+    content: "\e0a2"
+
+[data-icon=gps-fixed]:before
+    content: "\e0a3"
+
+[data-icon=gps-not-fixed]:before
+    content: "\e0a4"
+
+[data-icon=gps-off]:before
+    content: "\e0a5"
+
+[data-icon=location-disabled]:before
+    content: "\e0a6"
+
+[data-icon=location-searching]:before
+    content: "\e0a7"
+
+[data-icon=graphic-eq]:before
+    content: "\e0a8"
+
+[data-icon=network-cell]:before
+    content: "\e0a9"
+
+[data-icon=network-wifi]:before
+    content: "\e0aa"
+
+[data-icon=nfc]:before
+    content: "\e0ab"
+
+[data-icon=now-wallpaper]:before
+    content: "\e0ac"
+
+[data-icon=now-widgets]:before
+    content: "\e0ad"
+
+[data-icon=screen-lock-landscape]:before
+    content: "\e0ae"
+
+[data-icon=screen-lock-portrait]:before
+    content: "\e0af"
+
+[data-icon=screen-lock-rotation]:before
+    content: "\e0b0"
+
+[data-icon=screen-rotation]:before
+    content: "\e0b1"
+
+[data-icon=sd-storage]:before
+    content: "\e0b2"
+
+[data-icon=settings-system-daydream]:before
+    content: "\e0b3"
+
+[data-icon=signal-cellular-4-bar]:before
+    content: "\e0b4"
+
+[data-icon=signal-cellular-connected-no-internet-4-bar]:before
+    content: "\e0b5"
+
+[data-icon=signal-cellular-no-sim]:before
+    content: "\e0b6"
+
+[data-icon=signal-cellular-null]:before
+    content: "\e0b7"
+
+[data-icon=signal-cellular-off]:before
+    content: "\e0b8"
+
+[data-icon=signal-wifi-4-bar]:before
+    content: "\e0b9"
+
+[data-icon=signal-wifi-4-bar-lock]:before
+    content: "\e0ba"
+
+[data-icon=signal-wifi-off]:before
+    content: "\e0bb"
+
+[data-icon=storage]:before
+    content: "\e0bc"
+
+[data-icon=usb]:before
+    content: "\e0bd"
+
+[data-icon=wifi-lock]:before
+    content: "\e0be"
+
+[data-icon=wifi-tethering]:before
+    content: "\e0bf"
+
+[data-icon=attach-file]:before
+    content: "\e0c0"
+
+[data-icon=attach-money]:before
+    content: "\e0c1"
+
+[data-icon=border-all]:before
+    content: "\e0c2"
+
+[data-icon=border-bottom]:before
+    content: "\e0c3"
+
+[data-icon=border-clear]:before
+    content: "\e0c4"
+
+[data-icon=border-color]:before
+    content: "\e0c5"
+
+[data-icon=border-horizontal]:before
+    content: "\e0c6"
+
+[data-icon=border-inner]:before
+    content: "\e0c7"
+
+[data-icon=border-left]:before
+    content: "\e0c8"
+
+[data-icon=border-outer]:before
+    content: "\e0c9"
+
+[data-icon=border-right]:before
+    content: "\e0ca"
+
+[data-icon=border-style]:before
+    content: "\e0cb"
+
+[data-icon=border-top]:before
+    content: "\e0cc"
+
+[data-icon=border-vertical]:before
+    content: "\e0cd"
+
+[data-icon=format-align-center]:before
+    content: "\e0ce"
+
+[data-icon=format-align-justify]:before
+    content: "\e0cf"
+
+[data-icon=format-align-left]:before
+    content: "\e0d0"
+
+[data-icon=format-align-right]:before
+    content: "\e0d1"
+
+[data-icon=format-bold]:before
+    content: "\e0d2"
+
+[data-icon=format-clear]:before
+    content: "\e0d3"
+
+[data-icon=format-color-fill]:before
+    content: "\e0d4"
+
+[data-icon=format-color-reset]:before
+    content: "\e0d5"
+
+[data-icon=format-color-text]:before
+    content: "\e0d6"
+
+[data-icon=format-indent-decrease]:before
+    content: "\e0d7"
+
+[data-icon=format-indent-increase]:before
+    content: "\e0d8"
+
+[data-icon=format-italic]:before
+    content: "\e0d9"
+
+[data-icon=format-line-spacing]:before
+    content: "\e0da"
+
+[data-icon=format-list-bulleted]:before
+    content: "\e0db"
+
+[data-icon=format-list-numbered]:before
+    content: "\e0dc"
+
+[data-icon=format-paint]:before
+    content: "\e0dd"
+
+[data-icon=format-quote]:before
+    content: "\e0de"
+
+[data-icon=format-size]:before
+    content: "\e0df"
+
+[data-icon=format-strikethrough]:before
+    content: "\e0e0"
+
+[data-icon=format-textdirection-l-to-r]:before
+    content: "\e0e1"
+
+[data-icon=format-textdirection-r-to-l]:before
+    content: "\e0e2"
+
+[data-icon=format-underlined]:before
+    content: "\e0e3"
+
+[data-icon=functions]:before
+    content: "\e0e4"
+
+[data-icon=insert-chart]:before
+    content: "\e0e5"
+
+[data-icon=insert-comment]:before
+    content: "\e0e6"
+
+[data-icon=insert-drive-file]:before
+    content: "\e0e7"
+
+[data-icon=insert-emoticon]:before
+    content: "\e0e8"
+
+[data-icon=insert-invitation]:before
+    content: "\e0e9"
+
+[data-icon=insert-link]:before
+    content: "\e0ea"
+
+[data-icon=insert-photo]:before
+    content: "\e0eb"
+
+[data-icon=merge-type]:before
+    content: "\e0ec"
+
+[data-icon=mode-comment]:before
+    content: "\e0ed"
+
+[data-icon=mode-edit]:before
+    content: "\e0ee"
+
+[data-icon=publish]:before
+    content: "\e0ef"
+
+[data-icon=space-bar]:before
+    content: "\e0f0"
+
+[data-icon=strikethrough-s]:before
+    content: "\e0f1"
+
+[data-icon=vertical-align-bottom]:before
+    content: "\e0f2"
+
+[data-icon=vertical-align-center]:before
+    content: "\e0f3"
+
+[data-icon=vertical-align-top]:before
+    content: "\e0f4"
+
+[data-icon=wrap-text]:before
+    content: "\e0f5"
+
+[data-icon=money-off]:before
+    content: "\e0f6"
+
+[data-icon=attachment]:before
+    content: "\e0f7"
+
+[data-icon=cloud]:before
+    content: "\e0f8"
+
+[data-icon=cloud-circle]:before
+    content: "\e0f9"
+
+[data-icon=cloud-done]:before
+    content: "\e0fa"
+
+[data-icon=cloud-download]:before
+    content: "\e0fb"
+
+[data-icon=cloud-off]:before
+    content: "\e0fc"
+
+[data-icon=cloud-queue]:before
+    content: "\e0fd"
+
+[data-icon=cloud-upload]:before
+    content: "\e0fe"
+
+[data-icon=file-download]:before
+    content: "\e0ff"
+
+[data-icon=file-upload]:before
+    content: "\e100"
+
+[data-icon=folder]:before
+    content: "\e101"
+
+[data-icon=folder-open]:before
+    content: "\e102"
+
+[data-icon=folder-shared]:before
+    content: "\e103"
+
+[data-icon=cast]:before
+    content: "\e104"
+
+[data-icon=cast-connected]:before
+    content: "\e105"
+
+[data-icon=computer]:before
+    content: "\e106"
+
+[data-icon=desktop-mac]:before
+    content: "\e107"
+
+[data-icon=desktop-windows]:before
+    content: "\e108"
+
+[data-icon=developer-board]:before
+    content: "\e109"
+
+[data-icon=dock]:before
+    content: "\e10a"
+
+[data-icon=gamepad]:before
+    content: "\e10b"
+
+[data-icon=headset]:before
+    content: "\e10c"
+
+[data-icon=headset-mic]:before
+    content: "\e10d"
+
+[data-icon=keyboard]:before
+    content: "\e10e"
+
+[data-icon=keyboard-arrow-down]:before
+    content: "\e10f"
+
+[data-icon=keyboard-arrow-left]:before
+    content: "\e110"
+
+[data-icon=keyboard-arrow-right]:before
+    content: "\e111"
+
+[data-icon=keyboard-arrow-up]:before
+    content: "\e112"
+
+[data-icon=keyboard-backspace]:before
+    content: "\e113"
+
+[data-icon=keyboard-capslock]:before
+    content: "\e114"
+
+[data-icon=keyboard-hide]:before
+    content: "\e115"
+
+[data-icon=keyboard-return]:before
+    content: "\e116"
+
+[data-icon=keyboard-tab]:before
+    content: "\e117"
+
+[data-icon=keyboard-voice]:before
+    content: "\e118"
+
+[data-icon=laptop]:before
+    content: "\e119"
+
+[data-icon=laptop-chromebook]:before
+    content: "\e11a"
+
+[data-icon=laptop-mac]:before
+    content: "\e11b"
+
+[data-icon=laptop-windows]:before
+    content: "\e11c"
+
+[data-icon=memory]:before
+    content: "\e11d"
+
+[data-icon=mouse]:before
+    content: "\e11e"
+
+[data-icon=phone-android]:before
+    content: "\e11f"
+
+[data-icon=phone-iphone]:before
+    content: "\e120"
+
+[data-icon=phonelink]:before
+    content: "\e121"
+
+[data-icon=phonelink-off]:before
+    content: "\e122"
+
+[data-icon=router]:before
+    content: "\e123"
+
+[data-icon=scanner]:before
+    content: "\e124"
+
+[data-icon=security]:before
+    content: "\e125"
+
+[data-icon=sim-card]:before
+    content: "\e126"
+
+[data-icon=smartphone]:before
+    content: "\e127"
+
+[data-icon=speaker]:before
+    content: "\e128"
+
+[data-icon=speaker-group]:before
+    content: "\e129"
+
+[data-icon=tablet]:before
+    content: "\e12a"
+
+[data-icon=tablet-android]:before
+    content: "\e12b"
+
+[data-icon=tablet-mac]:before
+    content: "\e12c"
+
+[data-icon=toys]:before
+    content: "\e12d"
+
+[data-icon=tv]:before
+    content: "\e12e"
+
+[data-icon=watch]:before
+    content: "\e12f"
+
+[data-icon=device-hub]:before
+    content: "\e130"
+
+[data-icon=power-input]:before
+    content: "\e131"
+
+[data-icon=add-to-photos]:before
+    content: "\e132"
+
+[data-icon=adjust]:before
+    content: "\e133"
+
+[data-icon=assistant]:before
+    content: "\e134"
+
+[data-icon=assistant-photo]:before
+    content: "\e135"
+
+[data-icon=audiotrack]:before
+    content: "\e136"
+
+[data-icon=blur-circular]:before
+    content: "\e137"
+
+[data-icon=blur-linear]:before
+    content: "\e138"
+
+[data-icon=blur-off]:before
+    content: "\e139"
+
+[data-icon=blur-on]:before
+    content: "\e13a"
+
+[data-icon=brightness-1]:before
+    content: "\e13b"
+
+[data-icon=brightness-2]:before
+    content: "\e13c"
+
+[data-icon=brightness-3]:before
+    content: "\e13d"
+
+[data-icon=brightness-4]:before
+    content: "\e13e"
+
+[data-icon=brightness-5]:before
+    content: "\e13f"
+
+[data-icon=brightness-6]:before
+    content: "\e140"
+
+[data-icon=brightness-7]:before
+    content: "\e141"
+
+[data-icon=broken-image]:before
+    content: "\e142"
+
+[data-icon=brush]:before
+    content: "\e143"
+
+[data-icon=camera]:before
+    content: "\e144"
+
+[data-icon=camera-alt]:before
+    content: "\e145"
+
+[data-icon=camera-front]:before
+    content: "\e146"
+
+[data-icon=camera-rear]:before
+    content: "\e147"
+
+[data-icon=camera-roll]:before
+    content: "\e148"
+
+[data-icon=center-focus-strong]:before
+    content: "\e149"
+
+[data-icon=center-focus-weak]:before
+    content: "\e14a"
+
+[data-icon=collections]:before
+    content: "\e14b"
+
+[data-icon=color-lens]:before
+    content: "\e14c"
+
+[data-icon=colorize]:before
+    content: "\e14d"
+
+[data-icon=compare]:before
+    content: "\e14e"
+
+[data-icon=control-point]:before
+    content: "\e14f"
+
+[data-icon=control-point-duplicate]:before
+    content: "\e150"
+
+[data-icon=crop-16-9]:before
+    content: "\e151"
+
+[data-icon=crop-3-2]:before
+    content: "\e152"
+
+[data-icon=crop]:before
+    content: "\e153"
+
+[data-icon=crop-5-4]:before
+    content: "\e154"
+
+[data-icon=crop-7-5]:before
+    content: "\e155"
+
+[data-icon=crop-din]:before
+    content: "\e156"
+
+[data-icon=crop-free]:before
+    content: "\e157"
+
+[data-icon=crop-landscape]:before
+    content: "\e158"
+
+[data-icon=crop-original]:before
+    content: "\e159"
+
+[data-icon=crop-portrait]:before
+    content: "\e15a"
+
+[data-icon=crop-square]:before
+    content: "\e15b"
+
+[data-icon=dehaze]:before
+    content: "\e15c"
+
+[data-icon=details]:before
+    content: "\e15d"
+
+[data-icon=edit]:before
+    content: "\e15e"
+
+[data-icon=exposure]:before
+    content: "\e15f"
+
+[data-icon=exposure-minus-1]:before
+    content: "\e160"
+
+[data-icon=exposure-minus-2]:before
+    content: "\e161"
+
+[data-icon=exposure-plus-1]:before
+    content: "\e162"
+
+[data-icon=exposure-plus-2]:before
+    content: "\e163"
+
+[data-icon=exposure-zero]:before
+    content: "\e164"
+
+[data-icon=filter-1]:before
+    content: "\e165"
+
+[data-icon=filter-2]:before
+    content: "\e166"
+
+[data-icon=filter-3]:before
+    content: "\e167"
+
+[data-icon=filter]:before
+    content: "\e168"
+
+[data-icon=filter-4]:before
+    content: "\e169"
+
+[data-icon=filter-5]:before
+    content: "\e16a"
+
+[data-icon=filter-6]:before
+    content: "\e16b"
+
+[data-icon=filter-7]:before
+    content: "\e16c"
+
+[data-icon=filter-8]:before
+    content: "\e16d"
+
+[data-icon=filter-9]:before
+    content: "\e16e"
+
+[data-icon=filter-9-plus]:before
+    content: "\e16f"
+
+[data-icon=filter-b-and-w]:before
+    content: "\e170"
+
+[data-icon=filter-center-focus]:before
+    content: "\e171"
+
+[data-icon=filter-drama]:before
+    content: "\e172"
+
+[data-icon=filter-frames]:before
+    content: "\e173"
+
+[data-icon=filter-hdr]:before
+    content: "\e174"
+
+[data-icon=filter-none]:before
+    content: "\e175"
+
+[data-icon=filter-tilt-shift]:before
+    content: "\e176"
+
+[data-icon=filter-vintage]:before
+    content: "\e177"
+
+[data-icon=flare]:before
+    content: "\e178"
+
+[data-icon=flash-auto]:before
+    content: "\e179"
+
+[data-icon=flash-off]:before
+    content: "\e17a"
+
+[data-icon=flash-on]:before
+    content: "\e17b"
+
+[data-icon=flip]:before
+    content: "\e17c"
+
+[data-icon=gradient]:before
+    content: "\e17d"
+
+[data-icon=grain]:before
+    content: "\e17e"
+
+[data-icon=grid-off]:before
+    content: "\e17f"
+
+[data-icon=grid-on]:before
+    content: "\e180"
+
+[data-icon=hdr-off]:before
+    content: "\e181"
+
+[data-icon=hdr-on]:before
+    content: "\e182"
+
+[data-icon=hdr-strong]:before
+    content: "\e183"
+
+[data-icon=hdr-weak]:before
+    content: "\e184"
+
+[data-icon=healing]:before
+    content: "\e185"
+
+[data-icon=image]:before
+    content: "\e186"
+
+[data-icon=image-aspect-ratio]:before
+    content: "\e187"
+
+[data-icon=iso]:before
+    content: "\e188"
+
+[data-icon=landscape]:before
+    content: "\e189"
+
+[data-icon=leak-add]:before
+    content: "\e18a"
+
+[data-icon=leak-remove]:before
+    content: "\e18b"
+
+[data-icon=lens]:before
+    content: "\e18c"
+
+[data-icon=looks-3]:before
+    content: "\e18d"
+
+[data-icon=looks]:before
+    content: "\e18e"
+
+[data-icon=looks-4]:before
+    content: "\e18f"
+
+[data-icon=looks-5]:before
+    content: "\e190"
+
+[data-icon=looks-6]:before
+    content: "\e191"
+
+[data-icon=looks-one]:before
+    content: "\e192"
+
+[data-icon=looks-two]:before
+    content: "\e193"
+
+[data-icon=loupe]:before
+    content: "\e194"
+
+[data-icon=monochrome-photos]:before
+    content: "\e195"
+
+[data-icon=movie-creation]:before
+    content: "\e196"
+
+[data-icon=music-note]:before
+    content: "\e197"
+
+[data-icon=nature]:before
+    content: "\e198"
+
+[data-icon=nature-people]:before
+    content: "\e199"
+
+[data-icon=navigate-before]:before
+    content: "\e19a"
+
+[data-icon=navigate-next]:before
+    content: "\e19b"
+
+[data-icon=palette]:before
+    content: "\e19c"
+
+[data-icon=panorama]:before
+    content: "\e19d"
+
+[data-icon=panorama-fish-eye]:before
+    content: "\e19e"
+
+[data-icon=panorama-horizontal]:before
+    content: "\e19f"
+
+[data-icon=panorama-vertical]:before
+    content: "\e1a0"
+
+[data-icon=panorama-wide-angle]:before
+    content: "\e1a1"
+
+[data-icon=photo]:before
+    content: "\e1a2"
+
+[data-icon=photo-album]:before
+    content: "\e1a3"
+
+[data-icon=photo-camera]:before
+    content: "\e1a4"
+
+[data-icon=photo-library]:before
+    content: "\e1a5"
+
+[data-icon=picture-as-pdf]:before
+    content: "\e1a6"
+
+[data-icon=portrait]:before
+    content: "\e1a7"
+
+[data-icon=remove-red-eye]:before
+    content: "\e1a8"
+
+[data-icon=rotate-90-degrees-ccw]:before
+    content: "\e1a9"
+
+[data-icon=rotate-left]:before
+    content: "\e1aa"
+
+[data-icon=rotate-right]:before
+    content: "\e1ab"
+
+[data-icon=slideshow]:before
+    content: "\e1ac"
+
+[data-icon=straighten]:before
+    content: "\e1ad"
+
+[data-icon=style]:before
+    content: "\e1ae"
+
+[data-icon=switch-camera]:before
+    content: "\e1af"
+
+[data-icon=switch-video]:before
+    content: "\e1b0"
+
+[data-icon=tag-faces]:before
+    content: "\e1b1"
+
+[data-icon=texture]:before
+    content: "\e1b2"
+
+[data-icon=timelapse]:before
+    content: "\e1b3"
+
+[data-icon=timer-10]:before
+    content: "\e1b4"
+
+[data-icon=timer-3]:before
+    content: "\e1b5"
+
+[data-icon=timer]:before
+    content: "\e1b6"
+
+[data-icon=timer-off]:before
+    content: "\e1b7"
+
+[data-icon=tonality]:before
+    content: "\e1b8"
+
+[data-icon=transform]:before
+    content: "\e1b9"
+
+[data-icon=tune]:before
+    content: "\e1ba"
+
+[data-icon=view-comfortable]:before
+    content: "\e1bb"
+
+[data-icon=view-compact]:before
+    content: "\e1bc"
+
+[data-icon=wb-auto]:before
+    content: "\e1bd"
+
+[data-icon=wb-cloudy]:before
+    content: "\e1be"
+
+[data-icon=wb-incandescent]:before
+    content: "\e1bf"
+
+[data-icon=wb-sunny]:before
+    content: "\e1c0"
+
+[data-icon=collections-bookmark]:before
+    content: "\e1c1"
+
+[data-icon=photo-size-select-actual]:before
+    content: "\e1c2"
+
+[data-icon=photo-size-select-large]:before
+    content: "\e1c3"
+
+[data-icon=photo-size-select-small]:before
+    content: "\e1c4"
+
+[data-icon=vignette]:before
+    content: "\e1c5"
+
+[data-icon=wb-iridescent]:before
+    content: "\e1c6"
+
+[data-icon=beenhere]:before
+    content: "\e1c7"
+
+[data-icon=directions]:before
+    content: "\e1c8"
+
+[data-icon=directions-bike]:before
+    content: "\e1c9"
+
+[data-icon=directions-bus]:before
+    content: "\e1ca"
+
+[data-icon=directions-car]:before
+    content: "\e1cb"
+
+[data-icon=directions-ferry]:before
+    content: "\e1cc"
+
+[data-icon=directions-subway]:before
+    content: "\e1cd"
+
+[data-icon=directions-railway]:before
+    content: "\e1ce"
+
+[data-icon=directions-transit]:before
+    content: "\e1cf"
+
+[data-icon=directions-walk]:before
+    content: "\e1d0"
+
+[data-icon=flight]:before
+    content: "\e1d1"
+
+[data-icon=hotel]:before
+    content: "\e1d2"
+
+[data-icon=layers]:before
+    content: "\e1d3"
+
+[data-icon=layers-clear]:before
+    content: "\e1d4"
+
+[data-icon=local-airport]:before
+    content: "\e1d5"
+
+[data-icon=local-atm]:before
+    content: "\e1d6"
+
+[data-icon=local-attraction]:before
+    content: "\e1d7"
+
+[data-icon=local-bar]:before
+    content: "\e1d8"
+
+[data-icon=local-cafe]:before
+    content: "\e1d9"
+
+[data-icon=local-car-wash]:before
+    content: "\e1da"
+
+[data-icon=local-convenience-store]:before
+    content: "\e1db"
+
+[data-icon=local-drink]:before
+    content: "\e1dc"
+
+[data-icon=local-florist]:before
+    content: "\e1dd"
+
+[data-icon=local-gas-station]:before
+    content: "\e1de"
+
+[data-icon=local-grocery-store]:before
+    content: "\e1df"
+
+[data-icon=local-hospital]:before
+    content: "\e1e0"
+
+[data-icon=local-hotel]:before
+    content: "\e1e1"
+
+[data-icon=local-laundry-service]:before
+    content: "\e1e2"
+
+[data-icon=local-library]:before
+    content: "\e1e3"
+
+[data-icon=local-mall]:before
+    content: "\e1e4"
+
+[data-icon=local-movies]:before
+    content: "\e1e5"
+
+[data-icon=local-offer]:before
+    content: "\e1e6"
+
+[data-icon=local-parking]:before
+    content: "\e1e7"
+
+[data-icon=local-pharmacy]:before
+    content: "\e1e8"
+
+[data-icon=local-phone]:before
+    content: "\e1e9"
+
+[data-icon=local-pizza]:before
+    content: "\e1ea"
+
+[data-icon=local-play]:before
+    content: "\e1eb"
+
+[data-icon=local-post-office]:before
+    content: "\e1ec"
+
+[data-icon=local-print-shop]:before
+    content: "\e1ed"
+
+[data-icon=local-restaurant]:before
+    content: "\e1ee"
+
+[data-icon=local-see]:before
+    content: "\e1ef"
+
+[data-icon=local-shipping]:before
+    content: "\e1f0"
+
+[data-icon=local-taxi]:before
+    content: "\e1f1"
+
+[data-icon=location-history]:before
+    content: "\e1f2"
+
+[data-icon=map]:before
+    content: "\e1f3"
+
+[data-icon=my-location]:before
+    content: "\e1f4"
+
+[data-icon=navigation]:before
+    content: "\e1f5"
+
+[data-icon=pin-drop]:before
+    content: "\e1f6"
+
+[data-icon=place]:before
+    content: "\e1f7"
+
+[data-icon=rate-review]:before
+    content: "\e1f8"
+
+[data-icon=restaurant-menu]:before
+    content: "\e1f9"
+
+[data-icon=satellite]:before
+    content: "\e1fa"
+
+[data-icon=store-mall-directory]:before
+    content: "\e1fb"
+
+[data-icon=terrain]:before
+    content: "\e1fc"
+
+[data-icon=traffic]:before
+    content: "\e1fd"
+
+[data-icon=directions-run]:before
+    content: "\e1fe"
+
+[data-icon=apps]:before
+    content: "\e1ff"
+
+[data-icon=arrow-back]:before
+    content: "\e200"
+
+[data-icon=arrow-drop-down]:before
+    content: "\e201"
+
+[data-icon=arrow-drop-down-circle]:before
+    content: "\e202"
+
+[data-icon=arrow-drop-up]:before
+    content: "\e203"
+
+[data-icon=arrow-forward]:before
+    content: "\e204"
+
+[data-icon=cancel]:before
+    content: "\e205"
+
+[data-icon=check]:before
+    content: "\e206"
+
+[data-icon=chevron-left]:before
+    content: "\e207"
+
+[data-icon=chevron-right]:before
+    content: "\e208"
+
+[data-icon=close]:before
+    content: "\e209"
+
+[data-icon=expand-less]:before
+    content: "\e20a"
+
+[data-icon=expand-more]:before
+    content: "\e20b"
+
+[data-icon=fullscreen]:before
+    content: "\e20c"
+
+[data-icon=fullscreen-exit]:before
+    content: "\e20d"
+
+[data-icon=menu]:before
+    content: "\e20e"
+
+[data-icon=keyboard-control]:before
+    content: "\e20f"
+
+[data-icon=more-vert]:before
+    content: "\e210"
+
+[data-icon=refresh]:before
+    content: "\e211"
+
+[data-icon=unfold-less]:before
+    content: "\e212"
+
+[data-icon=unfold-more]:before
+    content: "\e213"
+
+[data-icon=adb]:before
+    content: "\e214"
+
+[data-icon=bluetooth-audio]:before
+    content: "\e215"
+
+[data-icon=disc-full]:before
+    content: "\e216"
+
+[data-icon=do-not-disturb-alt]:before
+    content: "\e217"
+
+[data-icon=do-not-disturb]:before
+    content: "\e218"
+
+[data-icon=drive-eta]:before
+    content: "\e219"
+
+[data-icon=event-available]:before
+    content: "\e21a"
+
+[data-icon=event-busy]:before
+    content: "\e21b"
+
+[data-icon=event-note]:before
+    content: "\e21c"
+
+[data-icon=folder-special]:before
+    content: "\e21d"
+
+[data-icon=mms]:before
+    content: "\e21e"
+
+[data-icon=more]:before
+    content: "\e21f"
+
+[data-icon=network-locked]:before
+    content: "\e220"
+
+[data-icon=phone-bluetooth-speaker]:before
+    content: "\e221"
+
+[data-icon=phone-forwarded]:before
+    content: "\e222"
+
+[data-icon=phone-in-talk]:before
+    content: "\e223"
+
+[data-icon=phone-locked]:before
+    content: "\e224"
+
+[data-icon=phone-missed]:before
+    content: "\e225"
+
+[data-icon=phone-paused]:before
+    content: "\e226"
+
+[data-icon=sd-card]:before
+    content: "\e227"
+
+[data-icon=sim-card-alert]:before
+    content: "\e228"
+
+[data-icon=sms]:before
+    content: "\e229"
+
+[data-icon=sms-failed]:before
+    content: "\e22a"
+
+[data-icon=sync]:before
+    content: "\e22b"
+
+[data-icon=sync-disabled]:before
+    content: "\e22c"
+
+[data-icon=sync-problem]:before
+    content: "\e22d"
+
+[data-icon=system-update]:before
+    content: "\e22e"
+
+[data-icon=tap-and-play]:before
+    content: "\e22f"
+
+[data-icon=time-to-leave]:before
+    content: "\e230"
+
+[data-icon=vibration]:before
+    content: "\e231"
+
+[data-icon=voice-chat]:before
+    content: "\e232"
+
+[data-icon=vpn-lock]:before
+    content: "\e233"
+
+[data-icon=airline-seat-flat]:before
+    content: "\e234"
+
+[data-icon=airline-seat-flat-angled]:before
+    content: "\e235"
+
+[data-icon=airline-seat-individual-suite]:before
+    content: "\e236"
+
+[data-icon=airline-seat-legroom-extra]:before
+    content: "\e237"
+
+[data-icon=airline-seat-legroom-normal]:before
+    content: "\e238"
+
+[data-icon=airline-seat-legroom-reduced]:before
+    content: "\e239"
+
+[data-icon=airline-seat-recline-extra]:before
+    content: "\e23a"
+
+[data-icon=airline-seat-recline-normal]:before
+    content: "\e23b"
+
+[data-icon=confirmation-number]:before
+    content: "\e23c"
+
+[data-icon=live-tv]:before
+    content: "\e23d"
+
+[data-icon=ondemand-video]:before
+    content: "\e23e"
+
+[data-icon=personal-video]:before
+    content: "\e23f"
+
+[data-icon=power]:before
+    content: "\e240"
+
+[data-icon=wc]:before
+    content: "\e241"
+
+[data-icon=wifi]:before
+    content: "\e242"
+
+[data-icon=cake]:before
+    content: "\e243"
+
+[data-icon=domain]:before
+    content: "\e244"
+
+[data-icon=group]:before
+    content: "\e245"
+
+[data-icon=group-add]:before
+    content: "\e246"
+
+[data-icon=location-city]:before
+    content: "\e247"
+
+[data-icon=mood]:before
+    content: "\e248"
+
+[data-icon=mood-bad]:before
+    content: "\e249"
+
+[data-icon=notifications]:before
+    content: "\e24a"
+
+[data-icon=notifications-none]:before
+    content: "\e24b"
+
+[data-icon=notifications-off]:before
+    content: "\e24c"
+
+[data-icon=notifications-active]:before
+    content: "\e24d"
+
+[data-icon=notifications-paused]:before
+    content: "\e24e"
+
+[data-icon=pages]:before
+    content: "\e24f"
+
+[data-icon=party-mode]:before
+    content: "\e250"
+
+[data-icon=people]:before
+    content: "\e251"
+
+[data-icon=people-outline]:before
+    content: "\e252"
+
+[data-icon=person]:before
+    content: "\e253"
+
+[data-icon=person-add]:before
+    content: "\e254"
+
+[data-icon=person-outline]:before
+    content: "\e255"
+
+[data-icon=plus-one]:before
+    content: "\e256"
+
+[data-icon=poll]:before
+    content: "\e257"
+
+[data-icon=public]:before
+    content: "\e258"
+
+[data-icon=school]:before
+    content: "\e259"
+
+[data-icon=share]:before
+    content: "\e25a"
+
+[data-icon=whatshot]:before
+    content: "\e25b"
+
+[data-icon=check-box]:before
+    content: "\e25c"
+
+[data-icon=check-box-outline-blank]:before
+    content: "\e25d"
+
+[data-icon=radio-button-unchecked]:before
+    content: "\e25e"
+
+[data-icon=radio-button-checked]:before
+    content: "\e25f"
+
+[data-icon=star]:before
+    content: "\e260"
+
+[data-icon=star-half]:before
+    content: "\e261"
+
+[data-icon=star-outline]:before
+    content: "\e262"
+
+[data-icon=3d-rotation]:before
+    content: "\e263"
+
+[data-icon=accessibility]:before
+    content: "\e264"
+
+[data-icon=account-balance]:before
+    content: "\e265"
+
+[data-icon=account-balance-wallet]:before
+    content: "\e266"
+
+[data-icon=account-box]:before
+    content: "\e267"
+
+[data-icon=account-circle]:before
+    content: "\e268"
+
+[data-icon=add-shopping-cart]:before
+    content: "\e269"
+
+[data-icon=alarm]:before
+    content: "\e26a"
+
+[data-icon=alarm-add]:before
+    content: "\e26b"
+
+[data-icon=alarm-off]:before
+    content: "\e26c"
+
+[data-icon=alarm-on]:before
+    content: "\e26d"
+
+[data-icon=android]:before
+    content: "\e26e"
+
+[data-icon=announcement]:before
+    content: "\e26f"
+
+[data-icon=aspect-ratio]:before
+    content: "\e270"
+
+[data-icon=assessment]:before
+    content: "\e271"
+
+[data-icon=assignment]:before
+    content: "\e272"
+
+[data-icon=assignment-ind]:before
+    content: "\e273"
+
+[data-icon=assignment-late]:before
+    content: "\e274"
+
+[data-icon=assignment-return]:before
+    content: "\e275"
+
+[data-icon=assignment-returned]:before
+    content: "\e276"
+
+[data-icon=assignment-turned-in]:before
+    content: "\e277"
+
+[data-icon=autorenew]:before
+    content: "\e278"
+
+[data-icon=backup]:before
+    content: "\e279"
+
+[data-icon=book]:before
+    content: "\e27a"
+
+[data-icon=bookmark]:before
+    content: "\e27b"
+
+[data-icon=bookmark-outline]:before
+    content: "\e27c"
+
+[data-icon=bug-report]:before
+    content: "\e27d"
+
+[data-icon=build]:before
+    content: "\e27e"
+
+[data-icon=cached]:before
+    content: "\e27f"
+
+[data-icon=change-history]:before
+    content: "\e280"
+
+[data-icon=check-circle]:before
+    content: "\e281"
+
+[data-icon=chrome-reader-mode]:before
+    content: "\e282"
+
+[data-icon=class]:before
+    content: "\e283"
+
+[data-icon=code]:before
+    content: "\e284"
+
+[data-icon=credit-card]:before
+    content: "\e285"
+
+[data-icon=dashboard]:before
+    content: "\e286"
+
+[data-icon=delete]:before
+    content: "\e287"
+
+[data-icon=description]:before
+    content: "\e288"
+
+[data-icon=dns]:before
+    content: "\e289"
+
+[data-icon=done]:before
+    content: "\e28a"
+
+[data-icon=done-all]:before
+    content: "\e28b"
+
+[data-icon=event]:before
+    content: "\e28c"
+
+[data-icon=exit-to-app]:before
+    content: "\e28d"
+
+[data-icon=explore]:before
+    content: "\e28e"
+
+[data-icon=extension]:before
+    content: "\e28f"
+
+[data-icon=face]:before
+    content: "\e290"
+
+[data-icon=favorite]:before
+    content: "\e291"
+
+[data-icon=favorite-outline]:before
+    content: "\e292"
+
+[data-icon=feedback]:before
+    content: "\e293"
+
+[data-icon=find-in-page]:before
+    content: "\e294"
+
+[data-icon=find-replace]:before
+    content: "\e295"
+
+[data-icon=flip-to-back]:before
+    content: "\e296"
+
+[data-icon=flip-to-front]:before
+    content: "\e297"
+
+[data-icon=get-app]:before
+    content: "\e298"
+
+[data-icon=grade]:before
+    content: "\e299"
+
+[data-icon=group-work]:before
+    content: "\e29a"
+
+[data-icon=help]:before
+    content: "\e29b"
+
+[data-icon=highlight-remove]:before
+    content: "\e29c"
+
+[data-icon=history]:before
+    content: "\e29d"
+
+[data-icon=home]:before
+    content: "\e29e"
+
+[data-icon=hourglass-empty]:before
+    content: "\e29f"
+
+[data-icon=hourglass-full]:before
+    content: "\e2a0"
+
+[data-icon=https]:before
+    content: "\e2a1"
+
+[data-icon=info]:before
+    content: "\e2a2"
+
+[data-icon=info-outline]:before
+    content: "\e2a3"
+
+[data-icon=input]:before
+    content: "\e2a4"
+
+[data-icon=invert-colors-on]:before
+    content: "\e2a5"
+
+[data-icon=label]:before
+    content: "\e2a6"
+
+[data-icon=label-outline]:before
+    content: "\e2a7"
+
+[data-icon=language]:before
+    content: "\e2a8"
+
+[data-icon=launch]:before
+    content: "\e2a9"
+
+[data-icon=list]:before
+    content: "\e2aa"
+
+[data-icon=lock]:before
+    content: "\e2ab"
+
+[data-icon=lock-open]:before
+    content: "\e2ac"
+
+[data-icon=lock-outline]:before
+    content: "\e2ad"
+
+[data-icon=loyalty]:before
+    content: "\e2ae"
+
+[data-icon=markunread-mailbox]:before
+    content: "\e2af"
+
+[data-icon=note-add]:before
+    content: "\e2b0"
+
+[data-icon=open-in-browser]:before
+    content: "\e2b1"
+
+[data-icon=open-in-new]:before
+    content: "\e2b2"
+
+[data-icon=open-with]:before
+    content: "\e2b3"
+
+[data-icon=pageview]:before
+    content: "\e2b4"
+
+[data-icon=payment]:before
+    content: "\e2b5"
+
+[data-icon=perm-camera-mic]:before
+    content: "\e2b6"
+
+[data-icon=perm-contact-calendar]:before
+    content: "\e2b7"
+
+[data-icon=perm-data-setting]:before
+    content: "\e2b8"
+
+[data-icon=perm-device-information]:before
+    content: "\e2b9"
+
+[data-icon=perm-identity]:before
+    content: "\e2ba"
+
+[data-icon=perm-media]:before
+    content: "\e2bb"
+
+[data-icon=perm-phone-msg]:before
+    content: "\e2bc"
+
+[data-icon=perm-scan-wifi]:before
+    content: "\e2bd"
+
+[data-icon=picture-in-picture]:before
+    content: "\e2be"
+
+[data-icon=polymer]:before
+    content: "\e2bf"
+
+[data-icon=power-settings-new]:before
+    content: "\e2c0"
+
+[data-icon=print]:before
+    content: "\e2c1"
+
+[data-icon=query-builder]:before
+    content: "\e2c2"
+
+[data-icon=question-answer]:before
+    content: "\e2c3"
+
+[data-icon=receipt]:before
+    content: "\e2c4"
+
+[data-icon=redeem]:before
+    content: "\e2c5"
+
+[data-icon=report-problem]:before
+    content: "\e2c6"
+
+[data-icon=restore]:before
+    content: "\e2c7"
+
+[data-icon=room]:before
+    content: "\e2c8"
+
+[data-icon=schedule]:before
+    content: "\e2c9"
+
+[data-icon=search]:before
+    content: "\e2ca"
+
+[data-icon=settings]:before
+    content: "\e2cb"
+
+[data-icon=settings-applications]:before
+    content: "\e2cc"
+
+[data-icon=settings-backup-restore]:before
+    content: "\e2cd"
+
+[data-icon=settings-bluetooth]:before
+    content: "\e2ce"
+
+[data-icon=settings-cell]:before
+    content: "\e2cf"
+
+[data-icon=settings-brightness]:before
+    content: "\e2d0"
+
+[data-icon=settings-ethernet]:before
+    content: "\e2d1"
+
+[data-icon=settings-input-antenna]:before
+    content: "\e2d2"
+
+[data-icon=settings-input-component]:before
+    content: "\e2d3"
+
+[data-icon=settings-input-composite]:before
+    content: "\e2d4"
+
+[data-icon=settings-input-hdmi]:before
+    content: "\e2d5"
+
+[data-icon=settings-input-svideo]:before
+    content: "\e2d6"
+
+[data-icon=settings-overscan]:before
+    content: "\e2d7"
+
+[data-icon=settings-phone]:before
+    content: "\e2d8"
+
+[data-icon=settings-power]:before
+    content: "\e2d9"
+
+[data-icon=settings-remote]:before
+    content: "\e2da"
+
+[data-icon=settings-voice]:before
+    content: "\e2db"
+
+[data-icon=shop]:before
+    content: "\e2dc"
+
+[data-icon=shop-two]:before
+    content: "\e2dd"
+
+[data-icon=shopping-basket]:before
+    content: "\e2de"
+
+[data-icon=shopping-cart]:before
+    content: "\e2df"
+
+[data-icon=speaker-notes]:before
+    content: "\e2e0"
+
+[data-icon=spellcheck]:before
+    content: "\e2e1"
+
+[data-icon=stars]:before
+    content: "\e2e2"
+
+[data-icon=store]:before
+    content: "\e2e3"
+
+[data-icon=subject]:before
+    content: "\e2e4"
+
+[data-icon=supervisor-account]:before
+    content: "\e2e5"
+
+[data-icon=swap-horiz]:before
+    content: "\e2e6"
+
+[data-icon=swap-vert]:before
+    content: "\e2e7"
+
+[data-icon=swap-vertical-circle]:before
+    content: "\e2e8"
+
+[data-icon=system-update-alt]:before
+    content: "\e2e9"
+
+[data-icon=tab]:before
+    content: "\e2ea"
+
+[data-icon=tab-unselected]:before
+    content: "\e2eb"
+
+[data-icon=theaters]:before
+    content: "\e2ec"
+
+[data-icon=thumb-down]:before
+    content: "\e2ed"
+
+[data-icon=thumb-up]:before
+    content: "\e2ee"
+
+[data-icon=thumbs-up-down]:before
+    content: "\e2ef"
+
+[data-icon=toc]:before
+    content: "\e2f0"
+
+[data-icon=today]:before
+    content: "\e2f1"
+
+[data-icon=toll]:before
+    content: "\e2f2"
+
+[data-icon=track-changes]:before
+    content: "\e2f3"
+
+[data-icon=translate]:before
+    content: "\e2f4"
+
+[data-icon=trending-down]:before
+    content: "\e2f5"
+
+[data-icon=trending-neutral]:before
+    content: "\e2f6"
+
+[data-icon=trending-up]:before
+    content: "\e2f7"
+
+[data-icon=turned-in]:before
+    content: "\e2f8"
+
+[data-icon=turned-in-not]:before
+    content: "\e2f9"
+
+[data-icon=verified-user]:before
+    content: "\e2fa"
+
+[data-icon=view-agenda]:before
+    content: "\e2fb"
+
+[data-icon=view-array]:before
+    content: "\e2fc"
+
+[data-icon=view-carousel]:before
+    content: "\e2fd"
+
+[data-icon=view-column]:before
+    content: "\e2fe"
+
+[data-icon=view-day]:before
+    content: "\e2ff"
+
+[data-icon=view-headline]:before
+    content: "\e300"
+
+[data-icon=view-list]:before
+    content: "\e301"
+
+[data-icon=view-module]:before
+    content: "\e302"
+
+[data-icon=view-quilt]:before
+    content: "\e303"
+
+[data-icon=view-stream]:before
+    content: "\e304"
+
+[data-icon=view-week]:before
+    content: "\e305"
+
+[data-icon=visibility]:before
+    content: "\e306"
+
+[data-icon=visibility-off]:before
+    content: "\e307"
+
+[data-icon=card-giftcard]:before
+    content: "\e308"
+
+[data-icon=card-membership]:before
+    content: "\e309"
+
+[data-icon=card-travel]:before
+    content: "\e30a"
+
+[data-icon=work]:before
+    content: "\e30b"
+
+[data-icon=youtube-searched-for]:before
+    content: "\e30c"
+
+[data-icon=eject]:before
+    content: "\e30d"
+
+[data-icon=camera-enhance]:before
+    content: "\e30e"
+
+[data-icon=help-outline]:before
+    content: "\e30f"
+
+[data-icon=reorder]:before
+    content: "\e310"
+
+[data-icon=zoom-in]:before
+    content: "\e311"
+
+[data-icon=zoom-out]:before
+    content: "\e312"
+
+[data-icon=http]:before
+    content: "\e313"
+
+[data-icon=event-seat]:before
+    content: "\e314"
+
+[data-icon=flight-land]:before
+    content: "\e315"
+
+[data-icon=flight-takeoff]:before
+    content: "\e316"
+
+[data-icon=play-for-work]:before
+    content: "\e317"
+
+[data-icon=gif]:before
+    content: "\e318"
+
+[data-icon=indeterminate-check-box]:before
+    content: "\e319"
+
+[data-icon=offline-pin]:before
+    content: "\e31a"
+

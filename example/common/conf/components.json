@@ -3,6 +3,12 @@
         "name": "Button"
     },
     {
+        "name": "Icon"
+    },
+    {
         "name": "Tab"
+    },
+    {
+        "name": "TextBox"
     }
 ]
