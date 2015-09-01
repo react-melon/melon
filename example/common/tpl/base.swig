@@ -31,7 +31,8 @@ require.config({
     paths: {
         'melon': '../src',
         'react': '../dep/react/react',
-        'classnames': '../dep/classnames/index'
+        'classnames': '../dep/classnames/index',
+        'underscore': '../dep/underscore/underscore'
     }
 });
 require(['{{component}}', 'react'], function (App, React) {
