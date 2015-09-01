@@ -8,7 +8,7 @@ var React = require('react');
 var Icon = React.createClass({
 
     propTypes: {
-        className: React.PropTypes.string
+        icon: React.PropTypes.string
     },
 
     render: function() {
@@ -16,10 +16,10 @@ var Icon = React.createClass({
         var props = this.props;
 
         return (
-            <i {...props} className='ui-icon' data-icon={props.icon} />
+            <i {...props} className={props.className} data-icon={props.icon} />
         );
     }
 
 });
 
-module.exports = Icon;
+module.exports = require('./common/util/createControl')(Icon);
