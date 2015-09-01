@@ -4,5 +4,8 @@
     },
     {
         "name": "Tab"
+    },
+    {
+        "name": "TextBox"
     }
 ]

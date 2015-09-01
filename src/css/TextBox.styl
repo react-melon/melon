@@ -1,0 +1,81 @@
+@import "./base.styl"
+
+.{$-melon-class-prefix}-textbox
+
+    position: relative
+    display: inline-block
+    vertical-align: middle
+    border-bottom: 1px solid $-melon-colors.grey300
+    transition border-color 1s
+
+    &.variant-fluid &-input
+        width: 100%
+
+    &.state-focus
+        border-bottom-color: $-melon-colors.blue500
+
+    &.state-disabled
+        border-bottom-style: dotted
+        .{$-melon-class-prefix}-textbox-input
+            color: rgba($-melon-colors.black, 0.3)
+            cursor not-allowed
+
+    &-input
+        position: relative
+        box-sizing border-box
+        padding: 16px 0 8px
+        height: 48px
+        line-height: 24px
+        z-index: 3
+
+        resize: none
+        overflow: hidden
+
+        font-size: $-melon-medium-font-size
+        color: rgba($-melon-colors.black, 0.87)
+
+        background-color transparent
+        border: none
+        outline: none
+
+        transition height 1s
+
+        &[readonly]
+            color: rgba($-melon-colors.black, 0.4)
+            &:focus
+                border-bottom-color: $-melon-colors.grey300
+
+        &:placeholder
+            color: $-melon-colors.grey200
+
+    &-label
+        position: absolute
+        box-sizing: border-box
+        left: 0
+        top: 0
+        width: 100%
+        padding: 16px 0 8px
+        line-height: 24px
+        font-size: $-melon-small-font-size
+        color: $-melon-colors.grey500
+        transform-origin: left top 0px
+        white-space: nowrap
+        transition: all .5s
+
+        &.{$-melon-state-prefix}-floating
+            transform: scale(0.8) translateY(-24px)
+
+        &.{$-melon-state-prefix}-focus
+            color: $-melon-colors.blue500
+
+    &-prefix,
+    &-suffix
+        box-sizing: border-box
+        display: inline-block
+        padding: 16px 0 8px
+        height: 48px
+        line-height: 24px
+        font-size: $-melon-medium-font-size
+        color: $-melon-colors.grey600
+        vertical-align: middle
+

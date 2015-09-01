@@ -63,15 +63,20 @@ exports.create = function () {
 
 exports.createComponentClass = function (type, variants, states) {
 
-    return ''
-        + this.createPrimaryClass(type) + ' '
-        + this.createVariantClass(variants) + ' '
-        + this.createStateClass(states);
+    return exports.create(
+        this.createPrimaryClass(type),
+        this.createVariantClass(variants),
+        this.createStateClass(states)
+    ).join(' ');
 
 };
 
 exports.createPrimaryClass = function (type) {
     return config.uiClassPrefix + '-' + classNames(type)[0].toLowerCase();
+};
+
+exports.createPartClass = function (type, part) {
+    return exports.createPrimaryClass(type) + '-' + part.toLowerCase();
 };
 
 exports.createVariantClass = function () {
