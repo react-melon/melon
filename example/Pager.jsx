@@ -15,7 +15,7 @@ var View = React.createClass({
             <div>
                 <Title level={3}>翻页器</Title>
 
-                <Pager total={10} page={1} anchor />
+                <Pager total={10} page={1} icon />
 
             </div>
         );
