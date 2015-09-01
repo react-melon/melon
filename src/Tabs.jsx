@@ -32,7 +32,6 @@ var TabInkBar = React.createClass({
 
 var InkBar = createControl(TabInkBar);
 
-
 var TabPanel = React.createClass({
 
     statics: {
