@@ -1,0 +1,51 @@
+@require './base.styl'
+@require './Icon.styl'
+
+.{$-melon-class-prefix}-select
+    position: relative
+    display: inline-block
+    box-sizing: border-box
+    padding: 8px 16px 8px 24px
+
+    line-height: 24px
+    font-size: $-melon-medium-font-size
+
+    border-bottom: 1px solid $-melon-colors.grey300
+    cursor: pointer
+
+    &-label
+        display inline-block
+        min-width: 5em
+        vertical-align: middle
+        transition border-color 1s
+        cursor: pointer
+
+    &-popup
+        position: absolute
+        margin-top: 1px
+        min-width: 100%
+        top: 0
+        left: 0
+        padding: 16px 0
+        transition all .3s
+        background-color: $-melon-colors.white
+        box-shadow: melon-get-z-depth('2')
+        border-radius: 2px
+
+    &-option
+        box-sizing: border-box
+        width: 100%
+        line-height: 2em
+        padding: 0 16px 0 24px
+
+        &:hover
+            background-color: $-melon-colors.grey300
+
+        &-selected
+            color: $-melon-colors.teal500
+
+    >.ui-icon
+        display: inline-block
+        font-size: $-melon-medium-font-size
+        vertical-align middle
+        margin-left: 1em
