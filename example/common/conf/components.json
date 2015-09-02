@@ -16,5 +16,8 @@
     },
     {
         "name": "Pager"
+    },
+    {
+        "name": "BoxGroup"
     }
 ]
