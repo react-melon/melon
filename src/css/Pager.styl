@@ -1,7 +1,18 @@
 @import "./base.styl"
 
 
-$-melon-pager-ul = {
+@keyframes pager-fadein {
+    from {
+        background-color: transparent
+        color: $-melon-colors.darkBlack
+    }
+    to {
+        background-color: $-melon-colors.cyan500
+        color: $-melon-colors.white
+    }
+}
+
+$-melon-pager = {
 
     display: block
 
@@ -43,11 +54,6 @@ $-melon-pager-item = {
     // Gets rid of tap active state
     -webkit-tap-highlight-color: transparent
 
-    -webkit-transition: background-color 0.6s ease-in-out
-    -moz-transition: background-color 0.6s ease-in-out
-    -o-transition: background-color 0.6s ease-in-out
-    transition: background-color 0.6s ease-in-out
-
 }
 
 $-melon-pager-states = {
@@ -61,64 +67,45 @@ $-melon-pager-states = {
         background-color: $-melon-colors.cyan500
         color: $-melon-colors.white
         border-radius: 2px
+
+        -webkit-animation: pager-fadein .6s 1 ease-in-out
+        animation: pager-fadein .6s 1 ease-in-out
     },
 
     prev: {
         width: auto
         font-size: 1.5em
-        -webkit-transition: none
-        -moz-transition: none
-        -o-transition: none
-        transition: none
-
-        '&:hover': {
-            background-color: transparent
-            border-radius: 0
-        }
+        height: 1em
+        line-height: 1em
     },
 
     next: {
         width: auto
         font-size: 1.5em
-        -webkit-transition: none
-        -moz-transition: none
-        -o-transition: none
-        transition: none
-
-        '&:hover': {
-            background-color: transparent
-            border-radius: 0
-        }
+        height: 1em
+        line-height: 1em
     },
 
     ellipsis: {
         width: auto
         font-size: 1.2em
-        -webkit-transition: none
-        -moz-transition: none
-        -o-transition: none
-        transition: none
-
-        '&:hover': {
-            background-color: transparent
-            border-radius: 0
-        }
+        height: 1.5em
+        line-height: 1.5em
+        width: 1.5em
     }
 }
 
 
-
 .{$-melon-class-prefix}-pager
 
-    ul
-        {$-melon-pager-ul}
+    {$-melon-pager}
 
     .{$-melon-class-prefix}-pager-item
 
         {$-melon-pager-item}
 
         &:hover
-            background-color: $-melon-colors.cyan300
+            background-color: $-melon-colors.faintBlack
             border-radius: 2px
 
         for $state, $hashes in $-melon-pager-states
@@ -127,6 +114,7 @@ $-melon-pager-states = {
 
         a
             text-decoration: none
+            display: block
 
             &:link
             &:active

@@ -107,9 +107,10 @@ var Tabs = React.createClass({
             }
         }
 
-        this.setState({selectedIndex: index});
+        this.setState({selectedIndex: index}, function () {
+            this.props.onChange && this.props.onChange(index, e);
+        });
 
-        this.props.onChange && this.props.onChange(index, e);
     },
 
     render: function() {

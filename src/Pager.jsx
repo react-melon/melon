@@ -30,8 +30,7 @@ var Pager = React.createClass({
         showAlways: React.PropTypes.bool,
         showCount: React.PropTypes.number,
         total: React.PropTypes.number,
-        anchor: React.PropTypes.bool,
-        icon: React.PropTypes.bool,
+        useLang: React.PropTypes.bool,
         lang: React.PropTypes.shape({
             prev: React.PropTypes.string,
             ellipsis: React.PropTypes.string,
@@ -58,15 +57,13 @@ var Pager = React.createClass({
             // 当页数较多时，中间显示页码的个数
             showCount: 5,
 
-            icon: false,
-
             // 总页数
             total: 0,
 
             // 是否可用
             disabled: false,
 
-            anchor: false,
+            useLang: false,
 
             // 上下页显示文字
             lang: {
@@ -145,7 +142,8 @@ var Pager = React.createClass({
             page: page,
             states: {
                 current: true
-            }
+            },
+            part: ''
         }).concat(right).concat({
             page: Math.min(page + 1, total - 1),
             states: {
@@ -178,13 +176,9 @@ var Pager = React.createClass({
         delete propTemp.lang;
 
         return (
-
-            <div {...propTemp}>
-                <ul>
-                    {result}
-                </ul>
-            </div>
-
+            <ul {...propTemp}>
+                {result}
+            </ul>
         );
 
     },
@@ -198,13 +192,13 @@ var Pager = React.createClass({
             return;
         }
 
-        this.setState({page: page});
+        this.setState({page: page}, function () {
+            var onChange = this.props.onChange;
 
-        var onChange = this.props.onChange;
-
-        _.isFunction(onChange) && onChange({
-            target: this,
-            page: page
+            _.isFunction(onChange) && onChange({
+                target: this,
+                page: page
+            });
         });
 
     },
@@ -216,8 +210,7 @@ var Pager = React.createClass({
         var props = this.props;
 
         var anchor = props.anchor;
-        var icon = props.icon;
-        var lang = props.lang;
+        var useLang = props.useLang;
 
         var classNames = cx.createComponentClass(
             'pager-item',
@@ -226,19 +219,19 @@ var Pager = React.createClass({
         );
         var pageText;
 
-        if (icon && part) {
+        if (!useLang && part) {
             pageText = (<Icon icon={ICONS[part]} />);
         }
         else {
+            var lang = props.lang;
             pageText = lang[part] || page + 1;
         }
 
-        var children = anchor ?
-            (
-                <a href="!#">
-                    {pageText}
-                </a>
-            ) : ({pageText});
+        var children = (
+            <a href="!#">
+                {pageText}
+            </a>
+        );
 
         var item = React.createElement(
             'li',
