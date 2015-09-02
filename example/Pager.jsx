@@ -10,21 +10,37 @@ var Pager = require('../src/Pager.jsx');
 
 var View = React.createClass({
 
+    getInitialState: function () {
+        return {
+            page: ''
+        };
+    },
+
     render: function() {
         return (
             <div>
                 <Title level={3}>翻页器</Title>
 
-                <Pager total={10} page={1} icon />
+                <Pager total={10} page={1} onChange={this.onChange} />
+
+                {this.getCurrentPage()}
 
             </div>
         );
     },
 
+    getCurrentPage: function () {
+        return this.state.page
+            ? <label style={{lineHeight: '48px', marginLeft: 10}}>当前的选择页码是：{this.state.page + 1}</label>
+            : null;
+    },
 
-    onBeforeChange: function (index, e) {
 
-        console.log('你选择了' + index);
+    onChange: function (e) {
+
+        this.setState({
+            page: e.page
+        });
 
     }
 
