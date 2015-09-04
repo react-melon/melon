@@ -10,12 +10,24 @@ var CheckBox = require('../src/CheckBox.jsx');
 var BoxGroup = require('../src/BoxGroup.jsx');
 var Radio = require('../src/Radio.jsx');
 var Button = require('../src/Button.jsx');
+var Toggle = require('../src/Toggle.jsx');
 
 var View = React.createClass({
 
     render: function() {
 
         var value = this.state.value;
+
+        var datasource = [{
+            value: 'A',
+            name: '青年A'
+        }, {
+            value: 'B',
+            name: '青年B'
+        }, {
+            value: 'C',
+            name: '青年C'
+        }];
 
         return (
             <div>
@@ -31,6 +43,14 @@ var View = React.createClass({
                     <Title level={5}>单选框</Title>
 
                     <Radio name="radio1" value="1" label="普通Radio" />
+                </div>
+
+                <div className="row">
+                    <Title level={5}>Toggle</Title>
+
+                    <Toggle name="toggle1" value="1" label="On" leftLabel="Off" />
+                    <p />
+                    <Toggle name="toggle2" value="1" label="On" leftLabel="Off" disabled />
                 </div>
 
                 <div className="row">
@@ -64,6 +84,14 @@ var View = React.createClass({
                         <CheckBox value="B" label="青年B" />
                         <CheckBox name="checkbox1" value="C" label="青年C" />
                     </BoxGroup>
+
+                </div>
+
+
+                <div className="row">
+                    <Title level={5}>使用DataSource</Title>
+
+                    <BoxGroup name="boxgroup4" value={['B', 'C']} datasource={datasource} />
 
                 </div>
 

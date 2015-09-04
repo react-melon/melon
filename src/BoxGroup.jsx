@@ -18,8 +18,7 @@ var BoxGroup = React.createClass({
         type: React.PropTypes.string,
         onChange: React.PropTypes.func,
         value: React.PropTypes.array,
-        name: React.PropTypes.string.isRequired,
-        datasource: React.PropTypes.array
+        name: React.PropTypes.string.isRequired
     },
 
     getDefaultProps: function () {
@@ -91,34 +90,66 @@ var BoxGroup = React.createClass({
         return this.state.value;
     },
 
+    getChild: function (child, childProps) {
+
+        var props = this.props;
+
+        return React.cloneElement(child,
+            _.extend({}, {
+                onBeforeChange: this.handleOnBeforeChange.bind(this, child),
+                onChange: _.noop,
+                disabled: props.disabled,
+                readOnly: props.readOnly,
+                name: props.name
+            }, childProps)
+        );
+    },
+
     render: function() {
 
         var props = this.props;
 
-        var disabled = props.disabled || false;
-        var readOnly = props.readOnly || false;
+        var children;
 
-        var children = React.Children.map(props.children, function (child, index) {
+        if (React.Children.count(props.children) === 0) {
 
-            var index = _.indexOf(this.state.value, child.props.value);
+            var isRadio = props.isRadio || false;
+            var tagName = isRadio ? 'Radio' : 'CheckBox';
 
-            var checked = index >= 0;
+            var Box = require('./' + tagName + '.jsx');
 
-            var child = React.cloneElement(
-                child,
-                {
-                    name: props.name,
-                    onBeforeChange: this.handleOnBeforeChange.bind(this, child),
-                    onChange: _.noop,
-                    checked: checked,
-                    disabled: disabled,
-                    readOnly: readOnly
-                }
-            );
+            children = _.map(props.datasource, function (item, index) {
 
-            return child;
+                var index = _.indexOf(this.state.value, item.value);
 
-        }, this);
+                var childProps = {
+                    checked: index >= 0,
+                    label: item.name,
+                    disabled: item.disabled,
+                    key: index
+                };
+
+                return this.getChild(<Box />, childProps);
+
+            }, this)
+
+        }
+        else {
+
+            children = React.Children.map(props.children, function (child, index) {
+
+                var index = _.indexOf(this.state.value, child.props.value);
+
+                var checked = index >= 0;
+
+                var childProps = {
+                    checked: checked
+                };
+
+                return this.getChild(child, childProps);
+
+            }, this);
+        }
 
         return (
             <div {...props}>
