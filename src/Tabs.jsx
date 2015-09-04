@@ -6,58 +6,7 @@
 var React = require('react');
 var createControl = require('./common/util/createControl');
 var Tab = require('./Tab.jsx');
-
-
-var TabInkBar = React.createClass({
-
-    statics: {
-        type: 'TabInkBar'
-    },
-
-    propTypes: {
-        type: React.PropTypes.string
-    },
-
-    render: function() {
-
-        var props = this.props;
-
-        return (
-            <li {...props}></li>
-        );
-
-    }
-
-});
-
-var InkBar = createControl(TabInkBar);
-
-var TabPanel = React.createClass({
-
-    statics: {
-        type: 'TabPanel'
-    },
-
-    propTypes: {
-        type: React.PropTypes.string,
-        active: React.PropTypes.bool
-    },
-
-    render: function() {
-
-        var props = this.props;
-
-        return (
-            <div {...props}>
-                {props.children}
-            </div>
-        );
-
-    }
-
-});
-
-var Panel = createControl(TabPanel);
+var cx    = require('./common/util/classname');
 
 
 var Tabs = React.createClass({
@@ -113,6 +62,10 @@ var Tabs = React.createClass({
 
     },
 
+    renderInkBar: function () {
+        return 
+    },
+
     render: function() {
 
         var props = this.props;
@@ -133,10 +86,12 @@ var Tabs = React.createClass({
             }
 
             if (tab.props.children) {
-                tabContent.push(React.createElement(Panel, {
-                    key: index,
-                    variants: selected ? ['active'] : []
-                }, tab.props.children));
+                tabContent.push(
+                    React.createElement('div', {
+                        key: index,
+                        className: cx.createComponentClass('tab-panel', selected ? ['active'] : [])
+                    }, tab.props.children)
+                );
             }
 
             var tabProps = {
@@ -175,7 +130,7 @@ var Tabs = React.createClass({
             <div {...props}>
                 <ul>
                     {tabs}
-                    <InkBar style={InkBarStyles} />
+                    <li className={cx.createPrimaryClass('tab-inkbar')} style={InkBarStyles}></li>
                 </ul>
                 {tabContent}
             </div>
