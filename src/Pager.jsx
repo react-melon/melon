@@ -7,6 +7,7 @@ var React = require('react');
 var _     = require('underscore');
 var cx    = require('./common/util/classname');
 var Icon  = require('./Icon.jsx');
+var Waves = require('./common/util/waves');
 
 
 var ICONS = {
@@ -88,6 +89,13 @@ var Pager = React.createClass({
         return {
             page: initialPage
         };
+    },
+
+    componentDidMount: function () {
+        var main = React.findDOMNode(this);
+
+        Waves.attach(main.querySelectorAll('.ui-pager-item'), ['waves-circle', 'waves-light']);
+        Waves.init();
     },
 
     render: function() {
@@ -217,6 +225,7 @@ var Pager = React.createClass({
             [],
             conf.states
         );
+        classNames += ' waves-effect waves-circle waves-light'
         var pageText;
 
         if (!useLang && part) {
@@ -242,7 +251,11 @@ var Pager = React.createClass({
             },
             children
         );
-        item.props.onClick = this.handleOnClick.bind(this, item)
+        item = React.cloneElement(item, {
+                onClick: this.handleOnClick.bind(this, item)
+            }
+        );
+
         return item;
     },
 
