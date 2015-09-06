@@ -19,5 +19,8 @@
     },
     {
         "name": "BoxGroup"
+    },
+    {
+        "name": "Progress"
     }
 ]
