@@ -1,16 +1,6 @@
 @import "./base.styl"
+@import "./waves.styl"
 
-
-@keyframes pager-fadein {
-    from {
-        background-color: transparent
-        color: $-melon-colors.darkBlack
-    }
-    to {
-        background-color: $-melon-colors.cyan500
-        color: $-melon-colors.white
-    }
-}
 
 $-melon-pager = {
 
@@ -72,9 +62,6 @@ $-melon-pager-states = {
         background-color: $-melon-colors.cyan500
         color: $-melon-colors.white
         border-radius: 2px
-
-        -webkit-animation: pager-fadein .6s 1 ease-in-out
-        animation: pager-fadein .6s 1 ease-in-out
     },
 
     prev: {

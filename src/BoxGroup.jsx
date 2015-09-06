@@ -40,7 +40,7 @@ var BoxGroup = React.createClass({
     },
 
     componentWillReceiveProps: function (nextProps) {
-        var difference = _.intersection(nextProps.value, this.state.value);
+        var difference = _.difference(nextProps.value, this.state.value);
         if (difference.length > 0) {
             this.setValue(nextProps.value);
         }
