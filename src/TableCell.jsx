@@ -64,10 +64,10 @@ var TableCell = React.createClass({
         };
 
         return (
-            <div className="ui-table-cell">
-                <div style={style} className="ui-table-cell-wrap1">
-                    <div className="ui-table-cell-wrap2">
-                        <div className="ui-table-cell-wrap3">
+            <div className="ui-tablecell">
+                <div style={style} className="ui-tablecell-wrap1">
+                    <div className="ui-tablecell-wrap2">
+                        <div className="ui-tablecell-wrap3">
                             {this.getCellContent()}
                         </div>
                     </div>
@@ -86,7 +86,7 @@ var TableCell = React.createClass({
             ? renderer(u.pick(props, RENDERER_PROPS))
             : props.cellData;
 
-        return <div className="ui-table-cell-content">{content}</div>
+        return <div className="ui-tablecell-content">{content}</div>
     }
 
 });

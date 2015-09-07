@@ -6,18 +6,10 @@
 var React = require('react');
 var Base = require('../component/Base.jsx');
 
-function camelToDash(str) {
-    return str
-        .replace(/[A-Z]/g, function (all, index) {
-            return (index === 0 ? '' : '-') + all.toLowerCase();
-        });
-
-}
-
 module.exports = function (Component) {
 
     var displayName = Component.displayName;
-    var dashDisplayName = camelToDash(displayName);
+    var dashDisplayName = displayName.toLowerCase();
 
     return React.createClass({
 
