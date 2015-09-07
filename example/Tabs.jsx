@@ -1,6 +1,6 @@
 /**
  * @file melon demo Tabs
- * @author leon(ludafa@outlook.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 var React = require('react');

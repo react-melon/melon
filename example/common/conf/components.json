@@ -9,12 +9,21 @@
         "name": "Select"
     },
     {
-        "name": "Tab"
+        "name": "Tabs"
     },
     {
         "name": "Table"
     },
     {
         "name": "TextBox"
+    },
+    {
+        "name": "Pager"
+    },
+    {
+        "name": "BoxGroup"
+    },
+    {
+        "name": "Progress"
     }
 ]
