@@ -6,11 +6,22 @@
 var React = require('react');
 var Base = require('../component/Base.jsx');
 
+function camelToDash(str) {
+    return str
+        .replace(/[A-Z]/g, function (all, index) {
+            return (index === 0 ? '' : '-') + all.toLowerCase();
+        });
+
+}
+
 module.exports = function (Component) {
+
+    var displayName = Component.displayName;
+    var dashDisplayName = camelToDash(displayName);
 
     return React.createClass({
 
-        displayName: Component.displayName,
+        displayName: displayName,
 
         render: function () {
 
@@ -18,7 +29,7 @@ module.exports = function (Component) {
                 Base,
                 {
                     originProps: this.props,
-                    displayName: Component.displayName
+                    displayName: dashDisplayName
                 },
                 function (props, extraProps) {
                     return React.createElement(
