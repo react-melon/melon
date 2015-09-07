@@ -12,6 +12,9 @@
         "name": "Tab"
     },
     {
+        "name": "Table"
+    },
+    {
         "name": "TextBox"
     }
 ]
