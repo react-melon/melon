@@ -58,7 +58,7 @@ function classNames() {
 }
 
 exports.create = function () {
-    return classNames.apply(null, arguments);
+    return classNames.apply(null, arguments).join(' ');
 };
 
 exports.createComponentClass = function (type, variants, states) {
@@ -67,7 +67,7 @@ exports.createComponentClass = function (type, variants, states) {
         this.createPrimaryClass(type),
         this.createVariantClass(variants),
         this.createStateClass(states)
-    ).join(' ');
+    );
 
 };
 
