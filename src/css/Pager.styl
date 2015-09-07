@@ -1,0 +1,117 @@
+@import "./base.styl"
+@import "./waves.styl"
+
+
+$-melon-pager = {
+
+    display: block
+
+    list-style: none
+
+    outline: 0
+    vertical-align: middle
+
+    border: none
+
+    // Gets rid of tap active state
+    -webkit-tap-highlight-color: transparent
+
+    font-size: $-melon-medium-font-size
+}
+
+
+$-melon-pager-item = {
+
+    display: inline-block
+
+    padding: 0
+    margin: 0 0.2em
+
+    width: 2em
+    height: 2em
+    line-height: 2em
+
+
+    outline: 0
+    vertical-align: middle
+    text-align: center
+
+    border: none
+    color: $-melon-colors.darkBlack
+
+    cursor: pointer
+
+    // Gets rid of tap active state
+    -webkit-tap-highlight-color: transparent
+
+}
+
+$-melon-pager-states = {
+
+    disabled: {
+        cursor: default
+        color: $-melon-colors.lightBlack
+
+        '&:hover': {
+            background-color: transparent
+            border-radius: 0
+        }
+    },
+
+    current: {
+        background-color: $-melon-colors.cyan500
+        color: $-melon-colors.white
+        border-radius: 2px
+    },
+
+    prev: {
+        width: auto
+        font-size: 1.5em
+        height: 1em
+        line-height: 1em
+    },
+
+    next: {
+        width: auto
+        font-size: 1.5em
+        height: 1em
+        line-height: 1em
+    },
+
+    ellipsis: {
+        width: auto
+        font-size: 1.2em
+        height: 1.5em
+        line-height: 1.5em
+        width: 1.5em
+    }
+}
+
+
+.{$-melon-class-prefix}-pager
+
+    {$-melon-pager}
+
+    .{$-melon-class-prefix}-pager-item
+
+        {$-melon-pager-item}
+
+        &:hover
+            background-color: $-melon-colors.faintBlack
+            border-radius: 2px
+
+        for $state, $hashes in $-melon-pager-states
+            &.state-{$state}
+                {$hashes}
+
+        a
+            text-decoration: none
+            display: block
+
+            &:link
+            &:active
+            &:hover
+                text-decoration: none
+                color: inherit
+                background: transparent
+                cursor: inherit
