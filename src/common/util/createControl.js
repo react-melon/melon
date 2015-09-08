@@ -8,9 +8,12 @@ var Base = require('../component/Base.jsx');
 
 module.exports = function (Component) {
 
+    var displayName = Component.displayName;
+    var dashDisplayName = displayName.toLowerCase();
+
     return React.createClass({
 
-        displayName: Component.displayName,
+        displayName: displayName,
 
         render: function () {
 
@@ -18,7 +21,7 @@ module.exports = function (Component) {
                 Base,
                 {
                     originProps: this.props,
-                    displayName: Component.displayName
+                    displayName: dashDisplayName
                 },
                 function (props, extraProps) {
                     return React.createElement(

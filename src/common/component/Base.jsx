@@ -46,13 +46,13 @@ var Base = React.createClass({
 
         return cx.createComponentClass(
             props.displayName,
-            this.getVariants(props.originProps),
-            this.getStates(props.originProps)
+            this.getVariantClassess(props.originProps),
+            this.getStateClasses(props.originProps)
         );
 
     },
 
-    getVariants: function (props) {
+    getVariantClassess: function (props) {
 
         var variants = props.variants || [];
 
@@ -66,7 +66,7 @@ var Base = React.createClass({
 
     },
 
-    getStates: function (props) {
+    getStateClasses: function (props) {
 
         var states = props.states || {};
 
@@ -79,6 +79,7 @@ var Base = React.createClass({
         }
 
         return states;
+
     }
 
 });

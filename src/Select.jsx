@@ -51,7 +51,7 @@ var Select = React.createClass({
         var clazz = cx.create({
             'ui-select-option': true,
             'ui-select-option-selected': option.value === value
-        }).join(' ');
+        });
 
         var name = option.name;
         var value = option.value;
