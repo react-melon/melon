@@ -17,7 +17,10 @@ var Tree = React.createClass({
 
     propTypes: {
         defaultExpandAll: React.PropTypes.bool,
-        datasource: React.PropTypes.object
+        datasource: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
     },
 
     getDefaultProps: function () {
@@ -65,7 +68,7 @@ var Tree = React.createClass({
     },
 
     renderTreeNode: function (data, level) {
-        if (_.isObject(data) && data.id) {
+        if (_.isObject(data) && data.id && level === 1) {
             data = [data];
         }
         if (!_.isArray(data)) {
