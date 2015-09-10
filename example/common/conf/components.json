@@ -28,5 +28,8 @@
     },
     {
         "name": "Tree"
+    },
+    {
+        "name": "Dialog"
     }
 ]
