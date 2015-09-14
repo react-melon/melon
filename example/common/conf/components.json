@@ -25,5 +25,11 @@
     },
     {
         "name": "Progress"
+    },
+    {
+        "name": "Tree"
+    },
+    {
+        "name": "Dialog"
     }
 ]
