@@ -120,13 +120,14 @@ var BoxGroup = React.createClass({
 
             children = _.map(props.datasource, function (item, index) {
 
-                var index = _.indexOf(this.state.value, item.value);
+                var i = _.indexOf(this.state.value, item.value);
 
                 var childProps = {
-                    checked: index >= 0,
+                    checked: i >= 0,
                     label: item.name,
                     disabled: item.disabled,
-                    key: index
+                    key: index,
+                    value: item.value
                 };
 
                 return this.getChild(<Box />, childProps);
