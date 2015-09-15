@@ -80,6 +80,7 @@ var TableCell = React.createClass({
     getCellContent: function () {
 
         var props = this.props;
+        var part = props.part;
         var renderer = props.cellRenderer;
 
         var content = renderer
