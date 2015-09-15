@@ -66,12 +66,15 @@ var Dialog = React.createClass({
     },
 
     componentWillReceiveProps: function (nextProps) {
-        if (!this.props.isOpen && nextProps.isOpen) {
-            this.setState({ isOpen: true }, this.onShow);
+
+        var isOpen = nextProps.isOpen;
+
+        if (isOpen !== !this.state.isOpen) {
+            return;
         }
-        else if (this.props.isOpen && !nextProps.isOpen) {
-            this.setState({ isOpen: false }, this.onHide);
-        }
+
+        var onEvent = isOpen ? this.onShow : this.onHide;
+        this.setState({ isOpen: isOpen }, onEvent);
     },
 
     positionDialog: function () {
@@ -105,6 +108,10 @@ var Dialog = React.createClass({
             var ele = document.getElementsByTagName(name)[0];
             ele.style.height = show ? '100%' : this.originalHTMLBodySize[name].height;
             ele.style.width = show ? '100%' : this.originalHTMLBodySize[name].width;
+
+            if (name === 'html') {
+                ele.style.overflowY = show ? 'hidden' : '';
+            }
         }, this);
     },
 
@@ -145,8 +152,6 @@ var Dialog = React.createClass({
         var actions = this.props.actions;
 
         var classname = cx.createComponentClass('dialog-actions');
-
-        console.log(actions);
 
         return actions ? (
             <div ref="dialogActions" className={classname} key="actions">
