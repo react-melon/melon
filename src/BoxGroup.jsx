@@ -113,8 +113,9 @@ var BoxGroup = React.createClass({
 
     }
 
-
 });
+
+BoxGroup = require('./common/util/createControl')(BoxGroup);
 
 BoxGroup.defaultProps = {
     disabled: false,
@@ -132,4 +133,19 @@ BoxGroup.Icons = {
     }
 };
 
-module.exports = require('./common/util/createControl')(BoxGroup);
+
+BoxGroup.createOptions = function (datasource) {
+
+    return datasource.map(function (option, index) {
+        return (
+            <option
+                key={index}
+                disabled={option.disabled}
+                label={option.name}
+                value={option.value} />
+        );
+    });
+
+};
+
+module.exports = BoxGroup;
