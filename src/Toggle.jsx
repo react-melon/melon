@@ -6,7 +6,6 @@
 var React = require('react');
 var Icon  = require('./Icon.jsx');
 var cx    = require('./common/util/classname');
-var switches = require('./mixins/switches.jsx');
 var PropTypes = React.PropTypes;
 
 var Toggle = React.createClass({
