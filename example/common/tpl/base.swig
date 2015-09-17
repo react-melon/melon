@@ -31,11 +31,12 @@ require.config({
     paths: {
         'melon': '../src',
         'react': '../dep/react/react',
+        'react-dom': '../dep/react/react-dom',
         'underscore': '../dep/underscore/underscore'
     }
 });
-require(['{{component}}', 'react'], function (App, React) {
-    React.render(
+require(['{{component}}', 'react', 'react-dom'], function (App, React, ReactDOM) {
+    ReactDOM.render(
         React.createElement(App),
         document.getElementById('app')
     );
