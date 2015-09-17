@@ -15,21 +15,25 @@ var BoxGroup = React.createClass({
         disabled: PropTypes.bool,
         boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
         onChange: PropTypes.func,
+        defaultValue: PropTypes.arrayOf(PropTypes.string),
         value: PropTypes.arrayOf(PropTypes.string),
         name: PropTypes.string,
         children: PropTypes.node.isRequired
     },
 
     getInitialState: function () {
-        return {
-            value: this.props.value
-        };
+        return this.isControlled()
+            ? null
+            : {value: this.props.value || this.props.defaultValue};
     },
 
-    componentWillReceiveProps: function (nextProps) {
-        this.setState({
-            value: nextProps.value
-        });
+    getValue() {
+        return this.isControlled() ? this.props.value : this.state.value;
+    },
+
+    isControlled() {
+        var props = this.props;
+        return this.props.disabled || props.readOnly || props.value && props.onChange;
     },
 
     render() {
@@ -84,12 +88,14 @@ var BoxGroup = React.createClass({
     },
 
     isItemChecked(value) {
-        return this.state.value.indexOf(value) !== -1;
+        var currentValue = this.getValue();
+        return currentValue.indexOf(value) !== -1;
     },
 
     onChange: function (e) {
+
         var optionValue = e.target.value;
-        var value = this.state.value;
+        var value = this.getValue();
 
         if (this.props.boxModel === 'radio') {
             value = [optionValue];
@@ -107,9 +113,25 @@ var BoxGroup = React.createClass({
 
         }
 
+        e = {
+            target: this,
+            value: value
+        };
+
+        if (this.isControlled()) {
+            this.props.onChange(e);
+            return;
+        }
+
         this.setState({
             value: value
+        }, function () {
+            var onChange = this.props.onChange;
+            if (onChange) {
+                onChange(e);
+            }
         });
+
 
     }
 

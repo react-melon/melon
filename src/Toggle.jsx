@@ -20,7 +20,7 @@ var Toggle = React.createClass({
 
     isControlled() {
         var props = this.props;
-        return props.checked != null && !!props.onChange;
+        return props.disabled || props.readOnly || props.checked != null && !!props.onChange;
     },
 
     propTypes: {
@@ -55,6 +55,12 @@ var Toggle = React.createClass({
     },
 
     onChange(e) {
+
+        var props = this.props;
+
+        if (props.disabled || props.readOnly) {
+            return;
+        }
 
         var isChecked = e.target.checked;
 
