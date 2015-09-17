@@ -6,9 +6,7 @@
 var React = require('react');
 
 var Title = require('../src/Title.jsx');
-var CheckBox = require('../src/CheckBox.jsx');
 var BoxGroup = require('../src/BoxGroup.jsx');
-var Radio = require('../src/Radio.jsx');
 var Button = require('../src/Button.jsx');
 var Toggle = require('../src/Toggle.jsx');
 
@@ -35,14 +33,20 @@ var View = React.createClass({
 
                 <div className="row">
                     <Title level={5}>复选框</Title>
-
-                    <CheckBox name="checkbox1" value="1" label="普通CheckBox" />
+                    <BoxGroup boxModel="checkbox">
+                        <option name="checkbox1" value="1" label="1" />
+                        <option name="checkbox1" value="2" label="2" />
+                        <option name="checkbox1" value="3" label="3" />
+                    </BoxGroup>
                 </div>
 
                 <div className="row">
                     <Title level={5}>单选框</Title>
-
-                    <Radio name="radio1" value="1" label="普通Radio" />
+                    <BoxGroup boxModel="radio">
+                        <option name="radio1" value="1" label="1" />
+                        <option name="radio1" value="2" label="2" />
+                        <option name="radio1" value="3" label="3" />
+                    </BoxGroup>
                 </div>
 
                 <div className="row">
@@ -56,10 +60,10 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={5}>有组织的复选框</Title>
 
-                    <BoxGroup name="boxgroup1" value={value}>
-                        <CheckBox value="A" label="青年A" />
-                        <CheckBox value="B" label="青年B" />
-                        <CheckBox name="checkbox1" value="C" label="青年C" />
+                    <BoxGroup name="boxgroup1" boxModel="checkbox" value={value}>
+                        <option value="A" label="青年A" />
+                        <option value="B" label="青年B" />
+                        <option value="C" label="青年C" />
                     </BoxGroup>
 
                     <p><Button variants={['raised']} onClick={this.onButtonClick}>手动设置值【A、B】</Button></p>
@@ -68,10 +72,10 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={5}>有组织的单选框</Title>
 
-                    <BoxGroup name="boxgroup2" value={['C']}>
-                        <Radio value="A" label="青年A" />
-                        <Radio value="B" label="青年B" />
-                        <Radio name="checkbox1" value="C" label="青年C" />
+                    <BoxGroup name="boxgroup2" boxModel="radio" value={['C']}>
+                        <option value="A" label="青年A" />
+                        <option value="B" label="青年B" />
+                        <option value="C" label="青年C" />
                     </BoxGroup>
 
                 </div>
@@ -79,22 +83,23 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={5}>禁用</Title>
 
-                    <BoxGroup name="boxgroup3" value={['C']} disabled>
-                        <CheckBox value="A" label="青年A" />
-                        <CheckBox value="B" label="青年B" />
-                        <CheckBox name="checkbox1" value="C" label="青年C" />
+                    <BoxGroup name="boxgroup3" boxModel="checkbox" value={['C']} disabled>
+                        <option value="A" label="青年A" />
+                        <option value="B" label="青年B" />
+                        <option name="checkbox1" value="C" label="青年C" />
                     </BoxGroup>
 
                 </div>
 
-
                 <div className="row">
                     <Title level={5}>使用DataSource</Title>
-
-                    <BoxGroup name="boxgroup4" value={['B', 'C']} datasource={datasource} />
-
+                    <BoxGroup
+                        boxModel="checkbox"
+                        name="boxgroup4"
+                        value={['B', 'C']}>
+                        {BoxGroup.createOptions(datasource)}
+                    </BoxGroup>
                 </div>
-
             </div>
         );
     },
