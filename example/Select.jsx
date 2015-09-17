@@ -12,7 +12,8 @@ var View = React.createClass({
 
     getInitialState: function () {
         return {
-            value: ''
+            a: '',
+            b: ''
         };
     },
 
@@ -28,38 +29,72 @@ var View = React.createClass({
 
         return (
             <div>
-                <Title level={3}>下拉选项</Title>
-                <Title level={4}>预定义样式</Title>
-                <Select value={this.state.value} onChange={this.onChange}>
-                    {Select.createOptions(datasource)}
-                </Select>
-                {this.getCurrentValue()}
-                <Title level={4}>选项分组</Title>
-                <Select value={this.state.value} onChange={this.onChange}>
-                    <optgroup label="fruit">
-                        <option value="Apple" label="Apple" />
-                        <option value="Banana" label="Banana" />
-                        <option value="Mango" label="Mango" disabled />
-                        <option value="Pear" label="Pear" disabled />
-                    </optgroup>
-                    <optgroup label="sport">
-                        <option value="Basketball" label="Basketball" />
-                        <option value="Football" label="Football" />
-                    </optgroup>
-                </Select>
+                <Title level={4}>下拉选项</Title>
+                <Title level={5}>Uncontrolled Select</Title>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>普通</Title>
+                        <Select name="a" defaultValue={this.state.a} >
+                            {Select.createOptions(datasource)}
+                        </Select>
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>选项分组</Title>
+                        <Select name="b" defaultValue={this.state.b}>
+                            <optgroup label="fruit">
+                                <option value="Apple" label="Apple" />
+                                <option value="Banana" label="Banana" />
+                                <option value="Mango" label="Mango" disabled />
+                                <option value="Pear" label="Pear" disabled />
+                            </optgroup>
+                            <optgroup label="sport">
+                                <option value="Basketball" label="Basketball" />
+                                <option value="Football" label="Football" />
+                            </optgroup>
+                        </Select>
+                    </div>
+                </div>
+                <Title level={5}>Controlled Select</Title>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>普通</Title>
+                        <Select name="a" value={this.state.a} onChange={this.onChange.bind(null, 'a')}>
+                            {Select.createOptions(datasource)}
+                        </Select>
+                        {this.getCurrentValue('a')}
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>选项分组</Title>
+                        <Select name="b" value={this.state.b} onChange={this.onChange.bind(null, 'b')}>
+                            <optgroup label="fruit">
+                                <option value="Apple" label="Apple" />
+                                <option value="Banana" label="Banana" />
+                                <option value="Mango" label="Mango" disabled />
+                                <option value="Pear" label="Pear" disabled />
+                            </optgroup>
+                            <optgroup label="sport">
+                                <option value="Basketball" label="Basketball" />
+                                <option value="Football" label="Football" />
+                            </optgroup>
+                        </Select>
+                        {this.getCurrentValue('b')}
+                    </div>
+                </div>
             </div>
         );
     },
 
-    getCurrentValue: function () {
-        return this.state.value
-            ? <label style={{lineHeight: '48px', marginLeft: 10}}>当前的选择值是：{this.state.value}</label>
+    getCurrentValue(name) {
+        var value = this.state[name];
+        return value
+            ? <label style={{lineHeight: '48px', marginLeft: 10}}>当前的选择值是：{value}</label>
             : null;
     },
 
-    onChange: function (e) {
+
+    onChange(name, e) {
         this.setState({
-            value: e.value
+            [name]: e.value
         });
     }
 

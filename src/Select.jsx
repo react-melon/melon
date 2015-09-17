@@ -15,9 +15,11 @@ var Select = React.createClass({
 
     propTypes: {
         onChange: PropTypes.func,
+        readOnly: PropTypes.bool,
         disabled: PropTypes.bool,
         name: PropTypes.string,
         value: PropTypes.string,
+        defaultValue: PropTypes.string,
         placeholder: PropTypes.string,
         children: PropTypes.node.isRequired
     },
@@ -26,7 +28,32 @@ var Select = React.createClass({
         form: PropTypes.object
     },
 
-    render: function () {
+    getInitialState() {
+
+        var props = this.props;
+
+        var state = {
+            isOpen: props.isOpen
+        };
+
+        if (!this.isControlled()) {
+            state.value = this.props.value || this.props.defaultValue;
+        }
+
+        return state;
+
+    },
+
+    getValue() {
+        return this.isControlled() ? this.props.value : this.state.value;
+    },
+
+    isControlled() {
+        var props = this.props;
+        return this.props.disabled || props.readOnly || props.value && props.onChange;
+    },
+
+    render() {
         return (
             <div className={this.props.className}>
                 {this.renderLabel()}
@@ -37,30 +64,12 @@ var Select = React.createClass({
         );
     },
 
-    getInitialState: function () {
-
-        var props = this.props;
-
-        return {
-            isOpen: props.isOpen,
-            value: props.value
-        };
-
-    },
-
     componentDidMount: function () {
         dom.on(document.body, 'click', this.onClick);
     },
 
     componentWillUnmount: function () {
         dom.off(document.body, 'click', this.onClick);
-    },
-
-    componentWillReceiveProps: function (props) {
-        this.setState({
-            value: props.value,
-            isOpen: props.isOpen
-        });
     },
 
     onClick: function (e) {
