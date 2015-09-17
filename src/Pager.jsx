@@ -8,7 +8,7 @@ var _     = require('underscore');
 var cx    = require('./common/util/classname');
 var Icon  = require('./Icon.jsx');
 var Waves = require('./common/util/waves');
-
+var ReactDOM = require('react-dom');
 
 var ICONS = {
     prev: 'navigate-before',
@@ -92,7 +92,7 @@ var Pager = React.createClass({
     },
 
     componentDidMount: function () {
-        var main = React.findDOMNode(this);
+        var main = ReactDOM.findDOMNode(this);
 
         Waves.attach(main.querySelectorAll('.ui-pager-item'), ['waves-circle', 'waves-light']);
         Waves.init();

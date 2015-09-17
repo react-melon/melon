@@ -6,6 +6,7 @@
 var React = require('react');
 var dom   = require('./common/util/dom');
 var _     = require('underscore');
+var ReactDOM = require('react-dom');
 
 var TreeNode = require('./TreeNode.jsx');
 
@@ -50,7 +51,7 @@ var Tree = React.createClass({
         e = e || window.event;
         var target = e.target || e.srcElement;
         var role = target.getAttribute('data-role');
-        var main = React.findDOMNode(this);
+        var main = ReactDOM.findDOMNode(this);
 
         if (!dom.contains(main, target) || role !== 'tree-node-label') {
             return;
