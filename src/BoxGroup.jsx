@@ -5,161 +5,131 @@
 
 var React = require('react');
 var _     = require('underscore');
-
+var PropTypes = React.PropTypes;
+var cx = require('./common/util/classname');
+var Icon = require('./Icon.jsx');
 
 var BoxGroup = React.createClass({
 
-    statics: {
-        type: 'BoxGroup'
-    },
-
     propTypes: {
-        disabled: React.PropTypes.bool,
-        type: React.PropTypes.string,
-        onChange: React.PropTypes.func,
-        value: React.PropTypes.array,
-        name: React.PropTypes.string.isRequired
+        disabled: PropTypes.bool,
+        boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
+        onChange: PropTypes.func,
+        value: PropTypes.arrayOf(PropTypes.string),
+        name: PropTypes.string,
+        children: PropTypes.node.isRequired
     },
 
-    getDefaultProps: function () {
-
-        return {
-            disabled: false,
-            onChange: _.noop,
-            radio: false,
-            datasource: [],
-            value: []
-        }
-    },
-
-    getInitialState: function (){
-
+    getInitialState: function () {
         return {
             value: this.props.value
         };
     },
 
     componentWillReceiveProps: function (nextProps) {
-        var difference = _.difference(nextProps.value, this.state.value);
-        if (difference.length > 0) {
-            this.setValue(nextProps.value);
-        }
-    },
-
-    setValue: function (value) {
-
         this.setState({
-            value: value
-        }, function () {
-            if (_.isFunction(this.props.onChange)) {
-                this.props.onChange({
-                    target: this,
-                    value: value
-                });
-            }
+            value: nextProps.value
         });
-
     },
 
-    handleOnBeforeChange: function (child, e) {
-        var value = e.target.getValue();
-        var checked = e.checked;
-
-
-        if (child.type.displayName === 'Radio') {
-
-            if (_.indexOf(this.state.value, value) >= 0 && !checked) {
-                return false;
-            }
-
-            value = [value];
-        }
-        else {
-
-            value = checked
-                ? _.union(this.state.value, [value])
-                : _.difference(this.state.value, [value]);
-
-        }
-
-        this.setValue(value);
-
-    },
-
-    getValue: function () {
-        return this.state.value;
-    },
-
-    getChild: function (child, childProps) {
+    render() {
 
         var props = this.props;
-
-        return React.cloneElement(child,
-            _.extend({}, {
-                onBeforeChange: this.handleOnBeforeChange.bind(this, child),
-                onChange: _.noop,
-                disabled: props.disabled,
-                readOnly: props.readOnly,
-                name: props.name
-            }, childProps)
-        );
-    },
-
-    render: function() {
-
-        var props = this.props;
-
-        var children;
-
-        if (React.Children.count(props.children) === 0) {
-
-            var isRadio = props.isRadio || false;
-            var tagName = isRadio ? 'Radio' : 'CheckBox';
-
-            var Box = require('./' + tagName + '.jsx');
-
-            children = _.map(props.datasource, function (item, index) {
-
-                var i = _.indexOf(this.state.value, item.value);
-
-                var childProps = {
-                    checked: i >= 0,
-                    label: item.name,
-                    disabled: item.disabled,
-                    key: index,
-                    value: item.value
-                };
-
-                return this.getChild(<Box />, childProps);
-
-            }, this)
-
-        }
-        else {
-
-            children = React.Children.map(props.children, function (child, index) {
-
-                var index = _.indexOf(this.state.value, child.props.value);
-
-                var checked = index >= 0;
-
-                var childProps = {
-                    checked: checked
-                };
-
-                return this.getChild(child, childProps);
-
-            }, this);
-        }
 
         return (
-            <div {...props}>
-                {children}
+            <div className={props.className}>
+                {React.Children.map(props.children, this.renderOption)}
             </div>
         );
 
+    },
+
+    renderOption: function (option) {
+
+        var boxModel = this.props.boxModel;
+        var props = option.props;
+
+        if (option.type !== 'option') {
+            return null;
+        }
+        var value = props.value;
+        var isChecked = this.isItemChecked(value);
+        var disabled = this.props.disabled || props.disabled;
+
+        var className = cx.create({
+            'ui-boxgroup-option': true,
+            'state-checked': isChecked,
+            'state-disabled': disabled
+        });
+
+        return (
+            <label className={className}>
+                <input
+                    disabled={disabled}
+                    checked={isChecked}
+                    type={this.props.boxModel}
+                    value={value}
+                    name={this.props.name}
+                    onChange={this.onChange} />
+                {this.renderIcon(isChecked)}
+                {props.label || props.children}
+            </label>
+        );
+
+    },
+
+    renderIcon(isChecked) {
+        var icons = BoxGroup.Icons[this.props.boxModel];
+        return <Icon icon={isChecked ? icons.checked : icons.unchecked} />;
+    },
+
+    isItemChecked(value) {
+        return this.state.value.indexOf(value) !== -1;
+    },
+
+    onChange: function (e) {
+        var optionValue = e.target.value;
+        var value = this.state.value;
+
+        if (this.props.boxModel === 'radio') {
+            value = [optionValue];
+        }
+        else {
+
+            var index = value.indexOf(optionValue);
+
+            if (index === -1) {
+                value = value.concat(optionValue);
+            }
+            else {
+                value = value.slice(0, index).concat(value.slice(index + 1));
+            }
+
+        }
+
+        this.setState({
+            value: value
+        });
+
     }
 
+
 });
+
+BoxGroup.defaultProps = {
+    disabled: false,
+    value: []
+};
+
+BoxGroup.Icons = {
+    radio: {
+        checked: 'radio-button-checked',
+        unchecked: 'radio-button-unchecked'
+    },
+    checkbox: {
+        checked: 'check-box',
+        unchecked: 'check-box-outline-blank'
+    }
+};
 
 module.exports = require('./common/util/createControl')(BoxGroup);
