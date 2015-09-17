@@ -16,16 +16,10 @@ var Title = React.createClass({
         var level = this.props.level;
         var tag = 'h' + level;
 
-        return React.createElement(
-            tag,
-            {
-                className: 'ui-title'
-            },
-            this.props.children
-        );
+        return React.createElement(tag, this.props);
 
     }
 
 });
 
-module.exports = Title;
+module.exports = require('./common/util/createControl')(Title);
