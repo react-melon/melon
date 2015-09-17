@@ -5,20 +5,33 @@
     position: relative
     display: inline-block
     box-sizing: border-box
-    padding: 8px 16px 8px 24px
+    padding: 8px 0
+    padding-right: $-melon-medium-font-size
+
+    min-width: 5em
 
     line-height: 24px
     font-size: $-melon-medium-font-size
 
     border-bottom: 1px solid $-melon-colors.grey300
-    cursor: pointer
 
     &-label
         display inline-block
-        min-width: 5em
+        width: 100%
         vertical-align: middle
         transition border-color 1s
         cursor: pointer
+        font-size: $-melon-medium-font-size
+
+        &-placeholder
+            color: $-melon-colors.grey500
+
+    > .ui-icon
+        display: inline-block
+        font-size: $-melon-medium-font-size
+        width: @font-size
+        vertical-align middle
+        margin-right: -@width
 
     &-popup
         position: absolute
@@ -32,20 +45,37 @@
         box-shadow: melon-get-z-depth('2')
         border-radius: 2px
 
+        // 为了让不同的select之间不相互干扰
+        z-index: 1
+
+    &-group
+
+        &-title
+            box-sizing: border-box
+            width: 100%
+            line-height: 2em
+            padding: 0 1em
+            cursor: default
+            color: $-melon-colors.grey700
+
+        &-list .{$-melon-class-prefix}-select-option
+            padding-left: 2em
+
     &-option
         box-sizing: border-box
         width: 100%
         line-height: 2em
-        padding: 0 16px 0 24px
+        padding: 0 16px
+        cursor: pointer
 
         &:hover
             background-color: $-melon-colors.grey300
 
-        &-selected
+        &.state-selected
             color: $-melon-colors.teal500
 
-    >.ui-icon
-        display: inline-block
-        font-size: $-melon-medium-font-size
-        vertical-align middle
-        margin-left: 1em
+        &.state-disabled
+            color: $-melon-colors.grey400
+            cursor: not-allowed
+            &:hover
+                background-color: $-melon-colors.white

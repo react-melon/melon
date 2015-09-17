@@ -30,8 +30,23 @@ var View = React.createClass({
             <div>
                 <Title level={3}>下拉选项</Title>
                 <Title level={4}>预定义样式</Title>
-                <Select datasource={datasource} value={this.state.value} onChange={this.onChange}/>
+                <Select value={this.state.value} onChange={this.onChange}>
+                    {Select.createOptions(datasource)}
+                </Select>
                 {this.getCurrentValue()}
+                <Title level={4}>选项分组</Title>
+                <Select value={this.state.value} onChange={this.onChange}>
+                    <optgroup label="fruit">
+                        <option value="Apple" label="Apple" />
+                        <option value="Banana" label="Banana" />
+                        <option value="Mango" label="Mango" disabled />
+                        <option value="Pear" label="Pear" disabled />
+                    </optgroup>
+                    <optgroup label="sport">
+                        <option value="Basketball" label="Basketball" />
+                        <option value="Football" label="Football" />
+                    </optgroup>
+                </Select>
             </div>
         );
     },
