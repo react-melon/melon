@@ -846,8 +846,6 @@ var View = React.createClass({
                 )
             });
 
-        console.log(list);
-
         return (
             <div style={{width: '100%'}}>
                 <Title level={4}>图标</Title>
