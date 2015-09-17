@@ -29,85 +29,112 @@ var View = React.createClass({
 
         return (
             <div>
-                <Title level={3}>单复选框</Title>
+                <Title level={3}>Switches</Title>
 
-                <div className="row">
-                    <Title level={5}>复选框</Title>
-                    <BoxGroup boxModel="checkbox">
-                        <option name="checkbox1" value="1" label="1" />
-                        <option name="checkbox1" value="2" label="2" />
-                        <option name="checkbox1" value="3" label="3" />
-                    </BoxGroup>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>复选框</Title>
+                        <BoxGroup boxModel="checkbox">
+                            <option name="checkbox1" value="1" label="1" />
+                            <option name="checkbox1" value="2" label="2" />
+                            <option name="checkbox1" value="3" label="3" />
+                        </BoxGroup>
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>单选框</Title>
+                        <BoxGroup boxModel="radio">
+                            <option name="radio1" value="1" label="1" />
+                            <option name="radio1" value="2" label="2" />
+                            <option name="radio1" value="3" label="3" />
+                        </BoxGroup>
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>Toggle</Title>
+                        <Toggle name="toggle1" value="1" label="On" leftLabel="Off" />
+                    </div>
                 </div>
 
-                <div className="row">
-                    <Title level={5}>单选框</Title>
-                    <BoxGroup boxModel="radio">
-                        <option name="radio1" value="1" label="1" />
-                        <option name="radio1" value="2" label="2" />
-                        <option name="radio1" value="3" label="3" />
-                    </BoxGroup>
+                <Title level={5}>禁用</Title>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-4">
+                        <BoxGroup name="boxgroup3" boxModel="checkbox" value={['C']} disabled>
+                            <option value="A" label="青年A" />
+                            <option value="B" label="青年B" />
+                            <option name="checkbox1" value="C" label="青年C" />
+                        </BoxGroup>
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <BoxGroup name="boxgroup3" boxModel="radio" value={['C']} disabled>
+                            <option value="A" label="青年A" />
+                            <option value="B" label="青年B" />
+                            <option name="checkbox1" value="C" label="青年C" />
+                        </BoxGroup>
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Toggle name="toggle2" value="1" label="On" leftLabel="Off" disabled />
+                    </div>
                 </div>
 
-                <div className="row">
-                    <Title level={5}>Toggle</Title>
-
-                    <Toggle name="toggle1" value="1" label="On" leftLabel="Off" />
-                    <p />
-                    <Toggle name="toggle2" value="1" label="On" leftLabel="Off" disabled />
+                <Title level={4}>使用DataSource</Title>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <BoxGroup
+                            boxModel="checkbox"
+                            name="boxgroup4"
+                            value={['B', 'C']}>
+                            {BoxGroup.createOptions(datasource)}
+                        </BoxGroup>
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <BoxGroup name="boxgroup3" boxModel="radio" value={['C']}>
+                            {BoxGroup.createOptions(datasource)}
+                        </BoxGroup>
+                    </div>
                 </div>
 
-                <div className="row">
-                    <Title level={5}>有组织的复选框</Title>
-
-                    <BoxGroup name="boxgroup1" boxModel="checkbox" value={value}>
-                        <option value="A" label="青年A" />
-                        <option value="B" label="青年B" />
-                        <option value="C" label="青年C" />
-                    </BoxGroup>
-
-                    <p><Button variants={['raised']} onClick={this.onButtonClick}>手动设置值【A、B】</Button></p>
+                <Title level={5}>Controlled</Title>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <BoxGroup
+                            name="a"
+                            boxModel="checkbox"
+                            value={this.state.a}
+                            onChange={this.onChange.bind(null, 'a')}>
+                            <option value="A" label="青年A" />
+                            <option value="B" label="青年B" />
+                            <option value="C" label="青年C" />
+                        </BoxGroup>
+                        {this.getCurrentValue('a')}
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <BoxGroup
+                            name="controlled-radio"
+                            boxModel="radio"
+                            value={this.state.b}
+                            onChange={this.onChange.bind(null, 'b')}>
+                            <option value="A" label="青年A" />
+                            <option value="B" label="青年B" />
+                            <option value="C" label="青年C" />
+                        </BoxGroup>
+                        {this.getCurrentValue('b')}
+                    </div>
                 </div>
 
-                <div className="row">
-                    <Title level={5}>有组织的单选框</Title>
-
-                    <BoxGroup name="boxgroup2" boxModel="radio" value={['C']}>
-                        <option value="A" label="青年A" />
-                        <option value="B" label="青年B" />
-                        <option value="C" label="青年C" />
-                    </BoxGroup>
-
-                </div>
-
-                <div className="row">
-                    <Title level={5}>禁用</Title>
-
-                    <BoxGroup name="boxgroup3" boxModel="checkbox" value={['C']} disabled>
-                        <option value="A" label="青年A" />
-                        <option value="B" label="青年B" />
-                        <option name="checkbox1" value="C" label="青年C" />
-                    </BoxGroup>
-
-                </div>
-
-                <div className="row">
-                    <Title level={5}>使用DataSource</Title>
-                    <BoxGroup
-                        boxModel="checkbox"
-                        name="boxgroup4"
-                        value={['B', 'C']}>
-                        {BoxGroup.createOptions(datasource)}
-                    </BoxGroup>
-                </div>
             </div>
         );
     },
 
-    getInitialState: function () {
-        return {
-            value: ['A']
-        };
+    getInitialState: () => ({controlledCheckbox: [], controlledRadio: []}),
+
+    onChange(name, e) {
+        this.setState({
+            [name + 'value']: e.value
+        });
+    },
+
+    getCurrentValue(name) {
+        var value = this.state[name + 'value'];
+        return value ? '当前的选择是：' + value : '';
     },
 
     onButtonClick: function () {
