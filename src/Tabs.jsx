@@ -62,10 +62,6 @@ var Tabs = React.createClass({
 
     },
 
-    renderInkBar: function () {
-        return 
-    },
-
     render: function() {
 
         var props = this.props;
