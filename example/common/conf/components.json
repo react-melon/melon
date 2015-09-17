@@ -1,35 +1,42 @@
 [
+
+    {
+        "name": "BoxGroup"
+    },
     {
         "name": "Button"
+    },
+    {
+        "name": "Dialog"
+    },
+    {
+        "name": "Form"
+    },
+    {
+        "name": "Grid"
     },
     {
         "name": "Icon"
     },
     {
-        "name": "Select"
-    },
-    {
-        "name": "Tabs"
-    },
-    {
-        "name": "Table"
-    },
-    {
-        "name": "TextBox"
-    },
-    {
         "name": "Pager"
-    },
-    {
-        "name": "BoxGroup"
     },
     {
         "name": "Progress"
     },
     {
-        "name": "Tree"
+        "name": "Select"
     },
     {
-        "name": "Dialog"
+        "name": "Table"
+    },
+    {
+        "name": "Tabs"
+    },
+    {
+        "name": "TextBox"
+    },
+    {
+        "name": "Tree"
     }
 ]
