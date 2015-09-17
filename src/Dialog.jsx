@@ -4,6 +4,7 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var createControl = require('./common/util/createControl');
 var WindowListenable = require('./mixins/window-listenable');
 var Mask = require('./Mask.jsx');
@@ -80,9 +81,9 @@ var Dialog = React.createClass({
     positionDialog: function () {
 
         if (this.state.isOpen) {
-            var container = React.findDOMNode(this);
+            var container = ReactDOM.findDOMNode(this);
             var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            var dialogWindow =  React.findDOMNode(this.refs.dialogWindow);
+            var dialogWindow = this.refs.dialogWindow;
             var minTop = 16;
 
             dialogWindow.style.height = '';
@@ -126,17 +127,17 @@ var Dialog = React.createClass({
 
     onShow: function () {
         this.bodyScrolling();
-        if (this.props.onShow) {
+        if (_.isFunction(this.props.onShow)) {
             this.props.onShow();
         }
     },
 
     onHide: function () {
         this.bodyScrolling();
-        if (this.props.onHide) {
+        if (_.isFunction(this.props.onHide)) {
             this.props.onHide();
         }
-        var dialogWindow =  React.findDOMNode(this.refs.dialogWindow);
+        var dialogWindow =  this.refs.dialogWindow;
         dialogWindow.style.top = '';
     },
 
