@@ -1,32 +1,6 @@
 @import "./base.styl"
 
 
-$-melon-toggle = {
-
-    display: inline-block
-
-    position: relative
-
-    cursor: pointer
-
-}
-
-$-melon-toggle-circle = {
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
-    box-sizing: border-box
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-    box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px
-    border-radius: 50%
-    position: absolute
-    top: 0
-    left: 0
-    width: 1.2em
-    height: 1.2em
-    line-height: 2em
-    background-color: $-melon-colors.white
-}
-
-
 $-melon-toggle-bar = {
 
     transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
@@ -37,21 +11,12 @@ $-melon-toggle-bar = {
 
 }
 
-$-melon-toggle-bar-container = {
-
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
-    position: relative
-    display: inline-block
-    width: 2em
-    margin-right: 0
-    margin-left: 0.8em
-    padding: 0.2em 0px 0.2em 0.1em
-}
-
 
 .{$-melon-class-prefix}-toggle
 
-    {$-melon-toggle}
+    display: inline-block
+    position: relative
+    cursor: pointer
 
     melon-clearfix()
 
@@ -65,15 +30,8 @@ $-melon-toggle-bar-container = {
         .{$-melon-class-prefix}-toggle-bar
             background-color: $-melon-colors.faintBlack
 
-    &-input
-
-        opacity: 0
-        position: absolute
-        width: 100%
-        height: 100%
-        top: 0
-        left: 0
-        margin: 0
+    > input
+        display: none
 
     &-label
 
@@ -85,17 +43,33 @@ $-melon-toggle-bar-container = {
         margin-left: 0.8em
 
     &-label-left
-
         margin-left: 0
 
     &-bar-container
 
-        {$-melon-toggle-bar-container}
+        position: relative
+        display: inline-block
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+        width: 2em
+        margin-right: 0
+        margin-left: 0.8em
+        padding: 0.2em 0px 0.2em 0.1em
 
         float: left
 
-        .{$-melon-class-prefix}-toggle-circle
-            {$-melon-toggle-circle}
+    &-circle
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+        box-sizing: border-box
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+        box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px
+        border-radius: 50%
+        position: absolute
+        top: 0
+        left: 0
+        width: 1.2em
+        height: 1.2em
+        line-height: 2em
+        background-color: $-melon-colors.white
 
-        .{$-melon-class-prefix}-toggle-bar
-            {$-melon-toggle-bar}
+    &-bar
+        {$-melon-toggle-bar}

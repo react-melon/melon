@@ -4,96 +4,98 @@
  */
 
 var React = require('react');
-var _     = require('underscore');
 var Icon  = require('./Icon.jsx');
 var cx    = require('./common/util/classname');
 var switches = require('./mixins/switches.jsx');
+var PropTypes = React.PropTypes;
 
 var Toggle = React.createClass({
 
-    mixins: [switches],
+    getInitialState() {
 
-    statics: {
-        type: 'Toggle'
+        return this.isControlled()
+            ? {}
+            : {checked: this.props.defaultChecked};
+
+    },
+
+    isControlled() {
+        var props = this.props;
+        return props.checked != null && !!props.onChange;
     },
 
     propTypes: {
-        leftLabel: React.PropTypes.string
+        checked: PropTypes.bool,
+        name: PropTypes.string,
+        value: PropTypes.string,
+        onChange: PropTypes.func,
+        defaultChecked: PropTypes.bool
+    },
+
+    render() {
+
+        var props = this.props;
+        var isChecked = this.isChecked();
+
+        return (
+            <label className={props.className}>
+                <input
+                    type="checkbox"
+                    name={props.name}
+                    value={props.value}
+                    onChange={this.onChange}
+                    checked={isChecked} />
+                {this.renderBar()}
+            </label>
+        );
+
+    },
+
+    isChecked() {
+        return this.isControlled() ? this.props.checked : this.state.checked;
+    },
+
+    onChange(e) {
+
+        var isChecked = e.target.checked;
+
+        e = {
+            target: this,
+            checked: isChecked
+        };
+
+        if (this.isControlled()) {
+            this.props.onChange(e);
+            return;
+        }
+
+        this.setState({
+            checked: isChecked
+        }, function () {
+            var onChange = this.props.onChange;
+            if (onChange) {
+                onChange(e);
+            }
+        });
+
     },
 
     renderBar: function () {
 
-        var checked = this.state.checked;
-        var props = this.props;
+        var checked = this.isChecked();
 
-        var barStyle = checked ? {
-                backgroundColor: 'rgba(0, 188, 212, 0.498039)'
-            } : null;
+        var barStyle = checked
+            ? {backgroundColor: 'rgba(0, 188, 212, 0.498039)'}
+            : null;
 
-        var circleStyle = checked ? {
-                left: '45%',
-                backgroundColor: 'rgb(0, 188, 212)'
-            } : null;
-
-        var checkedString = checked ? 'checked' : '';
-
-        var onClick = (props.disabled || props.readOnly) ? _.noop : this.handleOnClick;
+        var circleStyle = checked
+            ? {left: '45%', backgroundColor: 'rgb(0, 188, 212)'}
+            : null;
 
         return (
-            <div className={cx.createPrimaryClass('toggle-bar-container')} onClick={onClick}>
+            <div className={cx.createPrimaryClass('toggle-bar-container')}>
                 <div className={cx.createPrimaryClass('toggle-bar')} style={barStyle} />
                 <div className={cx.createPrimaryClass('toggle-circle')} style={circleStyle} />
-            </div>
-        )
-
-    },
-
-    renderLabel: function (isLeft) {
-
-        var props = this.props;
-
-        var label = isLeft ? props.leftLabel : props.label;
-        var classname = cx.createPrimaryClass('toggle-label');
-
-        if (!label) {
-            return;
-        }
-
-        if (isLeft) {
-            classname += ' ' + cx.createPrimaryClass('toggle-label-left');
-        }
-
-        return (
-            <label className={classname}>
-                {label}
-            </label>
-        )
-
-    },
-
-    renderInput: function () {
-
-        var props = this.props;
-        var className = cx.createPrimaryClass('toggle-input');
-        var checked = this.state.checked;
-
-        var input = <input type="checkbox" name={props.name} value={props.value}
-                        className={className} checked={checked} readOnly />;
-
-        return input;
-
-    },
-
-    render: function() {
-
-        var props = this.props;
-
-        return (
-            <div {...props}>
-                {this.renderInput()}
-                {this.renderLabel(true)}
-                {this.renderBar()}
-                {this.renderLabel(false)}
             </div>
         );
 
