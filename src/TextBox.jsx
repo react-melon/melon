@@ -4,18 +4,40 @@
  */
 
 var React = require('react');
+var PropTypes = React.PropTypes;
 var cx = require('./common/util/classname');
 
 var TextBox = React.createClass({
 
-    getInitialState: function () {
-        return {
-            height: null,
-            isFloating: !!(this.props.value || this.props.defaultValue)
-        };
+    contextTypes: {
+        form: React.PropTypes.object
     },
 
-    render: function() {
+    propTypes: {
+        value: PropTypes.string,
+        onChange: PropTypes.func,
+        defaultValue: PropTypes.string,
+        placeholder: PropTypes.string,
+        floatingLabel: PropTypes.string
+    },
+
+    getInitialState: function () {
+
+        var value = this.isControlled() ? null : this.props.defaultValue;
+
+        return {
+            value: value,
+            isFloating: !!value
+        };
+
+    },
+
+    isControlled() {
+        var props = this.props;
+        return props.readOnly || props.disabled || props.value != null && !!props.onChange;
+    },
+
+    render() {
 
         var props = this.props;
 
@@ -26,17 +48,16 @@ var TextBox = React.createClass({
 
         return (
             <div className={className}>
-                {this.getFloatingLabel(this.props.floatingLabel)}
-                {this.getInput()}
+                {this.renderFloatingLabel(this.props.floatingLabel)}
+                {this.renderInput()}
             </div>
         );
 
     },
 
-    getInput: function() {
+    renderInput: function () {
 
         var props = this.props;
-        var height = this.state.height;
         var tag = 'input';
 
         if (props.multiline) {
@@ -46,23 +67,32 @@ var TextBox = React.createClass({
                 props,
                 {
                     ref: 'input',
-                    rows: 1,
-                    onChange: this.onChange
+                    rows: 1
                 }
             );
         }
 
-        props = React.__spread({}, props, {
-            className: cx.createPartClass('textbox', 'input'),
-            onFocus: this.onFocus,
-            onBlur: this.onBlur
-        });
+        props = React.__spread(
+            {},
+            props,
+            {
+                className: cx.createPartClass('textbox', 'input'),
+                onFocus: this.onFocus,
+                onBlur: this.onBlur,
+                onChange: this.onChange,
+                value: this.getValue()
+            }
+        );
 
         return React.createElement(tag, props);
 
     },
 
-    getFloatingLabel: function (floatingLabel) {
+    getValue() {
+        return this.isControlled() ? this.props.value : this.state.value;
+    },
+
+    renderFloatingLabel: function (floatingLabel) {
 
         var state = this.state;
 
@@ -95,6 +125,12 @@ var TextBox = React.createClass({
             onFocus(e);
         }
 
+        var form = this.context.form;
+
+        if (form) {
+            form.onFocus(e);
+        }
+
         this.setState({
             isFocus: true,
             isFloating: true
@@ -110,6 +146,12 @@ var TextBox = React.createClass({
             onBlur(e);
         }
 
+        var form = this.context.form;
+
+        if (form) {
+            form.onBlur(e);
+        }
+
         this.setState({
             isFloating: !!e.target.value,
             isFocus: false
@@ -119,18 +161,48 @@ var TextBox = React.createClass({
 
     onChange: function (e) {
 
-        if (this.props.onChange) {
+        // 如果被控制了，那么就交给控制者管理
+        if (this.isControlled()) {
             this.props.onChange(e);
         }
+        // 如果没有被控制，那么数据自行使用状态管理
+        // 这时多行文本框需要自行更新高度
+        else {
 
-        if (this.props.multiline) {
-            this.syncTextareaHeight();
+            this.setState({value: e.target.value});
+
+            if (this.props.multiline) {
+                this.syncTextareaHeight();
+            }
+
+        }
+
+        var form = this.context.form;
+
+        if (form) {
+            form.onChange(e);
         }
 
     },
 
+    componentWillReceiveProps(nextProps) {
+
+        // 多行文本框应该可以自动更新高度
+        if (nextProps.multiline
+            && this.isControlled()
+            && this.props.value !== nextProps.value
+        ) {
+            syncTextareaHeight();
+        }
+
+    },
+
+    getValue() {
+        return this.isControlled() ? this.props.value : this.state.value;
+    },
+
     syncTextareaHeight: function () {
-        var dom = React.findDOMNode(this.refs.input);
+        var dom = this.refs.input;
         dom.style.height = 'auto';
         dom.style.height = dom.scrollHeight + 'px';
     }

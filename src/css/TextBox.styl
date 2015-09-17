@@ -1,4 +1,5 @@
 @import "./base.styl"
+@import "nib"
 
 .{$-melon-class-prefix}-textbox
 
@@ -7,6 +8,7 @@
     vertical-align: middle
     border-bottom: 1px solid $-melon-colors.grey300
     transition border-color 1s
+    min-width: 5em
 
     &.variant-fluid &-input
         width: 100%
@@ -27,11 +29,13 @@
         height: 48px
         line-height: 24px
         z-index: 3
+        width: 100%
 
         resize: none
         overflow: hidden
 
         font-size: $-melon-medium-font-size
+        font-family: $-melon-font-family
         color: rgba($-melon-colors.black, 0.87)
 
         background-color transparent
@@ -45,8 +49,17 @@
             &:focus
                 border-bottom-color: $-melon-colors.grey300
 
-        &:placeholder
-            color: $-melon-colors.grey200
+        &::-webkit-input-placeholder
+            color: $-melon-colors.grey500
+
+        &:-moz-placeholder
+            color: $-melon-colors.grey500
+
+        &::-moz-placeholder
+            color: $-melon-colors.grey500
+
+        &:-ms-input-placeholder
+            color: $-melon-colors.grey500
 
     &-label
         position: absolute
@@ -79,3 +92,8 @@
         color: $-melon-colors.grey600
         vertical-align: middle
 
+    &-prefix
+        margin-right: 0.5em
+
+    &-suffix
+        margin-left: 0.5em
