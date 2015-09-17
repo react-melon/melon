@@ -7,16 +7,6 @@ var React = require('react');
 var cx    = require('./common/util/classname');
 var _     = require('underscore');
 
-var SIZES = {
-    'xs': 0.75,
-    's': 0.875,
-    'm': 0.9375,
-    'l': 1.125,
-    'xl': 1.25,
-    'xxl': 1.375,
-    'xxxl': 1.5,
-    'xxxl': 2.25
-};
 
 var Progress = React.createClass({
 
@@ -125,15 +115,12 @@ var Progress = React.createClass({
 
         if (isCircle) {
 
-            var wrapper = React.findDOMNode(this.refs.wrapper);
-            var path = React.findDOMNode(this.refs.path);
-
-            this.scalePath(path);
-            this.rotateWrapper(wrapper);
+            this.scalePath(this.refs.path);
+            this.rotateWrapper(this.refs.wrapper);
         }
         else {
-            var bar1 = React.findDOMNode(this.refs.bar1);
-            var bar2 = React.findDOMNode(this.refs.bar2);
+            var bar1 = this.refs.bar1;
+            var bar2 = this.refs.bar2;
 
             this.barUpdate(0, bar1, [
                 [-35, 100],
@@ -192,7 +179,7 @@ var Progress = React.createClass({
     },
 
     renderCircle: function () {
-        var zoom = SIZES[this.props.size] || 1;
+        var zoom = Progress.SIZES[this.props.size] || 1;
         var svgStyle={
             transform: 'scale(' + zoom + ')'
         };
@@ -237,4 +224,18 @@ var Progress = React.createClass({
 
 });
 
-module.exports = require('./common/util/createControl')(Progress);
+Progress = require('./common/util/createControl')(Progress);
+
+Progress.SIZES = {
+    'xs': 0.75,
+    's': 0.875,
+    'm': 0.9375,
+    'l': 1.125,
+    'xl': 1.25,
+    'xxl': 1.375,
+    'xxxl': 1.5,
+    'xxxl': 2.25
+};
+
+
+module.exports = Progress;
