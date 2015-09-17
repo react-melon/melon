@@ -4,6 +4,8 @@
  */
 
 var React = require('react');
+var PropTypes = React.PropTypes;
+var ReactDOM = require('react-dom');
 var u = require('underscore');
 var cx = require('./common/util/classname');
 var dom = require('./common/util/dom');
@@ -12,66 +14,27 @@ var Icon = require('./Icon.jsx');
 var Select = React.createClass({
 
     propTypes: {
-        onChange: React.PropTypes.func,
-        disabled: React.PropTypes.bool,
-        name: React.PropTypes.string
+        onChange: PropTypes.func,
+        disabled: PropTypes.bool,
+        name: PropTypes.string,
+        value: PropTypes.string,
+        placeholder: PropTypes.string,
+        children: PropTypes.node.isRequired
+    },
+
+    contextTypes: {
+        form: PropTypes.object
     },
 
     render: function () {
         return (
             <div className={this.props.className}>
                 {this.renderLabel()}
-                {this.renderInput()}
+                {this.renderHiddenInput()}
                 {this.renderIcon()}
                 {this.renderPopup()}
             </div>
         );
-    },
-
-    /**
-     * 获取label部件内容
-     * @return {[type]} [description]
-     */
-    getLabel: function () {
-        var props = this.props;
-
-        if (props.staticLabel) {
-            return props.staticLabel;
-        }
-
-        var selectOption = u.findWhere(props.datasource, {value: this.state.value});
-
-        return selectOption ? selectOption.name : props.emptyLabel;
-    },
-
-    getOption: function (option, index) {
-
-        var value = this.state.value;
-
-        var clazz = cx.create({
-            'ui-select-option': true,
-            'ui-select-option-selected': option.value === value
-        });
-
-        var name = option.name;
-        var value = option.value;
-
-        return (
-            <div className={clazz}
-                key={value}
-                data-value={value}
-                data-role="option"
-                title={name}>
-                {name}
-            </div>
-        );
-
-    },
-
-    getDefaultProps: function () {
-        return {
-            emptyLabel: '请选择'
-        };
     },
 
     getInitialState: function () {
@@ -112,7 +75,7 @@ var Select = React.createClass({
             return;
         }
 
-        var main = this.getDOMNode();
+        var main = ReactDOM.findDOMNode(this);
 
         if (main !== target && !dom.contains(main, target)) {
             this.setState({
@@ -142,12 +105,17 @@ var Select = React.createClass({
             return;
         }
 
+        var disabled = target.getAttribute('data-disabled');
+
+        if (disabled) {
+            this.hideOptions();
+            return;
+        }
+
         var value = target.getAttribute('data-value');
 
         if (value === this.state.value) {
-            this.setState({
-                isOpen: false
-            });
+            this.hideOptions();
             return;
         }
 
@@ -170,6 +138,7 @@ var Select = React.createClass({
     },
 
     renderPopup: function () {
+
         var isOpen = this.isOpen();
 
         var style = isOpen
@@ -187,12 +156,85 @@ var Select = React.createClass({
 
         return (
             <div className="ui-select-popup" style={style}>
-                {u.map(this.props.datasource, this.getOption || getOption, this)}
+                {React.Children.map(this.props.children, this.renderItem)}
             </div>
-        )
+        );
+
     },
 
-    renderInput: function () {
+    renderItem: function (child) {
+
+        if (!child) {
+            return null;
+        }
+
+        if (child.type === 'option') {
+            return this.renderOption(child, false);
+        }
+
+        if (child.type === 'optgroup') {
+            return this.renderOptGroup(child);
+        }
+
+        return null;
+
+    },
+
+    renderOptGroup(group) {
+
+        var props = group.props;
+
+        var disabled = props.disabled;
+
+        var className = cx.create({
+            'ui-select-group': true,
+            'state-disabled': disabled
+        });
+
+        return (
+            <div className={className}>
+                <h4 className="ui-select-group-title">{props.label}</h4>
+                <div className="ui-select-group-list">
+                    {React.Children.map(
+                        props.children,
+                        function (child, index) {
+                            return this.renderOption(child, disabled);
+                        },
+                        this
+                    )}
+                </div>
+            </div>
+        );
+
+    },
+
+    renderOption(option, isGroupDisabled) {
+
+        var props = option.props;
+        var value = props.value;
+
+        var disabled = isGroupDisabled || props.disabled;
+
+        var clazz = cx.create({
+            'ui-select-option': true,
+            'state-selected': this.state.value === value,
+            'state-disabled': disabled
+        });
+
+        return (
+            <div className={clazz}
+                key={value}
+                data-value={value}
+                data-role="option"
+                data-disabled={disabled}
+                title={name}>
+                {props.label || props.children}
+            </div>
+        );
+
+    },
+
+    renderHiddenInput: function () {
         var name = this.props.name;
         return name
             ? (<input name={name} type="hidden" value={this.state.value} />)
@@ -201,17 +243,51 @@ var Select = React.createClass({
 
     /**
      * 渲染label部件
+     *
      * @param {string|ReactElement} label label部件内容
      * @return {ReactElement}
      */
     renderLabel: function () {
 
-        var label = this.getLabel(this);
+        var props = this.props;
 
-        return u.isString(label)
-            ? <label className="ui-select-label">{label}</label>
-            : label;
+        var option = this.findOption(this.state.value, props.children);
 
+        var label = option
+            ? (option.props.label || option.props.children)
+            : (
+                <span className="ui-select-label-placeholder">
+                    {props.placeholder}
+                </span>
+            );
+
+        return <label className="ui-select-label">{label}</label>;
+
+    },
+
+    findOption(value, children) {
+
+        children = React.Children.toArray(children);
+
+        if (!children) {
+            return null;
+        }
+
+        for (var i = 0, len = children.length; i < len; ++i) {
+            var child = children[i];
+            if (child.type === 'optgroup') {
+                var option = this.findOption(value, child.props.children);
+                if (option) {
+                    return option;
+                }
+                continue;
+            }
+            if (child.props.value === value) {
+                return child;
+            }
+        }
+
+        return null;
     },
 
     renderIcon: function () {
@@ -223,17 +299,55 @@ var Select = React.createClass({
     },
 
     showOptions: function () {
+
         this.setState({
             isOpen: true
         });
+
+        var form = this.context.form;
+
+        if (form) {
+            form.onFocus();
+        }
+
     },
 
     hideOptions: function () {
+
         this.setState({
             isOpen: false
         });
+
+        var form = this.context.form;
+
+        if (form) {
+            form.onBlur();
+        }
+
     }
 
 });
 
-module.exports = require('./common/util/createControl')(Select);
+Select = require('./common/util/createControl')(Select);
+
+Select.defaultProps = {
+    placeholder: '请选择'
+};
+
+Select.createOptions = function (dataSource) {
+
+    return dataSource.map(function (option, index) {
+
+        return (
+            <option
+                key={index}
+                disabled={option.disabled}
+                value={option.value}
+                label={option.name} />
+        );
+
+    });
+
+};
+
+module.exports = Select;
