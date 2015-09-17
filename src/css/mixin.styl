@@ -24,7 +24,7 @@ melon-generate-grid($columns = 12, $gap = 0.3)
     $gap-width = $single-width * $gap / ( 1 + $gap )
 
     .melon-row
-        margin-left: unit(-1 * $gap-width * 100, '%')
+        margin-left: unit(-1 * $gap-width * 100, '%') !important
         clearfix()
 
     .melon-column
