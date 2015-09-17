@@ -44,11 +44,13 @@ var Base = React.createClass({
 
         var props = this.props;
 
-        return cx.createComponentClass(
+        var baseClassName = cx.createComponentClass(
             props.displayName,
             this.getVariantClassess(props.originProps),
             this.getStateClasses(props.originProps)
         );
+
+        return cx.create(props.originProps.className, baseClassName);
 
     },
 
