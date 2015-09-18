@@ -4,27 +4,20 @@
  */
 
 var React = require('react');
-var _     = require('underscore');
 var PropTypes = React.PropTypes;
 var cx = require('./common/util/classname');
-var Icon = require('./Icon.jsx');
+var Option = require('./boxgroup/Option.jsx');
 
 var BoxGroup = React.createClass({
 
-    propTypes: {
-        disabled: PropTypes.bool,
-        boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
-        onChange: PropTypes.func,
-        defaultValue: PropTypes.arrayOf(PropTypes.string),
-        value: PropTypes.arrayOf(PropTypes.string),
-        name: PropTypes.string,
-        children: PropTypes.node.isRequired
-    },
-
-    getInitialState: function () {
+    getInitialState() {
         return this.isControlled()
             ? null
             : {value: this.props.value || this.props.defaultValue};
+    },
+
+    contextTypes: {
+        form: PropTypes.object
     },
 
     getValue() {
@@ -50,56 +43,43 @@ var BoxGroup = React.createClass({
 
     renderOption: function (option) {
 
-        var boxModel = this.props.boxModel;
         var props = option.props;
 
         if (option.type !== 'option') {
-            return null;
+            return option;
         }
-        var value = props.value;
-        var isChecked = this.isItemChecked(value);
-        var disabled = this.props.disabled || props.disabled;
 
-        var className = cx.create({
-            'ui-boxgroup-option': true,
-            'state-checked': isChecked,
-            'state-disabled': disabled
-        });
+        var disabled = this.props.disabled || props.disabled;
+        var value = props.value;
 
         return (
-            <label className={className}>
-                <input
-                    disabled={disabled}
-                    checked={isChecked}
-                    type={this.props.boxModel}
-                    value={value}
-                    name={this.props.name}
-                    onChange={this.onChange} />
-                {this.renderIcon(isChecked)}
-                {props.label || props.children}
-            </label>
+            <Option
+                boxModel={this.props.boxModel}
+                label={props.label || pros.children}
+                value={value}
+                checked={this.isOptionChecked(value)}
+                name={props.name}
+                disabled={disabled}
+                onChange={this.onChange} />
         );
 
     },
 
-    renderIcon(isChecked) {
-        var icons = BoxGroup.Icons[this.props.boxModel];
-        return <Icon icon={isChecked ? icons.checked : icons.unchecked} />;
-    },
-
-    isItemChecked(value) {
+    isOptionChecked(value) {
         var currentValue = this.getValue();
         return currentValue.indexOf(value) !== -1;
     },
 
-    onChange: function (e) {
+    onChange(e) {
 
         var optionValue = e.target.value;
         var value = this.getValue();
 
+        // 计算 radio 的值
         if (this.props.boxModel === 'radio') {
             value = [optionValue];
         }
+        // 计算 checkbox 的值
         else {
 
             var index = value.indexOf(optionValue);
@@ -113,16 +93,22 @@ var BoxGroup = React.createClass({
 
         }
 
-        e = {
-            target: this,
-            value: value
-        };
+        // 生成事件对象
+        e = {type: 'change', target: this, value};
 
+        var form = this.context.form;
+
+        if (form) {
+            form.onChange(e);
+        }
+
+        // 如果是被控制了的，那么直接交给控制者来搞
         if (this.isControlled()) {
             this.props.onChange(e);
             return;
         }
 
+        // 否则，更新自己的状态
         this.setState({
             value: value
         }, function () {
@@ -132,29 +118,26 @@ var BoxGroup = React.createClass({
             }
         });
 
-
     }
 
 });
 
 BoxGroup = require('./common/util/createControl')(BoxGroup);
 
+BoxGroup.propTypes = {
+    disabled: PropTypes.bool,
+    boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
+    onChange: PropTypes.func,
+    defaultValue: PropTypes.arrayOf(PropTypes.string),
+    value: PropTypes.arrayOf(PropTypes.string),
+    name: PropTypes.string,
+    children: PropTypes.node.isRequired
+};
+
 BoxGroup.defaultProps = {
     disabled: false,
     value: []
 };
-
-BoxGroup.Icons = {
-    radio: {
-        checked: 'radio-button-checked',
-        unchecked: 'radio-button-unchecked'
-    },
-    checkbox: {
-        checked: 'check-box',
-        unchecked: 'check-box-outline-blank'
-    }
-};
-
 
 BoxGroup.createOptions = function (datasource) {
 
