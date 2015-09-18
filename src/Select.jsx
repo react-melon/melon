@@ -5,24 +5,12 @@
 
 var React = require('react');
 var PropTypes = React.PropTypes;
-var ReactDOM = require('react-dom');
 var u = require('underscore');
 var cx = require('./common/util/classname');
 var dom = require('./common/util/dom');
 var Icon = require('./Icon.jsx');
 
 var Select = React.createClass({
-
-    propTypes: {
-        onChange: PropTypes.func,
-        readOnly: PropTypes.bool,
-        disabled: PropTypes.bool,
-        name: PropTypes.string,
-        value: PropTypes.string,
-        defaultValue: PropTypes.string,
-        placeholder: PropTypes.string,
-        children: PropTypes.node.isRequired
-    },
 
     contextTypes: {
         form: PropTypes.object
@@ -55,7 +43,7 @@ var Select = React.createClass({
 
     render() {
         return (
-            <div className={this.props.className}>
+            <div ref="main" className={this.props.className}>
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
@@ -84,8 +72,9 @@ var Select = React.createClass({
             return;
         }
 
-        var main = ReactDOM.findDOMNode(this);
+        var main = this.refs.main;
 
+        // 点击不在 select内部，那么就把 select 收起
         if (main !== target && !dom.contains(main, target)) {
             this.setState({
                 isOpen: false
@@ -93,13 +82,13 @@ var Select = React.createClass({
             return;
         }
 
+        // 如果当前是收起的，那么就展开
         if (!this.isOpen()) {
-            this.setState({
-                isOpen: true
-            });
+            this.showOptions();
             return;
         }
 
+        // 向上查找，找到可用的 option
         var role = target.getAttribute('data-role');
 
         while (target !== main && role !== 'option') {
@@ -107,13 +96,13 @@ var Select = React.createClass({
             role = target.getAttribute('data-role');
         }
 
+        // 没找到的话就收起
         if (!role) {
-            this.setState({
-                isOpen: false
-            });
+            this.hideOptions();
             return;
         }
 
+        // 如果选项是禁用状态的，收起
         var disabled = target.getAttribute('data-disabled');
 
         if (disabled) {
@@ -121,28 +110,49 @@ var Select = React.createClass({
             return;
         }
 
+
+        // 取值
         var value = target.getAttribute('data-value');
 
+        // 值未发生变化，收起
         if (value === this.state.value) {
             this.hideOptions();
             return;
         }
 
+        // 生成事件
+        var e = {type: 'change', target: this, value};
+
+        var form = this.context.form;
+
+        if (form) {
+            form.onChange(e);
+        }
+
+        // 被控制的状态，交给控制者处理
+        if (this.isControlled()) {
+            this.props.onChange(e);
+            this.hideOptions();
+            return;
+        }
+
+        // 展开并更新值
         this.setState({
-            isOpen: false,
             value: value
         }, function () {
 
-            if (!u.isFunction(this.props.onChange)) {
-                return;
+            var onChange = this.props.onChange;
+
+            if (onChange) {
+                onChange({
+                    target: this,
+                    value: value
+                });
             }
 
-            this.props.onChange({
-                target: this,
-                value: value
-            });
-
         });
+
+        this.hideOptions();
 
     },
 
@@ -316,7 +326,7 @@ var Select = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onFocus();
+            form.onFocus({type: 'focus', target: this});
         }
 
     },
@@ -330,7 +340,7 @@ var Select = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onBlur();
+            form.onBlur({type: 'blur', target: this});
         }
 
     }
@@ -341,6 +351,17 @@ Select = require('./common/util/createControl')(Select);
 
 Select.defaultProps = {
     placeholder: '请选择'
+};
+
+Select.propTypes = {
+    onChange: PropTypes.func,
+    readOnly: PropTypes.bool,
+    disabled: PropTypes.bool,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    defaultValue: PropTypes.string,
+    placeholder: PropTypes.string,
+    children: PropTypes.node.isRequired
 };
 
 Select.createOptions = function (dataSource) {
