@@ -18,6 +18,10 @@ var Toggle = React.createClass({
 
     },
 
+    contextTypes: {
+        form: PropTypes.object
+    },
+
     isControlled() {
         var props = this.props;
         return props.disabled || props.readOnly || props.checked != null && !!props.onChange;
@@ -64,10 +68,13 @@ var Toggle = React.createClass({
 
         var isChecked = e.target.checked;
 
-        e = {
-            target: this,
-            checked: isChecked
-        };
+        e = {type: 'change', target: this, checked: isChecked};
+
+        var form = this.context.form;
+
+        if (form) {
+            form.onChange(e);
+        }
 
         if (this.isControlled()) {
             this.props.onChange(e);
