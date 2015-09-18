@@ -5,10 +5,13 @@
 
     position: relative
     display: inline-block
+    min-width: 5em
+    padding: 16px 0 8px
     vertical-align: middle
     border-bottom: 1px solid $-melon-colors.grey300
     transition border-color 1s
-    min-width: 5em
+    box-sizing: border-box
+    height: 48px
 
     &.variant-fluid &-input
         width: 100%
@@ -25,8 +28,8 @@
     &-input
         position: relative
         box-sizing border-box
-        padding: 16px 0 8px
-        height: 48px
+        padding: 0
+        height: 100%
         line-height: 24px
         z-index: 3
         width: 100%
@@ -65,9 +68,8 @@
         position: absolute
         box-sizing: border-box
         left: 0
-        top: 0
+        top: 16px
         width: 100%
-        padding: 16px 0 8px
         line-height: 24px
         font-size: $-melon-small-font-size
         color: $-melon-colors.grey500
