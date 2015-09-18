@@ -13,14 +13,6 @@ var TextBox = React.createClass({
         form: React.PropTypes.object
     },
 
-    propTypes: {
-        value: PropTypes.string,
-        onChange: PropTypes.func,
-        defaultValue: PropTypes.string,
-        placeholder: PropTypes.string,
-        floatingLabel: PropTypes.string
-    },
-
     getInitialState: function () {
 
         var value = this.isControlled() ? null : this.props.defaultValue;
@@ -119,6 +111,8 @@ var TextBox = React.createClass({
 
     onFocus: function (e) {
 
+        e = {type: 'focus', target: this};
+
         var onFocus = this.props.onFocus;
 
         if (onFocus)  {
@@ -140,6 +134,8 @@ var TextBox = React.createClass({
 
     onBlur: function (e) {
 
+        e = {type: 'blur', target: this};
+
         var onBlur = this.props.onBlur;
 
         if (onBlur)  {
@@ -153,13 +149,17 @@ var TextBox = React.createClass({
         }
 
         this.setState({
-            isFloating: !!e.target.value,
+            isFloating: !!this.getValue(),
             isFocus: false
         });
 
     },
 
     onChange: function (e) {
+
+        var value = e.target.value;
+
+        e = {type: 'change', target: this, value};
 
         // 如果被控制了，那么就交给控制者管理
         if (this.isControlled()) {
@@ -169,7 +169,7 @@ var TextBox = React.createClass({
         // 这时多行文本框需要自行更新高度
         else {
 
-            this.setState({value: e.target.value});
+            this.setState({value});
 
             if (this.props.multiline) {
                 this.syncTextareaHeight();
@@ -210,4 +210,14 @@ var TextBox = React.createClass({
 
 });
 
-module.exports = require('./common/util/createControl')(TextBox);
+TextBox = require('./common/util/createControl')(TextBox);
+
+TextBox.propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    defaultValue: PropTypes.string,
+    placeholder: PropTypes.string,
+    floatingLabel: PropTypes.string
+};
+
+module.exports = TextBox;
