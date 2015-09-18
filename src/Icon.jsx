@@ -5,11 +5,9 @@
 
 var React = require('react');
 
-var Icon = React.createClass({
+var PropTypes = React.PropTypes;
 
-    propTypes: {
-        icon: React.PropTypes.string
-    },
+var Icon = React.createClass({
 
     render: function() {
 
@@ -22,4 +20,10 @@ var Icon = React.createClass({
 
 });
 
-module.exports = require('./common/util/createControl')(Icon);
+Icon = require('./common/util/createControl')(Icon);
+
+Icon.propTypes = {
+    icon: PropTypes.string.isRequired
+};
+
+module.exports = Icon;
