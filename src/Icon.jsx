@@ -5,25 +5,23 @@
 
 var React = require('react');
 
-var PropTypes = React.PropTypes;
+var Component = require('./Component.jsx');
 
-var Icon = React.createClass({
+class Icon extends Component {
 
-    render: function() {
+    render() {
 
         var props = this.props;
 
         return (
-            <i {...props} className={props.className} data-icon={props.icon} />
+            <i {...props} className={this.getClassName()} data-icon={props.icon} />
         );
     }
 
-});
-
-Icon = require('./common/util/createControl')(Icon);
+}
 
 Icon.propTypes = {
-    icon: PropTypes.string.isRequired
+    icon: React.PropTypes.string.isRequired
 };
 
 module.exports = Icon;

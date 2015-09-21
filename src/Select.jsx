@@ -4,21 +4,22 @@
  */
 
 var React = require('react');
-var PropTypes = React.PropTypes;
 var u = require('underscore');
 var cx = require('./common/util/classname');
 var dom = require('./common/util/dom');
 var Icon = require('./Icon.jsx');
 
-var Select = React.createClass({
+var Component = require('./Component.jsx');
+
+class Select extends Component {
 
     contextTypes: {
         form: PropTypes.object
-    },
+    }
 
-    getInitialState() {
+    constructor(props) {
 
-        var props = this.props;
+        super(props);
 
         var state = {
             isOpen: props.isOpen
@@ -28,39 +29,39 @@ var Select = React.createClass({
             state.value = this.props.value || this.props.defaultValue;
         }
 
-        return state;
+        this.state = state;
 
-    },
+    }
 
     getValue() {
         return this.isControlled() ? this.props.value : this.state.value;
-    },
+    }
 
     isControlled() {
         var props = this.props;
         return this.props.disabled || props.readOnly || props.value && props.onChange;
-    },
+    }
 
     render() {
         return (
-            <div ref="main" className={this.props.className}>
+            <div ref="main" className={this.getClassName()}>
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
                 {this.renderPopup()}
             </div>
         );
-    },
+    }
 
-    componentDidMount: function () {
-        dom.on(document.body, 'click', this.onClick);
-    },
+    componentDidMount() {
+        dom.on(document.body, 'click', this.onClick.bind(this));
+    }
 
-    componentWillUnmount: function () {
-        dom.off(document.body, 'click', this.onClick);
-    },
+    componentWillUnmount() {
+        dom.off(document.body, 'click', this.onClick.bind(this));
+    }
 
-    onClick: function (e) {
+    onClick(e) {
 
         e = e || window.event;
         var target = e.target || e.srcElement;
@@ -68,9 +69,9 @@ var Select = React.createClass({
         // @hack 这里你妹的在ie8上有问题。
         // 虽然我们添加了`componentWillUnmount`的，但是还会有已经`unmount`的控件的`click`被回调。
         // 所以我们加上这个吧。。。
-        if (!this.isMounted()) {
-            return;
-        }
+        // if (!this.isMounted()) {
+        //     return;
+        // }
 
         var main = this.refs.main;
 
@@ -123,12 +124,6 @@ var Select = React.createClass({
         // 生成事件
         var e = {type: 'change', target: this, value};
 
-        var form = this.context.form;
-
-        if (form) {
-            form.onChange(e);
-        }
-
         // 被控制的状态，交给控制者处理
         if (this.isControlled()) {
             this.props.onChange(e);
@@ -154,9 +149,9 @@ var Select = React.createClass({
 
         this.hideOptions();
 
-    },
+    }
 
-    renderPopup: function () {
+    renderPopup() {
 
         var isOpen = this.isOpen();
 
@@ -175,13 +170,13 @@ var Select = React.createClass({
 
         return (
             <div className="ui-select-popup" style={style}>
-                {React.Children.map(this.props.children, this.renderItem)}
+                {React.Children.map(this.props.children, this.renderItem, this)}
             </div>
         );
 
-    },
+    }
 
-    renderItem: function (child) {
+    renderItem(child) {
 
         if (!child) {
             return null;
@@ -197,7 +192,7 @@ var Select = React.createClass({
 
         return null;
 
-    },
+    }
 
     renderOptGroup(group) {
 
@@ -225,7 +220,7 @@ var Select = React.createClass({
             </div>
         );
 
-    },
+    }
 
     renderOption(option, isGroupDisabled) {
 
@@ -251,14 +246,14 @@ var Select = React.createClass({
             </div>
         );
 
-    },
+    }
 
-    renderHiddenInput: function () {
+    renderHiddenInput() {
         var name = this.props.name;
         return name
             ? (<input name={name} type="hidden" value={this.state.value} />)
             : null;
-    },
+    }
 
     /**
      * 渲染label部件
@@ -266,7 +261,7 @@ var Select = React.createClass({
      * @param {string|ReactElement} label label部件内容
      * @return {ReactElement}
      */
-    renderLabel: function () {
+    renderLabel() {
 
         var props = this.props;
 
@@ -282,7 +277,7 @@ var Select = React.createClass({
 
         return <label className="ui-select-label">{label}</label>;
 
-    },
+    }
 
     findOption(value, children) {
 
@@ -307,17 +302,17 @@ var Select = React.createClass({
         }
 
         return null;
-    },
+    }
 
-    renderIcon: function () {
+    renderIcon() {
         return <Icon icon='expand-more' />;
-    },
+    }
 
-    isOpen: function () {
+    isOpen() {
         return this.state.isOpen;
-    },
+    }
 
-    showOptions: function () {
+    showOptions() {
 
         this.setState({
             isOpen: true
@@ -326,12 +321,12 @@ var Select = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onFocus({type: 'focus', target: this});
+            form.onStartEdit({type: 'focus', target: this});
         }
 
-    },
+    }
 
-    hideOptions: function () {
+    hideOptions() {
 
         this.setState({
             isOpen: false
@@ -340,18 +335,18 @@ var Select = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onBlur({type: 'blur', target: this});
+            form.onFinishEdit({type: 'blur', target: this});
         }
 
     }
 
-});
-
-Select = require('./common/util/createControl')(Select);
+}
 
 Select.defaultProps = {
     placeholder: '请选择'
 };
+
+var PropTypes = React.PropTypes;
 
 Select.propTypes = {
     onChange: PropTypes.func,

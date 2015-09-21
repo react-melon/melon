@@ -5,58 +5,22 @@
 
 var React = require('react');
 
-var PropTypes = React.PropTypes;
 var TableCell = require('./Cell.jsx');
-var cx = require('../common/util/classname');
 
-var TableRow = React.createClass({
+var Component = require('../Component.jsx');
 
-    displayName: 'TableRow',
+class TableRow extends Component {
 
-    propTypes: {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.onDoubleClick = this.onDoubleClick.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+    }
 
-        index: PropTypes.number,
-
-        /**
-         * 行类型
-         *
-         * @type {string}
-         */
-        part: PropTypes.oneOf(['header', 'footer', 'body']).isRequired,
-
-        /**
-         * 行数据
-         *
-         * @type {(Object | array)}
-         */
-        data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-
-        /**
-         * 单击事件
-         *
-         * @type {function}
-         */
-        onClick: PropTypes.func,
-
-        /**
-         * 双击事件
-         *
-         * @type {function}
-         */
-        onDoubleClick: PropTypes.func,
-
-        onMouseEnter: PropTypes.func,
-        onMouseLeave: PropTypes.func,
-        onMouseDown: PropTypes.func,
-
-        /**
-         * Height of the row.
-         * @type {number}
-         */
-        height: PropTypes.number.isRequired
-    },
-
-    render: function () {
+    render() {
 
         var props = this.props;
         var part = props.part;
@@ -64,20 +28,18 @@ var TableRow = React.createClass({
         var renderCell = this.renderCell;
 
         return (
-            <div className={props.className}
-                onClick={this.props.onClick ? this._onClick : null}
-                onDoubleClick={this.props.onDoubleClick ? this._onDoubleClick : null}
-                onMouseDown={this.props.onMouseDown ? this._onMouseDown : null}
-                onMouseEnter={this.props.onMouseEnter ? this._onMouseEnter : null}
-                onMouseLeave={this.props.onMouseLeave ? this._onMouseLeave : null}>
-                {columns.map(function (column, index) {
-                    return renderCell(column.props, index);
-                })}
+            <div className={this.getClassName()}
+                onClick={this.props.onClick ? this.onClick : null}
+                onDoubleClick={this.props.onDoubleClick ? this.onDoubleClick : null}
+                onMouseDown={this.props.onMouseDown ? this.onMouseDown : null}
+                onMouseEnter={this.props.onMouseEnter ? this.onMouseEnter : null}
+                onMouseLeave={this.props.onMouseLeave ? this.onMouseLeave : null}>
+                {columns.map((column, index) => {return this.renderCell(column.props, index);})}
             </div>
         );
-    },
+    }
 
-    renderCell: function (columnData, index) {
+    renderCell(columnData, index) {
 
         var props = this.props;
         var part = props.part;
@@ -104,21 +66,74 @@ var TableRow = React.createClass({
                 cellRenderer={columnData.cellRenderer} />
         );
 
-    },
+    }
 
-    onMouseEnter: function (e) {
+    onClick(e) {
+        this.props.onClick(e, this.props.index, this.props.data);
+    }
+
+    onDoubleClick(e) {
+        this.props.onDoubleClick(e, this.props.index, this.props.data);
+    }
+
+    onMouseEnter(e) {
         this.props.onMouseEnter(e, this.props.index, this.props.data);
-    },
+    }
 
-    onMouseLeave: function (e) {
+    onMouseLeave(e) {
         this.props.onMouseLeave(e, this.props.index, this.props.data);
-    },
+    }
 
-    onMouseDown: function (e) {
+    onMouseDown(e) {
         this.props.onMouseDown(e, this.props.index, this.props.data);
     }
 
 
-});
+}
 
-module.exports = require('../common/util/createControl')(TableRow);
+var PropTypes = React.PropTypes;
+
+TableRow.propTypes = {
+
+    index: PropTypes.number,
+
+    /**
+     * 行类型
+     *
+     * @type {string}
+     */
+    part: PropTypes.oneOf(['header', 'footer', 'body']).isRequired,
+
+    /**
+     * 行数据
+     *
+     * @type {(Object | array)}
+     */
+    data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+
+    /**
+     * 单击事件
+     *
+     * @type {function}
+     */
+    onClick: PropTypes.func,
+
+    /**
+     * 双击事件
+     *
+     * @type {function}
+     */
+    onDoubleClick: PropTypes.func,
+
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onMouseDown: PropTypes.func,
+
+    /**
+     * Height of the row.
+     * @type {number}
+     */
+    height: PropTypes.number.isRequired
+};
+
+module.exports = TableRow;

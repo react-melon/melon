@@ -8,16 +8,17 @@ var React = require('react');
 var Title = require('../src/Title.jsx');
 var TextBox = require('../src/TextBox.jsx');
 
-var View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             controlledValue: '',
             userInputValue: ''
         };
-    },
+    }
 
-    render: function() {
+    render() {
         return (
             <div >
                 <Title level={4}>文本输入</Title>
@@ -102,7 +103,7 @@ var View = React.createClass({
                         <TextBox
                             name="controlled"
                             value={this.state.controlledValue}
-                            onChange={this.onControlledTextBoxChange} />
+                            onChange={this.onControlledTextBoxChange.bind(this)} />
                         {this.state.userInputValue ? '用户输入了：' + this.state.userInputValue : ''}
                     </div>
                 </div>
@@ -117,14 +118,12 @@ var View = React.createClass({
 
             </div>
         );
-    },
-
-    onControlledTextBoxChange: function (e) {
-        var me = this;
-        var value = e.target.value;
-        me.setState({userInputValue: value});
     }
 
-});
+    onControlledTextBoxChange(e) {
+        this.setState({userInputValue: e.value});
+    }
+
+}
 
 module.exports = View;

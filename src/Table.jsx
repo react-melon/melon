@@ -38,44 +38,32 @@ function getNextSelectedRowData(dataSource, current, action, rowIndex) {
 
 }
 
-var Table = React.createClass({
+class Table extends React.Component {
 
-    propTypes: {
-        rowHeight: PropTypes.number.isRequired,
-        highlight: PropTypes.bool,
-        headerRowHeight: PropTypes.number,
-        selectable: PropTypes.bool,
-        onSelect: PropTypes.func,
-        dataSource: PropTypes.array.isRequired
-    },
+    constructor(props) {
 
-    getDefaultProps: function () {
+        super(props);
 
-        return {
-            highlight: true,
-            rowHeight: 48,
-            headerRowHeight: 56,
-            selectable: false,
-            columns: []
-        };
+        this.isRowSelected = this.isRowSelected.bind(this);
+        this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+        this.onSelectAll = this.onSelectAll.bind(this);
 
-    },
-
-    getInitialState: function () {
-        return {
+        this.state = {
             selected: [],
             ...this.getState(this.props)
         };
-    },
 
-    componentWillReceiveProps: function (nextProps) {
+    }
+
+    componentWillReceiveProps(nextProps) {
         return {
             selected: this.state.selected,
             ...this.getState(nextProps)
         };
-    },
+    }
 
-    getState: function (props) {
+    getState(props) {
 
         var children = [];
 
@@ -94,27 +82,31 @@ var Table = React.createClass({
 
         }
 
-        ReactChildren.forEach(props.children, function (child) {
-
-            if (child == null) {
-                return;
-            }
-
-            if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
-                throw new Error('Table child must be a TableColumn');
-            }
-
-            children.push(child);
-
-        }, this);
-
         return {
-            columns: children
+            columns: ReactChildren
+                .toArray(props.children)
+                .reduce(
+                    function (children, child) {
+
+                        if (child != null) {
+
+                            if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
+                                throw new Error('Table child must be a TableColumn');
+                            }
+
+                            children.push(child);
+
+                        }
+
+                        return children;
+                    },
+                    children
+                )
         };
 
-    },
+    }
 
-    render: function() {
+    render() {
 
         var columns = this.state.columns;
 
@@ -126,9 +118,9 @@ var Table = React.createClass({
             </div>
         );
 
-    },
+    }
 
-    renderHeader: function (columns) {
+    renderHeader(columns) {
         var props = this.props;
         return (
             <div className="ui-table-header">
@@ -139,9 +131,9 @@ var Table = React.createClass({
                     columns={columns} />
             </div>
         );
-    },
+    }
 
-    renderBody: function (columns) {
+    renderBody(columns) {
         var me = this;
         return (
             <div className="ui-table-body">
@@ -150,9 +142,9 @@ var Table = React.createClass({
                 })}
             </div>
         );
-    },
+    }
 
-    renderRow: function (columns, rowData, index) {
+    renderRow(columns, rowData, index) {
         var props = this.props;
         return (
             <Row
@@ -164,26 +156,26 @@ var Table = React.createClass({
                 columns={columns}
                 data={rowData} />
         );
-    },
+    }
 
-    renderFooter: function (columns) {
+    renderFooter(columns) {
         return null;
-    },
+    }
 
-    onSelect: function (e, rowIndex) {
+    onSelect(e, rowIndex) {
         this.onRowSelectorClick(
             this.isRowSelected(rowIndex) ? 'unselect' : 'select',
             rowIndex
         );
-    },
+    }
 
-    onSelectAll: function (e) {
+    onSelectAll(e) {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
         )
-    },
+    }
 
-    onRowSelectorClick: function (action, rowIndex) {
+    onRowSelectorClick(action, rowIndex) {
 
         var nextSelected = getNextSelectedRowData(
             this.props.dataSource,
@@ -203,17 +195,34 @@ var Table = React.createClass({
                 }
             }
         );
-    },
+    }
 
-    isRowSelected: function (rowIndex) {
+    isRowSelected(rowIndex) {
         return u.contains(this.state.selected, rowIndex);
-    },
+    }
 
-    isAllRowsSelected: function () {
+    isAllRowsSelected() {
         return this.state.selected.length === this.props.dataSource.length;
     }
 
-});
+}
+
+Table.propTypes = {
+    rowHeight: PropTypes.number.isRequired,
+    highlight: PropTypes.bool,
+    headerRowHeight: PropTypes.number,
+    selectable: PropTypes.bool,
+    onSelect: PropTypes.func,
+    dataSource: PropTypes.array.isRequired
+},
+
+Table.defaultProps = {
+    highlight: true,
+    rowHeight: 48,
+    headerRowHeight: 56,
+    selectable: false,
+    columns: []
+};
 
 Table.Column = require('./table/Column.jsx');
 

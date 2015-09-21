@@ -11,7 +11,6 @@
     border-bottom: 1px solid $-melon-colors.grey300
     transition border-color 1s
     box-sizing: border-box
-    height: 48px
 
     &.variant-fluid &-input
         width: 100%
@@ -26,6 +25,7 @@
             cursor not-allowed
 
     &-input
+        display: block
         position: relative
         box-sizing border-box
         padding: 0
@@ -64,7 +64,7 @@
         &:-ms-input-placeholder
             color: $-melon-colors.grey500
 
-    &-label
+    &floatinglabel
         position: absolute
         box-sizing: border-box
         left: 0

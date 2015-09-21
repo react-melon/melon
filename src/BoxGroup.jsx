@@ -1,47 +1,75 @@
 /**
  * @file esui-react/BoxGroup
  * @author cxtom<cxtom2008@gmail.com>
+ * @author leon<ludafa@outlook.com>
  */
 
 var React = require('react');
-var PropTypes = React.PropTypes;
-var cx = require('./common/util/classname');
 var Option = require('./boxgroup/Option.jsx');
+var Component = require('./Component.jsx');
 
-var BoxGroup = React.createClass({
+class BoxGroup extends Component {
 
-    getInitialState() {
-        return this.isControlled()
+    constructor(props) {
+        super(props);
+        this.state = this.isControlled()
             ? null
             : {value: this.props.value || this.props.defaultValue};
-    },
+    }
 
     contextTypes: {
         form: PropTypes.object
-    },
+    }
 
     getValue() {
-        return this.isControlled() ? this.props.value : this.state.value;
-    },
+
+        var props = this.props;
+
+        if (props.disabled) {
+            return [];
+        }
+
+        var value = this.isControlled() ? props.value : this.state.value;
+        var children = React.Children.toArray(props.children);
+
+        // 要过滤掉被禁用的项
+        return value.reduce(
+            function (result, value) {
+                for (var i = children.length - 1; i >= 0; --i) {
+                    var child = children[i];
+                    if (child
+                        && child.type === 'option'
+                        && child.props.value === value
+                        && !child.props.disabled
+                    ) {
+                        result.push(value);
+                        break;
+                    }
+                }
+                return result;
+            },
+            []
+        );
+    }
 
     isControlled() {
         var props = this.props;
         return this.props.disabled || props.readOnly || props.value && props.onChange;
-    },
+    }
 
     render() {
 
         var props = this.props;
 
         return (
-            <div className={props.className}>
-                {React.Children.map(props.children, this.renderOption)}
+            <div className={this.getClassName()}>
+                {React.Children.map(props.children, this.renderOption, this)}
             </div>
         );
 
-    },
+    }
 
-    renderOption: function (option) {
+    renderOption(option) {
 
         var props = option.props;
 
@@ -60,15 +88,15 @@ var BoxGroup = React.createClass({
                 checked={this.isOptionChecked(value)}
                 name={props.name}
                 disabled={disabled}
-                onChange={this.onChange} />
+                onChange={this.onChange.bind(this)} />
         );
 
-    },
+    }
 
     isOptionChecked(value) {
         var currentValue = this.getValue();
         return currentValue.indexOf(value) !== -1;
-    },
+    }
 
     onChange(e) {
 
@@ -99,7 +127,7 @@ var BoxGroup = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onChange(e);
+            form.onFinishEdit(e);
         }
 
         // 如果是被控制了的，那么直接交给控制者来搞
@@ -120,9 +148,9 @@ var BoxGroup = React.createClass({
 
     }
 
-});
+}
 
-BoxGroup = require('./common/util/createControl')(BoxGroup);
+var PropTypes = React.PropTypes;
 
 BoxGroup.propTypes = {
     disabled: PropTypes.bool,

@@ -4,11 +4,11 @@
  */
 
 var React = require('react');
-var PropTypes = React.PropTypes;
 var cx = require('../common/util/classname');
 var Icon = require('../Icon.jsx');
+var Component = require('../Component.jsx');
 
-var Option = React.createClass({
+class BoxGroupOption extends Component {
 
     render() {
 
@@ -18,11 +18,12 @@ var Option = React.createClass({
         var isChecked = props.checked;
         var disabled = props.disabled;
 
-        var className = cx.create({
-            'ui-boxgroup-option': true,
-            'state-checked': isChecked,
-            'state-disabled': disabled
-        });
+        var className = cx.create(
+            this.getClassName(),
+            {
+                'state-checked': isChecked
+            }
+        );
 
         return (
             <label className={className}>
@@ -38,16 +39,18 @@ var Option = React.createClass({
             </label>
         );
 
-    },
+    }
 
     getIcon(boxModel, isChecked) {
-        var icons = Option.Icons[boxModel];
+        var icons = BoxGroupOption.Icons[boxModel];
         return icons[isChecked ? 'checked' : 'unchecked'];
     }
 
-});
+}
 
-Option.propTypes = {
+var PropTypes = React.PropTypes;
+
+BoxGroupOption.propTypes = {
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
     label: PropTypes.string,
     value: PropTypes.string,
@@ -57,7 +60,7 @@ Option.propTypes = {
     onChange: PropTypes.func.isRequired
 };
 
-Option.Icons = {
+BoxGroupOption.Icons = {
     radio: {
         checked: 'radio-button-checked',
         unchecked: 'radio-button-unchecked'
@@ -68,4 +71,4 @@ Option.Icons = {
     }
 };
 
-module.exports = Option;
+module.exports = BoxGroupOption;
