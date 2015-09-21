@@ -5,29 +5,26 @@
 
 var React = require('react');
 
-var Button = React.createClass({
+var Component = require('./Component.jsx');
 
-    statics: {
-        type: 'Button'
-    },
+class Button extends Component {
 
-    propTypes: {
-        disabled: React.PropTypes.bool,
-        type: React.PropTypes.string
-    },
-
-    render: function() {
+    render() {
 
         var props = this.props;
 
         return (
-            <button {...props}>
+            <button {...props} className={this.getClassName()}>
                 {props.label || props.children}
             </button>
         );
 
     }
 
-});
+}
 
-module.exports = require('./common/util/createControl')(Button);
+Button.propTypes = {
+    disabled: React.PropTypes.bool
+};
+
+module.exports = Button;

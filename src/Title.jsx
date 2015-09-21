@@ -5,21 +5,26 @@
 
 var React = require('react');
 
-var Title = React.createClass({
+var Component = require('./Component.jsx');
 
-    propsTypes: {
-        level: React.PropTypes.number
-    },
+class Title extends Component {
 
-    render: function () {
+    render() {
 
-        var level = this.props.level;
+        var {level, ...rest} = this.props;
         var tag = 'h' + level;
 
-        return React.createElement(tag, this.props);
+        return React.createElement(
+            tag,
+            {...rest, className: this.getClassName()}
+        );
 
     }
 
-});
+}
 
-module.exports = require('./common/util/createControl')(Title);
+Title.propsTypes = {
+    level: React.PropTypes.number.isRequired
+};
+
+module.exports = Title;

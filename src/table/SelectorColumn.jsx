@@ -4,25 +4,15 @@
  */
 
 var React = require('react');
-var PropTypes = React.PropTypes;
 
 var Icon = require('../Icon.jsx');
 var Column = require('./Column.jsx');
 
-var TableSelectorColumn = React.createClass({
-
-    propTypes: {
-        isSelected: PropTypes.func.isRequired,
-        isAllSelected: PropTypes.func.isRequired,
-        onSelect: PropTypes.func,
-        onSelectAll: PropTypes.func
-    },
-
-    render: function () {
+class TableSelectorColumn extends Column {
+    render() {
         return null;
     }
-
-});
+}
 
 TableSelectorColumn.getIcon = function (selected) {
     return selected ? 'check-box' : 'check-box-outline-blank';
@@ -39,7 +29,7 @@ TableSelectorColumn.cellRenderer = function (props) {
         <Icon
             onClick={columnData.onSelect ? TableSelectorColumn.onCellClick.bind(null, props) : null}
             icon={TableSelectorColumn.getIcon(isSelected)}
-            states={[isSelected ? 'selected' : '']}
+            states={{selected: isSelected}}
             variants={['table-selector']} />
     );
 
@@ -49,6 +39,16 @@ TableSelectorColumn.onCellClick = function (props, e) {
     var part = props.part;
     var handler = part === 'body' ? 'onSelect' : 'onSelectAll';
     props.columnData[handler](e, props.rowIndex);
+};
+
+
+var PropTypes = React.PropTypes;
+
+TableSelectorColumn.propTypes = {
+    isSelected: PropTypes.func.isRequired,
+    isAllSelected: PropTypes.func.isRequired,
+    onSelect: PropTypes.func,
+    onSelectAll: PropTypes.func
 };
 
 /**

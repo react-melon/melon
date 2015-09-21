@@ -1,14 +1,16 @@
 /**
- * @file melon configuration
+ * @file melon/common/config
  * @author leon(ludafa@outlook.com)
  */
 
 module.exports = {
 
-    uiClassPrefix: 'ui',
+    COMPONENT_SIZES: ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'],
 
-    statePrefix: 'state',
+    COMPONENT_CLASS_PREFIX: 'ui',
 
-    variantPrefix: 'variant'
+    COMPONENT_VARIANT_PREFIX: 'variant',
+
+    COMPONENT_STATE_PREFIX: 'state'
 
 };

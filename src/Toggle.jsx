@@ -1,39 +1,52 @@
 /**
- * @file esui-react/Toggle
+ * @file melon/Toggle
  * @author cxtom<cxtom2008@gmail.com>
+ * @author leon<ludafa@outlook.com>
  */
 
 var React = require('react');
 var Icon  = require('./Icon.jsx');
-var cx    = require('./common/util/classname');
-var PropTypes = React.PropTypes;
 
-var Toggle = React.createClass({
+var Component = require('./Component.jsx');
 
-    getInitialState() {
+class Toggle extends Component {
 
-        return this.isControlled()
+    constructor(props) {
+
+        super(props);
+
+        this.state = this.isControlled()
             ? {}
             : {checked: this.props.defaultChecked};
 
-    },
+    }
+
+    componentDidMount() {
+        var form = this.context.form;
+        if (form) {
+            form.attach(this);
+        }
+    }
+
+    componentWillUnmount() {
+        var form = this.context.form;
+        if (form) {
+            form.detach(this);
+        }
+    }
 
     contextTypes: {
         form: PropTypes.object
-    },
+    }
 
     isControlled() {
         var props = this.props;
         return props.disabled || props.readOnly || props.checked != null && !!props.onChange;
-    },
+    }
 
-    propTypes: {
-        checked: PropTypes.bool,
-        name: PropTypes.string,
-        value: PropTypes.string,
-        onChange: PropTypes.func,
-        defaultChecked: PropTypes.bool
-    },
+    getValue() {
+        return this.isChecked() ? this.props.value || 'on' : '';
+    }
 
     render() {
 
@@ -41,22 +54,22 @@ var Toggle = React.createClass({
         var isChecked = this.isChecked();
 
         return (
-            <label className={props.className}>
+            <label className={this.getClassName()}>
                 <input
                     type="checkbox"
                     name={props.name}
                     value={props.value}
-                    onChange={this.onChange}
+                    onChange={this.onChange.bind(this)}
                     checked={isChecked} />
                 {this.renderBar()}
             </label>
         );
 
-    },
+    }
 
     isChecked() {
         return this.isControlled() ? this.props.checked : this.state.checked;
-    },
+    }
 
     onChange(e) {
 
@@ -68,12 +81,12 @@ var Toggle = React.createClass({
 
         var isChecked = e.target.checked;
 
-        e = {type: 'change', target: this, checked: isChecked};
+        e = {type: 'change', target: this, value: isChecked ? this.props.value || 'on' : ''};
 
         var form = this.context.form;
 
         if (form) {
-            form.onChange(e);
+            form.onFinishEdit(e);
         }
 
         if (this.isControlled()) {
@@ -90,9 +103,9 @@ var Toggle = React.createClass({
             }
         });
 
-    },
+    }
 
-    renderBar: function () {
+    renderBar() {
 
         var checked = this.isChecked();
 
@@ -105,14 +118,24 @@ var Toggle = React.createClass({
             : null;
 
         return (
-            <div className={cx.createPrimaryClass('toggle-bar-container')}>
-                <div className={cx.createPrimaryClass('toggle-bar')} style={barStyle} />
-                <div className={cx.createPrimaryClass('toggle-circle')} style={circleStyle} />
+            <div className={this.getPartClassName('bar-container')}>
+                <div className={this.getPartClassName('bar')} style={barStyle} />
+                <div className={this.getPartClassName('circle')} style={circleStyle} />
             </div>
         );
 
     }
 
-});
+}
 
-module.exports = require('./common/util/createControl')(Toggle);
+var PropTypes = React.PropTypes;
+
+Toggle.propTypes = {
+    checked: PropTypes.bool,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    defaultChecked: PropTypes.bool
+};
+
+module.exports = Toggle;

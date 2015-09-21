@@ -19,41 +19,15 @@ var RENDERER_PROPS = [
     'part'
 ];
 
-var TableCell = React.createClass({
+var Component = require('../Component.jsx');
 
-    propTypes: {
+class TableCell extends Component {
 
-        part: PropTypes.oneOf(['header', 'body', 'footer']),
-
-        columnData: PropTypes.any,
-        rowData: PropTypes.any,
-        columnIndex: PropTypes.number,
-        rowIndex: PropTypes.number,
-        cellData: PropTypes.any,
-        cellKey: PropTypes.oneOfType([
-            PropTypes.string.isRequired,
-            PropTypes.number.isRequired,
-        ]),
-        height: PropTypes.number.isRequired,
-        width: PropTypes.number.isRequired,
-        minWidth: PropTypes.number,
-        maxWidth: PropTypes.number,
-
-        cellRenderer: React.PropTypes.func
-
-    },
-
-    getDefaultProps: function () {
-        return {
-            align: 'left'
-        };
-    },
-
-    shouldComponentUpdate: function (nextProps) {
+    shouldComponentUpdate(nextProps) {
         return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
-    },
+    }
 
-    render: function () {
+    render() {
 
         var props = this.props;
 
@@ -64,10 +38,10 @@ var TableCell = React.createClass({
         };
 
         return (
-            <div className="ui-tablecell">
-                <div style={style} className="ui-tablecell-wrap1">
-                    <div className="ui-tablecell-wrap2">
-                        <div className="ui-tablecell-wrap3">
+            <div className={this.getClassName()}>
+                <div style={style} className={this.getPartClassName('wrap1')}>
+                    <div className={this.getPartClassName('wrap2')}>
+                        <div className={this.getPartClassName('wrap3')}>
                             {this.getCellContent()}
                         </div>
                     </div>
@@ -75,9 +49,9 @@ var TableCell = React.createClass({
             </div>
         );
 
-    },
+    }
 
-    getCellContent: function () {
+    getCellContent() {
 
         var props = this.props;
         var part = props.part;
@@ -87,9 +61,35 @@ var TableCell = React.createClass({
             ? renderer(u.pick(props, RENDERER_PROPS))
             : props.cellData;
 
-        return <div className="ui-tablecell-content">{content}</div>
+        return <div className={this.getPartClassName('content')}>{content}</div>
     }
 
-});
+}
+
+TableCell.propTypes = {
+
+    part: PropTypes.oneOf(['header', 'body', 'footer']),
+
+    columnData: PropTypes.any,
+    rowData: PropTypes.any,
+    columnIndex: PropTypes.number,
+    rowIndex: PropTypes.number,
+    cellData: PropTypes.any,
+    cellKey: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.number.isRequired,
+    ]),
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired,
+    minWidth: PropTypes.number,
+    maxWidth: PropTypes.number,
+
+    cellRenderer: PropTypes.func
+
+};
+
+TableCell.defaultProps = {
+    align: 'left'
+};
 
 module.exports = TableCell;
