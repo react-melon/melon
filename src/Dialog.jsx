@@ -100,6 +100,8 @@ var Dialog = React.createClass({
             }
 
             dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+
+            container.style.left = 0;
         }
     },
 
@@ -139,6 +141,11 @@ var Dialog = React.createClass({
         }
         var dialogWindow =  this.refs.dialogWindow;
         dialogWindow.style.top = '';
+
+        var container = ReactDOM.findDOMNode(this);
+        setTimeout(function () {
+            container.style.left = '-10000px';
+        }, 200);
     },
 
     getTitle: function () {
@@ -170,12 +177,12 @@ var Dialog = React.createClass({
         var bodyClassName = cx.createComponentClass('dialog-body');
         var windowClassName = cx.createComponentClass('dialog-window');
 
-        var className = cx.createComponentClass('dialog', [], {open: isOpen});
+        var className = cx.createComponentClass('dialog', props.variants, {open: isOpen});
 
         return (
             <div {...props} className={className}>
                 <div className={windowClassName} ref="dialogWindow">
-                    {isOpen && [
+                    {[
                         this.getTitle(),
                         <div ref="dialogContent" className={bodyClassName} key="body">
                             {props.children}
