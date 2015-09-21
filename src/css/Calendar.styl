@@ -1,0 +1,134 @@
+@import './base.styl'
+@import 'nib'
+
+@require '../src/css/Mask.styl'
+@require '../src/css/Dialog.styl'
+@require '../src/css/TextBox.styl'
+@require '../src/css/Button.styl'
+@require '../src/css/Icon.styl'
+
+.{$-melon-class-prefix}-dialog.variant-calendar
+
+    .{$-melon-class-prefix}-dialog-window
+        width: 320px
+        border-radius: 0
+        padding: 0
+        padding-bottom: 0.6em
+
+        .{$-melon-class-prefix}-dialog-body
+            padding: 0
+
+        .{$-melon-class-prefix}-dialog-actions
+            margin-top: 0.6em
+
+        .{$-melon-class-prefix}-button
+            margin-right: 1.5em
+
+.{$-melon-class-prefix}-calendar
+
+    &-dialog
+
+        &-header
+            background-color: $-melon-colors.cyan700
+            color: $-melon-colors.white
+            height: 62px
+            padding: 20px
+            width: 280px
+
+            &-year
+                font-size: 18px
+                line-height: 1
+                margin-bottom: 15px
+                font-family: Roboto, sans-serif
+
+            &-date
+                font-size: 30px
+                line-height: 38/30
+                font-family: 'SimHei', sans-serif
+
+        &-main
+            margin-top: 8px
+
+        &-pager
+            position: relative
+            height: 30px
+            line-height: 30px
+            text-align: center
+
+            .{$-melon-class-prefix}-icon
+                position: absolute
+                font-size: 24px
+                color: $-melon-colors.darkBlack
+                top: 0
+                cursor: pointer
+
+            [data-action='prev']
+                left: 16px
+
+            [data-action='next']
+                right: 16px
+
+        &-weekheader
+            padding: 10px 20px 0 20px
+            color: $-melon-colors.lightBlack
+            clearfix()
+
+            span
+                display: block
+                float: left
+                font-size: 0.8em
+                width: 40px
+                height: 40px
+                line-height: 40px
+                text-align: center
+
+        &-month
+            display: block
+            padding: 5px 20px 0 20px;
+
+        &-week
+            clearfix()
+
+        &-day
+            display: block
+            float: left
+            font-family: Roboto, sans-serif
+            width: 40px
+            height: 40px
+            font-size: 0.8em
+            line-height: 40px
+            text-align: center
+            text-decoration: none
+            color: $-melon-colors.black
+            border-radius: 100em
+            opacity: 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+
+            &:hover
+                background-color: $-melon-colors.cyan700
+                color: $-melon-colors.white
+                opacity: 0.6
+
+            &:active
+            &.state-selected
+                background-color: $-melon-colors.cyan700
+                color: $-melon-colors.white
+                opacity: 0.8
+
+            &.variant-pre-month.state-disabled,
+            &.variant-next-month.state-disabled,
+            &.state-disabled
+                color: $-melon-colors.grey300
+                cursor: not-allowed
+                &:hover
+                    background-color: transparent
+                    color: inherit
+                    opacity: 1
+                    color: $-melon-colors.grey300
+
+            &.variant-pre-month,
+            &.variant-next-month
+                color: $-melon-colors.grey500
+                &:hover
+                    background-color: transparent
+                    color: inherit
+                    opacity: 1
