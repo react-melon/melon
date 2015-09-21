@@ -4,39 +4,49 @@
  */
 
 var React = require('react');
-var PropTypes = React.PropTypes;
 var cx = require('./common/util/classname');
 
-var TextBox = React.createClass({
+var Component = require('./Component.jsx');
+var FloatingLabel = require('./textbox/FloatLabel.jsx');
+
+class TextBox extends Component {
 
     contextTypes: {
         form: React.PropTypes.object
-    },
+    }
 
-    getInitialState: function () {
+    constructor(props) {
+
+        super(props);
 
         var value = this.isControlled() ? null : this.props.defaultValue;
 
-        return {
+        this.state = {
             value: value,
             isFloating: !!value
         };
 
-    },
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onChange = this.onChange.bind(this);
+
+    }
 
     isControlled() {
         var props = this.props;
         return props.readOnly || props.disabled || props.value != null && !!props.onChange;
-    },
+    }
 
     render() {
 
         var props = this.props;
 
-        var className = ''
-            + props.className
-            + ' '
-            + cx.createStateClass(this.state.isFocus ? 'focus' : '');
+        var className = cx.create(
+            this.getClassName(),
+            this.getStateClassName(null, {
+                focus: this.state.isFocus
+            })
+        );
 
         return (
             <div className={className}>
@@ -45,71 +55,52 @@ var TextBox = React.createClass({
             </div>
         );
 
-    },
+    }
 
-    renderInput: function () {
+    renderInput() {
 
         var props = this.props;
         var tag = 'input';
 
         if (props.multiline) {
             tag = 'textarea';
-            props = React.__spread(
-                {},
-                props,
-                {
-                    ref: 'input',
-                    rows: 1
-                }
-            );
+            props = {
+                ...props,
+                ref: 'input',
+                rows: 1
+            };
         }
 
-        props = React.__spread(
-            {},
-            props,
-            {
-                className: cx.createPartClass('textbox', 'input'),
-                onFocus: this.onFocus,
-                onBlur: this.onBlur,
-                onChange: this.onChange,
-                value: this.getValue()
-            }
-        );
+        props = {
+            ...props,
+            className: this.getPartClassName('input'),
+            onFocus: this.onFocus,
+            onBlur: this.onBlur,
+            onChange: this.onChange,
+            value: this.getValue()
+        };
 
         return React.createElement(tag, props);
 
-    },
+    }
 
     getValue() {
         return this.isControlled() ? this.props.value : this.state.value;
-    },
+    }
 
-    renderFloatingLabel: function (floatingLabel) {
+    renderFloatingLabel(floatingLabel) {
 
         var state = this.state;
 
-        var className = cx.createComponentClass(
-            'textbox-label',
-            null,
-            [
-                state.isFloating ? 'floating' : '',
-                state.isFocus ? 'focus' : ''
-            ]
-        );
-
         return floatingLabel
-            ? (
-                <label
-                    onClick={this.onClick}
-                    className={className}>
-                    {floatingLabel}
-                </label>
-            )
+            ? <FloatingLabel
+                states={{floating: state.isFloating, focus: state.isFocus}}
+                label={floatingLabel} />
             : null;
 
-    },
+    }
 
-    onFocus: function (e) {
+    onFocus(e) {
 
         e = {type: 'focus', target: this};
 
@@ -122,7 +113,7 @@ var TextBox = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onFocus(e);
+            form.onStartEdit(e);
         }
 
         this.setState({
@@ -130,9 +121,9 @@ var TextBox = React.createClass({
             isFloating: true
         });
 
-    },
+    }
 
-    onBlur: function (e) {
+    onBlur(e) {
 
         e = {type: 'blur', target: this};
 
@@ -145,7 +136,7 @@ var TextBox = React.createClass({
         var form = this.context.form;
 
         if (form) {
-            form.onBlur(e);
+            form.onFinishEdit(e);
         }
 
         this.setState({
@@ -153,37 +144,35 @@ var TextBox = React.createClass({
             isFocus: false
         });
 
-    },
+    }
 
-    onChange: function (e) {
+    onChange(e) {
 
         var value = e.target.value;
 
         e = {type: 'change', target: this, value};
 
-        // 如果被控制了，那么就交给控制者管理
-        if (this.isControlled()) {
-            this.props.onChange(e);
-        }
-        // 如果没有被控制，那么数据自行使用状态管理
-        // 这时多行文本框需要自行更新高度
-        else {
-
-            this.setState({value});
-
-            if (this.props.multiline) {
-                this.syncTextareaHeight();
-            }
-
-        }
-
         var form = this.context.form;
 
         if (form) {
-            form.onChange(e);
+            form.onEdit(e);
         }
 
-    },
+        // 如果被控制了，那么就交给控制者管理
+        if (this.isControlled()) {
+            this.props.onChange(e);
+            return;
+        }
+
+        // 如果没有被控制，那么数据自行使用状态管理
+        // 这时多行文本框需要自行更新高度
+        this.setState({value});
+
+        if (this.props.multiline) {
+            this.syncTextareaHeight();
+        }
+
+    }
 
     componentWillReceiveProps(nextProps) {
 
@@ -195,22 +184,22 @@ var TextBox = React.createClass({
             syncTextareaHeight();
         }
 
-    },
+    }
 
     getValue() {
         return this.isControlled() ? this.props.value : this.state.value;
-    },
+    }
 
-    syncTextareaHeight: function () {
+    syncTextareaHeight() {
         var dom = this.refs.input;
         dom.style.height = 'auto';
         dom.style.height = dom.scrollHeight + 'px';
     }
 
 
-});
+}
 
-TextBox = require('./common/util/createControl')(TextBox);
+var PropTypes = React.PropTypes;
 
 TextBox.propTypes = {
     value: PropTypes.string,
