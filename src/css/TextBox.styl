@@ -18,6 +18,9 @@
     &.state-focus
         border-bottom-color: $-melon-colors.blue500
 
+    &.state-invalid
+        border-bottom-color: $-melon-colors.red500
+
     &.state-disabled
         border-bottom-style: dotted
         .{$-melon-class-prefix}-textbox-input
@@ -99,3 +102,15 @@
 
     &-suffix
         margin-left: 0.5em
+
+    &-validate-message
+        position: absolute
+        left: 0
+        top: 100%
+        width: 100%
+        font-size: 14px
+        line-height: 24px
+
+    &.state-invalid &-validate-message
+        color: $-melon-colors.red500
+

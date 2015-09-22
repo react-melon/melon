@@ -7,45 +7,50 @@
 var React = require('react');
 var Icon  = require('./Icon.jsx');
 
-var Component = require('./Component.jsx');
+var InputComponent = require('./InputComponent.jsx');
 
-class Toggle extends Component {
+class Toggle extends InputComponent {
 
     constructor(props) {
 
         super(props);
+        this.onChange = this.onChange.bind(this);
 
-        this.state = this.isControlled()
-            ? {}
-            : {checked: this.props.defaultChecked};
-
-    }
-
-    componentDidMount() {
-        var form = this.context.form;
-        if (form) {
-            form.attach(this);
+        if (!this.isControlled()) {
+            this.state = {
+                ...this.state,
+                checked: props.checked
+            };
         }
+
     }
 
-    componentWillUnmount() {
-        var form = this.context.form;
-        if (form) {
-            form.detach(this);
+    /**
+     * 属性变化处理
+     *
+     * 这里重写的原因是 toggle 使用 checked 进行值标识，checked 的使用与 rawValue 是一致的。
+     *
+     * @param {Object} props 新属性
+     * @override
+     */
+    componentWillReceiveProps(props) {
+
+        var checked = props.checked;
+
+        // 如果 checked 未发生变化，
+        // 或者控制是非控制的，这种情况下控制自行控制 checked
+        // 那么就再见了
+        if (this.props.checked === checked || !this.isControlled()) {
+            return;
         }
-    }
 
-    contextTypes: {
-        form: PropTypes.object
-    }
+        var rawValue = checked ? props.value : '';
+        var value = this.stringifyValue(rawValue);
+        var validity = this.checkValidity(value);
 
-    isControlled() {
-        var props = this.props;
-        return props.disabled || props.readOnly || props.checked != null && !!props.onChange;
-    }
+        this.setState({checked});
+        this.showValidity(validity);
 
-    getValue() {
-        return this.isChecked() ? this.props.value || 'on' : '';
     }
 
     render() {
@@ -59,16 +64,26 @@ class Toggle extends Component {
                     type="checkbox"
                     name={props.name}
                     value={props.value}
-                    onChange={this.onChange.bind(this)}
+                    onChange={this.onChange}
                     checked={isChecked} />
                 {this.renderBar()}
+                {this.renderValidateMessage()}
             </label>
         );
 
     }
 
+    getValue() {
+        return this.isChecked() ? this.props.value || '' : this.state.value;
+    }
+
     isChecked() {
         return this.isControlled() ? this.props.checked : this.state.checked;
+    }
+
+    isControlled() {
+        var props = this.props;
+        return props.disabled || props.readOnly || props.checked != null && props.onChange;
     }
 
     onChange(e) {
@@ -81,13 +96,13 @@ class Toggle extends Component {
 
         var isChecked = e.target.checked;
 
-        e = {type: 'change', target: this, value: isChecked ? this.props.value || 'on' : ''};
+        e = {
+            type: 'change',
+            target: this,
+            value: isChecked ? this.props.value || 'on' : ''
+        };
 
-        var form = this.context.form;
-
-        if (form) {
-            form.onFinishEdit(e);
-        }
+        super.onChange(e);
 
         if (this.isControlled()) {
             this.props.onChange(e);
@@ -127,6 +142,13 @@ class Toggle extends Component {
     }
 
 }
+
+Toggle.defaultProps = {
+    ...InputComponent.defaultProps,
+    value: 'on',
+    checked: false,
+    validateEvents: ['change']
+};
 
 var PropTypes = React.PropTypes;
 

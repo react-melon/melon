@@ -6,22 +6,16 @@
 
 var React = require('react');
 var Option = require('./boxgroup/Option.jsx');
-var Component = require('./Component.jsx');
+var InputComponent = require('./InputComponent.jsx');
 
-class BoxGroup extends Component {
+class BoxGroup extends InputComponent {
 
     constructor(props) {
         super(props);
-        this.state = this.isControlled()
-            ? null
-            : {value: this.props.value || this.props.defaultValue};
+        this.onChange = this.onChange.bind(this);
     }
 
-    contextTypes: {
-        form: PropTypes.object
-    }
-
-    getValue() {
+    getRawValue() {
 
         var props = this.props;
 
@@ -29,7 +23,7 @@ class BoxGroup extends Component {
             return [];
         }
 
-        var value = this.isControlled() ? props.value : this.state.value;
+        var value = super.getRawValue();
         var children = React.Children.toArray(props.children);
 
         // 要过滤掉被禁用的项
@@ -52,6 +46,14 @@ class BoxGroup extends Component {
         );
     }
 
+    getValue() {
+        return this.getRawValue().join(',');
+    }
+
+    parseValue(value) {
+        return value ? value.split(',') : [];
+    }
+
     isControlled() {
         var props = this.props;
         return this.props.disabled || props.readOnly || props.value && props.onChange;
@@ -64,6 +66,7 @@ class BoxGroup extends Component {
         return (
             <div className={this.getClassName()}>
                 {React.Children.map(props.children, this.renderOption, this)}
+                {this.renderValidateMessage()}
             </div>
         );
 
@@ -88,47 +91,43 @@ class BoxGroup extends Component {
                 checked={this.isOptionChecked(value)}
                 name={props.name}
                 disabled={disabled}
-                onChange={this.onChange.bind(this)} />
+                onChange={this.onChange} />
         );
 
     }
 
     isOptionChecked(value) {
-        var currentValue = this.getValue();
+        var currentValue = this.getRawValue();
         return currentValue.indexOf(value) !== -1;
     }
 
     onChange(e) {
 
         var optionValue = e.target.value;
-        var value = this.getValue();
+        var rawValue = this.getRawValue();
 
         // 计算 radio 的值
         if (this.props.boxModel === 'radio') {
-            value = [optionValue];
+            rawValue = [optionValue];
         }
         // 计算 checkbox 的值
         else {
 
-            var index = value.indexOf(optionValue);
+            var index = rawValue.indexOf(optionValue);
 
             if (index === -1) {
-                value = value.concat(optionValue);
+                rawValue = rawValue.concat(optionValue);
             }
             else {
-                value = value.slice(0, index).concat(value.slice(index + 1));
+                rawValue = rawValue.slice(0, index).concat(rawValue.slice(index + 1));
             }
 
         }
 
         // 生成事件对象
-        e = {type: 'change', target: this, value};
+        e = {type: 'change', target: this, value: this.stringifyValue(rawValue), rawValue};
 
-        var form = this.context.form;
-
-        if (form) {
-            form.onFinishEdit(e);
-        }
+        super.onChange(e);
 
         // 如果是被控制了的，那么直接交给控制者来搞
         if (this.isControlled()) {
@@ -138,7 +137,7 @@ class BoxGroup extends Component {
 
         // 否则，更新自己的状态
         this.setState({
-            value: value
+            rawValue: rawValue
         }, function () {
             var onChange = this.props.onChange;
             if (onChange) {
@@ -157,14 +156,16 @@ BoxGroup.propTypes = {
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
     onChange: PropTypes.func,
     defaultValue: PropTypes.arrayOf(PropTypes.string),
-    value: PropTypes.arrayOf(PropTypes.string),
+    rawValue: PropTypes.arrayOf(PropTypes.string),
+    value: PropTypes.string,
     name: PropTypes.string,
     children: PropTypes.node.isRequired
 };
 
 BoxGroup.defaultProps = {
     disabled: false,
-    value: []
+    value: '',
+    validateEvents: ['change']
 };
 
 BoxGroup.createOptions = function (datasource) {

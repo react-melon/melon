@@ -4,42 +4,24 @@
  */
 
 var React = require('react');
-var u = require('underscore');
 var cx = require('./common/util/classname');
 var dom = require('./common/util/dom');
 var Icon = require('./Icon.jsx');
 
-var Component = require('./Component.jsx');
+var InputComponent = require('./InputComponent.jsx');
 
-class Select extends Component {
-
-    contextTypes: {
-        form: PropTypes.object
-    }
+class Select extends InputComponent {
 
     constructor(props) {
 
         super(props);
 
-        var state = {
+        this.state = {
+            ...this.state,
             isOpen: props.isOpen
         };
 
-        if (!this.isControlled()) {
-            state.value = this.props.value || this.props.defaultValue;
-        }
-
-        this.state = state;
-
-    }
-
-    getValue() {
-        return this.isControlled() ? this.props.value : this.state.value;
-    }
-
-    isControlled() {
-        var props = this.props;
-        return this.props.disabled || props.readOnly || props.value && props.onChange;
+        this.onClick = this.onClick.bind(this);
     }
 
     render() {
@@ -49,16 +31,19 @@ class Select extends Component {
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
                 {this.renderPopup()}
+                {this.renderValidateMessage()}
             </div>
         );
     }
 
     componentDidMount() {
-        dom.on(document.body, 'click', this.onClick.bind(this));
+        super.componentDidMount();
+        dom.on(document.body, 'click', this.onClick);
     }
 
     componentWillUnmount() {
-        dom.off(document.body, 'click', this.onClick.bind(this));
+        super.componentWillUnmount();
+        dom.off(document.body, 'click', this.onClick);
     }
 
     onClick(e) {
@@ -77,9 +62,9 @@ class Select extends Component {
 
         // 点击不在 select内部，那么就把 select 收起
         if (main !== target && !dom.contains(main, target)) {
-            this.setState({
-                isOpen: false
-            });
+            if (this.state.isOpen) {
+                this.hideOptions();
+            }
             return;
         }
 
@@ -113,16 +98,23 @@ class Select extends Component {
 
 
         // 取值
-        var value = target.getAttribute('data-value');
+        var rawValue = target.getAttribute('data-value');
 
         // 值未发生变化，收起
-        if (value === this.state.value) {
+        if (rawValue === this.state.rawValue) {
             this.hideOptions();
             return;
         }
 
         // 生成事件
-        var e = {type: 'change', target: this, value};
+        var e = {
+            type: 'change',
+            target: this,
+            value: this.stringifyValue(rawValue),
+            rawValue
+        };
+
+        super.onChange(e);
 
         // 被控制的状态，交给控制者处理
         if (this.isControlled()) {
@@ -133,16 +125,13 @@ class Select extends Component {
 
         // 展开并更新值
         this.setState({
-            value: value
+            rawValue
         }, function () {
 
             var onChange = this.props.onChange;
 
             if (onChange) {
-                onChange({
-                    target: this,
-                    value: value
-                });
+                onChange(e);
             }
 
         });
@@ -200,15 +189,17 @@ class Select extends Component {
 
         var disabled = props.disabled;
 
-        var className = cx.create({
-            'ui-select-group': true,
-            'state-disabled': disabled
-        });
+        var className = cx.create(
+            this.getPartClassName('group'),
+            {
+                disabled: disabled
+            }
+        );
 
         return (
             <div className={className}>
-                <h4 className="ui-select-group-title">{props.label}</h4>
-                <div className="ui-select-group-list">
+                <h4 className={this.getPartClassName('group-title')}>{props.label}</h4>
+                <div className={this.getPartClassName('group-list')}>
                     {React.Children.map(
                         props.children,
                         function (child, index) {
@@ -229,11 +220,13 @@ class Select extends Component {
 
         var disabled = isGroupDisabled || props.disabled;
 
-        var clazz = cx.create({
-            'ui-select-option': true,
-            'state-selected': this.state.value === value,
-            'state-disabled': disabled
-        });
+        var clazz = cx.create(
+            this.getPartClassName('option'),
+            this.getStateClasses({
+                selected: this.state.rawValue === value,
+                disabled: disabled
+            })
+        );
 
         return (
             <div className={clazz}
@@ -251,7 +244,7 @@ class Select extends Component {
     renderHiddenInput() {
         var name = this.props.name;
         return name
-            ? (<input name={name} type="hidden" value={this.state.value} />)
+            ? (<input name={name} type="hidden" value={this.state.rawValue} />)
             : null;
     }
 
@@ -265,7 +258,7 @@ class Select extends Component {
 
         var props = this.props;
 
-        var option = this.findOption(this.state.value, props.children);
+        var option = this.findOption(this.getRawValue(), props.children);
 
         var label = option
             ? (option.props.label || option.props.children)
@@ -318,12 +311,6 @@ class Select extends Component {
             isOpen: true
         });
 
-        var form = this.context.form;
-
-        if (form) {
-            form.onStartEdit({type: 'focus', target: this});
-        }
-
     }
 
     hideOptions() {
@@ -332,17 +319,15 @@ class Select extends Component {
             isOpen: false
         });
 
-        var form = this.context.form;
-
-        if (form) {
-            form.onFinishEdit({type: 'blur', target: this});
-        }
+        super.onBlur({type: 'blur', target: this});
 
     }
 
 }
 
 Select.defaultProps = {
+    ...InputComponent.defaultProps,
+    validateEvents: ['change'],
     placeholder: '请选择'
 };
 
@@ -353,6 +338,7 @@ Select.propTypes = {
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
     name: PropTypes.string,
+    rawValue: PropTypes.string,
     value: PropTypes.string,
     defaultValue: PropTypes.string,
     placeholder: PropTypes.string,
