@@ -50,6 +50,14 @@ exports.getScrollTop = function () {
     return window.pageYOffset || getCompatElement().scrollTop;
 };
 
+exports.getClientHeight = function () {
+    return getCompatElement().clientHeight;
+};
+
+exports.getClientWidth = function () {
+    return getCompatElement().clientWidth;
+};
+
 exports.getPosition = function (element) {
 
     var bound = element.getBoundingClientRect();
