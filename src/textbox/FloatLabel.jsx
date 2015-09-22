@@ -14,11 +14,18 @@ class TextBoxFloatingLabel extends Component {
 
         return (
             <label
-                onClick={props.onClick}
                 className={this.getClassName()}>
                 {props.label}
             </label>
         );
+
+    }
+
+    getStates(props) {
+        var states = super.getStates(props);
+        states.floating = props.floating;
+        states.focus = props.focused;
+        return states;
     }
 
 }
@@ -26,8 +33,8 @@ class TextBoxFloatingLabel extends Component {
 var PropTypes = React.PropTypes;
 
 TextBoxFloatingLabel.propTypes = {
-    onClick: PropTypes.func,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    floating: PropTypes.bool.isRequired
 };
 
 module.exports = TextBoxFloatingLabel;

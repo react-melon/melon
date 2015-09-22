@@ -2,6 +2,7 @@
 
 .{$-melon-class-prefix}-boxgroup
 
+    position: relative
     display: inline-block
     width: 100%
 
@@ -31,3 +32,8 @@
         &.state-disabled
             color: rgba($-melon-colors.black, .26)
             cursor: not-allowed
+
+    &.state-invalid &option .ui-icon
+        color: $-melon-colors.red500
+
+

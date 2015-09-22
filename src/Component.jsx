@@ -41,8 +41,8 @@ class Component extends React.Component {
         return cx.create(
             this.props.className,
             this.getPartClassName(),
-            this.getVariantClasses(props, props.variants),
-            this.getStateClasses(props, props.states)
+            this.getVariantClasses(props.variants),
+            this.getStateClasses(props.states)
         );
     }
 
@@ -56,13 +56,22 @@ class Component extends React.Component {
 
     }
 
-    getVariantClasses(props = {}, variants = []) {
+    getVariants(props) {
 
-        var size = props.size;
+        let variants = props.variants ? props.variants.slice() : [];
 
-        if (size in config.COMPONENT_SIZES) {
+        let size = props.size;
+
+        if (config.COMPONENT_SIZES.indexOf(size) !== -1) {
             variants.push('size-' + size);
         }
+
+        return variants;
+    }
+
+    getVariantClasses(variants = []) {
+
+        variants = this.getVariants(this.props).concat(variants);
 
         return variants
             .map(function (variant) {
@@ -75,15 +84,27 @@ class Component extends React.Component {
         return this.getVariantClasses(props, variants).join(' ');
     }
 
-    getStateClasses(props = {}, states = {}) {
+    getStates(props) {
+
+        var states = {};
+
+        if (props.hidden) {
+            states.hidden = true;
+        }
 
         if (props.disabled) {
-            states.disabled = props.disabled;
+            states.disabled = true;
         }
 
-        if (props.readOnly) {
-            states.readOnly = props.readOnly;
-        }
+        return states;
+    }
+
+    getStateClasses(states = {}) {
+
+        states = {
+            ...this.getStates(this.props),
+            ...states
+        };
 
         return Object.keys(states)
             .reduce(
