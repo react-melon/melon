@@ -5,9 +5,7 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var WindowListenable = require('./mixins/window-listenable');
 var Mask = require('./Mask.jsx');
-var cx = require('./common/util/classname');
 var _  = require('underscore');
 
 var WindowResizeAware = require('./dialog/WindowResizeAware.jsx');
