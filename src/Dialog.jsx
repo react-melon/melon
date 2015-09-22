@@ -5,53 +5,30 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var createControl = require('./common/util/createControl');
 var WindowListenable = require('./mixins/window-listenable');
 var Mask = require('./Mask.jsx');
 var cx = require('./common/util/classname');
 var _  = require('underscore');
 
-var Dialog = React.createClass({
+var WindowResizeAware = require('./dialog/WindowResizeAware.jsx');
 
-    mixins: [WindowListenable],
+class Dialog extends WindowResizeAware {
 
-    originalHTMLBodySize: {},
-
-    statics: {
-        type: 'Dialog'
-    },
-
-    propTypes: {
-        actions: React.PropTypes.array,
-        maskClickClose: React.PropTypes.bool,
-        isOpen: React.PropTypes.bool,
-        onHide: React.PropTypes.func,
-        onShow: React.PropTypes.func,
-        title: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element
-        ])
-    },
-
-    windowListeners: {
-        resize: 'positionDialog'
-    },
-
-    getInitialState: function () {
-        return {
+    constructor(props) {
+        super(props);
+        this.originalHTMLBodySize = {};
+        this.state = {
             isOpen: this.props.isOpen || false,
         };
-    },
-
-    getDefaultProps: function () {
-        return {
-            maskClickClose: true
-        };
-    },
-
-    componentDidMount: function () {
-        this.positionDialog();
         this.positionDialog = _.throttle.call(this, this.positionDialog, 50);
+        this.handleMaskClick = this.handleMaskClick.bind(this);
+        this.onShow = this.onShow.bind(this);
+        this.onHide = this.onHide.bind(this);
+    }
+
+    componentDidMount() {
+
+        this.positionDialog();
 
         _.each(['html', 'body'], function (name) {
             var ele = document.getElementsByTagName(name)[0];
@@ -60,13 +37,14 @@ var Dialog = React.createClass({
                 height: ele.style.height
             };
         }, this);
-    },
 
-    componentDidUpdate: function () {
+    }
+
+    componentDidUpdate() {
         this.positionDialog();
-    },
+    }
 
-    componentWillReceiveProps: function (nextProps) {
+    componentWillReceiveProps(nextProps) {
 
         var isOpen = nextProps.isOpen;
 
@@ -76,36 +54,40 @@ var Dialog = React.createClass({
 
         var onEvent = isOpen ? this.onShow : this.onHide;
         this.setState({ isOpen: isOpen }, onEvent);
-    },
 
-    positionDialog: function () {
+    }
 
-        if (this.state.isOpen) {
-            var container = ReactDOM.findDOMNode(this);
-            var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            var dialogWindow = this.refs.dialogWindow;
-            var minTop = 16;
+    positionDialog() {
 
-            dialogWindow.style.height = '';
-
-            var dialogWindowHeight = dialogWindow.offsetHeight;
-            var top = ((clientHeight - dialogWindowHeight) / 2) - 30;
-
-            top = Math.max(top, minTop);
-
-            // Vertically center the dialog window, but make sure it doesn't
-            // transition to that position.
-            if (!dialogWindow.style.top) {
-                dialogWindow.style.top = top + 'px';
-            }
-
-            dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
-
-            container.style.left = 0;
+        if (!this.state.isOpen) {
+            return;
         }
-    },
 
-    bodyScrolling: function () {
+        var container = ReactDOM.findDOMNode(this);
+        var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var dialogWindow = this.refs.dialogWindow;
+        var minTop = 16;
+
+        dialogWindow.style.height = '';
+
+        var dialogWindowHeight = dialogWindow.offsetHeight;
+        var top = ((clientHeight - dialogWindowHeight) / 2) - 30;
+
+        top = Math.max(top, minTop);
+
+        // Vertically center the dialog window, but make sure it doesn't
+        // transition to that position.
+        if (!dialogWindow.style.top) {
+            dialogWindow.style.top = top + 'px';
+        }
+
+        dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+
+        container.style.left = 0;
+
+    }
+
+    bodyScrolling() {
         var show = this.state.isOpen;
         _.each(['html', 'body'], function (name) {
             var ele = document.getElementsByTagName(name)[0];
@@ -116,25 +98,25 @@ var Dialog = React.createClass({
                 ele.style.overflowY = show ? 'hidden' : '';
             }
         }, this);
-    },
+    }
 
-    handleMaskClick: function (e) {
+    handleMaskClick(e) {
         if (this.props.maskClickClose) {
             this.setState({ isOpen: false }, this.onHide);
         }
         else {
             e.stopPropagation();
         }
-    },
+    }
 
-    onShow: function () {
+    onShow() {
         this.bodyScrolling();
         if (_.isFunction(this.props.onShow)) {
             this.props.onShow();
         }
-    },
+    }
 
-    onHide: function () {
+    onHide() {
         this.bodyScrolling();
         if (_.isFunction(this.props.onHide)) {
             this.props.onHide();
@@ -146,49 +128,28 @@ var Dialog = React.createClass({
         setTimeout(function () {
             container.style.left = '-10000px';
         }, 200);
-    },
+    }
 
-    getTitle: function () {
-        var title = this.props.title;
+    getStates(props) {
+        var states = super.getStates(props);
+        states.open = this.state.isOpen;
+        return states;
+    }
 
-        var classname = cx.createComponentClass('dialog-title');
-
-        return title ? <h1 className={classname} key="title">{title}</h1> : null;
-    },
-
-    getAction: function () {
-        var actions = this.props.actions;
-
-        var classname = cx.createComponentClass('dialog-actions');
-
-        return actions ? (
-            <div ref="dialogActions" className={classname} key="actions">
-                {actions}
-            </div>
-        ) : null;
-    },
-
-    render: function() {
+    render() {
 
         var props = this.props;
 
         var isOpen = this.state.isOpen;
 
-        var bodyClassName = cx.createComponentClass('dialog-body');
-        var windowClassName = cx.createComponentClass('dialog-window');
-
-        var className = cx.createComponentClass('dialog', props.variants, {open: isOpen});
-
         return (
-            <div {...props} className={className}>
-                <div className={windowClassName} ref="dialogWindow">
-                    {[
-                        this.getTitle(),
-                        <div ref="dialogContent" className={bodyClassName} key="body">
-                            {props.children}
-                        </div>,
-                        this.getAction()
-                    ]}
+            <div {...props} className={this.getClassName()}>
+                <div ref="dialogWindow" className={this.getPartClassName('window')} >
+                    {this.renderTitle()}
+                    <div ref="dialogContent" className={this.getPartClassName('body')}>
+                        {props.children}
+                    </div>
+                    {this.renderAction()}
                 </div>
                 <Mask
                   ref="dialogMask"
@@ -200,6 +161,42 @@ var Dialog = React.createClass({
 
     }
 
-});
+    renderTitle() {
+        var title = this.props.title;
+        return title
+            ? <h1 className={this.getPartClassName('title')}>{title}</h1>
+            : null;
+    }
 
-module.exports = createControl(Dialog);
+    renderAction() {
+        var actions = this.props.actions;
+        return actions
+            ? (
+                <div ref="dialogActions"
+                    className={this.getPartClassName('actions')}>
+                    {actions}
+                </div>
+            )
+            : null;
+    }
+
+}
+
+Dialog.propTypes = {
+    actions: React.PropTypes.array,
+    maskClickClose: React.PropTypes.bool,
+    isOpen: React.PropTypes.bool,
+    onHide: React.PropTypes.func,
+    onShow: React.PropTypes.func,
+    title: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.element
+    ])
+};
+
+Dialog.defaultProps = {
+    ...WindowResizeAware.defaultProps,
+    maskClickClose: true
+};
+
+module.exports = Dialog;
