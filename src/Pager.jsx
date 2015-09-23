@@ -5,108 +5,95 @@
 
 var React = require('react');
 var _     = require('underscore');
-var cx    = require('./common/util/classname');
 var Icon  = require('./Icon.jsx');
 var Waves = require('./common/util/waves');
+var cx    = require('./common/util/classname');
+
 var ReactDOM = require('react-dom');
-
-var ICONS = {
-    prev: 'navigate-before',
-    next: 'navigate-next',
-    ellipsis: 'keyboard-control'
-};
-
-var Pager = React.createClass({
-
-    statics: {
-        type: 'Pager'
-    },
-
-    propTypes: {
-        disabled: React.PropTypes.bool,
-        type: React.PropTypes.string,
-        page: React.PropTypes.number,
-        first: React.PropTypes.number,
-        padding: React.PropTypes.number,
-        showAlways: React.PropTypes.bool,
-        showCount: React.PropTypes.number,
-        total: React.PropTypes.number,
-        useLang: React.PropTypes.bool,
-        lang: React.PropTypes.shape({
-            prev: React.PropTypes.string,
-            ellipsis: React.PropTypes.string,
-            next: React.PropTypes.string
-        })
-    },
+var MainClickAware = require('./MainClickAware.jsx');
 
 
-    getDefaultProps: function () {
+class Pager extends MainClickAware {
 
-        return {
-            // 当前页，第一页从0开始
-            page: 0,
+    constructor(props) {
+        super(props);
 
-            // 起始页码
-            first: 0,
-
-            // 首尾显示的页码个数
-            padding: 1,
-
-            // 是否一直显示分页控件
-            showAlways: false,
-
-            // 当页数较多时，中间显示页码的个数
-            showCount: 5,
-
-            // 总页数
-            total: 0,
-
-            // 是否可用
-            disabled: false,
-
-            useLang: false,
-
-            // 上下页显示文字
-            lang: {
-
-                // 上一页显示文字
-                prev: '上一页',
-
-                // 下一页显示文字
-                next: '下一页',
-
-                // 省略号
-                ellipsis: '..'
-            }
+        this.state = {
+            page: this.props.page || 0
         };
-    },
+    }
 
+    componentDidMount() {
+        super.componentDidMount();
 
-    getInitialState: function (){
-
-        var initialPage = this.props.page || 0;
-
-        return {
-            page: initialPage
-        };
-    },
-
-    componentDidMount: function () {
         var main = ReactDOM.findDOMNode(this);
-
         Waves.attach(main.querySelectorAll('.ui-pager-item'), ['waves-circle', 'waves-light']);
         Waves.init();
-    },
+    }
 
-    render: function() {
+    onMainClick(e) {
+
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+
+        var role = target.getAttribute('data-role');
+
+        if (role !== 'pager-item') {
+            return;
+        }
+
+        console.log(target);
+
+        var page = target.getAttribute('data-page') - 0;
+
+        if (this.state.page === page) {
+            return;
+        }
+
+        this.setState({page: page}, function () {
+            var onChange = this.props.onChange;
+
+            _.isFunction(onChange) && onChange({
+                target: this,
+                page: page
+            });
+        });
+
+    }
+
+    /**
+     * 生成一个页码数组, 如果需要ellipsis, 那么ellpsis用负数表示它;
+     * 即ellipsis在5号位置, 那么他就是-5
+     * 输入: start 0, stop 10, paddingLeft 3 paddingRight 3
+     * 输出: 0, 1, 2, -3, 8, 9, 10
+     * @param  {number} start        起始页码
+     * @param  {number} stop         结束页面(不包含)
+     * @param  {number} paddingLeft  起始页码之后, 应展开的页码个数
+     * @param  {number} paddingRight 结束页面之前, 应展开的页码个数
+     * @return {Array.number}        [start, paddingLeft, .., paddingRight, stop]
+     */
+    range(start, stop, paddingLeft, paddingRight) {
+
+        return start + paddingLeft < stop - paddingRight
+            ? _
+                .range(start, start + paddingLeft)
+                .concat(-start - paddingLeft)
+                .concat(_.range(stop - paddingRight, stop))
+            : _.range(start, stop);
+    }
+
+    render() {
 
         var props = this.props;
 
-        var total = props.total;
-        var first = props.first;
-        var padding = props.padding;
-        var showCount = props.showCount;
-        var lang = props.lang;
+        var {
+            total,
+            first,
+            padding,
+            showCount,
+            lang
+        } = props;
+
         var page = this.state.page;
 
         showCount = showCount > total ? total : showCount;
@@ -184,34 +171,14 @@ var Pager = React.createClass({
         delete propTemp.lang;
 
         return (
-            <ul {...propTemp}>
+            <ul {...propTemp} className={this.getClassName()}>
                 {result}
             </ul>
         );
 
-    },
+    }
 
-    handleOnClick: function (item, e) {
-        e.preventDefault();
-
-        var page = item.props.pageIndex;
-
-        if (this.state.page === page) {
-            return;
-        }
-
-        this.setState({page: page}, function () {
-            var onChange = this.props.onChange;
-
-            _.isFunction(onChange) && onChange({
-                target: this,
-                page: page
-            });
-        });
-
-    },
-
-    renderItem: function (conf) {
+    renderItem(conf) {
         var page = conf.page;
         var part = conf.part;
 
@@ -220,67 +187,97 @@ var Pager = React.createClass({
         var anchor = props.anchor;
         var useLang = props.useLang;
 
-        var classNames = cx.createComponentClass(
-            'pager-item',
-            [],
-            conf.states
+        var classNames = cx.create(
+            cx.createPrimaryClass('pager-item'),
+            cx.createStateClass(conf.states)
         );
         classNames += ' waves-effect waves-circle waves-light'
         var pageText;
 
         if (!useLang && part) {
-            pageText = (<Icon icon={ICONS[part]} />);
+            pageText = (<Icon icon={Pager.ICONS[part]} />);
         }
         else {
             var lang = props.lang;
-            pageText = lang[part] || page + 1;
+            pageText = lang[part] || page + props.first;
         }
 
-        var children = (
-            <a href="!#">
-                {pageText}
-            </a>
+        return (
+            <li className={classNames}
+                key={part + page}
+                data-role="pager-item"
+                data-page={page}>
+                <a href="#">
+                    {pageText}
+                </a>
+            </li>
         );
-
-        var item = React.createElement(
-            'li',
-            {
-                className: classNames,
-                key: part + page,
-                pageIndex: page
-            },
-            children
-        );
-        item = React.cloneElement(item, {
-                onClick: this.handleOnClick.bind(this, item)
-            }
-        );
-
-        return item;
-    },
-
-    /**
-     * 生成一个页码数组, 如果需要ellipsis, 那么ellpsis用负数表示它;
-     * 即ellipsis在5号位置, 那么他就是-5
-     * 输入: start 0, stop 10, paddingLeft 3 paddingRight 3
-     * 输出: 0, 1, 2, -3, 8, 9, 10
-     * @param  {number} start        起始页码
-     * @param  {number} stop         结束页面(不包含)
-     * @param  {number} paddingLeft  起始页码之后, 应展开的页码个数
-     * @param  {number} paddingRight 结束页面之前, 应展开的页码个数
-     * @return {Array.number}        [start, paddingLeft, .., paddingRight, stop]
-     */
-    range: function (start, stop, paddingLeft, paddingRight) {
-        var first = this.props.first;
-
-        return start + paddingLeft < stop - paddingRight
-            ? _
-                .range(start, start + paddingLeft)
-                .concat(-start - paddingLeft)
-                .concat(_.range(stop - paddingRight, stop))
-            : _.range(start, stop);
     }
 
-});
+}
 
-module.exports = require('./common/util/createControl')(Pager);
+Pager.defaultProps = {
+
+    ...MainClickAware.defaultProps,
+
+    // 当前页，第一页从0开始
+    page: 0,
+
+    // 起始页码
+    first: 1,
+
+    // 首尾显示的页码个数
+    padding: 1,
+
+    // 是否一直显示分页控件
+    showAlways: false,
+
+    // 当页数较多时，中间显示页码的个数
+    showCount: 5,
+
+    // 总页数
+    total: 0,
+
+    // 是否可用
+    disabled: false,
+
+    useLang: false,
+
+    // 上下页显示文字
+    lang: {
+
+        // 上一页显示文字
+        prev: '上一页',
+
+        // 下一页显示文字
+        next: '下一页',
+
+        // 省略号
+        ellipsis: '..'
+    }
+};
+
+Pager.propTypes = {
+    disabled: React.PropTypes.bool,
+    type: React.PropTypes.string,
+    page: React.PropTypes.number,
+    first: React.PropTypes.number,
+    padding: React.PropTypes.number,
+    showAlways: React.PropTypes.bool,
+    showCount: React.PropTypes.number,
+    total: React.PropTypes.number,
+    useLang: React.PropTypes.bool,
+    lang: React.PropTypes.shape({
+        prev: React.PropTypes.string,
+        ellipsis: React.PropTypes.string,
+        next: React.PropTypes.string
+    })
+};
+
+Pager.ICONS = {
+    prev: 'navigate-before',
+    next: 'navigate-next',
+    ellipsis: 'keyboard-control'
+};
+
+module.exports = Pager;

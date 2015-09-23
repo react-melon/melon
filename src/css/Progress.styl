@@ -21,32 +21,18 @@ $-melon-progress-circle = {
     font-size: $-melon-medium-font-size
 }
 
-$-melon-progress-circle-wapper = {
-    width: 50px
-    height: 50px
-    margin: 0.3125em
-    display: inline-block
-    transition: 20s transform linear 0ms
-}
 
-$-melon-progress-circle-svg = {
-    width: 50px
-    height: 50px
-    position: relative
-}
-
-
-.{$-melon-class-prefix}-progress-linear
+.{$-melon-class-prefix}-progress.variant-linear
 
     {$-melon-progress-linear}
 
-    .{$-melon-class-prefix}-progress-determinate-bar
+    &.variant-determinate .{$-melon-class-prefix}-progress-bar
 
         height: 100%
         transition: width 0.3s linear 0ms
         background-color: $-melon-colors.cyan500
 
-    .{$-melon-class-prefix}-progress-indeterminate-bar
+    &.variant-indeterminate .{$-melon-class-prefix}-progress-bar
 
         height: 100%
 
@@ -68,23 +54,29 @@ $-melon-progress-circle-svg = {
             transition: all 840ms cubic-bezier(0.165, 0.840, 0.440, 1.000)
 
 
-.{$-melon-class-prefix}-progress-circle
+.{$-melon-class-prefix}-progress.variant-circle
 
     {$-melon-progress-circle}
 
-.{$-melon-class-prefix}-progress
+    .{$-melon-class-prefix}-progress
 
-    &-wapper
+        &-wapper
 
-        {$-melon-progress-circle-wapper}
+            width: 50px
+            height: 50px
+            margin: 0.3125em
+            display: inline-block
+            transition: 20s transform linear 0ms
 
-    &-svg
+        &-svg
 
-        {$-melon-progress-circle-svg}
+            width: 50px
+            height: 50px
+            position: relative
 
-    &-path
+        &-path
 
-        stroke: $-melon-colors.cyan500
-        stroke-dashoffset: 0
-        stroke-linecap: round
-        transition: all 0.3s linear 0ms
+            stroke: $-melon-colors.cyan500
+            stroke-dashoffset: 0
+            stroke-linecap: round
+            transition: all 0.3s linear 0ms

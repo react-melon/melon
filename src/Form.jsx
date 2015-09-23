@@ -8,8 +8,8 @@ var React = require('react');
 var Component = require('./Component.jsx');
 
 var FormData = require('./form/FormData');
-var Validator = require('./form/Validator.jsx');
-var ValidityState = require('./form/ValidityState');
+var Validator = require('./Validator.jsx');
+var ValidityState = require('./validator/ValidityState');
 
 class Form extends Component {
 

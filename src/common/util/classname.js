@@ -14,7 +14,7 @@ exports.createVariantClass = function (variants) {
     return []
         .concat(variants)
         .map(function (variant) {
-            return config.variantPrefix + '-' + variant;
+            return config.COMPONENT_VARIANT_PREFIX + '-' + variant;
         })
         .join(' ');
 
@@ -72,7 +72,7 @@ exports.createComponentClass = function (type, variants, states) {
 };
 
 exports.createPrimaryClass = function (type) {
-    return config.uiClassPrefix + '-' + classNames(type)[0].toLowerCase();
+    return config.COMPONENT_CLASS_PREFIX + '-' + classNames(type)[0].toLowerCase();
 };
 
 exports.createPartClass = function (type, part) {
@@ -83,7 +83,7 @@ exports.createVariantClass = function () {
     return classNames
         .apply(null, arguments)
         .map(function (classname) {
-            return config.variantPrefix + '-' + classname;
+            return config.COMPONENT_VARIANT_PREFIX + '-' + classname;
         })
         .join(' ')
         .toLowerCase();
@@ -94,7 +94,7 @@ exports.createStateClass = function () {
     return classNames
         .apply(null, arguments)
         .map(function (classname) {
-            return config.statePrefix + '-' + classname;
+            return config.COMPONENT_STATE_PREFIX + '-' + classname;
         })
         .join(' ')
         .toLowerCase();
