@@ -7,60 +7,57 @@ var React = require('react');
 var _     = require('underscore');
 var ReactDOM = require('react-dom');
 
+var Component = require('./Component.jsx');
 var TreeNode = require('./tree/TreeNode.jsx');
 var MainClickAware = require('./MainClickAware.jsx');
 
-class Tree extends MainClickAware {
+class Tree extends Component {
 
     constructor(props) {
         super(props);
+        this.onTreeNodeClick = this.onTreeNodeClick.bind(this);
     }
 
-    getStates() {
-        // nothing
-    }
+    getStates(props) {
 
-    onMainClick(e) {
+        var states = {};
 
-        e = e || window.event;
-        var target = e.target || e.srcElement;
-        var role = target.getAttribute('data-role');
-        var main = ReactDOM.findDOMNode(this);
-
-        if (role !== 'tree-node-label') {
-            return;
+        if (props.selected) {
+            states.selected = true;
         }
 
-        _.map(main.querySelectorAll('[data-role=tree-node-label]'), function (ele) {
+        return states;
+    }
+
+    onTreeNodeClick(e) {
+
+        var target = e.currentTarget;
+        var main = ReactDOM.findDOMNode(this);
+
+        _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
             var className = ele.className.split(' ');
             ele.className = _.without(className, 'state-selected').join(' ');
         });
 
         target.className += ' state-selected';
-
     }
 
-    renderTreeNode(data, level) {
-        if (_.isObject(data) && data.id && level === 1) {
-            data = [data];
-        }
-        if (!_.isArray(data)) {
+    renderTreeNode(children, level) {
+
+        if (!children) {
             return;
         }
 
-        return _.map(data, function (item, index) {
+        return React.Children.map(children, function (child, index) {
 
-            return (
-                <TreeNode
-                    level={level}
-                    label={item.text}
-                    expand={this.props.defaultExpandAll}
-                    key={item.id} >
-                    {this.renderTreeNode(item.children, level + 1)}
-               </TreeNode>
-            );
+            return React.cloneElement(child, {
+                onClick: this.onTreeNodeClick,
+                key: index,
+                level: level,
+                expand: this.props.defaultExpandAll
+            }, this.renderTreeNode(child.props.children, level + 1));
 
-        }, this)
+        }, this);
     }
 
     render() {
@@ -68,13 +65,9 @@ class Tree extends MainClickAware {
         var props = this.props;
         var children = props.children;
 
-        if (React.Children.count(children) === 0) {
-            children = this.renderTreeNode(props.datasource, 1);
-        }
-
         return (
             <ul {...props} className={this.getClassName()}>
-                {children}
+                {this.renderTreeNode(children, 1)}
             </ul>
         );
 
@@ -91,12 +84,6 @@ Tree.defaultProps = {
      * @type {Boolean}
      */
     defaultExpandAll: false,
-
-    /**
-     * 数据源，格式同ESUI
-     * @type {Array}
-     */
-    datasource: {}
 };
 
 Tree.propTypes = {
@@ -108,5 +95,31 @@ Tree.propTypes = {
 };
 
 Tree.TreeNode = TreeNode;
+
+Tree.createTreeNodes = function (datasource, level) {
+
+    level = level || 1;
+
+    if (_.isObject(datasource) && datasource.id && level === 1) {
+        datasource = [datasource];
+    }
+    if (!_.isArray(datasource)) {
+        return;
+    }
+
+    return _.map(datasource, function (item, index) {
+
+        return (
+            <TreeNode
+                level={level}
+                label={item.text}
+                key={item.id} >
+                {Tree.createTreeNodes(item.children, level + 1)}
+           </TreeNode>
+        );
+
+    }, this)
+
+};
 
 module.exports = Tree;
