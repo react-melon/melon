@@ -21,9 +21,15 @@ var View = React.createClass({
             <div>
                 <Title level={3}>翻页器</Title>
 
+                <Title level={5}>图标</Title>
+
                 <Pager total={10} page={1} onChange={this.onChange} />
 
                 {this.getCurrentPage()}
+
+                <Title level={5}>文字</Title>
+
+                <Pager total={10} page={1} useLang />
 
             </div>
         );
