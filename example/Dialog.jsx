@@ -9,6 +9,8 @@ var Title = require('../src/Title.jsx');
 var Mask = require('../src/Mask.jsx');
 var Dialog = require('../src/Dialog.jsx');
 var Button = require('../src/Button.jsx');
+var Alert = require('../src/dialog/Alert.jsx');
+var Confirm = require('../src/dialog/Confirm.jsx');
 
 var View = React.createClass({
 
@@ -18,7 +20,8 @@ var View = React.createClass({
             dialog2: false,
             dialog3: false,
             dialog4: false,
-            dialog5: false
+            dialog5: false,
+            dialog6: false
         };
     },
 
@@ -57,7 +60,17 @@ var View = React.createClass({
                     <Dialog open={this.state.dialog4} maskClickClose={false} title="Dialog With Actions" actions={actions}>This is Content.</Dialog>
                 </div>
 
-               
+                <div className="row">
+                    <Title level={4}>Alert</Title>
+                    <Button variants={['raised', 'primary']} onClick={this.dialog5Show}>弹出窗口</Button>
+                    <Alert open={this.state.dialog5}>This is Content.</Alert>
+                </div>
+
+                <div className="row">
+                    <Title level={4}>Confirm</Title>
+                    <Button variants={['raised', 'primary']} onClick={this.dialog6Show}>弹出窗口</Button>
+                    <Confirm open={this.state.dialog6} onConfirm={this.onConfirm}>This is Content.</Confirm>
+                </div>
             </div>
         );
     },
@@ -96,6 +109,14 @@ var View = React.createClass({
 
     dialog5Show: function () {
         this.setState({dialog5: true});
+    },
+
+    dialog6Show: function () {
+        this.setState({dialog6: true});
+    },
+
+    onConfirm: function (e) {
+        console.log(e);
     }
 
 });

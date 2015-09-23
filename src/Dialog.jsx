@@ -207,6 +207,4 @@ Dialog.defaultProps = {
     maskClickClose: true
 };
 
-Dialog.Alert = require('./dialog/Alert.jsx');
-
 module.exports = Dialog;
