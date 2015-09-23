@@ -5,7 +5,7 @@
 
 module.exports = {
 
-    COMPONENT_SIZES: ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'],
+    COMPONENT_SIZES: ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'],
 
     COMPONENT_CLASS_PREFIX: 'ui',
 
