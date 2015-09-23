@@ -9,6 +9,7 @@ var Mask = require('./Mask.jsx');
 var _  = require('underscore');
 
 var WindowResizeAware = require('./dialog/WindowResizeAware.jsx');
+var windowScrollHelper = require('./dialog/windowScrollHelper');
 
 class Dialog extends WindowResizeAware {
 
@@ -29,15 +30,6 @@ class Dialog extends WindowResizeAware {
         super.componentDidMount();
 
         this.positionDialog();
-
-        _.each(['html', 'body'], function (name) {
-            var ele = document.getElementsByTagName(name)[0];
-            this.originalHTMLBodySize[name] = {
-                width: ele.style.width,
-                height: ele.style.height
-            };
-        }, this);
-
     }
 
     componentWillUnmount() {
@@ -93,15 +85,7 @@ class Dialog extends WindowResizeAware {
 
     bodyScrolling() {
         var show = this.state.open;
-        _.each(['html', 'body'], function (name) {
-            var ele = document.getElementsByTagName(name)[0];
-            ele.style.height = show ? '100%' : this.originalHTMLBodySize[name].height;
-            ele.style.width = show ? '100%' : this.originalHTMLBodySize[name].width;
-
-            if (name === 'html') {
-                ele.style.overflowY = show ? 'hidden' : '';
-            }
-        }, this);
+        windowScrollHelper[show ? 'stop' : 'restore']();
     }
 
     handleMaskClick(e) {

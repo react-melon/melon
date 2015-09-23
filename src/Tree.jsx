@@ -4,56 +4,30 @@
  */
 
 var React = require('react');
-var dom   = require('./common/util/dom');
 var _     = require('underscore');
 var ReactDOM = require('react-dom');
 
-var TreeNode = require('./TreeNode.jsx');
+var TreeNode = require('./tree/TreeNode.jsx');
+var MainClickAware = require('./MainClickAware.jsx');
 
-var Tree = React.createClass({
+class Tree extends MainClickAware {
 
-    statics: {
-        type: 'Tree'
-    },
+    constructor(props) {
+        super(props);
+    }
 
-    propTypes: {
-        defaultExpandAll: React.PropTypes.bool,
-        datasource: React.PropTypes.oneOfType([
-            React.PropTypes.array,
-            React.PropTypes.object
-        ]),
-    },
+    getStates() {
+        // nothing
+    }
 
-    getDefaultProps: function () {
-        return {
-            defaultExpandAll: false,
-            datasource: []
-        };
-    },
-
-    componentDidMount: function () {
-        dom.on(document.body, 'click', this.onClick);
-    },
-
-    componentWillUnmount: function () {
-        dom.off(document.body, 'click', this.onClick);
-    },
-
-    onClick: function (e) {
-
-        // @hack 这里你妹的在ie8上有问题。
-        // 虽然我们添加了`componentWillUnmount`的，但是还会有已经`unmount`的控件的`click`被回调。
-        // 所以我们加上这个吧。。。
-        if (!this.isMounted()) {
-            return;
-        }
+    onMainClick(e) {
 
         e = e || window.event;
         var target = e.target || e.srcElement;
         var role = target.getAttribute('data-role');
         var main = ReactDOM.findDOMNode(this);
 
-        if (!dom.contains(main, target) || role !== 'tree-node-label') {
+        if (role !== 'tree-node-label') {
             return;
         }
 
@@ -64,11 +38,9 @@ var Tree = React.createClass({
 
         target.className += ' state-selected';
 
-        console.log(target);
+    }
 
-    },
-
-    renderTreeNode: function (data, level) {
+    renderTreeNode(data, level) {
         if (_.isObject(data) && data.id && level === 1) {
             data = [data];
         }
@@ -78,18 +50,20 @@ var Tree = React.createClass({
 
         return _.map(data, function (item, index) {
 
-            return <TreeNode
-                        level={level}
-                        label={item.text}
-                        isOpen={this.props.defaultExpandAll}
-                        key={item.id} >
+            return (
+                <TreeNode
+                    level={level}
+                    label={item.text}
+                    expand={this.props.defaultExpandAll}
+                    key={item.id} >
+                    {this.renderTreeNode(item.children, level + 1)}
+               </TreeNode>
+            );
 
-                        {this.renderTreeNode(item.children, level + 1)}
-                   </TreeNode>
         }, this)
-    },
+    }
 
-    render: function() {
+    render() {
 
         var props = this.props;
         var children = props.children;
@@ -99,13 +73,40 @@ var Tree = React.createClass({
         }
 
         return (
-            <ul {...props}>
+            <ul {...props} className={this.getClassName()}>
                 {children}
             </ul>
         );
 
     }
 
-});
+}
 
-module.exports = require('./common/util/createControl')(Tree);
+Tree.defaultProps = {
+
+    ...MainClickAware.defaultProps,
+
+    /**
+     * 默认展开树
+     * @type {Boolean}
+     */
+    defaultExpandAll: false,
+
+    /**
+     * 数据源，格式同ESUI
+     * @type {Array}
+     */
+    datasource: {}
+};
+
+Tree.propTypes = {
+    defaultExpandAll: React.PropTypes.bool,
+    datasource: React.PropTypes.oneOfType([
+        React.PropTypes.array,
+        React.PropTypes.object
+    ])
+};
+
+Tree.TreeNode = TreeNode;
+
+module.exports = Tree;
