@@ -1,5 +1,4 @@
 @import "./base.styl"
-@import "./waves.styl"
 
 
 $-melon-pager = {
@@ -92,6 +91,15 @@ $-melon-pager-states = {
 
     {$-melon-pager}
 
+    &.variant-lang .{$-melon-class-prefix}-pager-item
+        &.state-prev,
+        &.state-next,
+        &.state-ellipsis
+            font-size: 1em
+            padding: 0 0.3em
+            height: 2em
+            line-height: 2em
+
     .{$-melon-class-prefix}-pager-item
 
         {$-melon-pager-item}
@@ -106,6 +114,7 @@ $-melon-pager-states = {
 
         a
             text-decoration: none
+            color: inherit
             display: block
 
             &:link

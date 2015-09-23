@@ -6,7 +6,6 @@
 var React = require('react');
 var _     = require('underscore');
 var Icon  = require('./Icon.jsx');
-var Waves = require('./common/util/waves');
 var cx    = require('./common/util/classname');
 
 var ReactDOM = require('react-dom');
@@ -23,12 +22,15 @@ class Pager extends MainClickAware {
         };
     }
 
-    componentDidMount() {
-        super.componentDidMount();
+    getVariants(props) {
 
-        var main = ReactDOM.findDOMNode(this);
-        Waves.attach(main.querySelectorAll('.ui-pager-item'), ['waves-circle', 'waves-light']);
-        Waves.init();
+        var variants = super.getVariants(props) || [];
+
+        if (props.useLang) {
+            variants.push('lang');
+        }
+
+        return variants;
     }
 
     onMainClick(e) {
@@ -36,15 +38,29 @@ class Pager extends MainClickAware {
         e = e || window.event;
         var target = e.target || e.srcElement;
 
+        // 不加这个React会报错 ISSUE#4865
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        else {
+            e.cancelBubble = true;
+        }
+
+        var main = ReactDOM.findDOMNode(this);
+
         var role = target.getAttribute('data-role');
 
-        if (role !== 'pager-item') {
+        while (role !== 'pager-item' && target !== main) {
+            target = target.parentNode;
+            role = target.getAttribute('data-role');
+        }
+
+        if (target === main) {
             return;
         }
 
-        console.log(target);
-
         var page = target.getAttribute('data-page') - 0;
+        target = null;
 
         if (this.state.page === page) {
             return;
@@ -191,7 +207,6 @@ class Pager extends MainClickAware {
             cx.createPrimaryClass('pager-item'),
             cx.createStateClass(conf.states)
         );
-        classNames += ' waves-effect waves-circle waves-light'
         var pageText;
 
         if (!useLang && part) {
@@ -199,14 +214,14 @@ class Pager extends MainClickAware {
         }
         else {
             var lang = props.lang;
-            pageText = lang[part] || page + props.first;
+            pageText = lang[part] || page + 1;
         }
 
         return (
             <li className={classNames}
                 key={part + page}
-                data-role="pager-item"
-                data-page={page}>
+                 data-role="pager-item"
+                 data-page={page} >
                 <a href="#">
                     {pageText}
                 </a>
@@ -224,7 +239,7 @@ Pager.defaultProps = {
     page: 0,
 
     // 起始页码
-    first: 1,
+    first: 0,
 
     // 首尾显示的页码个数
     padding: 1,
@@ -253,7 +268,7 @@ Pager.defaultProps = {
         next: '下一页',
 
         // 省略号
-        ellipsis: '..'
+        ellipsis: '...'
     }
 };
 
