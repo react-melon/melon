@@ -6,8 +6,9 @@
 var React = require('react');
 
 var Title = require('../src/Title.jsx');
-var TreeNode = require('../src/TreeNode.jsx');
+
 var Tree = require('../src/Tree.jsx');
+var TreeNode = Tree.TreeNode;
 
 var View = React.createClass({
 
