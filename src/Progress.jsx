@@ -195,8 +195,8 @@ class Progress extends Component {
         return (
             <div ref="wrapper" className={this.getPartClassName('wapper')}>
                 <svg className={this.getPartClassName('svg')} style={svgStyle}>
-                    <circle ref="path" cx="25" cy="25" className={this.getPartClassName('path')}
-                        style={pathStyle} r="20" fill="none" strokeWidth="2.5" strokeMiterlimit="10" />
+                    <circle ref="path" cx="18.5" cy="18.5" className={this.getPartClassName('path')}
+                        style={pathStyle} r="16" fill="none" strokeWidth="2.5" strokeMiterlimit="10" />
                 </svg>
             </div>
         );

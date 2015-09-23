@@ -17,12 +17,9 @@ var View = React.createClass({
             dialog1: false,
             dialog2: false,
             dialog3: false,
-            dialog4: false
+            dialog4: false,
+            dialog5: false
         };
-    },
-
-    componentDidMount: function () {
-
     },
 
     render: function() {
@@ -39,26 +36,28 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={4}>普通</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog1Show}>弹出窗口</Button>
-                    <Dialog isOpen={this.state.dialog1} onHide={this.dialog1Hide}>Hello</Dialog>
+                    <Dialog open={this.state.dialog1} onHide={this.dialog1Hide}>Hello</Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>内容很长的弹窗</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog2Show}>弹出窗口</Button>
-                    <Dialog isOpen={this.state.dialog2} onHide={this.dialog2Hide}><div style={{height: 1000}}>Long!</div></Dialog>
+                    <Dialog open={this.state.dialog2} onHide={this.dialog2Hide}><div style={{height: 1000}}>Long!</div></Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>有标题的弹窗</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog3Show}>弹出窗口</Button>
-                    <Dialog isOpen={this.state.dialog3} onHide={this.dialog3Hide} title="Dialog With A Title">This is Content.</Dialog>
+                    <Dialog open={this.state.dialog3} onHide={this.dialog3Hide} title="Dialog With A Title">This is Content.</Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>有按钮的弹窗</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog4Show}>弹出窗口</Button>
-                    <Dialog isOpen={this.state.dialog4} maskClickClose={false} title="Dialog With Actions" actions={actions}>This is Content.</Dialog>
+                    <Dialog open={this.state.dialog4} maskClickClose={false} title="Dialog With Actions" actions={actions}>This is Content.</Dialog>
                 </div>
+
+               
             </div>
         );
     },
@@ -93,6 +92,10 @@ var View = React.createClass({
 
     dialog4Hide: function () {
         this.setState({dialog4: false});
+    },
+
+    dialog5Show: function () {
+        this.setState({dialog5: true});
     }
 
 });

@@ -16,7 +16,7 @@ class Dialog extends WindowResizeAware {
         super(props);
         this.originalHTMLBodySize = {};
         this.state = {
-            isOpen: this.props.isOpen || false,
+            open: this.props.open || false,
         };
         this.positionDialog = _.throttle.call(this, this.positionDialog, 50);
         this.handleMaskClick = this.handleMaskClick.bind(this);
@@ -50,14 +50,14 @@ class Dialog extends WindowResizeAware {
 
     componentWillReceiveProps(nextProps) {
 
-        var isOpen = nextProps.isOpen;
+        var open = nextProps.open;
 
-        if (isOpen === this.state.isOpen) {
+        if (open === this.state.open) {
             return;
         }
 
-        var onEvent = isOpen ? this.onShow : this.onHide;
-        this.setState({ isOpen: isOpen }, onEvent);
+        var onEvent = open ? this.onShow : this.onHide;
+        this.setState({open: open}, onEvent);
 
     }
 
@@ -67,7 +67,7 @@ class Dialog extends WindowResizeAware {
 
     positionDialog() {
 
-        if (!this.state.isOpen) {
+        if (!this.state.open) {
             return;
         }
 
@@ -83,11 +83,7 @@ class Dialog extends WindowResizeAware {
 
         top = Math.max(top, minTop);
 
-        // Vertically center the dialog window, but make sure it doesn't
-        // transition to that position.
-        if (!dialogWindow.style.top) {
-            dialogWindow.style.top = top + 'px';
-        }
+        dialogWindow.style.top = top + 'px';
 
         dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
 
@@ -96,7 +92,7 @@ class Dialog extends WindowResizeAware {
     }
 
     bodyScrolling() {
-        var show = this.state.isOpen;
+        var show = this.state.open;
         _.each(['html', 'body'], function (name) {
             var ele = document.getElementsByTagName(name)[0];
             ele.style.height = show ? '100%' : this.originalHTMLBodySize[name].height;
@@ -110,7 +106,7 @@ class Dialog extends WindowResizeAware {
 
     handleMaskClick(e) {
         if (this.props.maskClickClose) {
-            this.setState({ isOpen: false }, this.onHide);
+            this.setState({ open: false }, this.onHide);
         }
         else {
             e.stopPropagation();
@@ -129,18 +125,22 @@ class Dialog extends WindowResizeAware {
         if (_.isFunction(this.props.onHide)) {
             this.props.onHide();
         }
+
+        // 隐藏时，向上滚动动画的hack
+        // 隐藏的时候把inline的top样式去掉，下次打开的时候才会出动画
+        // main的left属性要延迟设置
         var dialogWindow =  this.refs.dialogWindow;
         dialogWindow.style.top = '';
 
-        var container = ReactDOM.findDOMNode(this);
+        var main = ReactDOM.findDOMNode(this);
         setTimeout(function () {
-            container.style.left = '-10000px';
+            main.style.left = '-10000px';
         }, 200);
     }
 
     getStates(props) {
         var states = super.getStates(props);
-        states.open = this.state.isOpen;
+        states.open = this.state.open;
         return states;
     }
 
@@ -148,7 +148,7 @@ class Dialog extends WindowResizeAware {
 
         var props = this.props;
 
-        var isOpen = this.state.isOpen;
+        var open = this.state.open;
 
         return (
             <div {...props} className={this.getClassName()}>
@@ -161,7 +161,7 @@ class Dialog extends WindowResizeAware {
                 </div>
                 <Mask
                   ref="dialogMask"
-                  show={isOpen}
+                  show={open}
                   autoLockScrolling={false}
                   onClick={this.handleMaskClick} />
             </div>
@@ -193,7 +193,7 @@ class Dialog extends WindowResizeAware {
 Dialog.propTypes = {
     actions: React.PropTypes.array,
     maskClickClose: React.PropTypes.bool,
-    isOpen: React.PropTypes.bool,
+    open: React.PropTypes.bool,
     onHide: React.PropTypes.func,
     onShow: React.PropTypes.func,
     title: React.PropTypes.oneOfType([
@@ -206,5 +206,7 @@ Dialog.defaultProps = {
     ...WindowResizeAware.defaultProps,
     maskClickClose: true
 };
+
+Dialog.Alert = require('./dialog/Alert.jsx');
 
 module.exports = Dialog;
