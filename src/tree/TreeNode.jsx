@@ -90,7 +90,7 @@ class TreeNode extends Component {
             );
         }
 
-        return <li {...props} className={this.getClassName()}>{children}</li>;
+        return <li {...props} data-role="tree-node" className={this.getClassName()}>{children}</li>;
 
     }
 

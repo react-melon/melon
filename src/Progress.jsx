@@ -84,7 +84,7 @@ class Progress extends Component {
             path.style.transitionDuration = '750ms';
         }
         else {
-            path.style.strokeDasharray = '89,200';
+            path.style.strokeDasharray = '89, 200';
             path.style.strokeDashoffset = -124;
             path.style.transitionDuration = '850ms';
         }
@@ -179,24 +179,28 @@ class Progress extends Component {
         );
     }
 
-    renderCircle() {
-        var zoom = Progress.SIZES[this.props.size] || 1;
-        var svgStyle={
-            transform: 'scale(' + zoom + ')'
-        };
+    getZoom() {
+        return Progress.SIZES[this.props.size] || 1;
+    }
 
-        var pathStyle = {};
+    renderCircle() {
+        let zoom = this.getZoom();
+        let r = 14 * zoom;
+        let strokeWidth = 2 * zoom;
+        let c = 16 * zoom;
+
+        let pathStyle = {};
 
         if (this.isDeterminate()) {
-            var relVal = this.getRelativeValue();
-            pathStyle.strokeDasharray = Math.round(relVal * 1.25) + ',200';
+            let relVal = this.getRelativeValue();
+            pathStyle.strokeDasharray = Math.round(relVal * 1.25 * zoom) + ',' + (200 * zoom);
         }
 
         return (
             <div ref="wrapper" className={this.getPartClassName('wapper')}>
-                <svg className={this.getPartClassName('svg')} style={svgStyle}>
-                    <circle ref="path" cx="18.5" cy="18.5" className={this.getPartClassName('path')}
-                        style={pathStyle} r="16" fill="none" strokeWidth="2.5" strokeMiterlimit="10" />
+                <svg className={this.getPartClassName('svg')}>
+                    <circle ref="path" cx={c} cy={c} className={this.getPartClassName('path')}
+                        style={pathStyle} r={r} fill="none" strokeWidth={strokeWidth} strokeMiterlimit="10" />
                 </svg>
             </div>
         );
@@ -204,10 +208,10 @@ class Progress extends Component {
 
     render() {
 
-        var props = this.props;
+        let props = this.props;
 
-        var shape = props.shape.toLowerCase();
-        var isCircle = shape === 'circle';
+        let shape = props.shape.toLowerCase();
+        let isCircle = shape === 'circle';
 
         return (
             <div {...props} className={this.getClassName()}>
@@ -220,14 +224,13 @@ class Progress extends Component {
 }
 
 Progress.SIZES = {
-    'xs': 0.75,
-    's': 0.875,
-    'm': 0.9375,
+    'xxs': 0.75,
+    'xs': 0.875,
+    's': 0.9375,
     'l': 1.125,
     'xl': 1.25,
     'xxl': 1.375,
-    'xxxl': 1.5,
-    'xxxl': 2.25
+    'xxxl': 1.5
 };
 
 Progress.defaultProps = {
@@ -242,8 +245,9 @@ Progress.propTypes = {
     shape: React.PropTypes.oneOf(['circle', 'linear']),
     mode: React.PropTypes.oneOf(['determinate', 'indeterminate']),
     value: React.PropTypes.number,
-    min:  React.PropTypes.number,
-    max:  React.PropTypes.number
+    min: React.PropTypes.number,
+    max: React.PropTypes.number,
+    size: React.PropTypes.oneOf(Object.keys(Progress.SIZES))
 };
 
 module.exports = Progress;
