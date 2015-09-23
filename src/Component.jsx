@@ -126,10 +126,14 @@ class Component extends React.Component {
 
 };
 
+var PropTypes = React.PropTypes;
+
 Component.propTypes = {
-    variants: React.PropTypes.arrayOf(React.PropTypes.string),
-    states: React.PropTypes.object,
-    size: React.PropTypes.oneOf(require('./config').COMPONENT_SIZES)
+    variants: PropTypes.arrayOf(PropTypes.string),
+    states: PropTypes.object,
+    size: PropTypes.oneOf(require('./config').COMPONENT_SIZES),
+    disabled: PropTypes.bool,
+    hidden: PropTypes.bool
 };
 
 module.exports = Component;
