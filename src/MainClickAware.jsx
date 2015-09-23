@@ -16,13 +16,11 @@ class MainClickAware extends Component {
     }
 
     componentDidMount() {
-        super.componentDidMount();
         var main = ReactDOM.findDOMNode(this);
         dom.on(main, 'click', this.onWindowResize);
     }
 
     componentWillUnmount() {
-        super.componentWillUnmount();
         var main = ReactDOM.findDOMNode(this);
         dom.off(main, 'click', this.onWindowResize);
     }

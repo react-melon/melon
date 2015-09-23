@@ -15,12 +15,10 @@ class WindowResizeAware extends Component {
     }
 
     componentDidMount() {
-        super.componentDidMount();
         dom.on(window, 'resize', this.onWindowResize);
     }
 
     componentWillUnmount() {
-        super.componentWillUnmount();
         dom.off(window, 'resize', this.onWindowResize);
     }
 

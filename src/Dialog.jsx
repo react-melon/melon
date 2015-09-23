@@ -26,6 +26,8 @@ class Dialog extends WindowResizeAware {
 
     componentDidMount() {
 
+        super.componentDidMount();
+
         this.positionDialog();
 
         _.each(['html', 'body'], function (name) {
@@ -36,6 +38,10 @@ class Dialog extends WindowResizeAware {
             };
         }, this);
 
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
     }
 
     componentDidUpdate() {
@@ -53,6 +59,10 @@ class Dialog extends WindowResizeAware {
         var onEvent = isOpen ? this.onShow : this.onHide;
         this.setState({ isOpen: isOpen }, onEvent);
 
+    }
+
+    onWindowResize(e) {
+        this.positionDialog();
     }
 
     positionDialog() {
