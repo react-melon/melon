@@ -1,53 +1,12 @@
 @import "./base.styl"
 
 
-$-melon-tabs = {
-
-    display: block
-
-    margin: 0
-    padding: 0
-
-    font-size: $-melon-medium-font-size
-
-}
-
-$-melon-tab = {
-
-    display: inline-block
-
-    cursor: pointer
-
-    padding: 0.48em 0
-
-    height: 2em
-    line-height: 2em
-    text-align: center
-
-    color: $-melon-colors.darkWhite
-
-}
-
-$-melon-tabinkbar = {
-
-    display: inline-block
-
-    position: absolute
-    bottom: 0
-    left: 0
-
-    height: 2px
-    background-color: $-melon-colors.yellow200
-
-    transition: left .8s cubic-bezier(0.23, 1, 0.32, 1) 0ms
-
-}
-
-
-
 .{$-melon-class-prefix}-tabs
 
-    {$-melon-tabs}
+    display: block
+    margin: 0
+    padding: 0
+    font-size: $-melon-medium-font-size
 
     ul
         position: relative
@@ -59,35 +18,48 @@ $-melon-tabinkbar = {
         list-style: none
 
 
+.{$-melon-class-prefix}-tabs-item
 
+    display: inline-block
+    cursor: pointer
+    padding: 0.48em 0
+    height: 2em
+    line-height: 2em
+    text-align: center
+    color: $-melon-colors.darkWhite
 
-.{$-melon-class-prefix}-tab
-
-    {$-melon-tab}
-
-    &.variant-active
+    &.state-selected
 
         color: $-melon-colors.white
 
-    &.variant-disabled
+    &.state-disabled
 
         color: $-melon-colors.lightWhite
 
         cursor: not-allowed
 
 
-.{$-melon-class-prefix}-tab-panel
+.{$-melon-class-prefix}-tabs-panel
 
     display: none;
 
-    &.variant-active
+    &.state-active
 
         display: block!important
 
 
 
-.{$-melon-class-prefix}-tab-inkbar
+.{$-melon-class-prefix}-tabs-inkbar
 
-    {$-melon-tabinkbar}
+    display: inline-block
+
+    position: absolute
+    bottom: 0
+    left: 0
+
+    height: 2px
+    background-color: $-melon-colors.yellow200
+
+    transition: left .8s cubic-bezier(0.23, 1, 0.32, 1) 0ms
 
 

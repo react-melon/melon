@@ -133,10 +133,8 @@ var CalendarMain = React.createClass({
                 states.selected = true;
             }
 
-            if (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate)) {
-                states.disabled = true;
-            }
-            else if (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate)) {
+            if ((_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
+                || (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate))) {
                 states.disabled = true;
             }
 

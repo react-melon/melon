@@ -6,8 +6,8 @@
 var React = require('react');
 
 var Title = require('../src/Title.jsx');
-var Tab = require('../src/Tab.jsx');
 var Tabs = require('../src/Tabs.jsx');
+var Tab = Tabs.Tab;
 
 var View = React.createClass({
 

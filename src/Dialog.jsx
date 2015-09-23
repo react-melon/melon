@@ -46,7 +46,7 @@ class Dialog extends WindowResizeAware {
 
         var isOpen = nextProps.isOpen;
 
-        if (isOpen !== !this.state.isOpen) {
+        if (isOpen === this.state.isOpen) {
             return;
         }
 

@@ -4,44 +4,33 @@
  */
 
 var React = require('react');
-var createControl = require('./common/util/createControl');
-var Tab = require('./Tab.jsx');
-var cx    = require('./common/util/classname');
+var Component = require('./Component.jsx');
 
+var Tab = require('./tabs/Tab.jsx');
+var TabPanel = require('./tabs/Panel.jsx');
 
-var Tabs = React.createClass({
+class Tabs extends Component {
 
-    statics: {
-        type: 'Tabs'
-    },
-
-    propTypes: {
-        disabled: React.PropTypes.bool,
-        type: React.PropTypes.string,
-        initialSelectedIndex: React.PropTypes.number,
-        onChange: React.PropTypes.func,
-        onBeforeChange: React.PropTypes.func
-    },
-
-
-    getInitialState: function (){
+    constructor(props) {
+        super(props);
 
         var initialIndex = this.props.initialSelectedIndex || 0;
 
-        return {
+        this.state = {
             selectedIndex: initialIndex
         };
-    },
+    }
 
-    getTabCount: function () {
+
+    getTabCount() {
         return React.Children.count(this.props.children);
-    },
+    }
 
-    getSelected: function (tab, index) {
+    getSelected(tab, index) {
         return this.state.selectedIndex === index;
-    },
+    }
 
-    handleClick: function (index, e) {
+    handleTabClick(index, e) {
 
         if (index === this.state.selectedIndex) {
             return;
@@ -60,60 +49,47 @@ var Tabs = React.createClass({
             this.props.onChange && this.props.onChange(index, e);
         });
 
-    },
+    }
 
-    render: function() {
+    render() {
 
         var props = this.props;
-
         var percent = 1 / this.getTabCount() * 100 + '%';
-
         var tabIndex = 0;
-
         var tabContent = [];
 
         var tabs = React.Children.map(props.children, function (tab, index) {
 
             var selected = this.getSelected(tab, index);
-            var disabled = tab.props.disabled;
+            var {
+                disabled,
+                children
+            } = tab.props;
 
             if (selected) {
                 tabIndex = index;
             }
 
-            if (tab.props.children) {
+            if (children) {
                 tabContent.push(
-                    React.createElement('div', {
-                        key: index,
-                        className: cx.createComponentClass('tab-panel', selected ? ['active'] : [])
-                    }, tab.props.children)
+                    <TabPanel
+                        className={this.getPartClassName('panel')}
+                        key={index}
+                        active={selected} >
+                        {children}
+                    </TabPanel>
                 );
             }
 
-            var tabProps = {
+            return React.cloneElement(tab, {
                 key: index,
                 selected: selected,
                 disabled: disabled,
                 tabIndex: index,
-                style: {width: percent}
-            };
-
-            var variants = [];
-
-            if (selected) {
-                variants.push('active');
-            }
-
-            if (disabled) {
-                variants.push('disabled');
-            }
-            else {
-                tabProps.onClick = this.handleClick.bind(this, index);
-            }
-
-            tabProps.variants = variants;
-
-            return React.cloneElement(tab, tabProps);
+                style: {width: percent},
+                onClick: disabled ? null : this.handleTabClick.bind(this, index),
+                className: this.getPartClassName('item')
+            });
 
         }, this);
 
@@ -123,10 +99,10 @@ var Tabs = React.createClass({
         };
 
         return (
-            <div {...props}>
+            <div {...props} className={this.getClassName()}>
                 <ul>
                     {tabs}
-                    <li className={cx.createPrimaryClass('tab-inkbar')} style={InkBarStyles}></li>
+                    <li className={this.getPartClassName('inkbar')} style={InkBarStyles}></li>
                 </ul>
                 {tabContent}
             </div>
@@ -134,6 +110,14 @@ var Tabs = React.createClass({
 
     }
 
-});
+}
 
-module.exports = createControl(Tabs);
+Tab.propTypes = {
+    initialSelectedIndex: React.PropTypes.number,
+    onChange: React.PropTypes.func,
+    onBeforeChange: React.PropTypes.func
+};
+
+Tabs.Tab = Tab;
+
+module.exports = Tabs;
