@@ -19,11 +19,21 @@ var View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">
                         <Title level={5}>普通日历</Title>
-                        <Calendar defaultDate={new Date()}></Calendar>
+                        <Calendar></Calendar>
                     </div>
                     <div className="melon-column melon-column-4">
                         <Title level={5}>限定区间</Title>
-                        <Calendar defaultDate={new Date()} min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)}></Calendar>
+                        <Calendar min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)}></Calendar>
+                    </div>
+                </div>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>禁用</Title>
+                        <Calendar disabled></Calendar>
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>只读</Title>
+                        <Calendar min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)} readOnly></Calendar>
                     </div>
                 </div>
             </div>

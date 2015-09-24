@@ -37,6 +37,24 @@ class Calendar extends InputComponent {
         });
     }
 
+    getStates(props) {
+
+        var states = super.getStates(props);
+
+        var {
+            disabled,
+            readOnly
+        } = props
+
+        states = {
+            ...states,
+            disabled,
+            readOnly
+        }
+
+        return states;
+    }
+
     parseValue(value) {
 
         if (!_.isString(value)) {
@@ -68,6 +86,11 @@ class Calendar extends InputComponent {
     }
 
     handleInputFocus() {
+
+        if (this.props.disabled || this.props.readOnly) {
+            return;
+        }
+
         this.setState({open: true}, function () {
 
             let onShow = this.props.onShow;
@@ -129,8 +152,9 @@ class Calendar extends InputComponent {
         let {
             lang,
             placeholder,
+            disabled,
             ...others
-        } = props
+        } = props;
 
         return (
             <div {...others} className={this.getClassName()}>
@@ -138,6 +162,7 @@ class Calendar extends InputComponent {
                     ref="input" readOnly
                     variants={['calendar']}
                     value={this.getValue()}
+                    disabled={disabled}
                     placeholder={placeholder}
                     onFocus={this.handleInputFocus} />
                 <CalendarDialog
@@ -148,8 +173,7 @@ class Calendar extends InputComponent {
                     minDate={this.parseValue(props.min)}
                     maxDate={this.parseValue(props.max)}
                     lang={lang}
-                    onChange={this.handleOnChange}
-                    showYearSelector={props.showYearSelector} />
+                    onChange={this.handleOnChange} />
             </div>
         );
 
@@ -177,6 +201,8 @@ Calendar.defaultProps = {
 };
 
 Calendar.propTypes = {
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
     rawValue: PropTypes.object,
     value: PropTypes.string,
     dateFormat: PropTypes.string,
@@ -191,7 +217,6 @@ Calendar.propTypes = {
     onHide: PropTypes.func,
     onChange: PropTypes.func,
     onShow: PropTypes.func,
-    showYearSelector: PropTypes.bool,
     placeholder: PropTypes.string,
     lang: PropTypes.shape({
         week: PropTypes.string,
