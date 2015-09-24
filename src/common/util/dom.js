@@ -61,6 +61,7 @@ exports.getClientWidth = function () {
 exports.getPosition = function (element) {
 
     var bound = element.getBoundingClientRect();
+
     var root = document.documentElement;
     var body = document.body;
 
@@ -71,7 +72,9 @@ exports.getPosition = function (element) {
 
     return {
         left: parseFloat(bound.left) + scrollLeft - clientLeft,
-        top: parseFloat(bound.top) + scrollTop - clientTop
+        top: parseFloat(bound.top) + scrollTop - clientTop,
+        width: bound.width,
+        height: bound.height
     };
 
 };
