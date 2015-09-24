@@ -7,6 +7,7 @@ var React = require('react');
 var Dialog = require('../Dialog.jsx');
 var Button = require('../Button.jsx');
 var CalendarMain = require('./Main.jsx');
+var CalendarSelect = require('./Select.jsx');
 var MainClickAware = require('../MainClickAware.jsx');
 
 var _ = require('underscore');
@@ -23,11 +24,14 @@ class CalendarDialog extends MainClickAware {
         this.state = {
             open: props.open || false,
             date: props.date,
-            month: props.date
+            month: props.date,
+            mode: 'main'
         };
 
         this.handleCancelclick = this.handleCancelclick.bind(this);
         this.handleSubmitclick = this.handleSubmitclick.bind(this);
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+        this.onHeaderClick = this.onHeaderClick.bind(this);
 
         this.type = 'calendar-dialog';
     }
@@ -51,6 +55,7 @@ class CalendarDialog extends MainClickAware {
         if (open) {
             newState.date = date;
             newState.month = date;
+            newState.mode = 'main';
         }
 
         if (_.isEmpty(newState)) {
@@ -79,6 +84,30 @@ class CalendarDialog extends MainClickAware {
                 date: date
             });
         }
+    }
+
+    onHeaderClick(e) {
+        var mode = this.state.mode;
+
+        this.setState({mode: mode === 'main' ? 'selector' : 'main'});
+    }
+
+    onSelectorChange(e) {
+        var {
+            mode,
+            date
+        } = e;
+
+        var newState = {
+            date: date,
+            month: date
+        };
+
+        if (mode === 'month') {
+            newState.mode = 'main';
+        }
+
+        this.setState(newState);
     }
 
     onMainClick(e) {
@@ -147,6 +176,8 @@ class CalendarDialog extends MainClickAware {
             ...others
         } = props;
 
+        var isMain = this.state.mode === 'main';
+
         return (
             <Dialog
                 {...others}
@@ -154,13 +185,22 @@ class CalendarDialog extends MainClickAware {
                 variants={['calendar']}
                 actions={actions} >
                 {this.renderHeader()}
-                <CalendarMain
-                    ref="main"
-                    minDate={props.minDate}
-                    maxDate={props.maxDate}
-                    lang={lang}
-                    month={this.state.month}
-                    date={this.state.date} />
+                {isMain ? (
+                    <CalendarMain
+                        ref="main"
+                        minDate={props.minDate}
+                        maxDate={props.maxDate}
+                        lang={lang}
+                        month={this.state.month}
+                        date={this.state.date} />
+                ) : (
+                    <CalendarSelect
+                        ref="selector"
+                        date={this.state.date}
+                        minDate={props.minDate}
+                        maxDate={props.maxDate}
+                        onChange={this.onSelectorChange} />
+                )}
             </Dialog>
         );
     }
@@ -177,7 +217,7 @@ class CalendarDialog extends MainClickAware {
         var fullDate = week + '  ' + month + day + '日';
 
         return (
-            <div className={this.getPartClassName('header')}>
+            <div className={this.getPartClassName('header')} onClick={this.onHeaderClick}>
                 <p className={this.getPartClassName('header-year')}>{year}</p>
                 <p className={this.getPartClassName('header-date')}>{fullDate}</p>
             </div>

@@ -24,6 +24,10 @@
         .{$-melon-class-prefix}-button
             margin-right: 1.5em
 
+.{$-melon-class-prefix}-textbox.variant-calendar input
+
+    color: $-melon-colors.black
+
 .{$-melon-class-prefix}-calendar
 
     &-dialog
@@ -34,6 +38,7 @@
             height: 62px
             padding: 20px
             width: 280px
+            cursor: pointer
 
             &-year
                 font-size: 18px
@@ -45,6 +50,43 @@
                 font-size: 30px
                 line-height: 38/30
                 font-family: 'SimHei', sans-serif
+
+    &-selector
+        margin-top: 8px
+        height: 285px
+        overflow-y: scroll
+
+        &-item
+            text-align: center
+            cursor: pointer
+
+            a
+                display: inline-block
+                width: 50px
+                height: 50px
+                line-height: 50px
+                color: $-melon-colors.black
+                border-radius: 100em
+                opacity: 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+                text-decoration: none
+
+        &-item:hover a
+            color: $-melon-colors.white
+            background-color: $-melon-colors.cyan700
+            opacity: 0.6
+
+        &-item.state-selected a
+            color: $-melon-colors.white
+            background-color: $-melon-colors.cyan700
+            opacity: 0.8
+
+        &-item.state-disabled
+            cursor: not-allowed
+
+            a
+                color: $-melon-colors.lightBlack
+                background-color: transparent
+                cursor: not-allowed
 
     &-main
         margin-top: 8px
@@ -61,6 +103,10 @@
                 color: $-melon-colors.darkBlack
                 top: 0
                 cursor: pointer
+
+                &.state-disabled
+                    color: $-melon-colors.minBlack
+                    cursor: not-allowed
 
             [data-action='prev']
                 left: 16px
@@ -132,3 +178,17 @@
                     background-color: transparent
                     color: inherit
                     opacity: 1
+
+
+.{$-melon-class-prefix}-calendar.state-disabled
+
+    .{$-melon-class-prefix}-textbox.variant-calendar input
+
+        color: $-melon-colors.lightBlack
+        cursor: not-allowed
+
+.{$-melon-class-prefix}-calendar.state-readOnly
+
+    .{$-melon-class-prefix}-textbox.variant-calendar input
+
+        color: $-melon-colors.darkBlack
