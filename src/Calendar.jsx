@@ -4,146 +4,73 @@
  */
 
 var React = require('react');
-var createControl = require('./common/util/createControl');
+var InputComponent = require('./InputComponent.jsx');
 var DateTime = require('./common/util/date');
 var TextBox = require('./TextBox.jsx');
 var CalendarDialog = require('./calendar/CalendarDialog.jsx');
 var _ = require('underscore');
 var PropTypes = React.PropTypes;
 
-var Calendar = React.createClass({
+class Calendar extends InputComponent {
 
-    statics: {
-        type: 'Calendar'
-    },
+    constructor(props) {
 
-    propTypes: {
-        defaultDate: PropTypes.object,
-        value: PropTypes.object,
-        dateFormat: PropTypes.string,
-        maxDate: PropTypes.object,
-        minDate: PropTypes.object,
-        onHide: PropTypes.func,
-        onChange: PropTypes.func,
-        onShow: PropTypes.func,
-        showYearSelector: PropTypes.bool,
-        placeholder: PropTypes.string,
-        lang: PropTypes.shape({
-            week: PropTypes.string,
-            days: PropTypes.string,
-            title: PropTypes.string
-        })
-    },
+        super(props);
 
-    getInitialState: function () {
+        var open = false;
 
-        var value = this.isControlled() ? null : this.props.defaultDate;
-
-        return {
-            value: value,
-            isOpen: false
+        this.state = {
+            ...this.state,
+            open
         };
 
-    },
+        this.handleInputFocus = this.handleInputFocus.bind(this);
+        this.handleDialogHide = this.handleDialogHide.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
 
-    getDefaultProps: function () {
-        return {
-            dateFormat: 'yyyy-MM-dd',
-            showYearSelector: false,
-            lang: {
+    }
 
-                // 对于 '周' 的称呼
-                week: '周',
-
-                // 星期对应的顺序表示
-                days: '日,一,二,三,四,五,六',
-
-                // 每月显示的标题文字
-                title: '{year}年{month}月'
-
-            }
-        };
-    },
-
-    componentWillReceiveProps: function (nextProps) {
-
-        var value = this.isControlled() ? null : this.props.defaultDate;
-
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            value: value
+            date: nextProps.date,
+            month: nextProps.month
         });
-    },
+    }
 
-    getValue: function () {
-        var date = this.isControlled() ? this.props.value : this.state.value;
-        return this.format(date);
-    },
+    parseValue(value) {
 
-    isControlled: function () {
-        var props = this.props;
-        return props.readOnly || props.disabled || props.value != null && !!props.onChange;
-    },
-
-    getControlledDate: function () {
-        var props = this.props;
-        if (_.isDate(props.value)) {
-            return props.value;
+        if (!_.isString(value)) {
+            return value;
         }
-    },
+
+        let format = this.props.dateFormat.toLowerCase();
+
+        return DateTime.parse(value, format);
+    }
 
     /**
      * 格式化日期
      *
-     * @param {Date} date 源日期对象
+     * @param {Date} rawValue 源日期对象
      * @param {string=} format 日期格式，默认为当前实例的dateFormat
      * @return {string} 格式化后的日期字符串
-     * @public
+     * @private
      */
-    format: function (date, format) {
+    stringifyValue(rawValue) {
 
-        format = (format || this.props.dateFormat).toLowerCase();
-
-        // if (lib.isString(date)) {
-        //     date = this.parse(date);
-        // }
-
-        var weekStart = this.weekStart;
-        var y         = date.getFullYear();
-        var M         = date.getMonth() + 1;
-        var d         = date.getDate();
-        var week      = date.getDay();
-        var props     = this.props;
-
-        if (weekStart) {
-            week = (week - 1 + 7) % 7;
+        if (!_.isDate(rawValue)) {
+            return value;
         }
 
-        week = props.lang.days.split(',')[week];
+        let format = this.props.dateFormat.toLowerCase();
 
-        var map = {
-            yyyy: y,
-            yy: y % 100,
-            y: y,
-            mm: DateTime.datePad(M),
-            m: M,
-            dd: DateTime.datePad(d),
-            d: d,
-            w: week,
-            ww: props.lang.week + week
-        };
+        return DateTime.format(rawValue, format);
+    }
 
-        return format.replace(
-            /y+|M+|d+|W+/gi,
-            function ($0) {
-                return map[$0] || '';
-            }
-        );
-    },
+    handleInputFocus() {
+        this.setState({open: true}, function () {
 
-    handleInputClick: function () {
-        this.setState({isOpen: true}, function () {
-
-            var onShow = this.props.onShow;
+            let onShow = this.props.onShow;
 
             if (_.isFunction(onShow)) {
                 onShow({
@@ -151,12 +78,12 @@ var Calendar = React.createClass({
                 });
             }
         });
-    },
+    }
 
-    handleDialogHide: function () {
-        this.setState({isOpen: false}, function () {
+    handleDialogHide() {
+        this.setState({open: false}, function () {
 
-            var onHide = this.props.onHide;
+            let onHide = this.props.onHide;
 
             if (_.isFunction(onHide)) {
                 onHide({
@@ -164,49 +91,62 @@ var Calendar = React.createClass({
                 });
             }
         })
-    },
+    }
 
-    handleOnChange: function (e) {
-        if (DateTime.isEqualDate(e.value, this.state.value)) {
-            this.setState({isOpen: false});
+    handleOnChange(e) {
+
+        let date = e.date;
+
+        if (DateTime.isEqualDate(date, this.state.rawValue)) {
+            this.setState({open: false});
             return;
         }
-        this.setState({value: e.value, isOpen: false}, function () {
 
-            var onChange = this.props.onChange;
+        this.setState({rawValue: date, open: false}, function () {
+
+            // 生成事件
+            var e = {
+                type: 'change',
+                target: this,
+                value: this.stringifyValue(date),
+                rawValue: date
+            };
+
+            super.onChange(e);
+
+            let onChange = this.props.onChange;
 
             if (_.isFunction(onChange)) {
-                onChange({
-                    target: this,
-                    value: e.value
-                });
+                onChange(e);
             }
         })
-    },
+    }
 
-    render: function() {
+    render() {
 
-        var props = this.props;
-        var placeholder = props.placeholder;
-        var lang = props.lang;
+        let props = this.props;
 
-        props = _.omit(props, 'lang');
+        let {
+            lang,
+            placeholder,
+            ...others
+        } = props
 
         return (
-            <div {...props}>
+            <div {...others} className={this.getClassName()}>
                 <TextBox
                     ref="input" readOnly
                     variants={['calendar']}
                     value={this.getValue()}
                     placeholder={placeholder}
-                    onClick={this.handleInputClick} />
+                    onFocus={this.handleInputFocus} />
                 <CalendarDialog
                     ref="dialogWindow"
-                    isOpen={this.state.isOpen}
-                    initialDate={this.state.value}
+                    open={this.state.open}
+                    date={this.state.rawValue}
                     onHide={this.handleDialogHide}
-                    minDate={props.minDate}
-                    maxDate={props.maxDate}
+                    minDate={this.parseValue(props.min)}
+                    maxDate={this.parseValue(props.max)}
                     lang={lang}
                     onChange={this.handleOnChange}
                     showYearSelector={props.showYearSelector} />
@@ -215,6 +155,49 @@ var Calendar = React.createClass({
 
     }
 
-});
+}
 
-module.exports = createControl(Calendar);
+Calendar.defaultProps = {
+    ...InputComponent.defaultProps,
+    dateFormat: 'yyyy-MM-dd',
+    showYearSelector: false,
+    lang: {
+
+        // 对于 '周' 的称呼
+        week: '周',
+
+        // 星期对应的顺序表示
+        days: '日,一,二,三,四,五,六',
+
+        // 每月显示的标题文字
+        title: '{year}年{month}月'
+
+    },
+    validateEvents: ['change']
+};
+
+Calendar.propTypes = {
+    rawValue: PropTypes.object,
+    value: PropTypes.string,
+    dateFormat: PropTypes.string,
+    max: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string
+    ]),
+    min: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string
+    ]),
+    onHide: PropTypes.func,
+    onChange: PropTypes.func,
+    onShow: PropTypes.func,
+    showYearSelector: PropTypes.bool,
+    placeholder: PropTypes.string,
+    lang: PropTypes.shape({
+        week: PropTypes.string,
+        days: PropTypes.string,
+        title: PropTypes.string
+    })
+};
+
+module.exports = Calendar;
