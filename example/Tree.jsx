@@ -94,7 +94,7 @@ var View = React.createClass({
 
                 <div className="row">
                     <Title level={4}>defaultExpandAll</Title>
-                    <Tree>
+                    <Tree defaultExpandAll>
                         {Tree.createTreeNodes(datasource)}
                     </Tree>
                 </div>

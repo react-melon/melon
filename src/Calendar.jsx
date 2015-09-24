@@ -55,6 +55,13 @@ class Calendar extends InputComponent {
         return states;
     }
 
+    /**
+     * 格式化日期对象
+     *
+     * @param  {string} value 日期字符串
+     * @return {Date}         转化后的日期对象
+     * @private
+     */
     parseValue(value) {
 
         if (!_.isString(value)) {
@@ -85,6 +92,11 @@ class Calendar extends InputComponent {
         return DateTime.format(rawValue, format, this.props.lang);
     }
 
+    /**
+     * 点击textbox时触发
+     *
+     * @private
+     */
     handleInputFocus() {
 
         if (this.props.disabled || this.props.readOnly) {
@@ -103,7 +115,13 @@ class Calendar extends InputComponent {
         });
     }
 
+    /**
+     * Calendar DialogCalendar隐藏时触发
+     *
+     * @private
+     */
     handleDialogHide() {
+
         this.setState({open: false}, function () {
 
             let onHide = this.props.onHide;
@@ -116,6 +134,14 @@ class Calendar extends InputComponent {
         })
     }
 
+    /**
+     * rawValue change 在Calendar Dialog上点击确定按钮触发
+     *
+     * @param  {Object} e 事件对象
+     * @param  {Date}   e.date 改变的日期
+     * @param  {Object} e.target CalendarDialog对象
+     * @private
+     */
     handleOnChange(e) {
 
         let date = e.date;
@@ -124,6 +150,7 @@ class Calendar extends InputComponent {
             this.setState({open: false});
             return;
         }
+
 
         this.setState({rawValue: date, open: false}, function () {
 
@@ -220,8 +247,7 @@ Calendar.propTypes = {
     placeholder: PropTypes.string,
     lang: PropTypes.shape({
         week: PropTypes.string,
-        days: PropTypes.string,
-        title: PropTypes.string
+        days: PropTypes.string
     })
 };
 

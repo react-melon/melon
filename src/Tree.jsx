@@ -48,13 +48,15 @@ class Tree extends Component {
             return;
         }
 
+        var expand = this.props.defaultExpandAll;
+
         return React.Children.map(children, function (child, index) {
 
             return React.cloneElement(child, {
                 onClick: this.onTreeNodeClick,
                 key: index,
                 level: level,
-                expand: this.props.defaultExpandAll
+                expand: expand
             }, this.renderTreeNode(child.props.children, level + 1));
 
         }, this);
