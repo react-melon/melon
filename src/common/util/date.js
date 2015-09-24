@@ -165,6 +165,69 @@ module.exports = {
         return weekArray;
     },
 
+    parse: function (value, format) {
+
+        format = format.split(/[^yMdW]+/i);
+        value  = value.split(/\D+/);
+
+        var map = {};
+
+        for (var i = 0, l = format.length; i < l; i++) {
+            if (format[i]
+                && value[i]
+                && (format[i].length > 1
+                    && value[i].length === format[i].length
+                    || format[i].length === 1
+                   )
+            ) {
+                map[format[i]] = value[i];
+            }
+        }
+
+        var year  = map.yyyy
+            || map.y
+            || ((map.yy < 50 ? '20' : '19') + map.yy);
+
+        var month = (map.m || map.mm) | 0;
+        var date  = (map.d || map.dd) | 0;
+
+        return new Date(year | 0, month - 1, date);
+    },
+
+    format: function (date, format) {
+        var weekStart = this.weekStart;
+        var y         = date.getFullYear();
+        var M         = date.getMonth() + 1;
+        var d         = date.getDate();
+        var week      = date.getDay();
+        var props     = this.props;
+
+        if (weekStart) {
+            week = (week - 1 + 7) % 7;
+        }
+
+        week = props.lang.days.split(',')[week];
+
+        var map = {
+            yyyy: y,
+            yy: y % 100,
+            y: y,
+            mm: this.datePad(M),
+            m: M,
+            dd: this.datePad(d),
+            d: d,
+            w: week,
+            ww: props.lang.week + week
+        };
+
+        return format.replace(
+            /y+|M+|d+|W+/gi,
+            function ($0) {
+                return map[$0] || '';
+            }
+        );
+    },
+
     datePad: function (num) {
         num = num < 10 ? '0' + num : num;
         return num;

@@ -5,68 +5,52 @@
 
 var React = require('react');
 var Dialog = require('../Dialog.jsx');
-var createControl = require('../common/util/createControl');
 var Button = require('../Button.jsx');
-var _ = require('underscore');
-var cx = require('../common/util/classname');
-var DateTime = require('../common/util/date');
 var CalendarMain = require('./Main.jsx');
-var mainListenable = require('../mixins/main-listenable');
+var MainClickAware = require('../MainClickAware.jsx');
+
+var _ = require('underscore');
+var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
 
-var CalendarDialog = React.createClass({
+class CalendarDialog extends MainClickAware {
 
-    mixins: [mainListenable],
+    constructor(props) {
 
-    propTypes: {
-        initialDate: PropTypes.object.isRequired,
-        maxDate: PropTypes.object,
-        minDate: PropTypes.object,
-        onHide: PropTypes.func,
-        onChange: PropTypes.func,
-        onShow: PropTypes.func,
-        lang: PropTypes.shape({
-            week: PropTypes.string,
-            days: PropTypes.string,
-            title: PropTypes.string
-        })
-    },
+        super(props);
 
-    windowListeners: {
-        click: 'onMainClick'
-    },
-
-    getInitialState: function () {
-
-        var props = this.props;
-
-        return {
-            isOpen: props.isOpen || false,
-            value: props.initialDate,
-            month: props.initialDate
+        this.state = {
+            open: props.open || false,
+            date: props.date,
+            month: props.date
         };
-    },
 
-    componentWillReceiveProps: function (nextProps) {
+        this.handleCancelclick = this.handleCancelclick.bind(this);
+        this.handleSubmitclick = this.handleSubmitclick.bind(this);
+
+        this.type = 'calendar-dialog';
+    }
+
+    componentWillReceiveProps(nextProps) {
 
         var {
-            isOpen,
-            initialDate
+            open,
+            date
         } = nextProps;
 
         var newState = {};
         var onEvent;
 
-        if (isOpen == !this.state.isOpen) {
-            onEvent = isOpen ? this.props.onShow : this.props.onHide;
+        if (open == !this.state.open) {
+            onEvent = open ? this.props.onShow : this.props.onHide;
             onEvent = _.isFunction(onEvent) ? onEvent : _.noop;
-            newState.isOpen = isOpen;
+            newState.open = open;
         }
 
-        if (isOpen) {
-            newState.value = initialDate;
-            newState.month = initialDate;
+        if (open) {
+            newState.date = date;
+            newState.month = date;
         }
 
         if (_.isEmpty(newState)) {
@@ -74,56 +58,37 @@ var CalendarDialog = React.createClass({
         }
 
         this.setState(newState, function () {
-            if (_.isBoolean(newState.isOpen)) {
+            if (_.isBoolean(newState.open)) {
                 onEvent();
             }
         })
-    },
+    }
 
-    handleCancelclick: function () {
-        this.setState({isOpen: false}, function () {
+    handleCancelclick() {
+        this.setState({open: false}, function () {
             _.isFunction(this.props.onHide) ? this.props.onHide() : null;
         });
-    },
+    }
 
-    handleSubmitclick: function () {
-        var value = this.state.value;
+    handleSubmitclick() {
+        var date = this.state.date;
         var onChange = this.props.onChange;
         if (onChange) {
             onChange({
                 target: this,
-                value: value
+                date: date
             });
         }
-    },
+    }
 
-    getHeader: function () {
-        var date = this.state.value
-
-        var year = date.getFullYear();
-
-        var week = DateTime.getDayOfWeek(date);
-        var month = DateTime.getShortMonth(date);
-        var day = date.getDate();
-
-        var fullDate = week + '  ' + month + day + '日';
-
-        return (
-            <div className={cx.createComponentClass('calendar-dialog-header')}>
-                <p className={cx.createComponentClass('calendar-dialog-header-year')}>{year}</p>
-                <p className={cx.createComponentClass('calendar-dialog-header-date')}>{fullDate}</p>
-            </div>
-        );
-    },
-
-    onMainClick: function (e) {
+    onMainClick(e) {
 
         e = e || window.event;
         var target = e.target || e.srcElement;
 
-        if (!this.isMounted()) {
-            return;
-        }
+        // if (!this.isMounted()) {
+        //     return;
+        // }
 
         var target = e.target;
         var role = target.getAttribute('data-role');
@@ -135,7 +100,6 @@ var CalendarDialog = React.createClass({
         var month = this.state.month;
 
         if (role === 'pager') {
-
             var {
                 minDate,
                 maxDate
@@ -164,38 +128,75 @@ var CalendarDialog = React.createClass({
             var newMonth = DateTime.addMonths(month, m);
 
             this.setState({
-                value: new Date(newMonth.getFullYear(), newMonth.getMonth(), d),
+                date: new Date(newMonth.getFullYear(), newMonth.getMonth(), d),
                 month: newMonth
             });
         }
-    },
+    }
 
-    render: function () {
-        var props = this.props;
+    render() {
+        let props = this.props;
 
-        var actions = [
+        let actions = [
             <Button label="取消" variants={['secondery', 'calendar']} key="cancel" onClick={this.handleCancelclick} />,
             <Button label="确定" variants={['secondery', 'calendar']} key="submit" onClick={this.handleSubmitclick}  />
         ];
 
+        let {
+            lang,
+            ...others
+        } = props;
+
         return (
             <Dialog
-                {...props}
-                isOpen={this.state.isOpen}
+                {...others}
+                open={this.state.open}
                 variants={['calendar']}
                 actions={actions} >
-                {this.getHeader()}
+                {this.renderHeader()}
                 <CalendarMain
                     ref="main"
                     minDate={props.minDate}
                     maxDate={props.maxDate}
-                    lang={props.lang}
+                    lang={lang}
                     month={this.state.month}
-                    value={this.state.value} />
+                    date={this.state.date} />
             </Dialog>
         );
     }
 
-});
+    renderHeader() {
+        var date = this.state.date
 
-module.exports = createControl(CalendarDialog);
+        var year = date.getFullYear();
+
+        var week = DateTime.getDayOfWeek(date);
+        var month = DateTime.getShortMonth(date);
+        var day = date.getDate();
+
+        var fullDate = week + '  ' + month + day + '日';
+
+        return (
+            <div className={this.getPartClassName('header')}>
+                <p className={this.getPartClassName('header-year')}>{year}</p>
+                <p className={this.getPartClassName('header-date')}>{fullDate}</p>
+            </div>
+        );
+    }
+}
+
+CalendarDialog.propTypes = {
+    date: PropTypes.object.isRequired,
+    maxDate: PropTypes.object,
+    minDate: PropTypes.object,
+    onHide: PropTypes.func,
+    onChange: PropTypes.func,
+    onShow: PropTypes.func,
+    lang: PropTypes.shape({
+        week: PropTypes.string,
+        days: PropTypes.string,
+        title: PropTypes.string
+    })
+}
+
+module.exports = CalendarDialog;

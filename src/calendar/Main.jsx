@@ -11,73 +11,67 @@ var _ = require('underscore');
 var cx = require('../common/util/classname');
 var DateTime = require('../common/util/date');
 var Icon = require('../Icon.jsx');
-
+var Component = require('../Component.jsx');
 
 var PropTypes = React.PropTypes;
 
-var CalendarMain = React.createClass({
+class CalendarMain extends Component {
 
-    propTypes: {
-        value: PropTypes.object.isRequired,
-        maxDate: PropTypes.object,
-        minDate: PropTypes.object,
-        onChange: PropTypes.func,
-        lang: PropTypes.shape({
-            week: PropTypes.string,
-            days: PropTypes.string,
-            title: PropTypes.string
-        }).isRequired
-    },
+    constructor(props) {
 
-    getInitialState: function () {
-        var props = this.props;
-        return {
-            month: props.value,
-            value: props.value,
+        super(props);
+
+        this.state = {
+            month: props.date,
+            date: props.date,
             minDate: props.minDate,
             maxDate: props.maxDate
         };
-    },
 
-    componentWillReceiveProps: function (nextProps) {
+        this.type = 'calendar-main';
+    }
+
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            value: nextProps.value,
-            month: nextProps.month
+            date: nextProps.date,
+            month: nextProps.month,
+            minDate: nextProps.minDate,
+            maxDate: nextProps.maxDate
         });
-    },
+    }
 
-    getPager: function () {
+    renderPager() {
         var date = this.state.month;
 
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
 
         return (
-            <div className={cx.createComponentClass('calendar-dialog-pager')}>
+            <div className={this.getPartClassName('pager')}>
                 <Icon icon='navigate-before' data-role='pager' data-action="prev" />
                 <Icon icon='navigate-next' data-role='pager' data-action="next" />
                 {year + ' 年 ' + month + ' 月 '}
             </div>
         );
 
-    },
+    }
 
-    getWeekHeader: function () {
+    renderWeekHeader() {
         var days = this.props.lang.days.split(',');
 
         return (
-            <div className={cx.createComponentClass('calendar-dialog-weekheader')}>
+            <div className={this.getPartClassName('weekheader')}>
                 {_.map(days, function (day, index) {
                     return <span key={index}>{day}</span>;
                 })}
             </div>
         );
-    },
+    }
 
-    getDates: function () {
+    renderDates() {
         var state = this.state;
         var month = state.month;
-        var value = state.value;
+        var date = state.date;
 
         var weekArray = DateTime.getFullWeekArray(month);
 
@@ -102,26 +96,26 @@ var CalendarMain = React.createClass({
         );
 
         return (
-            <ul className={cx.createComponentClass('calendar-dialog-month')}>
+            <ul className={this.getPartClassName('month')}>
                 {_.map(weeks, this.renderWeek, this)}
             </ul>
         );
-    },
+    }
 
-    renderWeek: function (week, index) {
+    renderWeek(week, index) {
 
         return (
-            <li key={index} className={cx.createComponentClass('calendar-dialog-week')}>
+            <li key={index} className={this.getPartClassName('week')}>
                 {week}
             </li>
         );
-    },
+    }
 
-    renderDay: function (array, variants, month) {
+    renderDay(array, variants, month) {
 
         var state = this.state;
 
-        var value = state.value;
+        var date = state.date;
         var minDate = state.minDate;
         var maxDate = state.maxDate;
 
@@ -129,7 +123,7 @@ var CalendarMain = React.createClass({
 
             var states = {};
 
-            if (DateTime.isEqualDate(day, value)) {
+            if (DateTime.isEqualDate(day, date)) {
                 states.selected = true;
             }
 
@@ -138,9 +132,15 @@ var CalendarMain = React.createClass({
                 states.disabled = true;
             }
 
+            var classNames = cx.create(
+                this.getPartClassName('day'),
+                cx.createVariantClass(variants),
+                cx.createStateClass(states)
+            );
+
             return (
                 <a
-                    className={cx.createComponentClass('calendar-dialog-day', variants, states)}
+                    className={classNames}
                     href="#"
                     key={day}
                     data-month={month}
@@ -148,21 +148,33 @@ var CalendarMain = React.createClass({
                     {day.getDate()}
                 </a>
             );
-        })
-    },
+        }, this)
+    }
 
-    render: function () {
+    render() {
         var props = this.props;
 
         return (
-            <div className={cx.createComponentClass('calendar-dialog-main')}>
-                {this.getPager()}
-                {this.getWeekHeader()}
-                {this.getDates()}
+            <div className={this.getClassName()}>
+                {this.renderPager()}
+                {this.renderWeekHeader()}
+                {this.renderDates()}
             </div>
         );
     }
 
-});
+}
+
+CalendarMain.propTypes = {
+    date: PropTypes.object.isRequired,
+    maxDate: PropTypes.object,
+    minDate: PropTypes.object,
+    onChange: PropTypes.func,
+    lang: PropTypes.shape({
+        week: PropTypes.string,
+        days: PropTypes.string,
+        title: PropTypes.string
+    }).isRequired
+};
 
 module.exports = CalendarMain;
