@@ -194,19 +194,14 @@ module.exports = {
         return new Date(year | 0, month - 1, date);
     },
 
-    format: function (date, format) {
-        var weekStart = this.weekStart;
+    format: function (date, format, lang) {
+
         var y         = date.getFullYear();
         var M         = date.getMonth() + 1;
         var d         = date.getDate();
         var week      = date.getDay();
-        var props     = this.props;
 
-        if (weekStart) {
-            week = (week - 1 + 7) % 7;
-        }
-
-        week = props.lang.days.split(',')[week];
+        week = lang.days.split(',')[week];
 
         var map = {
             yyyy: y,
@@ -217,7 +212,7 @@ module.exports = {
             dd: this.datePad(d),
             d: d,
             w: week,
-            ww: props.lang.week + week
+            ww: lang.week + week
         };
 
         return format.replace(
