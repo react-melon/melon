@@ -14,8 +14,8 @@ var BoxGroup = require('../src/BoxGroup.jsx');
 var CheckBox = require('../src/CheckBox.jsx');
 var Radio = require('../src/Radio.jsx');
 var Toggle = require('../src/Toggle.jsx');
+var Calendar = require('../src/Calendar.jsx');
 var Uploader = require('../src/Uploader.jsx');
-
 var View = React.createClass({
 
     getInitialState() {
@@ -103,6 +103,19 @@ var View = React.createClass({
                                 <option value="Mango" label="Mango" disabled />
                                 <option value="Pear" label="Pear" disabled />
                             </BoxGroup>
+                        </div>
+                    </div>
+                    <div className="melon-row">
+                        <div className="melon-column melon-column-6">
+                            <Title level={5}>Calendar / 普通日历</Title>
+                            <Calendar
+                                name="date"
+                                defaultValue="2015-08-11"
+                                min="2015-08-01"
+                                max="2015-09-30" />
+                        </div>
+                        <div className="melon-column melon-column-6">
+
                         </div>
                     </div>
                     <div className="melon-row">

@@ -23,7 +23,7 @@ var View = React.createClass({
                     </div>
                     <div className="melon-column melon-column-4">
                         <Title level={5}>限定区间</Title>
-                        <Calendar defaultDate={new Date()} minDate={new Date(2015, 7, 10)} maxDate={new Date(2015, 9, 28)}></Calendar>
+                        <Calendar defaultDate={new Date()} min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)}></Calendar>
                     </div>
                 </div>
             </div>
