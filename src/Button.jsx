@@ -23,8 +23,4 @@ class Button extends Component {
 
 }
 
-Button.propTypes = {
-    disabled: React.PropTypes.bool
-};
-
 module.exports = Button;
