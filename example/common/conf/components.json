@@ -4,6 +4,9 @@
         "name": "BoxGroup"
     },
     {
+        "name": "Breadcrumb"
+    },
+    {
         "name": "Button"
     },
     {
