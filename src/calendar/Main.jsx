@@ -4,14 +4,15 @@
  */
 
 var React = require('react');
+
 var Dialog = require('../Dialog.jsx');
-var createControl = require('../common/util/createControl');
 var Button = require('../Button.jsx');
+var Icon = require('../Icon.jsx');
+var Component = require('../Component.jsx');
+
 var _ = require('underscore');
 var cx = require('../common/util/classname');
 var DateTime = require('../common/util/date');
-var Icon = require('../Icon.jsx');
-var Component = require('../Component.jsx');
 
 var PropTypes = React.PropTypes;
 
@@ -46,10 +47,23 @@ class CalendarMain extends Component {
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
 
+        var {
+            maxDate,
+            minDate
+        } = this.props;
+
+        var beforeState = {
+            disabled: _.isDate(minDate) && DateTime.isBeforeMonth(DateTime.addMonths(date, -1), minDate)
+        };
+
+        var nextState = {
+            disabled: _.isDate(maxDate) && DateTime.isAfterMonth(DateTime.addMonths(date, 1), maxDate)
+        };
+
         return (
             <div className={this.getPartClassName('pager')}>
-                <Icon icon='navigate-before' data-role='pager' data-action="prev" />
-                <Icon icon='navigate-next' data-role='pager' data-action="next" />
+                <Icon icon='navigate-before' data-role='pager' states={beforeState} data-action="prev" />
+                <Icon icon='navigate-next' data-role='pager' states={nextState} data-action="next" />
                 {year + ' 年 ' + month + ' 月 '}
             </div>
         );
