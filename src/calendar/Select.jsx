@@ -127,7 +127,7 @@ class CalendarSelect extends Component {
                 onClick={item.disabled ? null : this.onClick}
                 data-mode={item.mode}
                 data-value={item.value}
-                ref={item.selected ? null : "item"}
+                ref={item.selected ? "item" : null}
                 className={className} >
                 <a href="#">{item.text}</a>
             </li>
