@@ -64,7 +64,7 @@ class Calendar extends InputComponent {
 
         let format = this.props.dateFormat.toLowerCase();
 
-        return DateTime.format(rawValue, format);
+        return DateTime.format(rawValue, format, this.props.lang);
     }
 
     handleInputFocus() {
@@ -157,22 +157,22 @@ class Calendar extends InputComponent {
 
 }
 
+var lang = {
+
+    // 对于 '周' 的称呼
+    week: '周',
+
+    // 星期对应的顺序表示
+    days: '日,一,二,三,四,五,六',
+
+};
+
 Calendar.defaultProps = {
     ...InputComponent.defaultProps,
+    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', lang),
     dateFormat: 'yyyy-MM-dd',
     showYearSelector: false,
-    lang: {
-
-        // 对于 '周' 的称呼
-        week: '周',
-
-        // 星期对应的顺序表示
-        days: '日,一,二,三,四,五,六',
-
-        // 每月显示的标题文字
-        title: '{year}年{month}月'
-
-    },
+    lang: lang,
     validateEvents: ['change']
 };
 
