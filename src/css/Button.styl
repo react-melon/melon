@@ -3,6 +3,7 @@
 $-melon-button = {
 
     display: inline-block
+    box-sizing: border-box
 
     padding: 0 1em
     height: 2em
@@ -170,3 +171,13 @@ $-melon-button-variants = {
         &.{$-melon-variant-prefix}-{$variant}
             {$hashes}
 
+    .{$-melon-class-prefix}-icon
+        display: inline-block
+        font-size: 1em
+        line-height: 2em
+        vertical-align: top
+
+        & + span
+            display: inline-block
+            margin-left: 0.5em
+            vertical-align: top
