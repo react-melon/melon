@@ -42,6 +42,7 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={4}>Circle</Title>
                     <Title level={5}>determinate</Title>
+                    <Progress value={this.state.value} mode="determinate" shape="circle" size="xxs" />
                     <Progress value={this.state.value} mode="determinate" shape="circle" size="xs" />
                     <Progress value={this.state.value} mode="determinate" shape="circle" />
                     <Progress value={this.state.value} mode="determinate" shape="circle" size="l" />
