@@ -14,6 +14,7 @@ var BoxGroup = require('../src/BoxGroup.jsx');
 var CheckBox = require('../src/CheckBox.jsx');
 var Radio = require('../src/Radio.jsx');
 var Toggle = require('../src/Toggle.jsx');
+var Uploader = require('../src/Uploader.jsx');
 
 var View = React.createClass({
 
@@ -69,6 +70,11 @@ var View = React.createClass({
                             <option value="man">男</option>
                             <option value="woman">女</option>
                         </Select>
+                        <Uploader
+                            className="melon-column melon-column-6"
+                            name="avater"
+                            upload={this.upload}
+                            required />
                     </div>
                     <div className="melon-row">
                         <div className="melon-column melon-column-6">
@@ -125,6 +131,20 @@ var View = React.createClass({
     onFieldChange(name, value) {
         this.setState({[name]: value})
         console.log(name, value);
+    },
+
+    upload(files) {
+
+        return new Promise(function (resolve, reject) {
+
+            setTimeout(
+                function () {
+                    resolve('https://www.baidu.com/img/bd_logo1.png')
+                },
+                1000
+            );
+
+        });
     },
 
     validate(name, value, form) {
