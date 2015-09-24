@@ -165,6 +165,12 @@ class CalendarSelect extends Component {
         }
     }
 
+    /**
+     * 是否显示日期
+     *
+     * @return {boolean}
+     * @private
+     */
     isMonthView() {
 
         var {
@@ -174,10 +180,11 @@ class CalendarSelect extends Component {
 
         var mode = this.state.mode;
 
-        var onlyOnYear = false;
+        var onlyOneYear = false;
 
+        // 如果范围中只有一年，则跳过yearview，直接显示month view
         if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {
-            onlyOnYear = DateTime.yearDiff(minDate, maxDate) <= 1;
+            onlyOneYear = DateTime.yearDiff(minDate, maxDate) <= 1;
         }
 
         return mode === 'month' || onlyOnYear;

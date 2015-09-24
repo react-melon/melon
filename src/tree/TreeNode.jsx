@@ -15,13 +15,22 @@ class TreeNode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expand: this.props.expand || false
+            expand: props.expand || false
         };
         this.handleOnClick = this.handleOnClick.bind(this);
     }
 
     getStates() {
         // nothing
+    }
+
+    componentWillReceiveProps(props) {
+
+        if (props.expand === this.props.expand) {
+            return;
+        }
+
+        this.setState({expand: props.expand});
     }
 
     handleOnClick(e) {
@@ -59,7 +68,11 @@ class TreeNode extends Component {
         // 是否还有子节点
         if (React.Children.count(children) > 0) {
             children = [
-                <Icon key="icon" icon={icon} onClick={this.handleOnClick} style={iconStyle} />,
+                <Icon
+                    key="icon"
+                    icon={icon}
+                    onClick={this.handleOnClick}
+                    style={iconStyle} />,
                 <span
                     onClick={this.handleOnClick}
                     key="label"
@@ -72,7 +85,10 @@ class TreeNode extends Component {
                     )}>
                     {props.label}
                 </span>,
-                <ul className={cx.create(this.getPartClassName('root'), cx.createStateClass({expand: expand}))} key="root" ref="list">
+                <ul
+                    className={cx.create(this.getPartClassName('root'), cx.createStateClass({expand: expand}))}
+                    key="root"
+                    ref="list" >
                     {children}
                 </ul>
             ];
@@ -90,7 +106,14 @@ class TreeNode extends Component {
             );
         }
 
-        return <li {...props} data-role="tree-node" className={this.getClassName()}>{children}</li>;
+        return (
+            <li
+                {...props}
+                data-role="tree-node"
+                className={this.getClassName()}>
+                {children}
+            </li>
+        );
 
     }
 

@@ -167,8 +167,16 @@ class CalendarDialog extends MainClickAware {
         let props = this.props;
 
         let actions = [
-            <Button label="取消" variants={['secondery', 'calendar']} key="cancel" onClick={this.handleCancelclick} />,
-            <Button label="确定" variants={['secondery', 'calendar']} key="submit" onClick={this.handleSubmitclick}  />
+            <Button
+                label="取消"
+                variants={['secondery', 'calendar']}
+                key="cancel"
+                onClick={this.handleCancelclick} />,
+            <Button
+                label="确定"
+                variants={['secondery', 'calendar']}
+                key="submit"
+                onClick={this.handleSubmitclick}  />
         ];
 
         let {
