@@ -33,7 +33,8 @@ require.config({
         'react': '../dep/react/react',
         'react-dom': '../dep/react/react-dom',
         'underscore': '../dep/underscore/underscore'
-    }
+    },
+    waitSeconds: 5
 });
 require(['{{component}}', 'react', 'react-dom'], function (App, React, ReactDOM) {
     ReactDOM.render(
