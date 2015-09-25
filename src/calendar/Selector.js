@@ -5,9 +5,6 @@
 
 var React = require('react');
 
-var Dialog = require('../Dialog');
-var Button = require('../Button');
-var Icon = require('../Icon');
 var Component = require('../Component');
 
 var _ = require('underscore');
@@ -28,12 +25,10 @@ class CalendarSelector extends Component {
     }
 
     componentDidMount() {
-
         this.refs.item && this.refs.item.scrollIntoView();
     }
 
     componentDidUpdate() {
-
         this.refs.item && this.refs.item.scrollIntoView();
     }
 
@@ -42,7 +37,6 @@ class CalendarSelector extends Component {
         var {
             minDate,
             maxDate,
-            mode,
             date
         } = this.props;
 
@@ -70,8 +64,6 @@ class CalendarSelector extends Component {
         else {
             var range = CalendarSelector.MAX_RANGE;
             _.range(y - range, y + range).forEach(function (year, index) {
-
-                var newDate = new Date(year, m, d);
 
                 if ((_.isDate(minDate) && year < minDate.getFullYear())
                     || (_.isDate(maxDate) && year > maxDate.getFullYear())) {
@@ -110,20 +102,25 @@ class CalendarSelector extends Component {
         return (
             <li
                 key={index}
-                onClick={item.disabled ? null : this.onClick}
+                onClick={this.onClick.bind(this, item.disabled)}
                 data-mode={item.mode}
                 data-value={item.value}
-                ref={item.selected ? "item" : null}
+                ref={item.selected ? 'item' : null}
                 className={className} >
                 <a href="#">{item.text}</a>
             </li>
         );
     }
 
-    onClick(e) {
-        var target = e.currentTarget;
+    onClick(disabled, e) {
 
         e.preventDefault();
+
+        if (disabled) {
+            return;
+        }
+
+        var target = e.currentTarget;
 
         var mode = target.getAttribute('data-mode');
         var value = target.getAttribute('data-value') - 0;

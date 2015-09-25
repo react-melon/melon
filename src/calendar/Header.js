@@ -7,7 +7,6 @@ var React = require('react');
 
 var Component = require('../Component');
 
-var _ = require('underscore');
 var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
