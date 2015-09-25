@@ -1,5 +1,5 @@
 /**
- * @file Calendar/CalendarSelect
+ * @file Calendar/CalendarSelector
  * @author cxtom(cxtom2008@gmail.com)
  */
 
@@ -16,34 +16,21 @@ var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
 
-class CalendarSelect extends Component {
+class CalendarSelector extends Component {
 
     constructor(props) {
 
         super(props);
-
-        this.state = {
-            date: props.date,
-            mode: props.mode || 'year'
-        };
 
         this.onClick = this.onClick.bind(this);
 
         this.type = 'calendar-selector';
     }
 
-    componentWillReceiveProps(nextProps) {
-
-        this.setState({
-            date: nextProps.date
-        });
-    }
-
     componentDidMount() {
 
         this.refs.item && this.refs.item.scrollIntoView();
     }
-
 
     componentDidUpdate() {
 
@@ -55,12 +42,11 @@ class CalendarSelect extends Component {
         var {
             minDate,
             maxDate,
-            mode
+            mode,
+            date
         } = this.props;
 
         var datasource = [];
-
-        var date = this.state.date;
 
         var y = date.getFullYear();
         var m = date.getMonth();
@@ -82,7 +68,7 @@ class CalendarSelect extends Component {
             });
         }
         else {
-            var range = CalendarSelect.MAX_RANGE;
+            var range = CalendarSelector.MAX_RANGE;
             _.range(y - range, y + range).forEach(function (year, index) {
 
                 var newDate = new Date(year, m, d);
@@ -140,7 +126,7 @@ class CalendarSelect extends Component {
         var mode = target.getAttribute('data-mode');
         var value = target.getAttribute('data-value') - 0;
 
-        var date = this.state.date;
+        var date = this.props.date;
 
         var y = date.getFullYear();
         var m = date.getMonth();
@@ -157,12 +143,6 @@ class CalendarSelect extends Component {
                     : new Date(value, m, d)
             });
         }
-
-        if (mode === 'year') {
-            this.setState({
-                mode: 'month'
-            });
-        }
     }
 
     /**
@@ -175,10 +155,9 @@ class CalendarSelect extends Component {
 
         var {
             minDate,
-            maxDate
+            maxDate,
+            mode
         } = this.props;
-
-        var mode = this.state.mode;
 
         var onlyOneYear = false;
 
@@ -192,9 +171,9 @@ class CalendarSelect extends Component {
     }
 }
 
-CalendarSelect.MAX_RANGE = 10;
+CalendarSelector.MAX_RANGE = 10;
 
-CalendarSelect.propTypes = {
+CalendarSelector.propTypes = {
     date: PropTypes.object.isRequired,
     maxDate: PropTypes.object,
     minDate: PropTypes.object,
@@ -202,4 +181,4 @@ CalendarSelect.propTypes = {
     mode: PropTypes.oneOf(['month', 'year'])
 };
 
-module.exports = CalendarSelect;
+module.exports = CalendarSelector;
