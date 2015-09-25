@@ -8,8 +8,7 @@
   "description": "react ui components",
   "main": "src/main",
   "moduleType": [
-    "amd",
-    "node"
+    "amd"
   ],
   "keywords": [
     "react",
@@ -22,7 +21,10 @@
     "bower_components",
     "dep",
     "test",
-    "tests"
+    "tests",
+    "lib",
+    "doc",
+    "example"
   ],
   "dependencies": {
     "classnames": "~2.1.3",

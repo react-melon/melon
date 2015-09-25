@@ -1,0 +1,45 @@
+@require "./base.styl"
+@require "./Button.styl"
+@require "./Icon.styl"
+@require "./Progress.styl"
+@require "./Link.styl"
+
+.{$-melon-class-prefix}-uploader
+    position: relative
+    display: inline-block
+
+    >input[type=file]
+        display: none
+
+    &-uploaded
+
+        >.ui-icon
+            display: inline-block
+            color: $-melon-colors.teal500
+            vertical-align: middle
+
+        >span
+        >.ui-button,
+        >.ui-link
+            display: inline-block
+            margin-left: 0.5em
+            vertical-align: middle
+
+    &-uploading
+        >.ui-progress
+            font-size: 12px !important
+            margin: 0
+
+
+    &-file
+        font-size: $-melon-small-font-size
+        melon-clearfix()
+
+        &-name
+            float: left
+            line-height: 2em
+
+        > .{$-melon-class-prefix}-icon
+            float: right
+            line-height: 2em
+            cursor: pointer

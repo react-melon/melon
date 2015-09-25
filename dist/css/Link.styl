@@ -1,0 +1,37 @@
+@require "./base.styl"
+@require "./Button.styl"
+
+.{$-melon-class-prefix}-link
+    {$-melon-button}
+    text-decoration: none
+
+    melon-button-swatch($-melon-button-swatches-default)
+
+    for $swatch, $hashes in $-melon-button-swatches
+        &.variant-{$swatch}
+            melon-button-swatch($hashes)
+            &.variant-raised
+                melon-button-swatch($hashes, true)
+
+    &:disabled
+        color: rgba(#000, .26) !important
+        background-color: $-melon-colors.white !important
+
+        &.variant-raised
+            color: rgba(#000, .26) !important
+            background-color: $-melon-colors.grey200 !important
+
+    for $variant, $hashes in $-melon-button-variants
+        &.{$-melon-variant-prefix}-{$variant}
+            {$hashes}
+
+    .{$-melon-class-prefix}-icon
+        display: inline-block
+        margin-right: 0.5em
+        font-size: 1em
+        line-height: 2em
+        vertical-align: top
+
+        & ~ span
+            display: inline-block
+            vertical-align: top

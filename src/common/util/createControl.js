@@ -4,7 +4,7 @@
  */
 
 var React = require('react');
-var Base = require('../component/Base.jsx');
+var Base = require('../component/Base');
 
 module.exports = function (Component) {
 
