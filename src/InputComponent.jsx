@@ -129,8 +129,10 @@ class InputComponent extends Component {
         }
         else if (typeof isValid === 'boolean') {
             states.invalid = !isValid;
-            states.valid = isValid
+            states.valid = isValid;
         }
+
+        states.readOnly = !!props.readOnly;
 
         return states;
     }
