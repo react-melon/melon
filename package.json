@@ -1,52 +1,56 @@
 {
-    "name": "melon",
-    "version": "0.0.1",
-    "description": "ui components for react",
-    "main": "./src",
-    "directories": {
-        "doc": "doc",
-        "test": "test",
-        "example": "example"
-    },
-    "devDependencies": {
-        "stylus": "^0.52.0",
-        "babel": "^5.8.23",
-        "mime": "^1.3.4",
-        "nib": "^1.1.0",
-        "react": "^0.13.3",
-        "react-remarkable": "^1.1.1",
-        "react-tools": "^0.13.3",
-        "remarkable": "^1.6.0",
-        "swig": "^1.4.2"
-    },
-    "scripts": {
-        "test": "npm test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/jinzhubaofu/melon.git"
-    },
-    "peerDependencies": {
-        "react": ">=0.13",
-        "react-tap-event-plugin": ">=0.1.3"
-    },
-    "keywords": [
-        "react",
-        "ui",
-        "components"
-    ],
-    "author": "ludafa@outlook.com",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/jinzhubaofu/melon/issues"
-    },
-    "homepage": "https://github.com/jinzhubaofu/melon#readme",
-    "edp": {
-        "wwwroot": "/",
-        "depDir": "dep",
-        "srcDir": "src",
-        "loaderAutoConfig": "js,htm,html,tpl,vm,phtml",
-        "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/1-8-2/esl.js",
-        "dependencies": {}
-    }
+  "name": "melon",
+  "version": "0.0.1",
+  "description": "ui components for react",
+  "main": "./src",
+  "directories": {
+    "doc": "doc",
+    "test": "test",
+    "example": "example"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "lodash": "^3.10.1",
+    "mime": "^1.3.4",
+    "nib": "^1.1.0",
+    "react": "^0.13.3",
+    "react-remarkable": "^1.1.1",
+    "react-tools": "^0.13.3",
+    "remarkable": "^1.6.0",
+    "stylus": "^0.52.0",
+    "swig": "^1.4.2"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinzhubaofu/melon.git"
+  },
+  "peerDependencies": {
+    "react": ">=0.13",
+    "react-tap-event-plugin": ">=0.1.3"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components"
+  ],
+  "author": "ludafa@outlook.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jinzhubaofu/melon/issues"
+  },
+  "homepage": "https://github.com/jinzhubaofu/melon#readme",
+  "edp": {
+    "wwwroot": "/",
+    "depDir": "dep",
+    "srcDir": "src",
+    "loaderAutoConfig": "js,htm,html,tpl,vm,phtml",
+    "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/1-8-2/esl.js",
+    "dependencies": {}
+  },
+  "dependencies": {
+    "babel": "^5.8.23"
+  }
 }

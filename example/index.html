@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>melon example</title>
+    <link rel="stylesheet" href="index.styl">
+</head>
+<body>
+<div id="app"></div>
+<script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-6/esl.js"></script>
+<script>
+require.config({
+    baseUrl: '.',
+    paths: {
+        'melon': '../src',
+        'react': '../dep/react/react',
+        'react-dom': '../dep/react/react-dom',
+        'underscore': '../dep/underscore/underscore'
+    },
+    waitSeconds: 5
+});
+require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App, config) {
+
+    function dispatch() {
+
+        var hash = window.location.hash;
+        var name = hash ? hash.slice(2) : 'Button';
+
+        ReactDOM.render(
+            React.createElement(
+                App,
+                {
+                    components: config.components,
+                    component: name,
+                    Component: null
+                }
+            ),
+            document.getElementById('app')
+        );
+
+        require([name], function (Component) {
+            ReactDOM.render(
+                React.createElement(
+                    App,
+                    {
+                        components: config.components,
+                        name: name,
+                        Component: Component
+                    }
+                ),
+                document.getElementById('app')
+            );
+        });
+
+    }
+
+    window.onhashchange = function () {
+        dispatch();
+    };
+
+    dispatch();
+
+});
+
+
+
+</script>
+</body>
+</html>

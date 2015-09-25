@@ -74,20 +74,13 @@ exports.getLocations = function () {
             ]
         },
         {
-            location: /\.jsx\.js($|\?)/,
+            location: function (context) {
+                return /^\/(src|example).*?\.js($|\?)/.test(context.url);
+            },
             handler: [
-                function (context) {
-                    var docRoot  = context.conf.documentRoot;
-                    var pathname = context.request.pathname.replace(/\.js$/, '');
-                    var file = path.join(docRoot, pathname);
-                    if (fs.existsSync(file)) {
-                        context.header['content-type'] = mime.lookup('js');
-                        context.content = fs.readFileSync(file, 'utf8');
-                    }
-                },
+                file(),
                 amdify,
                 function (context) {
-
                     try {
                         context.content = babel.transform(context.content).code;
                     }
@@ -95,47 +88,54 @@ exports.getLocations = function () {
                         console.error(e.stack);
                         context.status = 500;
                     }
-
                 }
             ]
         },
-        {
-            location: /^\/example\/.*?\.jsx$/,
-            handler: [
-                function (context) {
+        // {
+        //     location: /^(src|example).*?\.js$/,
+        //     handler: [
+        //         file(),
+        //         amdify,
 
-                    var docRoot  = context.conf.documentRoot;
-                    var pathname = context.request.pathname.replace(/\.js$/, '');
-                    var file = path.join(docRoot, pathname);
+        //     ]
+        // },
+        // {
+        //     location: /^\/example\/.*?\.jsx$/,
+        //     handler: [
+        //         function (context) {
 
-                    if (fs.existsSync(file)) {
+        //             var docRoot  = context.conf.documentRoot;
+        //             var pathname = context.request.pathname.replace(/\.js$/, '');
+        //             var file = path.join(docRoot, pathname);
 
-                        if (require.cache) {
-                            delete require.cache[file];
-                        }
+        //             if (fs.existsSync(file)) {
 
-                        var feRoot = 'http://' + ip + ':' + context.conf.port + '/example';
+        //                 if (require.cache) {
+        //                     delete require.cache[file];
+        //                 }
 
-                        var component = path.basename(file, '.jsx');
+        //                 var feRoot = 'http://' + ip + ':' + context.conf.port + '/example';
 
-                        // Compile a file and store it, rendering it later
-                        context.header['content-type'] = mime.lookup('html');
-                        context.content = template({
-                            components: require('./example/common/conf/components.json'),
-                            component: component + '.jsx',
-                            feRoot: feRoot,
-                            style: component + '.styl'
-                        });
+        //                 var component = path.basename(file, '.jsx');
 
-                    }
-                    else {
-                        context.status = 404;
-                        context.content = '你想要的页面被外星人劫持了！';
-                    }
+        //                 // Compile a file and store it, rendering it later
+        //                 context.header['content-type'] = mime.lookup('html');
+        //                 context.content = template({
+        //                     components: require('./example/common/conf/components.json'),
+        //                     component: component + '.jsx',
+        //                     feRoot: feRoot,
+        //                     style: component + '.styl'
+        //                 });
 
-                }
-            ]
-        },
+        //             }
+        //             else {
+        //                 context.status = 404;
+        //                 context.content = '你想要的页面被外星人劫持了！';
+        //             }
+
+        //         }
+        //     ]
+        // },
         {
             location: function (req) {
                 var pathname = req.pathname;
