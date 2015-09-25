@@ -47,6 +47,7 @@ class Confirm extends Component {
         let {
             actions,
             children,
+            buttonVariants,
             ...others
         } = this.props;
 
@@ -55,12 +56,12 @@ class Confirm extends Component {
                 label="取消"
                 key="cancel"
                 onClick={this.onConfirmSubmit.bind(this, false)}
-                variants={['primary']} />,
+                variants={buttonVariants} />,
             <Button
                 label="确定"
                 key="submit"
                 onClick={this.onConfirmSubmit.bind(this, true)}
-                variants={['primary']} />
+                variants={buttonVariants} />
         ]);
 
         return (
@@ -68,6 +69,7 @@ class Confirm extends Component {
                 {...others}
                 ref="dialog"
                 open={this.state.open}
+                variants={variants}
                 actions={actions} >
                 {children}
             </Dialog>
@@ -78,13 +80,15 @@ class Confirm extends Component {
 
 Confirm.propTypes = {
     ...Dialog.propTypes,
-    onConfirm: React.PropTypes.func
+    onConfirm: React.PropTypes.func,
+    buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
 };
 
 Confirm.defaultProps = {
     ...Dialog.defaultProps,
     maskClickClose: false,
-    title: null
+    title: null,
+    buttonVariants: ['primary']
 };
 
 module.exports = Confirm;

@@ -5,9 +5,13 @@
 
 var React = require('react');
 var InputComponent = require('./InputComponent.jsx');
-var DateTime = require('./common/util/date');
 var TextBox = require('./TextBox.jsx');
-var CalendarDialog = require('./calendar/CalendarDialog.jsx');
+var Header = require('./calendar/Header.jsx');
+var Main = require('./calendar/Main.jsx');
+var Selector = require('./calendar/Selector.jsx');
+var Confirm = require('./dialog/Confirm.jsx');
+
+var DateTime = require('./common/util/date');
 var _ = require('underscore');
 var PropTypes = React.PropTypes;
 
@@ -17,16 +21,26 @@ class Calendar extends InputComponent {
 
         super(props);
 
-        var open = false;
+        let rawValue = this.state.rawValue;
+
+        let open = false;
+        let month = rawValue;
+        let mode = 'main';
+        let date = rawValue
 
         this.state = {
             ...this.state,
-            open
+            open,
+            month,
+            mode,
+            date
         };
 
-        this.handleInputFocus = this.handleInputFocus.bind(this);
-        this.handleDialogHide = this.handleDialogHide.bind(this);
-        this.handleOnChange = this.handleOnChange.bind(this);
+        this.onInputFocus = this.onInputFocus.bind(this);
+        this.onDialogHide = this.onDialogHide.bind(this);
+        this.onConfirm = this.onConfirm.bind(this);
+        this.onHeaderClick = this.onHeaderClick.bind(this);
+        this.onSelectorChange = this.onSelectorChange.bind(this);
 
     }
 
@@ -35,24 +49,6 @@ class Calendar extends InputComponent {
             date: nextProps.date,
             month: nextProps.month
         });
-    }
-
-    getStates(props) {
-
-        var states = super.getStates(props);
-
-        var {
-            disabled,
-            readOnly
-        } = props
-
-        states = {
-            ...states,
-            disabled,
-            readOnly
-        }
-
-        return states;
     }
 
     /**
@@ -97,7 +93,7 @@ class Calendar extends InputComponent {
      *
      * @private
      */
-    handleInputFocus() {
+    onInputFocus() {
 
         if (this.props.disabled || this.props.readOnly) {
             return;
@@ -120,7 +116,7 @@ class Calendar extends InputComponent {
      *
      * @private
      */
-    handleDialogHide() {
+    onDialogHide() {
 
         this.setState({open: false}, function () {
 
@@ -135,18 +131,19 @@ class Calendar extends InputComponent {
     }
 
     /**
-     * rawValue change 在Calendar Dialog上点击确定按钮触发
+     * rawValue 在Calendar Dialog上点击确定或取消按钮触发
      *
      * @param  {Object} e 事件对象
      * @param  {Date}   e.date 改变的日期
      * @param  {Object} e.target CalendarDialog对象
      * @private
      */
-    handleOnChange(e) {
+    onConfirm(e) {
 
-        let date = e.date;
+        let date = this.state.date;
+        let value = e.value;
 
-        if (DateTime.isEqualDate(date, this.state.rawValue)) {
+        if (!value || DateTime.isEqualDate(date, this.state.rawValue)) {
             this.setState({open: false});
             return;
         }
@@ -175,13 +172,24 @@ class Calendar extends InputComponent {
     render() {
 
         let props = this.props;
+        let state = this.state;
 
         let {
             lang,
             placeholder,
             disabled,
+            minDate,
+            maxDate,
             ...others
         } = props;
+
+        let {
+            date,
+            mode,
+            open
+        } = state;
+
+        let isMain = mode === 'main';
 
         return (
             <div {...others} className={this.getClassName()}>
@@ -191,17 +199,63 @@ class Calendar extends InputComponent {
                     value={this.getValue()}
                     disabled={disabled}
                     placeholder={placeholder}
-                    onFocus={this.handleInputFocus} />
-                <CalendarDialog
-                    ref="dialogWindow"
-                    open={this.state.open}
-                    date={this.state.rawValue}
-                    onHide={this.handleDialogHide}
-                    minDate={this.parseValue(props.min)}
-                    maxDate={this.parseValue(props.max)}
-                    lang={lang}
-                    onChange={this.handleOnChange} />
+                    onFocus={this.onInputFocus} />
+                <Confirm
+                    open={open}
+                    variants={['calendar']}
+                    onConfirm={this.onConfirm}
+                    buttonVariants={['secondery', 'calendar']} >
+                    <Header
+                        date={date}
+                        onClick={this.onHeaderClick} />
+                    {isMain ? this.renderMain() : this.renderSelector()}
+                </Confirm>
             </div>
+        );
+
+    }
+
+    renderMain() {
+        let {
+            lang,
+            minDate,
+            maxDate
+        } = this.props;
+
+        let {
+            date,
+            month
+        } = state;
+
+        return (
+            <Main
+                minDate={minDate}
+                maxDate={maxDate}
+                lang={lang}
+                month={month}
+                date={date} />
+        );
+    }
+
+    renderSelector() {
+
+        let {
+            minDate,
+            maxDate
+        } = this.props;
+
+        let {
+            date,
+            mode
+        } = state;
+
+        return (
+            <Selector
+                date={date}
+                minDate={minDate}
+                maxDate={maxDate}
+                mode={mode}
+                onChange={this.onSelectorChange} />
         );
 
     }
