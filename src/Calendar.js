@@ -103,7 +103,7 @@ class Calendar extends InputComponent {
             return;
         }
 
-        this.setState({open: true}, function () {
+        this.setState({open: true, mode: 'main'}, function () {
 
             let onShow = this.props.onShow;
 
@@ -188,14 +188,20 @@ class Calendar extends InputComponent {
 
         mode = mode === 'year' ? 'month' : 'main';
 
-        this.setState({date: date, mode: mode});
+        this.setState({
+            date: date,
+            month: date,
+            mode: mode
+        });
     }
 
     onPagerChange(e) {
 
         let month = e.month;
 
-        this.setState({month: month});
+        this.setState({
+            month: month
+        });
 
     }
 
@@ -203,7 +209,10 @@ class Calendar extends InputComponent {
 
         let date = e.date;
 
-        this.setState({date: date, month: date});
+        this.setState({
+            date: date,
+            month: date
+        });
     }
 
     render() {
