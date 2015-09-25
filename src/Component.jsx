@@ -85,17 +85,9 @@ class Component extends React.Component {
     }
 
     getStates(props) {
-
         var states = {};
-
-        if (props.hidden) {
-            states.hidden = true;
-        }
-
-        if (props.disabled) {
-            states.disabled = true;
-        }
-
+        states.hidden = props.hidden;
+        states.disabled = props.disabled;
         return states;
     }
 
