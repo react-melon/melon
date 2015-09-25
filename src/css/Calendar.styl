@@ -88,31 +88,31 @@
                 background-color: transparent
                 cursor: not-allowed
 
-    &-main
+    &-pager
+        position: relative
         margin-top: 8px
+        height: 30px
+        line-height: 30px
+        text-align: center
 
-        &-pager
-            position: relative
-            height: 30px
-            line-height: 30px
-            text-align: center
+        .{$-melon-class-prefix}-icon
+            position: absolute
+            font-size: 24px
+            color: $-melon-colors.darkBlack
+            top: 0
+            cursor: pointer
 
-            .{$-melon-class-prefix}-icon
-                position: absolute
-                font-size: 24px
-                color: $-melon-colors.darkBlack
-                top: 0
-                cursor: pointer
+            &.state-disabled
+                color: $-melon-colors.minBlack
+                cursor: not-allowed
 
-                &.state-disabled
-                    color: $-melon-colors.minBlack
-                    cursor: not-allowed
+        [data-action='prev']
+            left: 16px
 
-            [data-action='prev']
-                left: 16px
+        [data-action='next']
+            right: 16px
 
-            [data-action='next']
-                right: 16px
+    &-main
 
         &-weekheader
             padding: 10px 20px 0 20px

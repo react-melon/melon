@@ -1,0 +1,28 @@
+@import "./base.styl"
+
+.{$-melon-class-prefix}-breadcrumb
+    display: inline-block
+
+    &item
+
+        display: inline-block
+        text-decoration: none
+        color: $-melon-colors.blue500
+        line-height: 2em
+
+        &[href]:hover
+            color: $-melon-colors.blue500
+
+        &:after
+            display: inline-block
+            content: '/'
+            padding: 0 0.5em
+            color: $-melon-colors.grey600
+
+        &:last-child
+            color: $-melon-colors.grey600
+            &:after
+                display: none
+
+        &>.ui-icon
+            display: inline-block

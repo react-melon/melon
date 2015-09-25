@@ -3,9 +3,11 @@
  * @author EFE
  */
 
-/* globals LessCompiler, CssCompressor, JsCompressor, PathMapper, AddCopyright, ModuleCompiler, TplMerge */
+/* globals LessCompiler, CssCompressor, JsCompressor, PathMapper, AddCopyright, ModuleCompiler, TplMerge, BabelProcessor */
 
 exports.input = __dirname;
+
+require('babel/register');
 
 var path = require('path');
 exports.output = path.resolve(__dirname, 'output');
@@ -16,17 +18,36 @@ exports.output = path.resolve(__dirname, 'output');
 exports.getProcessors = function () {
     var lessProcessor = new LessCompiler();
     var cssProcessor = new CssCompressor();
-    var moduleProcessor = new ModuleCompiler();
+    var moduleProcessor = new ModuleCompiler({
+        bizId: 'melon'
+    });
     var jsProcessor = new JsCompressor();
     var pathMapperProcessor = new PathMapper();
     var addCopyright = new AddCopyright();
 
-    return {
-        'default': [
-            lessProcessor, moduleProcessor, pathMapperProcessor
-        ],
+    var babel = new BabelProcessor({
+        files: ['src/**/*.js'],
+        compileOptions: {
+            stage: 0,
+            modules: 'amd',
+            compact: false,
+            ast: false,
+            blacklist: ['strict'],
+            externalHelpers: true,
+            moduleId: '',
+            getModuleId: function (filename) {
+                return filename.replace('src/', '');
+            }
+        }
+    });
 
-        'release': [
+    return {
+        amd: [
+            babel,
+            moduleProcessor,
+            pathMapperProcessor
+        ],
+        release: [
             lessProcessor, cssProcessor, moduleProcessor,
             jsProcessor, pathMapperProcessor, addCopyright
         ]
@@ -34,10 +55,16 @@ exports.getProcessors = function () {
 };
 
 exports.exclude = [
+    'README',
+    '.*',
+    '*.json',
+    'dep',
+    'example',
     'tool',
     'doc',
     'test',
     'module.conf',
+    'node_modules',
     'dep/packages.manifest',
     'dep/*/*/test',
     'dep/*/*/doc',
@@ -65,4 +92,5 @@ exports.injectProcessor = function (processors) {
     for (var key in processors) {
         global[key] = processors[key];
     }
+    global.BabelProcessor = require('./tool/BabelProcessor.js');
 };

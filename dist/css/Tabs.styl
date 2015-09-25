@@ -1,0 +1,65 @@
+@import "./base.styl"
+
+
+.{$-melon-class-prefix}-tabs
+
+    display: block
+    margin: 0
+    padding: 0
+    font-size: $-melon-medium-font-size
+
+    ul
+        position: relative
+        width: 100%
+
+        background-color: $-melon-colors.cyan500
+        white-space: nowrap
+
+        list-style: none
+
+
+.{$-melon-class-prefix}-tabs-item
+
+    display: inline-block
+    cursor: pointer
+    padding: 0.48em 0
+    height: 2em
+    line-height: 2em
+    text-align: center
+    color: $-melon-colors.darkWhite
+
+    &.state-selected
+
+        color: $-melon-colors.white
+
+    &.state-disabled
+
+        color: $-melon-colors.lightWhite
+
+        cursor: not-allowed
+
+
+.{$-melon-class-prefix}-tabs-panel
+
+    display: none;
+
+    &.state-active
+
+        display: block!important
+
+
+
+.{$-melon-class-prefix}-tabs-inkbar
+
+    display: inline-block
+
+    position: absolute
+    bottom: 0
+    left: 0
+
+    height: 2px
+    background-color: $-melon-colors.yellow200
+
+    transition: left .8s cubic-bezier(0.23, 1, 0.32, 1) 0ms
+
+
