@@ -5,73 +5,62 @@
 
 var React = require('react');
 var Dialog = require('../Dialog');
-var Component = require('../Component');
 var Button = require('../Button');
 
-class Alert extends Component {
+class Alert extends Dialog {
 
     constructor(props) {
 
         super(props);
 
         this.onAlertSubmit = this.onAlertSubmit.bind(this);
-        this.onHide = this.onHide.bind(this);
 
-        this.state = {
-            open: props.open || false
-        };
+        this.type = 'dialog';
     }
 
-    componentWillReceiveProps(nextProps) {
+    getVariants(props) {
 
-        var open = nextProps.open;
+        var variants = super.getVariants(props);
 
-        if (!open) {
-            return;
-        }
+        variants.push('alert');
 
-        this.setState({open: open});
+        return variants;
     }
 
     onAlertSubmit() {
-        this.setState({open: false});
+        this.setState({open: false}, function () {
+            this.onHide();
+        });
     }
 
-    onHide() {
-        var onHide = this.props.onHide;
-        if (onHide) {
-            onHide();
-        }
-    }
-
-    render() {
-        let props = this.props;
-
-        var actions = ([
-            <Button
-                label="确定"
-                key="submit"
-                onClick={this.onAlertSubmit}
-                variants={['primary']} />
-        ]);
+    renderAction() {
+        let buttonVariants = this.props.buttonVariants;
 
         return (
-            <Dialog
-                {...props}
-                open={this.state.open}
-                actions={actions}
-                onHide={this.onHide} >
-                {props.children}
-            </Dialog>
+            <div ref="dialogActions"
+                className={this.getPartClassName('actions')} >
+                <Button
+                    label="确定"
+                    key="submit"
+                    onClick={this.onAlertSubmit}
+                    variants={buttonVariants} />
+            </div>
         );
     }
 
 }
 
+Alert.propTypes = {
+    ...Dialog.propTypes,
+    buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
+};
+
+
 Alert.defaultProps = {
     ...Dialog.defaultProps,
     maskClickClose: false,
-    title: null
+    title: null,
+    buttonVariants: ['primary']
 };
 
 module.exports = Alert;
