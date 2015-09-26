@@ -1,6 +1,8 @@
 @import "./base.styl"
 
-$-melon-progress-linear = {
+
+.{$-melon-class-prefix}-progress.variant-linear
+
     position: relative
     height: 0.33em
     display: block
@@ -10,20 +12,6 @@ $-melon-progress-linear = {
     margin: 0
     overflow: hidden
     font-size: $-melon-medium-font-size
-}
-
-$-melon-progress-circle = {
-    position: relative
-    display: inline-block
-    width: 2em
-    height: 2em
-    font-size: $-melon-medium-font-size
-}
-
-
-.{$-melon-class-prefix}-progress.variant-linear
-
-    {$-melon-progress-linear}
 
     &.variant-determinate .{$-melon-class-prefix}-progress-bar
 
@@ -34,6 +22,7 @@ $-melon-progress-circle = {
     &.variant-indeterminate .{$-melon-class-prefix}-progress-bar
 
         height: 100%
+        overflow: hidden
 
         .{$-melon-class-prefix}-progress-bar1,
         .{$-melon-class-prefix}-progress-bar2
@@ -55,7 +44,11 @@ $-melon-progress-circle = {
 
 .{$-melon-class-prefix}-progress.variant-circle
 
-    {$-melon-progress-circle}
+    position: relative
+    display: inline-block
+    width: 2em
+    height: 2em
+    font-size: $-melon-medium-font-size
 
     .{$-melon-class-prefix}-progress
 
