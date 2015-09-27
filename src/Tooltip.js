@@ -18,7 +18,7 @@ class Tooltip extends Component {
         this.state = {
             ...this.state,
             isShown: false
-        }
+        };
     }
 
     render() {
@@ -45,7 +45,7 @@ class Tooltip extends Component {
 
         var styles = this.getPosition();
 
-        var content =  (
+        content = (
             <div className={this.getPartClassName('popup')} style={styles}>
                 {content}
             </div>
