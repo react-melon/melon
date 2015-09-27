@@ -36,12 +36,6 @@ define('melon/Dialog', [
                 }
             },
             {
-                key: 'componentWillUnmount',
-                value: function componentWillUnmount() {
-                    babelHelpers.get(Object.getPrototypeOf(Dialog.prototype), 'componentWillUnmount', this).call(this);
-                }
-            },
-            {
                 key: 'componentDidUpdate',
                 value: function componentDidUpdate() {
                     this.positionDialog();

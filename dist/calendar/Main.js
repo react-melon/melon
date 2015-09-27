@@ -2,9 +2,6 @@ define('melon/calendar/Main', [
     'exports',
     '../babelHelpers',
     'react',
-    '../Dialog',
-    '../Button',
-    '../Icon',
     '../Component',
     'underscore',
     '../common/util/classname',
@@ -12,9 +9,6 @@ define('melon/calendar/Main', [
 ], function (exports) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Dialog = require('../Dialog');
-    var Button = require('../Button');
-    var Icon = require('../Icon');
     var Component = require('../Component');
     var _ = require('underscore');
     var cx = require('../common/util/classname');
@@ -25,48 +19,23 @@ define('melon/calendar/Main', [
         function CalendarMain(props) {
             babelHelpers.classCallCheck(this, CalendarMain);
             babelHelpers.get(Object.getPrototypeOf(CalendarMain.prototype), 'constructor', this).call(this, props);
-            this.state = {
-                month: props.date,
-                date: props.date,
-                minDate: props.minDate,
-                maxDate: props.maxDate
-            };
             this.type = 'calendar-main';
         }
         babelHelpers.createClass(CalendarMain, [
             {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    this.setState({
-                        date: nextProps.date,
-                        month: nextProps.month,
-                        minDate: nextProps.minDate,
-                        maxDate: nextProps.maxDate
-                    });
-                }
-            },
-            {
-                key: 'renderPager',
-                value: function renderPager() {
-                    var date = this.state.month;
-                    var month = date.getMonth() + 1;
-                    var year = date.getFullYear();
-                    var _props = this.props;
-                    var maxDate = _props.maxDate;
-                    var minDate = _props.minDate;
-                    var beforeState = { disabled: _.isDate(minDate) && DateTime.isBeforeMonth(DateTime.addMonths(date, -1), minDate) };
-                    var nextState = { disabled: _.isDate(maxDate) && DateTime.isAfterMonth(DateTime.addMonths(date, 1), maxDate) };
-                    return React.createElement('div', { className: this.getPartClassName('pager') }, React.createElement(Icon, {
-                        icon: 'navigate-before',
-                        'data-role': 'pager',
-                        states: beforeState,
-                        'data-action': 'prev'
-                    }), React.createElement(Icon, {
-                        icon: 'navigate-next',
-                        'data-role': 'pager',
-                        states: nextState,
-                        'data-action': 'next'
-                    }), year + ' \u5E74 ' + month + ' \u6708 ');
+                key: 'onClick',
+                value: function onClick(day, disabled, e) {
+                    e.preventDefault();
+                    if (disabled) {
+                        return;
+                    }
+                    var onChange = this.props.onChange;
+                    if (onChange) {
+                        onChange({
+                            target: this,
+                            date: day
+                        });
+                    }
                 }
             },
             {
@@ -81,9 +50,8 @@ define('melon/calendar/Main', [
             {
                 key: 'renderDates',
                 value: function renderDates() {
-                    var state = this.state;
-                    var month = state.month;
-                    var date = state.date;
+                    var props = this.props;
+                    var month = props.month;
                     var weekArray = DateTime.getFullWeekArray(month);
                     var weeks = [];
                     var len = weekArray.length;
@@ -108,10 +76,10 @@ define('melon/calendar/Main', [
             {
                 key: 'renderDay',
                 value: function renderDay(array, variants, month) {
-                    var state = this.state;
-                    var date = state.date;
-                    var minDate = state.minDate;
-                    var maxDate = state.maxDate;
+                    var props = this.props;
+                    var date = props.date;
+                    var minDate = props.minDate;
+                    var maxDate = props.maxDate;
                     return _.map(array, function (day, index) {
                         var states = {};
                         if (DateTime.isEqualDate(day, date)) {
@@ -126,6 +94,7 @@ define('melon/calendar/Main', [
                             href: '#',
                             key: day,
                             'data-month': month,
+                            onClick: this.onClick.bind(this, day, states.disabled),
                             'data-role': 'day'
                         }, day.getDate());
                     }, this);
@@ -134,8 +103,7 @@ define('melon/calendar/Main', [
             {
                 key: 'render',
                 value: function render() {
-                    var props = this.props;
-                    return React.createElement('div', { className: this.getClassName() }, this.renderPager(), this.renderWeekHeader(), this.renderDates());
+                    return React.createElement('div', { className: this.getClassName() }, this.renderWeekHeader(), this.renderDates());
                 }
             }
         ]);
@@ -143,6 +111,7 @@ define('melon/calendar/Main', [
     }(Component);
     CalendarMain.propTypes = {
         date: PropTypes.object.isRequired,
+        month: PropTypes.object.isRequired,
         maxDate: PropTypes.object,
         minDate: PropTypes.object,
         onChange: PropTypes.func,

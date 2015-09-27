@@ -55,6 +55,8 @@ exports.getProcessors = function () {
 };
 
 exports.exclude = [
+    '*.md',
+    'dist',
     'README',
     '.*',
     '*.json',

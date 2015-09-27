@@ -41,16 +41,20 @@ define('melon/Form', [
                 key: 'attachField',
                 value: function attachField(component) {
                     this.fields = this.fields.concat(component);
+                    return this;
                 }
             },
             {
                 key: 'detachField',
                 value: function detachField(component) {
                     var fields = this.fields;
-                    var index = fields.indexOf(component);
-                    if (index !== -1) {
-                        this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
+                    if (fields) {
+                        var index = fields.indexOf(component);
+                        if (index !== -1) {
+                            this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
+                        }
                     }
+                    return this;
                 }
             },
             {

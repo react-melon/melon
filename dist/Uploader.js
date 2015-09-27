@@ -5,7 +5,6 @@ define('melon/Uploader', [
     './InputComponent',
     './Button',
     './Icon',
-    './uploader/File',
     './Progress',
     './Link'
 ], function (exports) {
@@ -14,7 +13,6 @@ define('melon/Uploader', [
     var InputComponent = require('./InputComponent');
     var Button = require('./Button');
     var Icon = require('./Icon');
-    var File = require('./uploader/File');
     var Progress = require('./Progress');
     var Link = require('./Link');
     var Uploader = function (_InputComponent) {
