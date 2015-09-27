@@ -124,7 +124,7 @@ var View = React.createClass({
         );
     },
 
-    getInitialState: () => ({controlledCheckbox: [], controlledRadio: []}),
+    getInitialState: () => ({a: [], b: [], controlledCheckbox: [], controlledRadio: []}),
 
     onChange(name, e) {
         this.setState({
