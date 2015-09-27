@@ -3,17 +3,25 @@ define('melon/Calendar', [
     './babelHelpers',
     'react',
     './InputComponent',
-    './common/util/date',
     './TextBox',
-    './calendar/CalendarDialog',
+    './calendar/Header',
+    './calendar/Main',
+    './calendar/Selector',
+    './calendar/Pager',
+    './dialog/Confirm',
+    './common/util/date',
     'underscore'
 ], function (exports) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var InputComponent = require('./InputComponent');
-    var DateTime = require('./common/util/date');
     var TextBox = require('./TextBox');
-    var CalendarDialog = require('./calendar/CalendarDialog');
+    var Header = require('./calendar/Header');
+    var Main = require('./calendar/Main');
+    var Selector = require('./calendar/Selector');
+    var Pager = require('./calendar/Pager');
+    var Confirm = require('./dialog/Confirm');
+    var DateTime = require('./common/util/date');
     var _ = require('underscore');
     var PropTypes = React.PropTypes;
     var Calendar = function (_InputComponent) {
@@ -21,11 +29,24 @@ define('melon/Calendar', [
         function Calendar(props) {
             babelHelpers.classCallCheck(this, Calendar);
             babelHelpers.get(Object.getPrototypeOf(Calendar.prototype), 'constructor', this).call(this, props);
+            var rawValue = this.state.rawValue;
             var open = false;
-            this.state = babelHelpers._extends({}, this.state, { open: open });
-            this.handleInputFocus = this.handleInputFocus.bind(this);
-            this.handleDialogHide = this.handleDialogHide.bind(this);
-            this.handleOnChange = this.handleOnChange.bind(this);
+            var month = rawValue;
+            var mode = 'main';
+            var date = rawValue;
+            this.state = babelHelpers._extends({}, this.state, {
+                open: open,
+                month: month,
+                mode: mode,
+                date: date
+            });
+            this.onInputFocus = this.onInputFocus.bind(this);
+            this.onHide = this.onHide.bind(this);
+            this.onConfirm = this.onConfirm.bind(this);
+            this.onHeaderClick = this.onHeaderClick.bind(this);
+            this.onSelectorChange = this.onSelectorChange.bind(this);
+            this.onPagerChange = this.onPagerChange.bind(this);
+            this.onDateChange = this.onDateChange.bind(this);
         }
         babelHelpers.createClass(Calendar, [
             {
@@ -33,21 +54,8 @@ define('melon/Calendar', [
                 value: function componentWillReceiveProps(nextProps) {
                     this.setState({
                         date: nextProps.date,
-                        month: nextProps.month
+                        month: nextProps.date
                     });
-                }
-            },
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = babelHelpers.get(Object.getPrototypeOf(Calendar.prototype), 'getStates', this).call(this, props);
-                    var disabled = props.disabled;
-                    var readOnly = props.readOnly;
-                    states = babelHelpers._extends({}, states, {
-                        disabled: disabled,
-                        readOnly: readOnly
-                    });
-                    return states;
                 }
             },
             {
@@ -71,12 +79,15 @@ define('melon/Calendar', [
                 }
             },
             {
-                key: 'handleInputFocus',
-                value: function handleInputFocus() {
+                key: 'onInputFocus',
+                value: function onInputFocus() {
                     if (this.props.disabled || this.props.readOnly) {
                         return;
                     }
-                    this.setState({ open: true }, function () {
+                    this.setState({
+                        open: true,
+                        mode: 'main'
+                    }, function () {
                         var onShow = this.props.onShow;
                         if (_.isFunction(onShow)) {
                             onShow({ target: this });
@@ -85,8 +96,8 @@ define('melon/Calendar', [
                 }
             },
             {
-                key: 'handleDialogHide',
-                value: function handleDialogHide() {
+                key: 'onHide',
+                value: function onHide() {
                     this.setState({ open: false }, function () {
                         var onHide = this.props.onHide;
                         if (_.isFunction(onHide)) {
@@ -96,11 +107,12 @@ define('melon/Calendar', [
                 }
             },
             {
-                key: 'handleOnChange',
-                value: function handleOnChange(e) {
+                key: 'onConfirm',
+                value: function onConfirm(e) {
                     var _this = this;
-                    var date = e.date;
-                    if (DateTime.isEqualDate(date, this.state.rawValue)) {
+                    var date = this.state.date;
+                    var value = e.value;
+                    if (!value || DateTime.isEqualDate(date, this.state.rawValue)) {
                         this.setState({ open: false });
                         return;
                     }
@@ -123,9 +135,52 @@ define('melon/Calendar', [
                 }
             },
             {
+                key: 'onHeaderClick',
+                value: function onHeaderClick(e) {
+                    var mode = this.state.mode;
+                    this.setState({ mode: mode === 'main' ? 'year' : 'main' });
+                }
+            },
+            {
+                key: 'onSelectorChange',
+                value: function onSelectorChange(e) {
+                    var mode = e.mode;
+                    var date = e.date;
+                    mode = mode === 'year' ? 'month' : 'main';
+                    this.setState({
+                        date: date,
+                        month: date,
+                        mode: mode
+                    });
+                }
+            },
+            {
+                key: 'onPagerChange',
+                value: function onPagerChange(e) {
+                    var month = e.month;
+                    this.setState({ month: month });
+                }
+            },
+            {
+                key: 'onDateChange',
+                value: function onDateChange(e) {
+                    var date = e.date;
+                    var autoOk = this.props.autoOk;
+                    this.setState({
+                        date: date,
+                        month: date
+                    }, function () {
+                        if (autoOk) {
+                            this.onConfirm({ value: true });
+                        }
+                    });
+                }
+            },
+            {
                 key: 'render',
                 value: function render() {
                     var props = this.props;
+                    var state = this.state;
                     var lang = props.lang;
                     var placeholder = props.placeholder;
                     var disabled = props.disabled;
@@ -134,6 +189,10 @@ define('melon/Calendar', [
                         'placeholder',
                         'disabled'
                     ]);
+                    var date = state.date;
+                    var mode = state.mode;
+                    var open = state.open;
+                    var isMain = mode === 'main';
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(TextBox, {
                         ref: 'input',
                         readOnly: true,
@@ -141,17 +200,67 @@ define('melon/Calendar', [
                         value: this.getValue(),
                         disabled: disabled,
                         placeholder: placeholder,
-                        onFocus: this.handleInputFocus
-                    }), React.createElement(CalendarDialog, {
-                        ref: 'dialogWindow',
-                        open: this.state.open,
-                        date: this.state.rawValue,
-                        onHide: this.handleDialogHide,
-                        minDate: this.parseValue(props.min),
-                        maxDate: this.parseValue(props.max),
-                        lang: lang,
-                        onChange: this.handleOnChange
-                    }));
+                        onFocus: this.onInputFocus
+                    }), React.createElement(Confirm, {
+                        open: open,
+                        variants: ['calendar'],
+                        onConfirm: this.onConfirm,
+                        buttonVariants: [
+                            'secondery',
+                            'calendar'
+                        ]
+                    }, React.createElement(Header, {
+                        date: date,
+                        onClick: this.onHeaderClick
+                    }), isMain ? this.renderMain() : this.renderSelector()));
+                }
+            },
+            {
+                key: 'renderMain',
+                value: function renderMain() {
+                    var _props = this.props;
+                    var lang = _props.lang;
+                    var min = _props.min;
+                    var max = _props.max;
+                    var _state = this.state;
+                    var date = _state.date;
+                    var month = _state.month;
+                    return [
+                        React.createElement(Pager, {
+                            minDate: this.parseValue(min),
+                            maxDate: this.parseValue(max),
+                            key: 'pager',
+                            onChange: this.onPagerChange,
+                            month: month
+                        }),
+                        React.createElement(Main, {
+                            minDate: this.parseValue(min),
+                            maxDate: this.parseValue(max),
+                            key: 'main',
+                            lang: lang,
+                            month: month,
+                            date: date,
+                            onChange: this.onDateChange
+                        })
+                    ];
+                }
+            },
+            {
+                key: 'renderSelector',
+                value: function renderSelector() {
+                    var _props2 = this.props;
+                    var min = _props2.min;
+                    var max = _props2.max;
+                    var _state2 = this.state;
+                    var date = _state2.date;
+                    var mode = _state2.mode;
+                    return React.createElement(Selector, {
+                        date: date,
+                        minDate: this.parseValue(min),
+                        maxDate: this.parseValue(max),
+                        mode: mode,
+                        onChange: this.onSelectorChange
+                    });
                 }
             }
         ]);
@@ -173,6 +282,7 @@ define('melon/Calendar', [
         readOnly: PropTypes.bool,
         rawValue: PropTypes.object,
         value: PropTypes.string,
+        autoOk: PropTypes.bool,
         dateFormat: PropTypes.string,
         max: PropTypes.oneOfType([
             PropTypes.object,

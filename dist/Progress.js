@@ -2,18 +2,17 @@ define('melon/Progress', [
     'exports',
     './babelHelpers',
     'react',
-    './Component',
-    'underscore'
+    './Component'
 ], function (exports) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Component = require('./Component');
-    var _ = require('underscore');
     var Progress = function (_Component) {
         babelHelpers.inherits(Progress, _Component);
         function Progress(props) {
             babelHelpers.classCallCheck(this, Progress);
             babelHelpers.get(Object.getPrototypeOf(Progress.prototype), 'constructor', this).call(this, props);
+            this.timers = {};
         }
         babelHelpers.createClass(Progress, [
             {
@@ -35,21 +34,27 @@ define('melon/Progress', [
             },
             {
                 key: 'barUpdate',
-                value: function barUpdate(step, barElement, stepValues) {
+                value: function barUpdate(step, barName, stepValues) {
                     step = step || 0;
                     step %= 4;
-                    var timerID = setTimeout(this.barUpdate.bind(this, step + 1, barElement, stepValues), 420);
-                    if (step === 0) {
-                        barElement.style.left = stepValues[0][0] + '%';
-                        barElement.style.right = stepValues[0][1] + '%';
-                    } else if (step === 1) {
-                        barElement.style.transitionDuration = '840ms';
-                    } else if (step === 2) {
-                        barElement.style.left = stepValues[1][0] + '%';
-                        barElement.style.right = stepValues[1][1] + '%';
-                    } else if (step === 3) {
-                        barElement.style.transitionDuration = '0ms';
+                    var element = this.refs[barName];
+                    switch (step) {
+                    case 0:
+                        element.style.left = stepValues[0][0] + '%';
+                        element.style.right = stepValues[0][1] + '%';
+                        break;
+                    case 1:
+                        element.style.transitionDuration = '840ms';
+                        break;
+                    case 2:
+                        element.style.left = stepValues[1][0] + '%';
+                        element.style.right = stepValues[1][1] + '%';
+                        break;
+                    case 3:
+                        element.style.transitionDuration = '0ms';
+                        break;
                     }
+                    this.timers[barName] = setTimeout(this.barUpdate.bind(this, step + 1, barName, stepValues), 420);
                 }
             },
             {
@@ -57,29 +62,31 @@ define('melon/Progress', [
                 value: function scalePath(path, step) {
                     step = step || 0;
                     step %= 3;
-                    setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
+                    this.timers.path = setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
                     if (step === 0) {
                         path.style.strokeDasharray = '1, 200';
                         path.style.strokeDashoffset = 0;
                         path.style.transitionDuration = '0ms';
-                    } else if (step === 1) {
+                        return;
+                    }
+                    if (step === 1) {
                         path.style.strokeDasharray = '89, 200';
                         path.style.strokeDashoffset = -35;
                         path.style.transitionDuration = '750ms';
-                    } else {
-                        path.style.strokeDasharray = '89, 200';
-                        path.style.strokeDashoffset = -124;
-                        path.style.transitionDuration = '850ms';
+                        return;
                     }
+                    path.style.strokeDasharray = '89, 200';
+                    path.style.strokeDashoffset = -124;
+                    path.style.transitionDuration = '850ms';
                 }
             },
             {
                 key: 'rotateWrapper',
                 value: function rotateWrapper(wrapper) {
-                    setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
+                    this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
                     wrapper.style.transitionDuration = '0ms';
                     wrapper.style.transform = 'rotate(0deg)';
-                    setTimeout(function () {
+                    this.timers.wrapperUpdater = setTimeout(function () {
                         wrapper.style.transitionDuration = '10s';
                         wrapper.style.transform = 'rotate(1800deg)';
                         wrapper.style.transitionTimingFunction = 'linear';
@@ -97,32 +104,41 @@ define('melon/Progress', [
                     if (isCircle) {
                         this.scalePath(this.refs.path);
                         this.rotateWrapper(this.refs.wrapper);
-                    } else {
-                        var bar1 = this.refs.bar1;
-                        var bar2 = this.refs.bar2;
-                        this.barUpdate(0, bar1, [
+                        return;
+                    }
+                    this.barUpdate(0, 'bar1', [
+                        [
+                            -35,
+                            100
+                        ],
+                        [
+                            100,
+                            -90
+                        ]
+                    ]);
+                    this.timers.bar2 = setTimeout(function () {
+                        _this.barUpdate(0, 'bar2', [
                             [
-                                -35,
+                                -200,
                                 100
                             ],
                             [
-                                100,
-                                -90
+                                107,
+                                -8
                             ]
                         ]);
-                        setTimeout(function () {
-                            _this.barUpdate(0, bar2, [
-                                [
-                                    -200,
-                                    100
-                                ],
-                                [
-                                    107,
-                                    -8
-                                ]
-                            ]);
-                        }, 850);
-                    }
+                    }, 850);
+                }
+            },
+            {
+                key: 'componentWillUnmount',
+                value: function componentWillUnmount() {
+                    var _this2 = this;
+                    Object.keys(this.timers).forEach(function (name) {
+                        clearTimeout(_this2.timers[name]);
+                        _this2.timers[name] = null;
+                    });
+                    this.timers = {};
                 }
             },
             {
@@ -146,7 +162,6 @@ define('melon/Progress', [
             {
                 key: 'renderLinear',
                 value: function renderLinear() {
-                    var className;
                     var children;
                     var style;
                     if (this.isDeterminate()) {
@@ -196,9 +211,9 @@ define('melon/Progress', [
                         ref: 'path',
                         cx: c,
                         cy: c,
+                        r: r,
                         className: this.getPartClassName('path'),
                         style: pathStyle,
-                        r: r,
                         fill: 'none',
                         strokeWidth: strokeWidth,
                         strokeMiterlimit: '10'
@@ -218,13 +233,13 @@ define('melon/Progress', [
         return Progress;
     }(Component);
     Progress.SIZES = {
-        'xxs': 0.75,
-        'xs': 0.875,
-        's': 0.9375,
-        'l': 1.125,
-        'xl': 1.25,
-        'xxl': 1.375,
-        'xxxl': 1.5
+        xxs: 0.75,
+        xs: 0.875,
+        s: 0.9375,
+        l: 1.125,
+        xl: 1.25,
+        xxl: 1.375,
+        xxxl: 1.5
     };
     Progress.defaultProps = {
         shape: 'linear',

@@ -51,13 +51,6 @@ define('melon/BoxGroup', [
                 }
             },
             {
-                key: 'isControlled',
-                value: function isControlled() {
-                    var props = this.props;
-                    return this.props.disabled || props.readOnly || props.value && props.onChange;
-                }
-            },
-            {
                 key: 'render',
                 value: function render() {
                     var props = this.props;

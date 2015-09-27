@@ -1,10 +1,7 @@
-define('melon/calendar/Select', [
+define('melon/calendar/Selector', [
     'exports',
     '../babelHelpers',
     'react',
-    '../Dialog',
-    '../Button',
-    '../Icon',
     '../Component',
     'underscore',
     '../common/util/classname',
@@ -12,33 +9,20 @@ define('melon/calendar/Select', [
 ], function (exports) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Dialog = require('../Dialog');
-    var Button = require('../Button');
-    var Icon = require('../Icon');
     var Component = require('../Component');
     var _ = require('underscore');
     var cx = require('../common/util/classname');
     var DateTime = require('../common/util/date');
     var PropTypes = React.PropTypes;
-    var CalendarSelect = function (_Component) {
-        babelHelpers.inherits(CalendarSelect, _Component);
-        function CalendarSelect(props) {
-            babelHelpers.classCallCheck(this, CalendarSelect);
-            babelHelpers.get(Object.getPrototypeOf(CalendarSelect.prototype), 'constructor', this).call(this, props);
-            this.state = {
-                date: props.date,
-                mode: props.mode || 'year'
-            };
+    var CalendarSelector = function (_Component) {
+        babelHelpers.inherits(CalendarSelector, _Component);
+        function CalendarSelector(props) {
+            babelHelpers.classCallCheck(this, CalendarSelector);
+            babelHelpers.get(Object.getPrototypeOf(CalendarSelector.prototype), 'constructor', this).call(this, props);
             this.onClick = this.onClick.bind(this);
             this.type = 'calendar-selector';
         }
-        babelHelpers.createClass(CalendarSelect, [
-            {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    this.setState({ date: nextProps.date });
-                }
-            },
+        babelHelpers.createClass(CalendarSelector, [
             {
                 key: 'componentDidMount',
                 value: function componentDidMount() {
@@ -57,9 +41,8 @@ define('melon/calendar/Select', [
                     var _props = this.props;
                     var minDate = _props.minDate;
                     var maxDate = _props.maxDate;
-                    var mode = _props.mode;
+                    var date = _props.date;
                     var datasource = [];
-                    var date = this.state.date;
                     var y = date.getFullYear();
                     var m = date.getMonth();
                     var d = date.getDate();
@@ -75,9 +58,8 @@ define('melon/calendar/Select', [
                             };
                         });
                     } else {
-                        var range = CalendarSelect.MAX_RANGE;
+                        var range = CalendarSelector.MAX_RANGE;
                         _.range(y - range, y + range).forEach(function (year, index) {
-                            var newDate = new Date(year, m, d);
                             if (_.isDate(minDate) && year < minDate.getFullYear() || _.isDate(maxDate) && year > maxDate.getFullYear()) {
                                 return;
                             }
@@ -102,7 +84,7 @@ define('melon/calendar/Select', [
                     }));
                     return React.createElement('li', {
                         key: index,
-                        onClick: item.disabled ? null : this.onClick,
+                        onClick: this.onClick.bind(this, item.disabled),
                         'data-mode': item.mode,
                         'data-value': item.value,
                         ref: item.selected ? 'item' : null,
@@ -112,11 +94,15 @@ define('melon/calendar/Select', [
             },
             {
                 key: 'onClick',
-                value: function onClick(e) {
+                value: function onClick(disabled, e) {
+                    e.preventDefault();
+                    if (disabled) {
+                        return;
+                    }
                     var target = e.currentTarget;
                     var mode = target.getAttribute('data-mode');
                     var value = target.getAttribute('data-value') - 0;
-                    var date = this.state.date;
+                    var date = this.props.date;
                     var y = date.getFullYear();
                     var m = date.getMonth();
                     var d = date.getDate();
@@ -128,9 +114,6 @@ define('melon/calendar/Select', [
                             date: mode === 'month' ? new Date(y, value, d) : new Date(value, m, d)
                         });
                     }
-                    if (mode === 'year') {
-                        this.setState({ mode: 'month' });
-                    }
                 }
             },
             {
@@ -139,19 +122,19 @@ define('melon/calendar/Select', [
                     var _props2 = this.props;
                     var minDate = _props2.minDate;
                     var maxDate = _props2.maxDate;
-                    var mode = this.state.mode;
+                    var mode = _props2.mode;
                     var onlyOneYear = false;
                     if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {
                         onlyOneYear = DateTime.yearDiff(minDate, maxDate) <= 1;
                     }
-                    return mode === 'month' || onlyOnYear;
+                    return mode === 'month' || onlyOneYear;
                 }
             }
         ]);
-        return CalendarSelect;
+        return CalendarSelector;
     }(Component);
-    CalendarSelect.MAX_RANGE = 10;
-    CalendarSelect.propTypes = {
+    CalendarSelector.MAX_RANGE = 10;
+    CalendarSelector.propTypes = {
         date: PropTypes.object.isRequired,
         maxDate: PropTypes.object,
         minDate: PropTypes.object,
@@ -161,5 +144,5 @@ define('melon/calendar/Select', [
             'year'
         ])
     };
-    module.exports = CalendarSelect;
+    module.exports = CalendarSelector;
 });

@@ -43,7 +43,7 @@ define('melon/Tooltip', [
                 key: 'renderPopup',
                 value: function renderPopup(target, content) {
                     var styles = this.getPosition();
-                    var content = React.createElement('div', {
+                    content = React.createElement('div', {
                         className: this.getPartClassName('popup'),
                         style: styles
                     }, content);
@@ -102,7 +102,7 @@ define('melon/Tooltip', [
             {
                 key: 'componentWillUnmount',
                 value: function componentWillUnmount() {
-                    Tooltip.destroy(this.popup);
+                    Tooltip.destroyPopup(this.popup);
                     this.popup = null;
                 }
             },

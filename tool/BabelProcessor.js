@@ -50,7 +50,6 @@ Babel.prototype.process = function (file, processContext, callback) {
         result.metadata.usedHelpers
     );
 
-    file.outputPath = file.outputPath.replace(/\.jsx$/, '.js');
     processContext.addFileLink(filePath, file.outputPath);
 
     callback();
@@ -65,9 +64,7 @@ Babel.prototype.afterAll = function (processContext) {
     );
 
     var baseDir = processContext.baseDir;
-    console.log('message', baseDir);
-    var relativePath = path.relative(baseDir, 'babelHelpers.js');
-    console.log(relativePath);
+    var relativePath = path.relative(baseDir, 'src/babelHelpers.js');
     var fullPath = path.join(baseDir, relativePath);
 
     var helperFile = new FileInfo({

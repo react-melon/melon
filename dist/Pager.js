@@ -2,18 +2,18 @@ define('melon/Pager', [
     'exports',
     './babelHelpers',
     'react',
+    'react-dom',
     'underscore',
     './Icon',
     './common/util/classname',
-    'react-dom',
     './MainClickAware'
 ], function (exports) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
+    var ReactDOM = require('react-dom');
     var _ = require('underscore');
     var Icon = require('./Icon');
     var cx = require('./common/util/classname');
-    var ReactDOM = require('react-dom');
     var MainClickAware = require('./MainClickAware');
     var Pager = function (_MainClickAware) {
         babelHelpers.inherits(Pager, _MainClickAware);
@@ -38,6 +38,7 @@ define('melon/Pager', [
                 value: function onMainClick(e) {
                     e = e || window.event;
                     var target = e.target || e.srcElement;
+                    e.preventDefault();
                     if (e.stopPropagation) {
                         e.stopPropagation();
                     } else {
@@ -144,7 +145,6 @@ define('melon/Pager', [
                     var page = conf.page;
                     var part = conf.part;
                     var props = this.props;
-                    var anchor = props.anchor;
                     var useLang = props.useLang;
                     var classNames = cx.create(cx.createPrimaryClass('pager-item'), cx.createStateClass(conf.states));
                     var pageText;
