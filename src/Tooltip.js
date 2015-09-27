@@ -110,7 +110,7 @@ class Tooltip extends Component {
 
 
     componentWillUnmount() {
-        Tooltip.destroy(this.popup);
+        Tooltip.destroyPopup(this.popup);
         this.popup = null;
     }
 
