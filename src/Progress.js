@@ -1,18 +1,17 @@
 /**
  * @file esui-react/Progress
  * @author cxtom<cxtom2008@gmail.com>
+ * @author leon<ludafa@outlook.com>
  */
 
 var React = require('react');
 var Component = require('./Component');
 
-var _     = require('underscore');
-
-
 class Progress extends Component {
 
     constructor(props) {
         super(props);
+        this.timers = {};
     }
 
     getVariants(props) {
@@ -35,77 +34,80 @@ class Progress extends Component {
         return null;
     }
 
-    barUpdate(step, barElement, stepValues) {
+    barUpdate(step, barName, stepValues) {
 
         step = step || 0;
         step %= 4;
 
-        // if (!this.isMounted()){
-        //     return;
-        // }
+        var element = this.refs[barName];
 
-        var timerID = setTimeout(this.barUpdate.bind(this, step + 1, barElement, stepValues), 420);
+        switch (step) {
+            case 0:
+                element.style.left = stepValues[0][0] + '%';
+                element.style.right = stepValues[0][1] + '%';
+                break;
+            case 1:
+                element.style.transitionDuration = '840ms';
+                break;
+            case 2:
+                element.style.left = stepValues[1][0] + '%';
+                element.style.right = stepValues[1][1] + '%';
+                break;
+            case 3:
+                element.style.transitionDuration = '0ms';
+                break;
+        }
 
-        if (step === 0) {
-            barElement.style.left = stepValues[0][0] + '%';
-            barElement.style.right = stepValues[0][1] + '%';
-        }
-        else if (step === 1) {
-            barElement.style.transitionDuration = '840ms';
-        }
-        else if (step === 2) {
-            barElement.style.left = stepValues[1][0] + '%';
-            barElement.style.right = stepValues[1][1] + '%';
-        }
-        else if (step === 3) {
-            barElement.style.transitionDuration = '0ms';
-        }
+        this.timers[barName] = setTimeout(
+            this.barUpdate.bind(this, step + 1, barName, stepValues),
+            420
+        );
 
     }
 
     scalePath(path, step) {
+
         step = step || 0;
         step %= 3;
 
-        setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
-
-        // if (!this.isMounted()){
-        //     return;
-        // }
+        this.timers.path = setTimeout(
+            this.scalePath.bind(this, path, step + 1),
+            step ? 750 : 250
+        );
 
         if (step === 0) {
             path.style.strokeDasharray = '1, 200';
             path.style.strokeDashoffset = 0;
             path.style.transitionDuration = '0ms';
+            return;
         }
-        else if (step === 1) {
+
+        if (step === 1) {
             path.style.strokeDasharray = '89, 200';
             path.style.strokeDashoffset = -35;
             path.style.transitionDuration = '750ms';
+            return;
         }
-        else {
-            path.style.strokeDasharray = '89, 200';
-            path.style.strokeDashoffset = -124;
-            path.style.transitionDuration = '850ms';
-        }
+
+        path.style.strokeDasharray = '89, 200';
+        path.style.strokeDashoffset = -124;
+        path.style.transitionDuration = '850ms';
+
     }
 
     rotateWrapper(wrapper) {
 
-        setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
-
-        // if (!this.isMounted()){
-        //     return;
-        // }
+        this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
 
         wrapper.style.transitionDuration = '0ms';
         wrapper.style.transform = 'rotate(0deg)';
 
-        setTimeout(() => {
+        this.timers.wrapperUpdater = setTimeout(() => {
             wrapper.style.transitionDuration = '10s';
             wrapper.style.transform = 'rotate(1800deg)';
             wrapper.style.transitionTimingFunction = 'linear';
         }, 50);
+
     }
 
     componentDidMount() {
@@ -117,26 +119,36 @@ class Progress extends Component {
         var isCircle = this.props.shape.toLowerCase() === 'circle';
 
         if (isCircle) {
-
             this.scalePath(this.refs.path);
             this.rotateWrapper(this.refs.wrapper);
+            return;
         }
-        else {
-            var bar1 = this.refs.bar1;
-            var bar2 = this.refs.bar2;
 
-            this.barUpdate(0, bar1, [
-                [-35, 100],
-                [100, -90],
-            ]);
+        this.barUpdate(
+            0,
+            'bar1',
+            [[-35, 100], [100, -90]]
+        );
 
-            setTimeout(() => {
-                this.barUpdate(0, bar2, [
-                    [-200, 100],
-                    [107, -8],
-                ]);
-            }, 850);
-        }
+        this.timers.bar2 = setTimeout(() => {
+            this.barUpdate(
+                0,
+                'bar2',
+                [[-200, 100], [107, -8]]
+            );
+        }, 850);
+
+    }
+
+    componentWillUnmount() {
+
+        Object.keys(this.timers).forEach((name) => {
+            clearTimeout(this.timers[name]);
+            this.timers[name] = null;
+        });
+
+        this.timers = {};
+
     }
 
     getRelativeValue() {
@@ -156,7 +168,6 @@ class Progress extends Component {
 
     renderLinear() {
 
-        var className;
         var children;
         var style;
 
@@ -199,8 +210,15 @@ class Progress extends Component {
         return (
             <div ref="wrapper" className={this.getPartClassName('wapper')}>
                 <svg className={this.getPartClassName('svg')}>
-                    <circle ref="path" cx={c} cy={c} className={this.getPartClassName('path')}
-                        style={pathStyle} r={r} fill="none" strokeWidth={strokeWidth} strokeMiterlimit="10" />
+                    <circle ref="path"
+                        cx={c}
+                        cy={c}
+                        r={r}
+                        className={this.getPartClassName('path')}
+                        style={pathStyle}
+                        fill="none"
+                        strokeWidth={strokeWidth}
+                        strokeMiterlimit="10" />
                 </svg>
             </div>
         );
@@ -224,13 +242,13 @@ class Progress extends Component {
 }
 
 Progress.SIZES = {
-    'xxs': 0.75,
-    'xs': 0.875,
-    's': 0.9375,
-    'l': 1.125,
-    'xl': 1.25,
-    'xxl': 1.375,
-    'xxxl': 1.5
+    xxs: 0.75,
+    xs: 0.875,
+    s: 0.9375,
+    l: 1.125,
+    xl: 1.25,
+    xxl: 1.375,
+    xxxl: 1.5
 };
 
 Progress.defaultProps = {
