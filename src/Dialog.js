@@ -32,10 +32,6 @@ class Dialog extends WindowResizeAware {
         this.positionDialog();
     }
 
-    componentWillUnmount() {
-        super.componentWillUnmount();
-    }
-
     componentDidUpdate() {
         this.positionDialog();
     }
@@ -90,7 +86,7 @@ class Dialog extends WindowResizeAware {
 
     handleMaskClick(e) {
         if (this.props.maskClickClose) {
-            this.setState({ open: false }, this.onHide);
+            this.setState({open: false}, this.onHide);
         }
         else {
             e.stopPropagation();

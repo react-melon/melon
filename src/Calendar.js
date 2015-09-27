@@ -209,9 +209,17 @@ class Calendar extends InputComponent {
 
         let date = e.date;
 
+        let autoOk = this.props.autoOk;
+
         this.setState({
             date: date,
             month: date
+        }, function () {
+            if (autoOk) {
+                this.onConfirm({
+                    value: true
+                });
+            }
         });
     }
 
@@ -338,6 +346,7 @@ Calendar.propTypes = {
     readOnly: PropTypes.bool,
     rawValue: PropTypes.object,
     value: PropTypes.string,
+    autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
     max: PropTypes.oneOfType([
         PropTypes.object,
