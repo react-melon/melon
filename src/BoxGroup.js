@@ -54,11 +54,6 @@ class BoxGroup extends InputComponent {
         return value ? value.split(',') : [];
     }
 
-    isControlled() {
-        var props = this.props;
-        return this.props.disabled || props.readOnly || props.value && props.onChange;
-    }
-
     render() {
 
         var props = this.props;
