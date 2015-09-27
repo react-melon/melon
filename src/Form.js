@@ -38,16 +38,41 @@ class Form extends Component {
         return context;
     }
 
+    /**
+     * 绑定字段
+     *
+     * @param {module:Component} component 字段
+     * @return {module:Form}
+     */
     attachField(component) {
         this.fields = this.fields.concat(component);
+        return this;
     }
 
+    /**
+     * 解除字段
+     *
+     * @param {module:InputComponent} component 字段
+     * @return {module:Form}
+     */
     detachField(component) {
+
         var fields = this.fields;
-        var index = fields.indexOf(component);
-        if (index !== -1) {
-            this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
+
+        // 这里先检测 fields 是否存在是因为在 `unmount` 的过程中，form 会先被 `unmount`
+        // 然后才是其中的子组件，这时 form 对子组件的引用已经被解除了，直接返回即可
+        if (fields) {
+
+            var index = fields.indexOf(component);
+
+            if (index !== -1) {
+                this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
+            }
+
         }
+
+        return this;
+
     }
 
     render() {
