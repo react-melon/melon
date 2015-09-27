@@ -4,6 +4,7 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _     = require('underscore');
 var Icon  = require('./Icon');
 var cx    = require('./common/util/classname');
@@ -31,6 +32,52 @@ class Pager extends MainClickAware {
         return variants;
     }
 
+    onMainClick(e) {
+
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+
+        e.preventDefault();
+
+        // 不加这个React会报错 ISSUE#4865
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        else {
+            e.cancelBubble = true;
+        }
+
+        var main = ReactDOM.findDOMNode(this);
+
+        var role = target.getAttribute('data-role');
+
+        while (role !== 'pager-item' && target !== main) {
+            target = target.parentNode;
+            role = target.getAttribute('data-role');
+        }
+
+        if (target === main) {
+            return;
+        }
+
+        var page = target.getAttribute('data-page') - 0;
+        target = null;
+
+        if (this.state.page === page) {
+            return;
+        }
+
+        this.setState({page: page}, function () {
+            var onChange = this.props.onChange;
+
+            _.isFunction(onChange) && onChange({
+                target: this,
+                page: page
+            });
+        });
+
+    }
+
     /**
      * 生成一个页码数组, 如果需要ellipsis, 那么ellpsis用负数表示它;
      * 即ellipsis在5号位置, 那么他就是-5
@@ -44,7 +91,6 @@ class Pager extends MainClickAware {
      * @return {Array.number}        [start, paddingLeft, .., paddingRight, stop]
      */
     range(start, stop, paddingLeft, paddingRight) {
-
         return start + paddingLeft < stop - paddingRight
             ? _
                 .range(start, start + paddingLeft)
