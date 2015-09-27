@@ -5,29 +5,16 @@
 
 var React = require('react');
 var Dialog = require('../Dialog');
-var Component = require('../Component');
 var Button = require('../Button');
 
-class Confirm extends Component {
+class Confirm extends Dialog {
 
     constructor(props) {
 
         super(props);
 
-        this.state = {
-            open: props.open || false
-        };
-    }
+        this.type = 'dialog';
 
-    componentWillReceiveProps(nextProps) {
-
-        var open = nextProps.open;
-
-        if (!open) {
-            return;
-        }
-
-        this.setState({open: open});
     }
 
     onConfirmSubmit(confirm) {
@@ -40,38 +27,38 @@ class Confirm extends Component {
                     value: confirm
                 });
             }
+
+            this.onHide();
         });
     }
 
-    render() {
-        let {
-            actions,
-            children,
-            buttonVariants,
-            ...others
-        } = this.props;
+    getVariants(props) {
 
-        actions = ([
-            <Button
-                label="取消"
-                key="cancel"
-                onClick={this.onConfirmSubmit.bind(this, false)}
-                variants={buttonVariants} />,
-            <Button
-                label="确定"
-                key="submit"
-                onClick={this.onConfirmSubmit.bind(this, true)}
-                variants={buttonVariants} />
-        ]);
+        var variants = super.getVariants(props);
+
+        variants.push('confirm');
+
+        return variants;
+    }
+
+    renderAction() {
+
+        var buttonVariants = this.props.buttonVariants;
 
         return (
-            <Dialog
-                {...others}
-                ref="dialog"
-                open={this.state.open}
-                actions={actions} >
-                {children}
-            </Dialog>
+            <div ref="dialogActions"
+                className={this.getPartClassName('actions')}>
+                <Button
+                    label="取消"
+                    key="cancel"
+                    onClick={this.onConfirmSubmit.bind(this, false)}
+                    variants={buttonVariants} />
+                <Button
+                    label="确定"
+                    key="submit"
+                    onClick={this.onConfirmSubmit.bind(this, true)}
+                    variants={buttonVariants} />
+            </div>
         );
     }
 
