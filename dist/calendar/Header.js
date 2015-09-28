@@ -1,10 +1,12 @@
 define('melon/calendar/Header', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     '../Component',
     '../common/util/date'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Component = require('../Component');

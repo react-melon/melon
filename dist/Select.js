@@ -1,12 +1,14 @@
 define('melon/Select', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './common/util/classname',
     './common/util/dom',
     './Icon',
     './InputComponent'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var cx = require('./common/util/classname');

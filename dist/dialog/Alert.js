@@ -1,10 +1,12 @@
 define('melon/dialog/Alert', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     '../Dialog',
     '../Button'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Dialog = require('../Dialog');

@@ -1,10 +1,12 @@
 define('melon/table/Cell', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     'underscore',
     '../Component'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var PropTypes = React.PropTypes;

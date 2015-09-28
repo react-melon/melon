@@ -1,10 +1,12 @@
 define('melon/Component', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './config',
     './common/util/classname'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var config = require('./config');

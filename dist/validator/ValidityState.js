@@ -1,7 +1,9 @@
 define('melon/validator/ValidityState', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     function ValidityState(isValid, message) {
         this.isValid = isValid;

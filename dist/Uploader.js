@@ -1,5 +1,7 @@
 define('melon/Uploader', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './InputComponent',
@@ -7,7 +9,7 @@ define('melon/Uploader', [
     './Icon',
     './Progress',
     './Link'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var InputComponent = require('./InputComponent');

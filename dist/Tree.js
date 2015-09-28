@@ -1,5 +1,7 @@
 define('melon/Tree', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     'underscore',
@@ -7,7 +9,7 @@ define('melon/Tree', [
     './Component',
     './tree/TreeNode',
     './MainClickAware'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var _ = require('underscore');

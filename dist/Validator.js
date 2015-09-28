@@ -1,8 +1,10 @@
 define('melon/Validator', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     './validator/ValidityState'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     'use strict';
     var rules = {};

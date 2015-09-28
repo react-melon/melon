@@ -1,7 +1,9 @@
 define('melon/common/util/dom', [
+    'require',
     'exports',
+    'module',
     '../../babelHelpers'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     exports.on = function (target, eventName, handler) {
         if (target.addEventListener) {

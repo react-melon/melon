@@ -1,7 +1,9 @@
 define('melon/common/util/Validity', [
+    'require',
     'exports',
+    'module',
     '../../babelHelpers'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     'use strict';
     var Validity = function () {

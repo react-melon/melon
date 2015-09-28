@@ -1,12 +1,14 @@
 define('melon/Table', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'underscore',
     'react',
     './table/Row',
     './table/SelectorColumn',
     './table/Column'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var u = require('underscore');
     var React = require('react');

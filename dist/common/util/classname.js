@@ -1,8 +1,10 @@
 define('melon/common/util/classname', [
+    'require',
     'exports',
+    'module',
     '../../babelHelpers',
     '../../config'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     var config = require('../../config');
     exports.createClassName = function (type, value) {

@@ -1,11 +1,13 @@
 define('melon/Tabs', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './Component',
     './tabs/Tab',
     './tabs/Panel'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Component = require('./Component');

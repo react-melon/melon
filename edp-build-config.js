@@ -3,7 +3,12 @@
  * @author EFE
  */
 
-/* globals LessCompiler, CssCompressor, JsCompressor, PathMapper, AddCopyright, ModuleCompiler, TplMerge, BabelProcessor */
+/* globals
+    LessCompiler, CssCompressor, JsCompressor,
+    PathMapper, AddCopyright, ModuleCompiler,
+    TplMerge, BabelProcessor,
+    AmdWrapper
+*/
 
 exports.input = __dirname;
 
@@ -25,11 +30,15 @@ exports.getProcessors = function () {
     var pathMapperProcessor = new PathMapper();
     var addCopyright = new AddCopyright();
 
+    var amdWrapper = new AmdWrapper({
+        files: ['src/**/*.js', '!src/babelHelpers.js']
+    });
+
     var babel = new BabelProcessor({
         files: ['src/**/*.js'],
         compileOptions: {
             stage: 0,
-            modules: 'amd',
+            modules: 'commonStrict',
             compact: false,
             ast: false,
             blacklist: ['strict'],
@@ -44,6 +53,7 @@ exports.getProcessors = function () {
     return {
         amd: [
             babel,
+            amdWrapper,
             moduleProcessor,
             pathMapperProcessor
         ],
@@ -95,4 +105,5 @@ exports.injectProcessor = function (processors) {
         global[key] = processors[key];
     }
     global.BabelProcessor = require('./tool/BabelProcessor.js');
+    global.AmdWrapper = require('./tool/AmdWrapper.js');
 };

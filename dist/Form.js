@@ -1,12 +1,14 @@
 define('melon/Form', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './Component',
     './form/FormData',
     './Validator',
     './validator/ValidityState'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Component = require('./Component');

@@ -1,9 +1,11 @@
 define('melon/common/util/createControl', [
+    'require',
     'exports',
+    'module',
     '../../babelHelpers',
     'react',
     '../component/Base'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     var React = require('react');
     var Base = require('../component/Base');
