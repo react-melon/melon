@@ -5,9 +5,9 @@
 
 var React = require('react');
 var Component = require('../Component');
+var Day = require('./Day');
 
 var _ = require('underscore');
-var cx = require('../common/util/classname');
 var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
@@ -16,22 +16,16 @@ class CalendarMain extends Component {
 
     constructor(props) {
         super(props);
+        this.onClick = this.onClick.bind(this);
         this.type = 'calendar-main';
     }
 
-    onClick(day, disabled, e) {
-
-        e.preventDefault();
-
-        if (disabled) {
-            return;
-        }
-
+    onClick(e) {
         var onChange = this.props.onChange;
         if (onChange) {
             onChange({
                 target: this,
-                date: day
+                date: e.date
             });
         }
     }
@@ -58,20 +52,20 @@ class CalendarMain extends Component {
         var len = weekArray.length;
 
         weeks.push(
-            this.renderDay(weekArray[0], ['pre-month'], -1)
+            this.renderDay(weekArray[0], ['pre-month'])
         );
         weeks[0] = weeks[0].concat(
-            this.renderDay(weekArray[1], [], 0)
+            this.renderDay(weekArray[1], [])
         );
 
         for (var i = 2; i < len - 1; i++) {
             weeks.push(
-                this.renderDay(weekArray[i], [], 0)
+                this.renderDay(weekArray[i], [])
             );
         }
 
         weeks[len - 3] = weeks[len - 3].concat(
-            this.renderDay(weekArray[len - 1], ['next-month'], 1)
+            this.renderDay(weekArray[len - 1], ['next-month'])
         );
 
         return (
@@ -90,7 +84,7 @@ class CalendarMain extends Component {
         );
     }
 
-    renderDay(array, variants, month) {
+    renderDay(array, variants) {
 
         var props = this.props;
 
@@ -100,33 +94,18 @@ class CalendarMain extends Component {
 
         return _.map(array, function (day, index) {
 
-            var states = {};
-
-            if (DateTime.isEqualDate(day, date)) {
-                states.selected = true;
-            }
-
-            if ((_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
-                || (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate))) {
-                states.disabled = true;
-            }
-
-            var classNames = cx.create(
-                this.getPartClassName('day'),
-                cx.createVariantClass(variants),
-                cx.createStateClass(states)
-            );
+            var selected = DateTime.isEqualDate(day, date);
+            var disabled = (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
+                            || (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate));
 
             return (
-                <a
-                    className={classNames}
-                    href="#"
+                <Day
                     key={day}
-                    data-month={month}
-                    onClick={this.onClick.bind(this, day, states.disabled)}
-                    data-role="day" >
-                    {day.getDate()}
-                </a>
+                    date={day}
+                    variants={variants}
+                    disabled={disabled}
+                    selected={selected}
+                    onClick={this.onClick} />
             );
         }, this);
     }
