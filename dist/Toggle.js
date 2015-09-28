@@ -1,10 +1,12 @@
 define('melon/Toggle', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './Icon',
     './InputComponent'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Icon = require('./Icon');

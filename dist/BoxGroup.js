@@ -1,10 +1,12 @@
 define('melon/BoxGroup', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './boxgroup/Option',
     './InputComponent'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Option = require('./boxgroup/Option');

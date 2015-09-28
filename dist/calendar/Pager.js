@@ -1,12 +1,14 @@
 define('melon/calendar/Pager', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     '../Component',
     '../Icon',
     'underscore',
     '../common/util/date'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Component = require('../Component');

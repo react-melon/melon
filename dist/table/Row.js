@@ -1,10 +1,12 @@
 define('melon/table/Row', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     './Cell',
     '../Component'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var TableCell = require('./Cell');

@@ -1,11 +1,13 @@
 define('melon/TextBox', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './common/util/classname',
     './InputComponent',
     './textbox/FloatLabel'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var cx = require('./common/util/classname');

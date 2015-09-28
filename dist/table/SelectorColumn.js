@@ -1,10 +1,12 @@
 define('melon/table/SelectorColumn', [
+    'require',
     'exports',
+    'module',
     '../babelHelpers',
     'react',
     '../Icon',
     './Column'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Icon = require('../Icon');

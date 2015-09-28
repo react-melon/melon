@@ -1,5 +1,7 @@
 define('melon/Calendar', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './InputComponent',
@@ -11,7 +13,7 @@ define('melon/Calendar', [
     './dialog/Confirm',
     './common/util/date',
     'underscore'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var InputComponent = require('./InputComponent');

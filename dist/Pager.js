@@ -1,5 +1,7 @@
 define('melon/Pager', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     'react-dom',
@@ -7,7 +9,7 @@ define('melon/Pager', [
     './Icon',
     './common/util/classname',
     './MainClickAware'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var ReactDOM = require('react-dom');

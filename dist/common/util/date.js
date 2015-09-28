@@ -1,8 +1,10 @@
 define('melon/common/util/date', [
+    'require',
     'exports',
+    'module',
     '../../babelHelpers',
     'underscore'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     var _ = require('underscore');
     module.exports = {

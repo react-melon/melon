@@ -1,12 +1,14 @@
 define('melon/InputComponent', [
+    'require',
     'exports',
+    'module',
     './babelHelpers',
     'react',
     './common/util/Validity',
     './Validator',
     './Component',
     './Validity'
-], function (exports) {
+], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var Validity = require('./common/util/Validity');
