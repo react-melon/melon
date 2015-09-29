@@ -43,7 +43,10 @@ class Confirm extends Dialog {
 
     renderAction() {
 
-        var buttonVariants = this.props.buttonVariants;
+        let {
+            buttonVariants,
+            size
+        } = this.props;
 
         return (
             <div ref="dialogActions"
@@ -51,11 +54,13 @@ class Confirm extends Dialog {
                 <Button
                     label="取消"
                     key="cancel"
+                    size={size}
                     onClick={this.onConfirmSubmit.bind(this, false)}
                     variants={buttonVariants} />
                 <Button
                     label="确定"
                     key="submit"
+                    size={size}
                     onClick={this.onConfirmSubmit.bind(this, true)}
                     variants={buttonVariants} />
             </div>

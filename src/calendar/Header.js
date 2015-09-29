@@ -19,7 +19,7 @@ class CalendarHeader extends Component {
 
         this.onClick = this.onClick.bind(this);
 
-        this.type = 'calendar-dialog-header';
+        this.type = 'calendar-header';
     }
 
     render() {

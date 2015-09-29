@@ -31,7 +31,7 @@ var View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">
                         <Title level={5}>自动确定</Title>
-                        <Calendar min="2015-08-07" max="2015-10-12" autoOk></Calendar>
+                        <Calendar min="2015-08-07" max="2015-10-12" autoOk size="xs"></Calendar>
                     </div>
                 </div>
                 <div className="melon-row">
@@ -48,7 +48,7 @@ var View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-8">
                         <Title level={5}>日期区间</Title>
-                        <RangeCalendar></RangeCalendar>
+                        <RangeCalendar size="xxs"></RangeCalendar>
                     </div>
                 </div>
             </div>

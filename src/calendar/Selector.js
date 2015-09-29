@@ -4,11 +4,12 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Component = require('../Component');
+var Item = require('./SelectorItem');
 
 var _ = require('underscore');
-var cx = require('../common/util/classname');
 var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
@@ -25,11 +26,13 @@ class CalendarSelector extends Component {
     }
 
     componentDidMount() {
-        this.refs.item && this.refs.item.scrollIntoView();
+        this.refs.item
+        && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
     }
 
     componentDidUpdate() {
-        this.refs.item && this.refs.item.scrollIntoView();
+        this.refs.item
+        && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
     }
 
     render() {
@@ -40,26 +43,31 @@ class CalendarSelector extends Component {
             date
         } = this.props;
 
-        var datasource = [];
+        var children = [];
 
         var y = date.getFullYear();
         var m = date.getMonth();
         var d = date.getDate();
 
         if (this.isMonthView()) {
-            datasource = _.range(11).map(function (month, index) {
+            children = _.range(12).map(function (month, index) {
 
                 var newDate = new Date(y, month, d);
+                var disabled = (_.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
+                                || (_.isDate(maxDate) && DateTime.isAfterMonth(newDate, maxDate));
+                var selected = month === m;
 
-                return {
-                    text: DateTime.getShortMonth(newDate),
-                    mode: 'month',
-                    value: month,
-                    disabled: (_.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
-                        || (_.isDate(maxDate) && DateTime.isAfterMonth(newDate, maxDate)),
-                    selected: month === m
-                };
-            });
+                return (
+                    <Item
+                        key={index}
+                        mode="month"
+                        ref={selected ? 'item' : null}
+                        date={newDate}
+                        onClick={this.onClick}
+                        disabled={disabled}
+                        selected={selected} />
+                );
+            }, this);
         }
         else {
             var range = CalendarSelector.MAX_RANGE;
@@ -71,75 +79,38 @@ class CalendarSelector extends Component {
                     return;
                 }
 
-                datasource.push({
-                    text: year,
-                    mode: 'year',
-                    value: year,
-                    disabled: false,
-                    selected: year === y
-                });
-            });
+                var newDate = new Date(year, m, d);
+                var selected = year === y;
+
+                children.push(
+                    <Item
+                        key={index}
+                        mode="year"
+                        ref={selected ? 'item' : null}
+                        date={newDate}
+                        onClick={this.onClick}
+                        selected={selected} />
+                );
+            }, this);
 
         }
 
         return (
             <ul className={this.getClassName()}>
-                {datasource.map(this.renderItem, this)}
+                {children}
             </ul>
         );
     }
 
-    renderItem(item, index) {
-
-        var className = cx.create(
-            this.getPartClassName('item'),
-            cx.createStateClass({
-                disabled: item.disabled,
-                selected: item.selected
-            })
-        );
-
-        return (
-            <li
-                key={index}
-                onClick={this.onClick.bind(this, item.disabled)}
-                data-mode={item.mode}
-                data-value={item.value}
-                ref={item.selected ? 'item' : null}
-                className={className} >
-                <a href="#">{item.text}</a>
-            </li>
-        );
-    }
-
-    onClick(disabled, e) {
-
-        e.preventDefault();
-
-        if (disabled) {
-            return;
-        }
-
-        var target = e.currentTarget;
-
-        var mode = target.getAttribute('data-mode');
-        var value = target.getAttribute('data-value') - 0;
-
-        var date = this.props.date;
-
-        var y = date.getFullYear();
-        var m = date.getMonth();
-        var d = date.getDate();
+    onClick(e) {
 
         var onChange = this.props.onChange;
 
         if (onChange) {
             onChange({
                 target: this,
-                mode: mode,
-                date: mode === 'month'
-                    ? new Date(y, value, d)
-                    : new Date(value, m, d)
+                mode: e.mode,
+                date: e.date
             });
         }
     }
