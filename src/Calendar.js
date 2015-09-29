@@ -8,7 +8,7 @@ var React = require('react');
 var InputComponent = require('./InputComponent');
 var TextBox = require('./TextBox');
 var Header = require('./calendar/Header');
-var Main = require('./calendar/Main');
+var Month = require('./calendar/Month');
 var Selector = require('./calendar/Selector');
 var Pager = require('./calendar/Pager');
 var Confirm = require('./dialog/Confirm');
@@ -64,13 +64,7 @@ class Calendar extends InputComponent {
      */
     parseValue(value) {
 
-        if (!_.isString(value)) {
-            return value;
-        }
-
-        let format = this.props.dateFormat.toLowerCase();
-
-        return DateTime.parse(value, format);
+        return this.parseDate(value);
     }
 
     /**
@@ -90,6 +84,17 @@ class Calendar extends InputComponent {
         let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.format(rawValue, format, this.props.lang);
+    }
+
+    parseDate(date) {
+
+        if (!_.isString(date)) {
+            return date;
+        }
+
+        let format = this.props.dateFormat.toLowerCase();
+
+        return DateTime.parse(date, format);
     }
 
     /**
@@ -226,7 +231,6 @@ class Calendar extends InputComponent {
     render() {
 
         let props = this.props;
-        let state = this.state;
 
         let {
             lang,
@@ -234,14 +238,6 @@ class Calendar extends InputComponent {
             disabled,
             ...others
         } = props;
-
-        let {
-            date,
-            mode,
-            open
-        } = state;
-
-        let isMain = mode === 'main';
 
         return (
             <div {...others} className={this.getClassName()}>
@@ -252,68 +248,93 @@ class Calendar extends InputComponent {
                     disabled={disabled}
                     placeholder={placeholder}
                     onFocus={this.onInputFocus} />
-                <Confirm
-                    open={open}
-                    variants={['calendar']}
-                    onConfirm={this.onConfirm}
-                    buttonVariants={['secondery', 'calendar']} >
-                    <Header
-                        date={date}
-                        onClick={this.onHeaderClick} />
-                    {isMain ? this.renderMain() : this.renderSelector()}
-                </Confirm>
+                {this.renderDialog()}
             </div>
         );
 
     }
 
-    renderMain() {
+    renderDialog() {
+
         let {
-            lang,
-            min,
-            max
-        } = this.props;
+            date,
+            mode,
+            open
+        } = this.state;
+
+        let isMain = mode === 'main';
+
+        return (
+            <Confirm
+                open={open}
+                variants={['calendar']}
+                onConfirm={this.onConfirm}
+                buttonVariants={['secondery', 'calendar']} >
+                <Header
+                    date={date}
+                    onClick={this.onHeaderClick} />
+                {isMain
+                    ? this.renderMain()
+                    : this.renderSelector()
+                }
+            </Confirm>
+        );
+    }
+
+    renderMain() {
 
         let {
             date,
             month
         } = this.state;
 
-        return ([
-            <Pager
-                minDate={this.parseValue(min)}
-                maxDate={this.parseValue(max)}
-                key="pager"
-                onChange={this.onPagerChange}
-                month={month} />,
-            <Main
-                minDate={this.parseValue(min)}
-                maxDate={this.parseValue(max)}
-                key="main"
-                lang={lang}
-                month={month}
-                date={date}
-                onChange={this.onDateChange} />
-        ]);
-    }
-
-    renderSelector() {
-
         let {
+            lang,
             min,
             max
         } = this.props;
+
+        min = this.parseDate(min);
+        max = this.parseDate(max);
+
+        return (
+            <div className={this.getPartClassName('main')}>
+                <Pager
+                    minDate={min}
+                    maxDate={max}
+                    onChange={this.onPagerChange}
+                    month={month} />
+                <Month
+                    minDate={min}
+                    maxDate={max}
+                    lang={lang}
+                    month={month}
+                    date={date}
+                    onChange={this.onDateChange} />
+            </div>
+        );
+    }
+
+    renderSelector() {
 
         let {
             date,
             mode
         } = this.state;
 
+        let {
+            min,
+            max
+        } = this.props;
+
+        min = this.parseDate(min);
+        max = this.parseDate(max);
+
         return (
             <Selector
                 date={date}
-                minDate={this.parseValue(min)}
-                maxDate={this.parseValue(max)}
+                minDate={min}
+                maxDate={max}
                 mode={mode}
                 onChange={this.onSelectorChange} />
         );
@@ -322,7 +343,7 @@ class Calendar extends InputComponent {
 
 }
 
-var lang = {
+Calendar.LANG = {
 
     // 对于 '周' 的称呼
     week: '周',
@@ -334,10 +355,9 @@ var lang = {
 
 Calendar.defaultProps = {
     ...InputComponent.defaultProps,
-    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', lang),
+    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
     dateFormat: 'yyyy-MM-dd',
-    showYearSelector: false,
-    lang: lang,
+    lang: Calendar.LANG,
     validateEvents: ['change']
 };
 

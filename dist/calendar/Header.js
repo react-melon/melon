@@ -29,11 +29,11 @@ define('melon/calendar/Header', [
                     var week = DateTime.getDayOfWeek(date);
                     var month = DateTime.getShortMonth(date);
                     var day = date.getDate();
-                    var fullDate = week + '  ' + month + day + '\u65E5';
+                    var fullDate = month + day + '\u65E5';
                     return React.createElement('div', {
                         className: this.getClassName('header'),
                         onClick: this.onClick
-                    }, React.createElement('p', { className: this.getPartClassName('year') }, year), React.createElement('p', { className: this.getPartClassName('date') }, fullDate));
+                    }, React.createElement('p', { className: this.getPartClassName('year') }, year), React.createElement('p', { className: this.getPartClassName('week') }, week), React.createElement('p', { className: this.getPartClassName('date') }, fullDate));
                 }
             },
             {

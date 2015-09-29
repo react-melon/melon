@@ -8,6 +8,8 @@ var React = require('react');
 var Title = require('../src/Title');
 var Calendar = require('../src/Calendar');
 
+var RangeCalendar = require('../src/RangeCalendar');
+
 var View = React.createClass({
 
     render: function () {
@@ -40,6 +42,13 @@ var View = React.createClass({
                     <div className="melon-column melon-column-4">
                         <Title level={5}>只读</Title>
                         <Calendar min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)} readOnly></Calendar>
+                    </div>
+                </div>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-8">
+                        <Title level={5}>日期区间</Title>
+                        <RangeCalendar></RangeCalendar>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 /**
- * @file CalendarMain
+ * @file CalendarMonth
  * @author cxtom(cxtom2008@gmail.com)
  */
 
@@ -12,12 +12,12 @@ var DateTime = require('../common/util/date');
 
 var PropTypes = React.PropTypes;
 
-class CalendarMain extends Component {
+class CalendarMonth extends Component {
 
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
-        this.type = 'calendar-main';
+        this.type = 'calendar-month';
     }
 
     onClick(e) {
@@ -69,7 +69,7 @@ class CalendarMain extends Component {
         );
 
         return (
-            <ul className={this.getPartClassName('month')}>
+            <ul>
                 {_.map(weeks, this.renderWeek, this)}
             </ul>
         );
@@ -122,7 +122,7 @@ class CalendarMain extends Component {
 
 }
 
-CalendarMain.propTypes = {
+CalendarMonth.propTypes = {
     date: PropTypes.object.isRequired,
     month: PropTypes.object.isRequired,
     maxDate: PropTypes.object,
@@ -135,4 +135,4 @@ CalendarMain.propTypes = {
     }).isRequired
 };
 
-module.exports = CalendarMain;
+module.exports = CalendarMonth;

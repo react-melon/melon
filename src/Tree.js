@@ -34,6 +34,8 @@ class Tree extends Component {
         var target = e.currentTarget;
         var main = ReactDOM.findDOMNode(this);
 
+        e.stopPropagation();
+
         _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
             var className = ele.className.split(' ');
             ele.className = _.without(className, 'state-selected').join(' ');

@@ -48,7 +48,7 @@ define('melon/calendar/Pager', [
                         states: nextState,
                         'data-action': 'next',
                         onClick: nextState.disabled ? null : this.onClick
-                    }), y + ' \u5E74 ' + m + ' \u6708 ');
+                    }), y + ' \u5E74 ' + m + ' \u6708');
                 }
             },
             {
