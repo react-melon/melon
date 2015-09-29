@@ -55,7 +55,7 @@ define('melon/Pager', [
                     if (target === main) {
                         return;
                     }
-                    var page = target.getAttribute('data-page') - 0;
+                    var page = +target.getAttribute('data-page') + this.props.first;
                     target = null;
                     if (this.state.page === page) {
                         return;
@@ -84,6 +84,13 @@ define('melon/Pager', [
                     var padding = props.padding;
                     var showCount = props.showCount;
                     var lang = props.lang;
+                    var others = babelHelpers.objectWithoutProperties(props, [
+                        'total',
+                        'first',
+                        'padding',
+                        'showCount',
+                        'lang'
+                    ]);
                     var page = this.state.page;
                     showCount = showCount > total ? total : showCount;
                     page = page - first;
@@ -127,18 +134,14 @@ define('melon/Pager', [
                         if (_.isNumber(conf)) {
                             var part = conf >= 0 ? '' : 'ellipsis';
                             conf = {
-                                page: Math.abs(conf) + first,
+                                page: Math.abs(conf),
                                 states: { ellipsis: !!part },
                                 part: part
                             };
-                        } else {
-                            conf.page += first;
                         }
                         return this.renderItem(conf);
                     }, this);
-                    var propTemp = _.clone(props);
-                    delete propTemp.lang;
-                    return React.createElement('ul', babelHelpers._extends({}, propTemp, { className: this.getClassName() }), result);
+                    return React.createElement('ul', babelHelpers._extends({}, others, { className: this.getClassName() }), result);
                 }
             },
             {

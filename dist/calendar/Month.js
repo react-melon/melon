@@ -1,41 +1,38 @@
-define('melon/calendar/Main', [
+define('melon/calendar/Month', [
     'require',
     'exports',
     'module',
     '../babelHelpers',
     'react',
     '../Component',
+    './Day',
     'underscore',
-    '../common/util/classname',
     '../common/util/date'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Component = require('../Component');
+    var Day = require('./Day');
     var _ = require('underscore');
-    var cx = require('../common/util/classname');
     var DateTime = require('../common/util/date');
     var PropTypes = React.PropTypes;
-    var CalendarMain = function (_Component) {
-        babelHelpers.inherits(CalendarMain, _Component);
-        function CalendarMain(props) {
-            babelHelpers.classCallCheck(this, CalendarMain);
-            babelHelpers.get(Object.getPrototypeOf(CalendarMain.prototype), 'constructor', this).call(this, props);
-            this.type = 'calendar-main';
+    var CalendarMonth = function (_Component) {
+        babelHelpers.inherits(CalendarMonth, _Component);
+        function CalendarMonth(props) {
+            babelHelpers.classCallCheck(this, CalendarMonth);
+            babelHelpers.get(Object.getPrototypeOf(CalendarMonth.prototype), 'constructor', this).call(this, props);
+            this.onClick = this.onClick.bind(this);
+            this.type = 'calendar-month';
         }
-        babelHelpers.createClass(CalendarMain, [
+        babelHelpers.createClass(CalendarMonth, [
             {
                 key: 'onClick',
-                value: function onClick(day, disabled, e) {
-                    e.preventDefault();
-                    if (disabled) {
-                        return;
-                    }
+                value: function onClick(e) {
                     var onChange = this.props.onChange;
                     if (onChange) {
                         onChange({
                             target: this,
-                            date: day
+                            date: e.date
                         });
                     }
                 }
@@ -57,13 +54,13 @@ define('melon/calendar/Main', [
                     var weekArray = DateTime.getFullWeekArray(month);
                     var weeks = [];
                     var len = weekArray.length;
-                    weeks.push(this.renderDay(weekArray[0], ['pre-month'], -1));
-                    weeks[0] = weeks[0].concat(this.renderDay(weekArray[1], [], 0));
+                    weeks.push(this.renderDay(weekArray[0], ['pre-month']));
+                    weeks[0] = weeks[0].concat(this.renderDay(weekArray[1], []));
                     for (var i = 2; i < len - 1; i++) {
-                        weeks.push(this.renderDay(weekArray[i], [], 0));
+                        weeks.push(this.renderDay(weekArray[i], []));
                     }
-                    weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month'], 1));
-                    return React.createElement('ul', { className: this.getPartClassName('month') }, _.map(weeks, this.renderWeek, this));
+                    weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month']));
+                    return React.createElement('ul', null, _.map(weeks, this.renderWeek, this));
                 }
             },
             {
@@ -77,28 +74,22 @@ define('melon/calendar/Main', [
             },
             {
                 key: 'renderDay',
-                value: function renderDay(array, variants, month) {
+                value: function renderDay(array, variants) {
                     var props = this.props;
                     var date = props.date;
                     var minDate = props.minDate;
                     var maxDate = props.maxDate;
                     return _.map(array, function (day, index) {
-                        var states = {};
-                        if (DateTime.isEqualDate(day, date)) {
-                            states.selected = true;
-                        }
-                        if (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate) || _.isDate(maxDate) && DateTime.isAfterDate(day, maxDate)) {
-                            states.disabled = true;
-                        }
-                        var classNames = cx.create(this.getPartClassName('day'), cx.createVariantClass(variants), cx.createStateClass(states));
-                        return React.createElement('a', {
-                            className: classNames,
-                            href: '#',
+                        var selected = DateTime.isEqualDate(day, date);
+                        var disabled = _.isDate(minDate) && DateTime.isBeforeDate(day, minDate) || _.isDate(maxDate) && DateTime.isAfterDate(day, maxDate);
+                        return React.createElement(Day, {
                             key: day,
-                            'data-month': month,
-                            onClick: this.onClick.bind(this, day, states.disabled),
-                            'data-role': 'day'
-                        }, day.getDate());
+                            date: day,
+                            variants: variants,
+                            disabled: disabled,
+                            selected: selected,
+                            onClick: this.onClick
+                        });
                     }, this);
                 }
             },
@@ -109,9 +100,9 @@ define('melon/calendar/Main', [
                 }
             }
         ]);
-        return CalendarMain;
+        return CalendarMonth;
     }(Component);
-    CalendarMain.propTypes = {
+    CalendarMonth.propTypes = {
         date: PropTypes.object.isRequired,
         month: PropTypes.object.isRequired,
         maxDate: PropTypes.object,
@@ -123,5 +114,5 @@ define('melon/calendar/Main', [
             title: PropTypes.string
         }).isRequired
     };
-    module.exports = CalendarMain;
+    module.exports = CalendarMonth;
 });

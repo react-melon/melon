@@ -2,20 +2,10 @@
 
 @require './Icon.styl'
 
-$-melon-tree = {
-    list-style: none
-}
-
-$-melon-treenode = {
-    cursor: pointer
-    line-height: 1em
-    transition: all 0.8s linear 0ms
-    position: relative
-}
 
 .{$-melon-class-prefix}-tree
 
-    {$-melon-tree}
+    list-style: none
 
     .{$-melon-class-prefix}-icon
 
@@ -27,7 +17,10 @@ $-melon-treenode = {
 
     .{$-melon-class-prefix}-treenode
 
-        {$-melon-treenode}
+        cursor: pointer
+        line-height: 1em
+        transition: all 0.8s linear 0ms
+        position: relative
 
         &-label
 

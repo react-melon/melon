@@ -24,6 +24,14 @@ class TreeNode extends Component {
         // nothing
     }
 
+    getVariants(props) {
+
+        var variants = super.getVariants(props);
+        variants.push('level' + props.level);
+
+        return variants;
+    }
+
     componentWillReceiveProps(props) {
 
         if (props.expand === this.props.expand) {
@@ -39,6 +47,10 @@ class TreeNode extends Component {
         var expand = state.expand;
 
         this.setState({expand: !expand});
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState.expand !== this.state.expand;
     }
 
     render() {
@@ -62,7 +74,7 @@ class TreeNode extends Component {
             };
             iconStyle = {
                 left: (0.25 + (level - 1) * 1.2) + 'em'
-            }
+            };
         }
 
         // 是否还有子节点

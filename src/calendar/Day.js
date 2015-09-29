@@ -21,6 +21,22 @@ class CalendarDay extends Component {
         this.type = 'calendar-day';
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+
+        var {
+            disabled,
+            selected
+        } = this.props;
+
+        if (nextProps.disabled !== disabled
+            || nextProps.selected !== selected) {
+            return true;
+        }
+
+        return false;
+
+    }
+
     getStates(props) {
         var states = super.getStates(props);
         states.selected = props.selected;

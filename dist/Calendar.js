@@ -7,7 +7,7 @@ define('melon/Calendar', [
     './InputComponent',
     './TextBox',
     './calendar/Header',
-    './calendar/Main',
+    './calendar/Month',
     './calendar/Selector',
     './calendar/Pager',
     './dialog/Confirm',
@@ -19,7 +19,7 @@ define('melon/Calendar', [
     var InputComponent = require('./InputComponent');
     var TextBox = require('./TextBox');
     var Header = require('./calendar/Header');
-    var Main = require('./calendar/Main');
+    var Month = require('./calendar/Month');
     var Selector = require('./calendar/Selector');
     var Pager = require('./calendar/Pager');
     var Confirm = require('./dialog/Confirm');
@@ -63,11 +63,7 @@ define('melon/Calendar', [
             {
                 key: 'parseValue',
                 value: function parseValue(value) {
-                    if (!_.isString(value)) {
-                        return value;
-                    }
-                    var format = this.props.dateFormat.toLowerCase();
-                    return DateTime.parse(value, format);
+                    return this.parseDate(value);
                 }
             },
             {
@@ -78,6 +74,16 @@ define('melon/Calendar', [
                     }
                     var format = this.props.dateFormat.toLowerCase();
                     return DateTime.format(rawValue, format, this.props.lang);
+                }
+            },
+            {
+                key: 'parseDate',
+                value: function parseDate(date) {
+                    if (!_.isString(date)) {
+                        return date;
+                    }
+                    var format = this.props.dateFormat.toLowerCase();
+                    return DateTime.parse(date, format);
                 }
             },
             {
@@ -182,7 +188,6 @@ define('melon/Calendar', [
                 key: 'render',
                 value: function render() {
                     var props = this.props;
-                    var state = this.state;
                     var lang = props.lang;
                     var placeholder = props.placeholder;
                     var disabled = props.disabled;
@@ -191,10 +196,6 @@ define('melon/Calendar', [
                         'placeholder',
                         'disabled'
                     ]);
-                    var date = state.date;
-                    var mode = state.mode;
-                    var open = state.open;
-                    var isMain = mode === 'main';
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(TextBox, {
                         ref: 'input',
                         readOnly: true,
@@ -203,7 +204,18 @@ define('melon/Calendar', [
                         disabled: disabled,
                         placeholder: placeholder,
                         onFocus: this.onInputFocus
-                    }), React.createElement(Confirm, {
+                    }), this.renderDialog());
+                }
+            },
+            {
+                key: 'renderDialog',
+                value: function renderDialog() {
+                    var _state = this.state;
+                    var date = _state.date;
+                    var mode = _state.mode;
+                    var open = _state.open;
+                    var isMain = mode === 'main';
+                    return React.createElement(Confirm, {
                         open: open,
                         variants: ['calendar'],
                         onConfirm: this.onConfirm,
@@ -214,52 +226,51 @@ define('melon/Calendar', [
                     }, React.createElement(Header, {
                         date: date,
                         onClick: this.onHeaderClick
-                    }), isMain ? this.renderMain() : this.renderSelector()));
+                    }), isMain ? this.renderMain() : this.renderSelector());
                 }
             },
             {
                 key: 'renderMain',
                 value: function renderMain() {
+                    var _state2 = this.state;
+                    var date = _state2.date;
+                    var month = _state2.month;
                     var _props = this.props;
                     var lang = _props.lang;
                     var min = _props.min;
                     var max = _props.max;
-                    var _state = this.state;
-                    var date = _state.date;
-                    var month = _state.month;
-                    return [
-                        React.createElement(Pager, {
-                            minDate: this.parseValue(min),
-                            maxDate: this.parseValue(max),
-                            key: 'pager',
-                            onChange: this.onPagerChange,
-                            month: month
-                        }),
-                        React.createElement(Main, {
-                            minDate: this.parseValue(min),
-                            maxDate: this.parseValue(max),
-                            key: 'main',
-                            lang: lang,
-                            month: month,
-                            date: date,
-                            onChange: this.onDateChange
-                        })
-                    ];
+                    min = this.parseDate(min);
+                    max = this.parseDate(max);
+                    return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Pager, {
+                        minDate: min,
+                        maxDate: max,
+                        onChange: this.onPagerChange,
+                        month: month
+                    }), React.createElement(Month, {
+                        minDate: min,
+                        maxDate: max,
+                        lang: lang,
+                        month: month,
+                        date: date,
+                        onChange: this.onDateChange
+                    }));
                 }
             },
             {
                 key: 'renderSelector',
                 value: function renderSelector() {
+                    var _state3 = this.state;
+                    var date = _state3.date;
+                    var mode = _state3.mode;
                     var _props2 = this.props;
                     var min = _props2.min;
                     var max = _props2.max;
-                    var _state2 = this.state;
-                    var date = _state2.date;
-                    var mode = _state2.mode;
+                    min = this.parseDate(min);
+                    max = this.parseDate(max);
                     return React.createElement(Selector, {
                         date: date,
-                        minDate: this.parseValue(min),
-                        maxDate: this.parseValue(max),
+                        minDate: min,
+                        maxDate: max,
                         mode: mode,
                         onChange: this.onSelectorChange
                     });
@@ -268,15 +279,14 @@ define('melon/Calendar', [
         ]);
         return Calendar;
     }(InputComponent);
-    var lang = {
+    Calendar.LANG = {
         week: '\u5468',
         days: '\u65E5,\u4E00,\u4E8C,\u4E09,\u56DB,\u4E94,\u516D'
     };
     Calendar.defaultProps = babelHelpers._extends({}, InputComponent.defaultProps, {
-        defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', lang),
+        defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
         dateFormat: 'yyyy-MM-dd',
-        showYearSelector: false,
-        lang: lang,
+        lang: Calendar.LANG,
         validateEvents: ['change']
     });
     Calendar.propTypes = {

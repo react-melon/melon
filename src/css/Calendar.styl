@@ -28,6 +28,7 @@
 
     color: $-melon-colors.black
 
+.{$-melon-class-prefix}-rangecalendar,
 .{$-melon-class-prefix}-calendar
 
     &-dialog
@@ -47,9 +48,20 @@
                 font-family: Roboto, sans-serif
 
             &-date
+                display: inline-block
                 font-size: 30px
-                line-height: 38/30
+                line-height: 1.266
                 font-family: 'SimHei', sans-serif
+                white-space: nowrap
+
+            &-week
+                display: inline-block
+                font-size: 30px
+                line-height: 1.266
+                font-family: 'SimHei', sans-serif
+                margin-right: 20px
+                white-space: nowrap
+
 
     &-selector
         margin-top: 8px
@@ -112,7 +124,7 @@
         [data-action='next']
             right: 16px
 
-    &-main
+    &-month
 
         &-weekheader
             padding: 10px 20px 0 20px
@@ -128,7 +140,7 @@
                 line-height: 40px
                 text-align: center
 
-        &-month
+        ul
             display: block
             padding: 5px 20px 0 20px;
 
@@ -154,7 +166,9 @@
             color: $-melon-colors.white
             opacity: 0.6
 
-        &:active
+        &:active,
+        &.variant-pre-month.state-selected,
+        &.variant-next-month.state-selected,
         &.state-selected
             background-color: $-melon-colors.cyan700
             color: $-melon-colors.white
@@ -192,3 +206,36 @@
     .{$-melon-class-prefix}-textbox.variant-calendar input
 
         color: $-melon-colors.darkBlack
+
+
+.{$-melon-class-prefix}-rangecalendar
+
+    .{$-melon-class-prefix}-textbox.variant-calendar
+        min-width: 15em
+
+    .{$-melon-class-prefix}-dialog.variant-calendar
+
+        .{$-melon-class-prefix}-dialog-window
+            width: 640px
+
+        .{$-melon-class-prefix}-dialog-body
+            display: table
+            width: 640px
+            table-layout: fixed
+
+
+    .{$-melon-class-prefix}-calendar
+
+        &-dialog-header
+            display: table-cell
+            vertical-align: middle
+
+    .{$-melon-class-prefix}-rangecalendar-row
+        display: table-row
+
+    .{$-melon-class-prefix}-rangecalendar-main
+        display: table-cell
+        width: 320px
+        vertical-align: top
+
+

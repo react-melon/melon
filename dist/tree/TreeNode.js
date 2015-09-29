@@ -30,6 +30,14 @@ define('melon/tree/TreeNode', [
                 }
             },
             {
+                key: 'getVariants',
+                value: function getVariants(props) {
+                    var variants = babelHelpers.get(Object.getPrototypeOf(TreeNode.prototype), 'getVariants', this).call(this, props);
+                    variants.push('level' + props.level);
+                    return variants;
+                }
+            },
+            {
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(props) {
                     if (props.expand === this.props.expand) {
@@ -44,6 +52,12 @@ define('melon/tree/TreeNode', [
                     var state = this.state;
                     var expand = state.expand;
                     this.setState({ expand: !expand });
+                }
+            },
+            {
+                key: 'shouldComponentUpdate',
+                value: function shouldComponentUpdate(nextProps, nextState) {
+                    return nextState.expand !== this.state.expand;
                 }
             },
             {

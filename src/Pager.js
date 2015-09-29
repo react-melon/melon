@@ -60,7 +60,7 @@ class Pager extends MainClickAware {
             return;
         }
 
-        var page = target.getAttribute('data-page') - 0;
+        var page = +target.getAttribute('data-page') + this.props.first;
         target = null;
 
         if (this.state.page === page) {
@@ -108,7 +108,8 @@ class Pager extends MainClickAware {
             first,
             padding,
             showCount,
-            lang
+            lang,
+            ...others
         } = props;
 
         var page = this.state.page;
@@ -169,26 +170,20 @@ class Pager extends MainClickAware {
             if (_.isNumber(conf)) {
                 var part = conf >= 0 ? '' : 'ellipsis';
                 conf = {
-                    page: Math.abs(conf) + first,
+                    page: Math.abs(conf),
                     states: {
                         ellipsis: !!part
                     },
                     part: part
                 };
             }
-            else {
-                conf.page += first;
-            }
+
             return this.renderItem(conf);
 
         }, this);
 
-        var propTemp = _.clone(props);
-
-        delete propTemp.lang;
-
         return (
-            <ul {...propTemp} className={this.getClassName()}>
+            <ul {...others} className={this.getClassName()}>
                 {result}
             </ul>
         );

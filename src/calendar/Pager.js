@@ -57,7 +57,7 @@ class CalendarPager extends Component {
                     states={nextState}
                     data-action="next"
                     onClick={nextState.disabled ? null : this.onClick} />
-                {y + ' 年 ' + m + ' 月 '}
+                {y + ' 年 ' + m + ' 月'}
             </div>
         );
     }

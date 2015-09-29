@@ -32,11 +32,12 @@ class CalendarHeader extends Component {
         var month = DateTime.getShortMonth(date);
         var day = date.getDate();
 
-        var fullDate = week + '  ' + month + day + '日';
+        var fullDate = month + day + '日';
 
         return (
             <div className={this.getClassName('header')} onClick={this.onClick}>
                 <p className={this.getPartClassName('year')}>{year}</p>
+                <p className={this.getPartClassName('week')}>{week}</p>
                 <p className={this.getPartClassName('date')}>{fullDate}</p>
             </div>
         );
