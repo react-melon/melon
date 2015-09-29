@@ -4,7 +4,6 @@
  */
 
 var React = require('react');
-var _     = require('underscore');
 var cx    = require('../common/util/classname');
 var Icon  = require('../Icon');
 

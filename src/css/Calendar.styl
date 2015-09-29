@@ -7,65 +7,89 @@
 @require '../src/css/Button.styl'
 @require '../src/css/Icon.styl'
 
-.{$-melon-class-prefix}-dialog.variant-calendar
 
-    .{$-melon-class-prefix}-dialog-window
-        width: 320px
-        border-radius: 0
-        padding: 0
-        padding-bottom: 0.6em
+$-melon-calendar-sizes = {
+    'xxs': 30px,
+    'xs': 35px
+}
 
-        .{$-melon-class-prefix}-dialog-body
-            padding: 0
+for level, value in $-melon-calendar-sizes
+    $-size = {
+        width: value,
+        height: value,
+        line-height: value
+    }
+    .{$-melon-class-prefix}-rangecalendar.variant-size-{level},
+    .{$-melon-class-prefix}-calendar.variant-size-{level}
+        .{$-melon-class-prefix}-calendar
+            &-day
+                {$-size}
+            &-month
+                &-weekheader span
+                    {$-size}
 
-        .{$-melon-class-prefix}-dialog-actions
-            margin-top: 0.6em
-
-        .{$-melon-class-prefix}-button
-            margin-right: 1.5em
-
-.{$-melon-class-prefix}-textbox.variant-calendar input
-
-    color: $-melon-colors.black
 
 .{$-melon-class-prefix}-rangecalendar,
 .{$-melon-class-prefix}-calendar
 
-    &-dialog
+    font-size: $-melon-medium-font-size
 
-        &-header
-            background-color: $-melon-colors.cyan700
-            color: $-melon-colors.white
-            height: 62px
-            padding: 20px
-            width: 280px
-            cursor: pointer
+    .{$-melon-class-prefix}-textbox.variant-calendar
+        font-size: $-melon-medium-font-size
 
-            &-year
-                font-size: 18px
-                line-height: 1
-                margin-bottom: 15px
-                font-family: Roboto, sans-serif
+        input
+            color: $-melon-colors.black
 
-            &-date
-                display: inline-block
-                font-size: 30px
-                line-height: 1.266
-                font-family: 'SimHei', sans-serif
-                white-space: nowrap
+    .{$-melon-class-prefix}-dialog
 
-            &-week
-                display: inline-block
-                font-size: 30px
-                line-height: 1.266
-                font-family: 'SimHei', sans-serif
-                margin-right: 20px
-                white-space: nowrap
+        &-window
+            width: 20em
+            border-radius: 0
+            padding: 0
+            padding-bottom: 0.6em
+
+        &-body
+            padding: 0
+
+        &-actions
+            margin-top: 0.6em
+
+        &-button
+            margin-right: 1.5em
+
+    &-header
+        background-color: $-melon-colors.cyan700
+        color: $-melon-colors.white
+        height: 4em
+        padding: 1em 1.25em
+        width: 17.5em
+        cursor: pointer
+
+        &-year
+            font-size: 1.12em
+            line-height: 1
+            margin-bottom: 0.6em
+            font-family: Roboto, sans-serif
+
+        &-date
+            display: inline-block
+            font-size: 2em
+            line-height: 1.266
+            font-family: 'SimHei', sans-serif
+            white-space: nowrap
+
+        &-week
+            display: inline-block
+            font-size: 2em
+            line-height: 1.266
+            font-family: 'SimHei', sans-serif
+            margin-right: 1em
+            white-space: nowrap
 
 
     &-selector
-        margin-top: 8px
-        height: 285px
+        margin-top: 0.5em
+        height: 17.5em
         overflow-y: scroll
 
         &-item
@@ -74,9 +98,9 @@
 
             a
                 display: inline-block
-                width: 50px
-                height: 50px
-                line-height: 50px
+                width: 3.125em
+                height: 3.125em
+                line-height: 3.125em
                 color: $-melon-colors.black
                 border-radius: 100em
                 opacity: 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
@@ -102,14 +126,14 @@
 
     &-pager
         position: relative
-        margin-top: 8px
-        height: 30px
-        line-height: 30px
+        margin-top: 0.5em
+        height: 1.875em
+        line-height: 1.875em
         text-align: center
 
         .{$-melon-class-prefix}-icon
             position: absolute
-            font-size: 24px
+            font-size: 1.5em
             color: $-melon-colors.darkBlack
             top: 0
             cursor: pointer
@@ -126,35 +150,36 @@
 
     &-month
 
+        font-size: 0.8em
+
         &-weekheader
-            padding: 10px 20px 0 20px
+            padding: 0.625em 1.25em 0 1.25em
             color: $-melon-colors.lightBlack
             clearfix()
 
             span
                 display: block
                 float: left
-                font-size: 0.8em
-                width: 40px
-                height: 40px
-                line-height: 40px
+                width: 3.125em
+                height: 3.125em
+                line-height: 3.125em
                 text-align: center
 
         ul
             display: block
-            padding: 5px 20px 0 20px;
+            padding: 0.4em 1.25em 0 1.25em;
 
         &-week
             clearfix()
+            white-space: nowrap
 
     &-day
         display: block
         float: left
         font-family: Roboto, sans-serif
-        width: 40px
-        height: 40px
-        font-size: 0.8em
-        line-height: 40px
+        width: 3.125em
+        height: 3.125em
+        line-height: 3.125em
         text-align: center
         text-decoration: none
         color: $-melon-colors.black
@@ -194,18 +219,16 @@
                 opacity: 1
 
 
-.{$-melon-class-prefix}-calendar.state-disabled
+    &.state-disabled
 
-    .{$-melon-class-prefix}-textbox.variant-calendar input
+        .{$-melon-class-prefix}-textbox.variant-calendar input
+            color: $-melon-colors.lightBlack
+            cursor: not-allowed
 
-        color: $-melon-colors.lightBlack
-        cursor: not-allowed
+    &.state-readOnly
 
-.{$-melon-class-prefix}-calendar.state-readOnly
-
-    .{$-melon-class-prefix}-textbox.variant-calendar input
-
-        color: $-melon-colors.darkBlack
+        .{$-melon-class-prefix}-textbox.variant-calendar input
+            color: $-melon-colors.darkBlack
 
 
 .{$-melon-class-prefix}-rangecalendar
@@ -216,17 +239,17 @@
     .{$-melon-class-prefix}-dialog.variant-calendar
 
         .{$-melon-class-prefix}-dialog-window
-            width: 640px
+            width: 40em
 
         .{$-melon-class-prefix}-dialog-body
             display: table
-            width: 640px
+            width: 40em
             table-layout: fixed
 
 
     .{$-melon-class-prefix}-calendar
 
-        &-dialog-header
+        &-header
             display: table-cell
             vertical-align: middle
 
@@ -235,7 +258,7 @@
 
     .{$-melon-class-prefix}-rangecalendar-main
         display: table-cell
-        width: 320px
+        width: 20em
         vertical-align: top
 
 

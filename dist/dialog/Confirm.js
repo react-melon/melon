@@ -45,18 +45,22 @@ define('melon/dialog/Confirm', [
             {
                 key: 'renderAction',
                 value: function renderAction() {
-                    var buttonVariants = this.props.buttonVariants;
+                    var _props = this.props;
+                    var buttonVariants = _props.buttonVariants;
+                    var size = _props.size;
                     return React.createElement('div', {
                         ref: 'dialogActions',
                         className: this.getPartClassName('actions')
                     }, React.createElement(Button, {
                         label: '\u53D6\u6D88',
                         key: 'cancel',
+                        size: size,
                         onClick: this.onConfirmSubmit.bind(this, false),
                         variants: buttonVariants
                     }), React.createElement(Button, {
                         label: '\u786E\u5B9A',
                         key: 'submit',
+                        size: size,
                         onClick: this.onConfirmSubmit.bind(this, true),
                         variants: buttonVariants
                     }));

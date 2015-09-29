@@ -4,14 +4,12 @@ define('melon/tree/TreeNode', [
     'module',
     '../babelHelpers',
     'react',
-    'underscore',
     '../common/util/classname',
     '../Icon',
     '../Component'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var _ = require('underscore');
     var cx = require('../common/util/classname');
     var Icon = require('../Icon');
     var Component = require('../Component');

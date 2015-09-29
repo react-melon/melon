@@ -34,7 +34,10 @@ class Alert extends Dialog {
     }
 
     renderAction() {
-        let buttonVariants = this.props.buttonVariants;
+        let {
+            buttonVariants,
+            size
+        } = this.props;
 
         return (
             <div ref="dialogActions"
@@ -42,6 +45,7 @@ class Alert extends Dialog {
                 <Button
                     label="确定"
                     key="submit"
+                    size={size}
                     onClick={this.onAlertSubmit}
                     variants={buttonVariants} />
             </div>

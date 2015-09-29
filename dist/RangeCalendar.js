@@ -114,8 +114,19 @@ define('melon/RangeCalendar', [
                     var _state = this.state;
                     var mode = _state.mode;
                     var date = _state.date;
+                    var _props = this.props;
+                    var max = _props.max;
+                    var min = _props.min;
+                    min = index === 0 ? this.parseDate(min) : date[0];
+                    max = index === 0 ? date[1] : this.parseDate(max);
                     mode[index] = e.mode === 'year' ? 'month' : 'main';
-                    date[index] = e.date;
+                    if (_.isDate(min) && DateTime.isBeforeDate(e.date, min)) {
+                        date[index] = min;
+                    } else if (_.isDate(max) && DateTime.isAfterDate(e.date, max)) {
+                        date[index] = max;
+                    } else {
+                        date[index] = e.date;
+                    }
                     this.setState({
                         date: date,
                         month: date,
@@ -201,6 +212,7 @@ define('melon/RangeCalendar', [
                         open: open,
                         variants: ['calendar'],
                         onConfirm: this.onConfirm,
+                        size: this.props.size,
                         buttonVariants: [
                             'secondery',
                             'calendar'
@@ -220,10 +232,10 @@ define('melon/RangeCalendar', [
                     var _state3 = this.state;
                     var date = _state3.date;
                     var month = _state3.month;
-                    var _props = this.props;
-                    var lang = _props.lang;
-                    var min = _props.min;
-                    var max = _props.max;
+                    var _props2 = this.props;
+                    var lang = _props2.lang;
+                    var min = _props2.min;
+                    var max = _props2.max;
                     min = index === 0 ? this.parseDate(min) : date[0];
                     max = index === 0 ? date[1] : this.parseDate(max);
                     return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Pager, {
@@ -247,9 +259,9 @@ define('melon/RangeCalendar', [
                     var _state4 = this.state;
                     var date = _state4.date;
                     var mode = _state4.mode;
-                    var _props2 = this.props;
-                    var min = _props2.min;
-                    var max = _props2.max;
+                    var _props3 = this.props;
+                    var min = _props3.min;
+                    var max = _props3.max;
                     min = index === 0 ? this.parseDate(min) : date[0];
                     max = index === 0 ? date[1] : this.parseDate(max);
                     return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Selector, {
