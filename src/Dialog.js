@@ -26,14 +26,17 @@ class Dialog extends WindowResizeAware {
     }
 
     componentDidMount() {
-
         super.componentDidMount();
-
         this.positionDialog();
     }
 
     componentDidUpdate() {
         this.positionDialog();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        this.positionDialog();
+        return true;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -95,8 +98,9 @@ class Dialog extends WindowResizeAware {
 
     onShow() {
         this.bodyScrolling();
-        if (_.isFunction(this.props.onShow)) {
-            this.props.onShow();
+        var onShow = this.props.onShow;
+        if (_.isFunction(onShow)) {
+            onShow();
         }
     }
 
@@ -126,16 +130,20 @@ class Dialog extends WindowResizeAware {
 
     render() {
 
-        var props = this.props;
+        var {
+            title,
+            children,
+            ...others
+        } = this.props;
 
         var open = this.state.open;
 
         return (
-            <div {...props} className={this.getClassName()}>
+            <div {...others} className={this.getClassName()}>
                 <div ref="dialogWindow" className={this.getPartClassName('window')} >
                     {this.renderTitle()}
                     <div ref="dialogContent" className={this.getPartClassName('body')}>
-                        {props.children}
+                        {children}
                     </div>
                     {this.renderAction()}
                 </div>
