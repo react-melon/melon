@@ -1,5 +1,5 @@
 /**
- * @file melon demo Tree
+ * @file melon demo Dialog
  * @author cxtom(cxtom2008@gmail.com)
  */
 
