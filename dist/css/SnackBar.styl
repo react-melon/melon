@@ -1,0 +1,41 @@
+@require './base.styl'
+@require './Button.styl'
+
+
+.{$-melon-class-prefix}-snackbar
+    color: $-melon-colors.white
+    border-radius: 2px
+    padding: 0px 24px
+    padding-right: 0
+    height: 48px
+    line-height: 48px
+    min-width: 288px
+    max-width: 568px
+    position: fixed
+    z-index: $-melon-z-index.snackbar
+    bottom: -10px
+    margin-left: 24px
+    left: 0px
+    opacity: 0
+    visibility: hidden
+    transition: left 0ms cubic-bezier(0.23, 1, 0.32, 1) 400ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, bottom 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+    background-color: $-melon-colors.darkBlack
+    clearfix()
+
+    &.state-open
+        opacity: 1
+        visibility: visible
+        bottom: 24px
+
+    &-message
+        display: inline-block
+
+    &-action.{$-melon-class-prefix}-button
+        color: $-melon-colors.pinkA200
+        margin-top: 8px
+        float: right
+
+        &:hover,
+        &:active
+            color: $-melon-colors.pinkA200
+            background-color: $-melon-colors.transparant
