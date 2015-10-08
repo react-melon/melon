@@ -18,10 +18,11 @@
     &-label
         display inline-block
         width: 100%
+        font-size: $-melon-medium-font-size
+        text-align: left
+        cursor: pointer
         vertical-align: middle
         transition border-color 1s
-        cursor: pointer
-        font-size: $-melon-medium-font-size
 
         &-placeholder
             color: $-melon-colors.grey500
@@ -36,10 +37,11 @@
     &-popup
         position: absolute
         margin-top: 1px
+        padding: 16px 0
         min-width: 100%
         top: 0
         left: 0
-        padding: 16px 0
+        text-align: left
         transition all .3s
         background-color: $-melon-colors.white
         box-shadow: melon-get-z-depth('2')
