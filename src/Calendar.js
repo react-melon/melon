@@ -191,7 +191,22 @@ class Calendar extends InputComponent {
             date
         } = e;
 
+        let {
+            max,
+            min
+        } = this.props;
+
+        min = this.parseDate(min);
+        max = this.parseDate(max);
+
         mode = mode === 'year' ? 'month' : 'main';
+
+        if (_.isDate(min) && DateTime.isBeforeDate(date, min)) {
+            date = min;
+        }
+        else if (_.isDate(max) && DateTime.isAfterDate(date, max)) {
+            date = max;
+        }
 
         this.setState({
             date: date,
@@ -269,6 +284,7 @@ class Calendar extends InputComponent {
                 open={open}
                 variants={['calendar']}
                 onConfirm={this.onConfirm}
+                size={this.props.size}
                 buttonVariants={['secondery', 'calendar']} >
                 <Header
                     date={date}

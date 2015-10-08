@@ -18,7 +18,7 @@ define('melon/calendar/Header', [
             babelHelpers.classCallCheck(this, CalendarHeader);
             babelHelpers.get(Object.getPrototypeOf(CalendarHeader.prototype), 'constructor', this).call(this, props);
             this.onClick = this.onClick.bind(this);
-            this.type = 'calendar-dialog-header';
+            this.type = 'calendar-header';
         }
         babelHelpers.createClass(CalendarHeader, [
             {

@@ -128,8 +128,25 @@ class RangeCalendar extends InputComponent {
             date
         } = this.state;
 
+        let {
+            max,
+            min
+        } = this.props;
+
+        min = index === 0 ? this.parseDate(min) : date[0];
+        max = index === 0 ? date[1] : this.parseDate(max);
+
         mode[index] = e.mode === 'year' ? 'month' : 'main';
-        date[index] = e.date;
+
+        if (_.isDate(min) && DateTime.isBeforeDate(e.date, min)) {
+            date[index] = min;
+        }
+        else if (_.isDate(max) && DateTime.isAfterDate(e.date, max)) {
+            date[index] = max;
+        }
+        else {
+            date[index] = e.date;
+        }
 
         this.setState({
             date: date,
@@ -245,6 +262,7 @@ class RangeCalendar extends InputComponent {
                 open={open}
                 variants={['calendar']}
                 onConfirm={this.onConfirm}
+                size={this.props.size}
                 buttonVariants={['secondery', 'calendar']} >
                     <div className={this.getPartClassName('row')}>
                         <Header

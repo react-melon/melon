@@ -154,7 +154,17 @@ define('melon/Calendar', [
                 value: function onSelectorChange(e) {
                     var mode = e.mode;
                     var date = e.date;
+                    var _props = this.props;
+                    var max = _props.max;
+                    var min = _props.min;
+                    min = this.parseDate(min);
+                    max = this.parseDate(max);
                     mode = mode === 'year' ? 'month' : 'main';
+                    if (_.isDate(min) && DateTime.isBeforeDate(date, min)) {
+                        date = min;
+                    } else if (_.isDate(max) && DateTime.isAfterDate(date, max)) {
+                        date = max;
+                    }
                     this.setState({
                         date: date,
                         month: date,
@@ -219,6 +229,7 @@ define('melon/Calendar', [
                         open: open,
                         variants: ['calendar'],
                         onConfirm: this.onConfirm,
+                        size: this.props.size,
                         buttonVariants: [
                             'secondery',
                             'calendar'
@@ -235,10 +246,10 @@ define('melon/Calendar', [
                     var _state2 = this.state;
                     var date = _state2.date;
                     var month = _state2.month;
-                    var _props = this.props;
-                    var lang = _props.lang;
-                    var min = _props.min;
-                    var max = _props.max;
+                    var _props2 = this.props;
+                    var lang = _props2.lang;
+                    var min = _props2.min;
+                    var max = _props2.max;
                     min = this.parseDate(min);
                     max = this.parseDate(max);
                     return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Pager, {
@@ -262,9 +273,9 @@ define('melon/Calendar', [
                     var _state3 = this.state;
                     var date = _state3.date;
                     var mode = _state3.mode;
-                    var _props2 = this.props;
-                    var min = _props2.min;
-                    var max = _props2.max;
+                    var _props3 = this.props;
+                    var min = _props3.min;
+                    var max = _props3.max;
                     min = this.parseDate(min);
                     max = this.parseDate(max);
                     return React.createElement(Selector, {

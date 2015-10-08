@@ -22,7 +22,8 @@ var View = React.createClass({
             email: 'ludafa@outlook.com',
             sex: 'woman',
             fruit: ['Mango'],
-            fruits: ['Apple']
+            fruits: ['Apple'],
+            date: '2015-08-11'
         };
     },
 
@@ -108,9 +109,9 @@ var View = React.createClass({
                             <Title level={5}>Calendar / 普通日历</Title>
                             <Calendar
                                 name="date"
-                                defaultValue="2015-08-11"
+                                defaultValue={this.state.date}
                                 min="2015-08-01"
-                                max="2015-09-30" />
+                                max="2016-09-30" />
                         </div>
                         <div className="melon-column melon-column-6">
 
