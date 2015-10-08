@@ -41,8 +41,8 @@ class Component extends React.Component {
         return cx.create(
             this.props.className,
             this.getPartClassName(),
-            this.getVariantClasses(props.variants),
-            this.getStateClasses(props.states)
+            this.getVariantClasses(),
+            this.getStateClasses()
         );
     }
 
