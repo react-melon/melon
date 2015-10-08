@@ -3,8 +3,6 @@
  * @author leon(ludafa@outlook.com)
  */
 
-'use strict';
-
 var rules = {};
 
 var ValidityState = require('./validator/ValidityState');
@@ -16,7 +14,71 @@ Validator.register = function (ruleName, check) {
 };
 
 Validator.register('required', function (value, component) {
-    return new ValidityState(!!value, component.props.requiredErrorMessage || '不能为空');
+    return new ValidityState(
+        !!value,
+        component.props.requiredErrorMessage || '不能为空'
+    );
+});
+
+Validator.register('pattern', function (value, component) {
+
+    var {pattern, patternErrorMessage} = component.props;
+
+    return new ValidityState(
+        !value || new RegExp(pattern).test(value),
+        patternErrorMessage || '格式非法'
+    );
+
+});
+
+Validator.register('maxByteLength', function (value, component) {
+
+    var {maxByteLength, maxByteLengthErrorMessage} = component.props;
+    var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
+
+    return new ValidityState(
+        !value || byteLength <= maxByteLength,
+        maxByteLengthErrorMessage || `不能超过${maxByteLength}个字符`
+    );
+
+});
+
+Validator.register('minByteLength', function (value, component) {
+
+    var {minByteLength, minByteLengthErrorMessage} = component.props;
+    var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
+
+    return new ValidityState(
+        !value || byteLength >= minByteLength,
+        minByteLengthErrorMessage || `不能超过${minByteLength}个字符`
+    );
+
+});
+
+Validator.register('max', function (value, component) {
+
+    var {max, maxErrorMessage} = component.props;
+    var number = +value;
+    var isValid = !isNaN(number) && number <= max;
+
+    return new ValidityState(
+        !value || isValid,
+        maxErrorMessage || '不能为空'
+    );
+
+});
+
+Validator.register('min', function (value, component) {
+
+    var {min, minErrorMessage} = component.props;
+    var number = +value;
+    var isValid = !isNaN(number) && min <= number;
+
+    return new ValidityState(
+        !value || isValid,
+        minErrorMessage || '不能为空'
+    );
+
 });
 
 Validator.resolve = function (component) {
