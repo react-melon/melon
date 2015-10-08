@@ -1,5 +1,5 @@
 /**
- * @file melon demo Tree
+ * @file melon demo Dialog
  * @author cxtom(cxtom2008@gmail.com)
  */
 
@@ -25,7 +25,7 @@ var View = React.createClass({
         };
     },
 
-    render: function() {
+    render: function () {
 
         var actions = [
             <Button label="Submit" key="submit" />,
@@ -45,7 +45,7 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={4}>内容很长的弹窗</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog2Show}>弹出窗口</Button>
-                    <Dialog open={this.state.dialog2} onHide={this.dialog2Hide}><div style={{height: 1000}}>Long!</div></Dialog>
+                    <Dialog open={this.state.dialog2} onHide={this.dialog2Hide}><div ref="content">Long!</div></Dialog>
                 </div>
 
                 <div className="row">
@@ -84,7 +84,14 @@ var View = React.createClass({
     },
 
     dialog2Show: function () {
-        this.setState({dialog2: true});
+
+        var me = this;
+
+        this.setState({dialog2: true}, function () {
+            setTimeout(function () {
+                me.refs.content.style.height = '1000px';
+            }, 1000);
+        });
     },
 
     dialog2Hide: function () {

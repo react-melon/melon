@@ -44,6 +44,13 @@ define('melon/Dialog', [
                 }
             },
             {
+                key: 'shouldComponentUpdate',
+                value: function shouldComponentUpdate(nextProps, nextState) {
+                    this.positionDialog();
+                    return true;
+                }
+            },
+            {
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(nextProps) {
                     var open = nextProps.open;
@@ -100,8 +107,9 @@ define('melon/Dialog', [
                 key: 'onShow',
                 value: function onShow() {
                     this.bodyScrolling();
-                    if (_.isFunction(this.props.onShow)) {
-                        this.props.onShow();
+                    var onShow = this.props.onShow;
+                    if (_.isFunction(onShow)) {
+                        onShow();
                     }
                 }
             },
@@ -131,15 +139,21 @@ define('melon/Dialog', [
             {
                 key: 'render',
                 value: function render() {
-                    var props = this.props;
+                    var _props = this.props;
+                    var title = _props.title;
+                    var children = _props.children;
+                    var others = babelHelpers.objectWithoutProperties(_props, [
+                        'title',
+                        'children'
+                    ]);
                     var open = this.state.open;
-                    return React.createElement('div', babelHelpers._extends({}, props, { className: this.getClassName() }), React.createElement('div', {
+                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement('div', {
                         ref: 'dialogWindow',
                         className: this.getPartClassName('window')
                     }, this.renderTitle(), React.createElement('div', {
                         ref: 'dialogContent',
                         className: this.getPartClassName('body')
-                    }, props.children), this.renderAction()), React.createElement(Mask, {
+                    }, children), this.renderAction()), React.createElement(Mask, {
                         ref: 'dialogMask',
                         show: open,
                         autoLockScrolling: false,

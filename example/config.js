@@ -16,6 +16,7 @@ module.exports = {
         'Pager',
         'Progress',
         'Select',
+        'SnackBar',
         'Table',
         'Tabs',
         'TextBox',
