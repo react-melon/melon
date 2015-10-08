@@ -7,12 +7,12 @@ $-melon-title = {
 
 $-melon-title-levels = {
 
-    '1': 4.2,
-    '2': 3.5,
-    '3': 2.9,
-    '4': 2.2,
-    '5': 1.6,
-    '6': 1
+    '1': $-melon-xxxx-large-font-size,
+    '2': $-melon-xx-large-font-size,
+    '3': $-melon-x-large-font-size,
+    '4': $-melon-medium-font-size,
+    '5': $-melon-x-small-font-size,
+    '6': $-melon-xx-small-font-size
 
 }
 
@@ -21,4 +21,4 @@ $-melon-title-levels = {
 
 for level, value in $-melon-title-levels
     h{level}.{$-melon-class-prefix}-title
-        font-size: value * $-melon-small-font-size
+        font-size: value
