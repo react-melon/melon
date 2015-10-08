@@ -33,7 +33,7 @@ define('melon/Component', [
                 key: 'getClassName',
                 value: function getClassName() {
                     var props = this.props;
-                    return cx.create(this.props.className, this.getPartClassName(), this.getVariantClasses(props.variants), this.getStateClasses(props.states));
+                    return cx.create(this.props.className, this.getPartClassName(), this.getVariantClasses(), this.getStateClasses());
                 }
             },
             {
