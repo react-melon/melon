@@ -29,18 +29,49 @@ class SnackBar extends Component {
     }
 
     componentDidMount() {
-        dom.on(document.body, 'click', this.onMouseUp);
+        dom.on(document.body, 'mouseup', this.onMouseUp);
 
         if (this.props.openOnMount) {
             this.onShow();
         }
+
+        this.locate();
     }
 
     componentWillUnmount() {
-        dom.off(document.body, 'click', this.onMouseUp);
+        dom.off(document.body, 'mouseup', this.onMouseUp);
 
         if (this.autoHideTimer) {
             clearTimeout(this.autoHideTimer);
+        }
+    }
+
+    componentDidUpdate() {
+        this.locate();
+    }
+
+    locate() {
+        var {
+            open,
+            direction
+        } = this.props;
+
+        var main = ReactDOM.findDOMNode(this);
+
+        if (open) {
+
+            switch (direction) {
+                case 'bc':
+                case 'tc':
+                    main.style.marginTop = '';
+                    main.style.marginLeft = -main.offsetWidth / 2 + 'px';
+                    break;
+                case 'lc':
+                case 'rc':
+                    main.style.marginLeft = '';
+                    main.style.marginTop = -main.offsetHeight / 2 + 'px';
+                    break;
+            }
         }
     }
 
@@ -112,6 +143,16 @@ class SnackBar extends Component {
         return states;
     }
 
+    getVariants(props) {
+
+        var variants = super.getVariants(props);
+
+        var direction = props.direction;
+        variants.push('direction-' + direction);
+
+        return variants;
+    }
+
     render() {
 
         var {
@@ -137,7 +178,8 @@ class SnackBar extends Component {
 
 SnackBar.defaultProps = {
     autoHideDuration: 0,
-    action: '关闭'
+    action: '关闭',
+    direction: 'bl'
 };
 
 SnackBar.propTypes = {
@@ -146,7 +188,43 @@ SnackBar.propTypes = {
     message: PropTypes.string,
     openOnMount: PropTypes.bool,
     onHide: PropTypes.func,
-    onShow: PropTypes.func
+    onShow: PropTypes.func,
+    direction: PropTypes.oneOf(['tr', 'rt', 'rb', 'br', 'bl', 'lb', 'lt', 'tl', 'tc', 'rc', 'bc', 'lc'])
+};
+
+
+SnackBar.show = function (message, duration, direction) {
+    duration = duration || 0;
+    direction = direction || 'bl';
+
+    var doc = document;
+    var body = doc.body;
+    var container = doc.createElement('div');
+
+    body.appendChild(container);
+
+    var snackbar = (
+        <SnackBar
+            autoHideDuration={duration}
+            message={message}
+            direction={direction}
+            onHide={function (e) {
+                setTimeout(function () {
+                    ReactDOM.unmountComponentAtNode(container);
+                    body.removeChild(container);
+                    body = doc = container = snackbar = null;
+                }, 400);
+            }} />
+    );
+
+    ReactDOM.render(snackbar, container, function () {
+        snackbar = React.cloneElement(snackbar, {open: true});
+        setTimeout(function () {
+            ReactDOM.render(snackbar, container);
+        }, 10);
+    });
+
+    return snackbar;
 };
 
 module.exports = SnackBar;
