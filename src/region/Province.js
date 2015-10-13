@@ -76,6 +76,7 @@ class RegionProvince extends Component {
                     id={datasource.id}
                     checked={datasource.selected}
                     onChange={this.onSelectorChange} />
+                {this.renderSelectedInfo()}
                 {children ? (
                     <div className={this.getPartClassName('popup')}>
                         <ul>
@@ -85,6 +86,31 @@ class RegionProvince extends Component {
                 ) : null}
             </div>
         );
+    }
+
+    renderSelectedInfo() {
+        var {
+            datasource
+        } = this.props;
+
+        var total = datasource.children && datasource.children.length;
+        if (!total) {
+            return;
+        }
+
+        var num = datasource.children.reduce(function (result, child, index) {
+            if (child.selected) {
+                result++;
+            }
+            return result;
+        }, 0);
+
+        return (num === total || num === 0)
+            ? null : (
+                <span className={this.getPartClassName('info')}>
+                    {'(' + num + '/' + total + ')'}
+                </span>
+            );
     }
 
 }
