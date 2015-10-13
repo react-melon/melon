@@ -22,13 +22,11 @@ class RegionSelector extends Component {
     onClick(e) {
         let {
             onChange,
-            checked,
-            index
+            checked
         } = this.props;
 
         onChange && onChange({
             value: !checked,
-            index: index,
             target: this
         });
     }
@@ -88,8 +86,7 @@ RegionSelector.propTypes = {
     disabled: PropTypes.bool,
     id: PropTypes.string,
     hasInput: PropTypes.bool,
-    onChange: PropTypes.func,
-    index: PropTypes.number
+    onChange: PropTypes.func
 };
 
 RegionSelector.Icons = {

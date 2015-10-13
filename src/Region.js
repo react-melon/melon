@@ -49,8 +49,8 @@ class Region extends InputComponent {
         var data = e.data;
         var rawValue = this.state.rawValue;
 
+        helper.isAllSelected(data);
         rawValue[cIndex].children[index] = data;
-
         helper.isAllSelected(rawValue[cIndex]);
 
         this.setState({rawValue}, function () {
@@ -58,10 +58,9 @@ class Region extends InputComponent {
         });
     }
 
-    onSelectorChange(e) {
+    onSelectorChange(index, e) {
         var {
-            value,
-            index
+            value
         } = e;
 
         var rawValue = this.state.rawValue;
@@ -109,7 +108,7 @@ class Region extends InputComponent {
                         id={country.id}
                         index={index}
                         checked={country.selected}
-                        onChange={this.onSelectorChange} />
+                        onChange={this.onSelectorChange.bind(this, index)} />
                 </h1>
                 {this.renderArea(country.children, index)}
             </div>

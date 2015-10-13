@@ -13,7 +13,7 @@
         .{$-melon-class-prefix}-icon
             margin-right: 0.5em
             vertical-align: middle
-            transition: color .5s
+            transition: color .1s
             font-size: 1.2em
 
         &.state-checked .{$-melon-class-prefix}-icon
@@ -44,9 +44,10 @@
 
     &-province
         float: left
-        width: 7em
+        width: 7.5em
         position: relative
         padding-left: 0.5em
+        white-space: nowrap
 
         &.state-expand
             background-color: $-melon-colors.blue50
@@ -60,7 +61,7 @@
             visibility: hidden
             opacity: 0
             position: absolute
-            left: 7.5em
+            left: 8em
             top: 0
             background-color: $-melon-colors.blue50
             z-index: 1
@@ -74,6 +75,12 @@
         &.state-expand &-popup
             visibility: visible
             opacity: 1
+
+        &-info
+            display: inline-block
+            margin-left: 4px
+            font-size: 0.8em
+            color: $-melon-colors.blue400
 
     &-city
         float: left
