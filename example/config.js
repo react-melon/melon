@@ -15,6 +15,7 @@ module.exports = {
         'Icon',
         'Pager',
         'Progress',
+        'Region',
         'Select',
         'SnackBar',
         'Table',
