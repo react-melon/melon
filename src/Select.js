@@ -107,7 +107,7 @@ class Select extends InputComponent {
         }
 
         // 生成事件
-        var e = {
+        e = {
             type: 'change',
             target: this,
             value: this.stringifyValue(rawValue),
@@ -116,10 +116,11 @@ class Select extends InputComponent {
 
         super.onChange(e);
 
+        this.hideOptions();
+
         // 被控制的状态，交给控制者处理
         if (this.isControlled()) {
             this.props.onChange(e);
-            this.hideOptions();
             return;
         }
 
@@ -135,8 +136,6 @@ class Select extends InputComponent {
             }
 
         });
-
-        this.hideOptions();
 
     }
 
