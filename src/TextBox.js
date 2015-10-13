@@ -4,7 +4,6 @@
  */
 
 var React = require('react');
-var cx = require('./common/util/classname');
 var PropTypes = React.PropTypes;
 var InputComponent = require('./InputComponent');
 var FloatingLabel = require('./textbox/FloatLabel');
@@ -28,8 +27,6 @@ class TextBox extends InputComponent {
     }
 
     render() {
-
-        var props = this.props;
 
         return (
             <div className={this.getClassName()}>
@@ -164,7 +161,7 @@ class TextBox extends InputComponent {
             && this.isControlled()
             && this.props.value !== nextProps.value
         ) {
-            syncTextareaHeight();
+            this.syncTextareaHeight();
         }
 
     }

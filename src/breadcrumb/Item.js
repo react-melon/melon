@@ -3,8 +3,8 @@
   * @author leon(ludafa@outlook.com)
   */
 
- var React = require('react');
- var Component = require('../Component');
+var React = require('react');
+var Component = require('../Component');
 
 class BreadcrumbItem extends Component {
 

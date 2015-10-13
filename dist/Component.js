@@ -32,7 +32,6 @@ define('melon/Component', [
             {
                 key: 'getClassName',
                 value: function getClassName() {
-                    var props = this.props;
                     return cx.create(this.props.className, this.getPartClassName(), this.getVariantClasses(), this.getStateClasses());
                 }
             },
@@ -103,7 +102,6 @@ define('melon/Component', [
         ]);
         return Component;
     }(React.Component);
-    ;
     var PropTypes = React.PropTypes;
     Component.propTypes = {
         variants: PropTypes.arrayOf(PropTypes.string),

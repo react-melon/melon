@@ -3,7 +3,6 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
 var ReactDOM = require('react-dom');
 var Component = require('./Component');
 var dom = require('./common/util/dom');

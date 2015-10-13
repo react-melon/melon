@@ -1,10 +1,8 @@
 define('melon/validator/required', [
     'require',
     'exports',
-    'module',
-    '../babelHelpers'
+    'module'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     module.exports = function (value) {
         return !!value;
     };

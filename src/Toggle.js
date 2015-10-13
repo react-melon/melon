@@ -5,7 +5,6 @@
  */
 
 var React = require('react');
-var Icon  = require('./Icon');
 
 var InputComponent = require('./InputComponent');
 

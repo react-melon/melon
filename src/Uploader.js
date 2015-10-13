@@ -121,8 +121,12 @@ class Uploader extends InputComponent {
             .props
             .upload(e.files)
             .then(
-                (result) => {this.setFile(result);},
-                (error) => {this.clearFile();}
+                (result) => {
+                    this.setFile(result);
+                },
+                (error) => {
+                    this.clearFile();
+                }
             );
     }
 
@@ -149,7 +153,7 @@ class Uploader extends InputComponent {
             target: this,
             rawValue,
             value: this.stringifyValue(rawValue)
-        }
+        };
 
         super.onChange(e);
 
@@ -168,7 +172,7 @@ class Uploader extends InputComponent {
             target: this,
             rawValue: '',
             value: ''
-        }
+        };
 
         super.onChange(e);
 

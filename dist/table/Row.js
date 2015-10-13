@@ -28,9 +28,7 @@ define('melon/table/Row', [
                 value: function render() {
                     var _this = this;
                     var props = this.props;
-                    var part = props.part;
                     var columns = props.columns;
-                    var renderCell = this.renderCell;
                     return React.createElement('div', {
                         className: this.getClassName(),
                         onClick: this.props.onClick ? this.onClick : null,

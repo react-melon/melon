@@ -1,10 +1,8 @@
 define('melon/form/FormData', [
     'require',
     'exports',
-    'module',
-    '../babelHelpers'
+    'module'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     function FormData(form) {
         if (form) {
             return construct(form.getElements());

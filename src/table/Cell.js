@@ -54,14 +54,13 @@ class TableCell extends Component {
     getCellContent() {
 
         var props = this.props;
-        var part = props.part;
         var renderer = props.cellRenderer;
 
         var content = renderer
             ? renderer(u.pick(props, RENDERER_PROPS))
             : props.cellData;
 
-        return <div className={this.getPartClassName('content')}>{content}</div>
+        return <div className={this.getPartClassName('content')}>{content}</div>;
     }
 
 }
@@ -77,7 +76,7 @@ TableCell.propTypes = {
     cellData: PropTypes.any,
     cellKey: PropTypes.oneOfType([
         PropTypes.string.isRequired,
-        PropTypes.number.isRequired,
+        PropTypes.number.isRequired
     ]),
     height: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,

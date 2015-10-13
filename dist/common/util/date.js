@@ -2,10 +2,8 @@ define('melon/common/util/date', [
     'require',
     'exports',
     'module',
-    '../../babelHelpers',
     'underscore'
 ], function (require, exports, module) {
-    var babelHelpers = require('../../babelHelpers');
     var _ = require('underscore');
     module.exports = {
         addDays: function addDays(d, days) {
