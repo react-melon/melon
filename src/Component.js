@@ -37,7 +37,6 @@ class Component extends React.Component {
     }
 
     getClassName() {
-        var props = this.props;
         return cx.create(
             this.props.className,
             this.getPartClassName(),
@@ -116,7 +115,7 @@ class Component extends React.Component {
         return this.getStateClasses().join(' ');
     }
 
-};
+}
 
 var PropTypes = React.PropTypes;
 

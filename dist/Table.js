@@ -17,7 +17,6 @@ define('melon/Table', [
     var Row = require('./table/Row');
     var SelectorColumn = require('./table/SelectorColumn');
     function getNextSelectedRowData(dataSource, current, action, rowIndex) {
-        var selectedCount = current.length;
         switch (action) {
         case 'select':
             return current.concat(rowIndex).sort();
@@ -140,11 +139,14 @@ define('melon/Table', [
             {
                 key: 'onRowSelectorClick',
                 value: function onRowSelectorClick(action, rowIndex) {
-                    var nextSelected = getNextSelectedRowData(this.props.dataSource, this.state.selected, action, rowIndex);
-                    this.setState({ selected: nextSelected }, function () {
+                    var selected = getNextSelectedRowData(this.props.dataSource, this.state.selected, action, rowIndex);
+                    this.setState({ selected: selected }, function () {
                         var handler = this.props.onSelect;
                         if (handler) {
-                            handler(this.state.selected);
+                            handler({
+                                target: this,
+                                selected: selected
+                            });
                         }
                     });
                 }

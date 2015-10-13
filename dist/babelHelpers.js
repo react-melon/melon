@@ -1,13 +1,9 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('melon/babelHelpers', ['exports'], factory);
-    } else if (typeof exports === 'object') {
-        factory(exports);
-    } else {
-        factory(root.babelHelpers = {});
-    }
-}(this, function (global) {
-    var babelHelpers = global;
+define('melon/babelHelpers', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    var babelHelpers = {};
     babelHelpers.inherits = function (subClass, superClass) {
         if (typeof superClass !== 'function' && superClass !== null) {
             throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
@@ -90,4 +86,5 @@
             throw new TypeError('Cannot call a class as a function');
         }
     };
-}));
+    module.exports = babelHelpers;
+});

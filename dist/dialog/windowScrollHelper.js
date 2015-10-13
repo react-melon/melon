@@ -1,10 +1,8 @@
 define('melon/dialog/windowScrollHelper', [
     'require',
     'exports',
-    'module',
-    '../babelHelpers'
+    'module'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var originalHTMLBodySize = {};
     function stop(name) {
         var element = document.getElementsByTagName(name)[0];

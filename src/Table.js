@@ -13,8 +13,6 @@ var SelectorColumn = require('./table/SelectorColumn');
 
 function getNextSelectedRowData(dataSource, current, action, rowIndex) {
 
-    var selectedCount = current.length;
-
     switch (action) {
 
         case 'select':
@@ -172,12 +170,12 @@ class Table extends React.Component {
     onSelectAll(e) {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
-        )
+        );
     }
 
     onRowSelectorClick(action, rowIndex) {
 
-        var nextSelected = getNextSelectedRowData(
+        var selected = getNextSelectedRowData(
             this.props.dataSource,
             this.state.selected,
             action,
@@ -186,12 +184,15 @@ class Table extends React.Component {
 
         this.setState(
             {
-                selected: nextSelected
+                selected
             },
             function () {
                 var handler = this.props.onSelect;
                 if (handler) {
-                    handler(this.state.selected);
+                    handler({
+                        target: this,
+                        selected
+                    });
                 }
             }
         );

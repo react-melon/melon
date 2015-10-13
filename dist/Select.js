@@ -82,16 +82,16 @@ define('melon/Select', [
                         this.hideOptions();
                         return;
                     }
-                    var e = {
+                    e = {
                         type: 'change',
                         target: this,
                         value: this.stringifyValue(rawValue),
                         rawValue: rawValue
                     };
                     babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'onChange', this).call(this, e);
+                    this.hideOptions();
                     if (this.isControlled()) {
                         this.props.onChange(e);
-                        this.hideOptions();
                         return;
                     }
                     this.setState({ rawValue: rawValue }, function () {
@@ -100,7 +100,6 @@ define('melon/Select', [
                             onChange(e);
                         }
                     });
-                    this.hideOptions();
                 }
             },
             {

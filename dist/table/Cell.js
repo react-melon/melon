@@ -55,7 +55,6 @@ define('melon/table/Cell', [
                 key: 'getCellContent',
                 value: function getCellContent() {
                     var props = this.props;
-                    var part = props.part;
                     var renderer = props.cellRenderer;
                     var content = renderer ? renderer(u.pick(props, RENDERER_PROPS)) : props.cellData;
                     return React.createElement('div', { className: this.getPartClassName('content') }, content);

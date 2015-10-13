@@ -31,7 +31,7 @@ exports.getProcessors = function () {
     var addCopyright = new AddCopyright();
 
     var amdWrapper = new AmdWrapper({
-        files: ['src/**/*.js', '!src/babelHelpers.js']
+        files: ['src/**/*.js']
     });
 
     var babel = new BabelProcessor({

@@ -1,10 +1,8 @@
 define('melon/common/util/waves', [
     'require',
     'exports',
-    'module',
-    '../../babelHelpers'
+    'module'
 ], function (require, exports, module) {
-    var babelHelpers = require('../../babelHelpers');
     'use strict';
     var Waves = Waves || {};
     var $$ = document.querySelectorAll.bind(document);

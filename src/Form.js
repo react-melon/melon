@@ -7,10 +7,6 @@ var React = require('react');
 
 var Component = require('./Component');
 
-var FormData = require('./form/FormData');
-var Validator = require('./Validator');
-var ValidityState = require('./validator/ValidityState');
-
 class Form extends Component {
 
     constructor(props) {

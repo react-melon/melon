@@ -4,12 +4,10 @@ define('melon/Toggle', [
     'module',
     './babelHelpers',
     'react',
-    './Icon',
     './InputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var Icon = require('./Icon');
     var InputComponent = require('./InputComponent');
     var Toggle = function (_InputComponent) {
         babelHelpers.inherits(Toggle, _InputComponent);

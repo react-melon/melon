@@ -1,10 +1,8 @@
 define('melon/config', [
     'require',
     'exports',
-    'module',
-    './babelHelpers'
+    'module'
 ], function (require, exports, module) {
-    var babelHelpers = require('./babelHelpers');
     module.exports = {
         COMPONENT_SIZES: [
             'xxs',

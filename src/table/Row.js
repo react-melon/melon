@@ -23,9 +23,7 @@ class TableRow extends Component {
     render() {
 
         var props = this.props;
-        var part = props.part;
         var columns = props.columns;
-        var renderCell = this.renderCell;
 
         return (
             <div className={this.getClassName()}
@@ -34,7 +32,9 @@ class TableRow extends Component {
                 onMouseDown={this.props.onMouseDown ? this.onMouseDown : null}
                 onMouseEnter={this.props.onMouseEnter ? this.onMouseEnter : null}
                 onMouseLeave={this.props.onMouseLeave ? this.onMouseLeave : null}>
-                {columns.map((column, index) => {return this.renderCell(column.props, index);})}
+                {columns.map((column, index) => {
+                    return this.renderCell(column.props, index);
+                })}
             </div>
         );
     }

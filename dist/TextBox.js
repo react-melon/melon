@@ -4,13 +4,11 @@ define('melon/TextBox', [
     'module',
     './babelHelpers',
     'react',
-    './common/util/classname',
     './InputComponent',
     './textbox/FloatLabel'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var cx = require('./common/util/classname');
     var PropTypes = React.PropTypes;
     var InputComponent = require('./InputComponent');
     var FloatingLabel = require('./textbox/FloatLabel');
@@ -31,7 +29,6 @@ define('melon/TextBox', [
             {
                 key: 'render',
                 value: function render() {
-                    var props = this.props;
                     return React.createElement('div', { className: this.getClassName() }, this.renderFloatingLabel(this.props.floatingLabel), this.renderInput(), this.renderValidateMessage());
                 }
             },
@@ -141,7 +138,7 @@ define('melon/TextBox', [
                 value: function componentWillReceiveProps(nextProps) {
                     babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'componentWillReceiveProps', this).call(this, nextProps);
                     if (nextProps.multiline && this.isControlled() && this.props.value !== nextProps.value) {
-                        syncTextareaHeight();
+                        this.syncTextareaHeight();
                     }
                 }
             },

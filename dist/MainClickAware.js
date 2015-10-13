@@ -3,13 +3,11 @@ define('melon/MainClickAware', [
     'exports',
     'module',
     './babelHelpers',
-    'react',
     'react-dom',
     './Component',
     './common/util/dom'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
-    var React = require('react');
     var ReactDOM = require('react-dom');
     var Component = require('./Component');
     var dom = require('./common/util/dom');

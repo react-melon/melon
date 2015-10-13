@@ -1,0 +1,12 @@
+{
+    "eslint": {
+        "rules": {
+            "fecs-jsx-var": [
+                2,
+                {
+                    "pragma": "React"
+                }
+            ]
+        }
+    }
+}
