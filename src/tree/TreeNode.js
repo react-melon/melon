@@ -1,6 +1,6 @@
 /**
  * @file esui-react/Tree
- * @author cxtom<cxtom2008@gmail.com>
+ * @author cxtom<cxtom2010@gmail.com>
  */
 
 var React = require('react');
