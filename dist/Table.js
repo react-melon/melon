@@ -5,6 +5,7 @@ define('melon/Table', [
     './babelHelpers',
     'underscore',
     'react',
+    './Component',
     './table/Row',
     './table/SelectorColumn',
     './table/Column'
@@ -12,26 +13,25 @@ define('melon/Table', [
     var babelHelpers = require('./babelHelpers');
     var u = require('underscore');
     var React = require('react');
-    var PropTypes = React.PropTypes;
-    var ReactChildren = React.Children;
+    var Component = require('./Component');
     var Row = require('./table/Row');
     var SelectorColumn = require('./table/SelectorColumn');
+    var PropTypes = React.PropTypes;
+    var Children = React.Children;
     function getNextSelectedRowData(dataSource, current, action, rowIndex) {
-        switch (action) {
-        case 'select':
-            return current.concat(rowIndex).sort();
-        case 'unselect':
-            return u.reject(current, function (row) {
-                return row === rowIndex;
-            });
-        case 'selectAll':
+        if (action === 'selectAll') {
             return u.range(0, dataSource.length);
-        case 'unselectAll':
+        }
+        if (action === 'unselectAll') {
             return [];
         }
+        var selected = action === 'select' ? current.concat(rowIndex).sort() : u.reject(current, function (row) {
+            return row === rowIndex;
+        });
+        return selected;
     }
-    var Table = function (_React$Component) {
-        babelHelpers.inherits(Table, _React$Component);
+    var Table = function (_Component) {
+        babelHelpers.inherits(Table, _Component);
         function Table(props) {
             babelHelpers.classCallCheck(this, Table);
             babelHelpers.get(Object.getPrototypeOf(Table.prototype), 'constructor', this).call(this, props);
@@ -39,18 +39,24 @@ define('melon/Table', [
             this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
             this.onSelect = this.onSelect.bind(this);
             this.onSelectAll = this.onSelectAll.bind(this);
-            this.state = babelHelpers._extends({ selected: [] }, this.getState(this.props));
+            this.state = {
+                selected: props.selected,
+                columns: this.getColumns(props)
+            };
         }
         babelHelpers.createClass(Table, [
             {
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(nextProps) {
-                    return babelHelpers._extends({ selected: this.state.selected }, this.getState(nextProps));
+                    this.setState({
+                        selected: nextProps.selected,
+                        columns: this.getColumns(nextProps)
+                    });
                 }
             },
             {
-                key: 'getState',
-                value: function getState(props) {
+                key: 'getColumns',
+                value: function getColumns(props) {
                     var children = [];
                     if (props.selectable) {
                         var selector = React.createElement(SelectorColumn, {
@@ -60,19 +66,17 @@ define('melon/Table', [
                             onSelect: this.onSelect,
                             onSelectAll: this.onSelectAll
                         });
-                        children.unshift(selector);
+                        children = [selector].concat(babelHelpers.toConsumableArray(children));
                     }
-                    return {
-                        columns: ReactChildren.toArray(props.children).reduce(function (children, child) {
-                            if (child != null) {
-                                if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
-                                    throw new Error('Table child must be a TableColumn');
-                                }
-                                children.push(child);
+                    return Children.toArray(props.children).reduce(function (children, child) {
+                        if (child != null) {
+                            if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
+                                throw new Error('Table child must be a TableColumn');
                             }
-                            return children;
-                        }, children)
-                    };
+                            children.push(child);
+                        }
+                        return children;
+                    }, children);
                 }
             },
             {
@@ -97,19 +101,21 @@ define('melon/Table', [
             {
                 key: 'renderBody',
                 value: function renderBody(columns) {
-                    var me = this;
+                    var _this = this;
                     return React.createElement('div', { className: 'ui-table-body' }, this.props.dataSource.map(function (rowData, index) {
-                        return me.renderRow(columns, rowData, index);
+                        return _this.renderRow(columns, rowData, index);
                     }));
                 }
             },
             {
                 key: 'renderRow',
                 value: function renderRow(columns, rowData, index) {
-                    var props = this.props;
+                    var _props = this.props;
+                    var rowHeight = _props.rowHeight;
+                    var highlight = _props.highlight;
                     return React.createElement(Row, {
-                        height: props.rowHeight,
-                        highlight: props.highlight,
+                        height: rowHeight,
+                        highlight: highlight,
                         key: index,
                         rowIndex: index,
                         part: 'body',
@@ -139,45 +145,51 @@ define('melon/Table', [
             {
                 key: 'onRowSelectorClick',
                 value: function onRowSelectorClick(action, rowIndex) {
-                    var selected = getNextSelectedRowData(this.props.dataSource, this.state.selected, action, rowIndex);
-                    this.setState({ selected: selected }, function () {
-                        var handler = this.props.onSelect;
-                        if (handler) {
-                            handler({
-                                target: this,
-                                selected: selected
-                            });
-                        }
-                    });
+                    var _props2 = this.props;
+                    var onSelect = _props2.onSelect;
+                    var selected = _props2.selected;
+                    var dataSource = _props2.dataSource;
+                    selected = getNextSelectedRowData(dataSource, selected, action, rowIndex);
+                    if (onSelect) {
+                        onSelect({
+                            target: this,
+                            selected: selected
+                        });
+                        return;
+                    }
+                    this.setState({ selected: selected });
                 }
             },
             {
                 key: 'isRowSelected',
                 value: function isRowSelected(rowIndex) {
-                    return u.contains(this.state.selected, rowIndex);
+                    return this.state.selected.indexOf(rowIndex) !== -1;
                 }
             },
             {
                 key: 'isAllRowsSelected',
                 value: function isAllRowsSelected() {
-                    return this.state.selected.length === this.props.dataSource.length;
+                    var selected = this.state.selected;
+                    return selected.length === this.props.dataSource.length;
                 }
             }
         ]);
         return Table;
-    }(React.Component);
+    }(Component);
     Table.propTypes = {
         rowHeight: PropTypes.number.isRequired,
         highlight: PropTypes.bool,
         headerRowHeight: PropTypes.number,
-        selectable: PropTypes.bool,
+        selectable: PropTypes.bool.isRequired,
         onSelect: PropTypes.func,
+        selected: PropTypes.arrayOf(PropTypes.number).isRequired,
         dataSource: PropTypes.array.isRequired
     }, Table.defaultProps = {
         highlight: true,
         rowHeight: 48,
         headerRowHeight: 56,
         selectable: false,
+        selected: [],
         columns: []
     };
     Table.Column = require('./table/Column');
