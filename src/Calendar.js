@@ -28,7 +28,7 @@ class Calendar extends InputComponent {
         let open = false;
         let month = rawValue;
         let mode = 'main';
-        let date = rawValue
+        let date = rawValue;
 
         this.state = {
             ...this.state,
@@ -78,7 +78,7 @@ class Calendar extends InputComponent {
     stringifyValue(rawValue) {
 
         if (!_.isDate(rawValue)) {
-            return value;
+            return rawValue;
         }
 
         let format = this.props.dateFormat.toLowerCase();
@@ -136,7 +136,7 @@ class Calendar extends InputComponent {
                     target: this
                 });
             }
-        })
+        });
     }
 
     /**
@@ -175,7 +175,7 @@ class Calendar extends InputComponent {
             if (_.isFunction(onChange)) {
                 onChange(e);
             }
-        })
+        });
     }
 
     onHeaderClick(e) {

@@ -19,10 +19,6 @@ class TreeNode extends Component {
         this.handleOnClick = this.handleOnClick.bind(this);
     }
 
-    getStates() {
-        // nothing
-    }
-
     getVariants(props) {
 
         var variants = super.getVariants(props);
@@ -57,9 +53,9 @@ class TreeNode extends Component {
         var props = this.props;
         var expand = this.state.expand;
 
-        var icon = expand ?
-            (props.expandIcon || TreeNode.ICON[1]) :
-            (props.unexpandIcon || TreeNode.ICON[0]);
+        var icon = expand
+            ? (props.expandIcon || TreeNode.ICON[1])
+            : (props.unexpandIcon || TreeNode.ICON[0]);
 
         var children = props.children;
 
