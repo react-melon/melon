@@ -31,18 +31,48 @@ define('melon/SnackBar', [
             {
                 key: 'componentDidMount',
                 value: function componentDidMount() {
-                    dom.on(document.body, 'click', this.onMouseUp);
+                    dom.on(document.body, 'mouseup', this.onMouseUp);
                     if (this.props.openOnMount) {
                         this.onShow();
                     }
+                    this.locate();
                 }
             },
             {
                 key: 'componentWillUnmount',
                 value: function componentWillUnmount() {
-                    dom.off(document.body, 'click', this.onMouseUp);
+                    dom.off(document.body, 'mouseup', this.onMouseUp);
                     if (this.autoHideTimer) {
                         clearTimeout(this.autoHideTimer);
+                    }
+                }
+            },
+            {
+                key: 'componentDidUpdate',
+                value: function componentDidUpdate() {
+                    this.locate();
+                }
+            },
+            {
+                key: 'locate',
+                value: function locate() {
+                    var _props = this.props;
+                    var open = _props.open;
+                    var direction = _props.direction;
+                    var main = ReactDOM.findDOMNode(this);
+                    if (open) {
+                        switch (direction) {
+                        case 'bc':
+                        case 'tc':
+                            main.style.marginTop = '';
+                            main.style.marginLeft = -main.offsetWidth / 2 + 'px';
+                            break;
+                        case 'lc':
+                        case 'rc':
+                            main.style.marginLeft = '';
+                            main.style.marginTop = -main.offsetHeight / 2 + 'px';
+                            break;
+                        }
                     }
                 }
             },
@@ -70,9 +100,9 @@ define('melon/SnackBar', [
             {
                 key: 'onShow',
                 value: function onShow() {
-                    var _props = this.props;
-                    var onShow = _props.onShow;
-                    var autoHideDuration = _props.autoHideDuration;
+                    var _props2 = this.props;
+                    var onShow = _props2.onShow;
+                    var autoHideDuration = _props2.autoHideDuration;
                     this.setState({ open: true }, function () {
                         if (onShow) {
                             onShow();
@@ -110,11 +140,20 @@ define('melon/SnackBar', [
                 }
             },
             {
+                key: 'getVariants',
+                value: function getVariants(props) {
+                    var variants = babelHelpers.get(Object.getPrototypeOf(SnackBar.prototype), 'getVariants', this).call(this, props);
+                    var direction = props.direction;
+                    variants.push('direction-' + direction);
+                    return variants;
+                }
+            },
+            {
                 key: 'render',
                 value: function render() {
-                    var _props2 = this.props;
-                    var message = _props2.message;
-                    var action = _props2.action;
+                    var _props3 = this.props;
+                    var message = _props3.message;
+                    var action = _props3.action;
                     return React.createElement('div', { className: this.getClassName() }, React.createElement('span', { className: this.getPartClassName('message') }, message), React.createElement(Button, {
                         variants: ['snackbar'],
                         className: this.getPartClassName('action'),
@@ -127,7 +166,8 @@ define('melon/SnackBar', [
     }(Component);
     SnackBar.defaultProps = {
         autoHideDuration: 0,
-        action: '\u5173\u95ED'
+        action: '\u5173\u95ED',
+        direction: 'bl'
     };
     SnackBar.propTypes = {
         action: PropTypes.string,
@@ -135,7 +175,48 @@ define('melon/SnackBar', [
         message: PropTypes.string,
         openOnMount: PropTypes.bool,
         onHide: PropTypes.func,
-        onShow: PropTypes.func
+        onShow: PropTypes.func,
+        direction: PropTypes.oneOf([
+            'tr',
+            'rt',
+            'rb',
+            'br',
+            'bl',
+            'lb',
+            'lt',
+            'tl',
+            'tc',
+            'rc',
+            'bc',
+            'lc'
+        ])
+    };
+    SnackBar.show = function (message, duration, direction) {
+        duration = duration || 0;
+        direction = direction || 'bl';
+        var doc = document;
+        var body = doc.body;
+        var container = doc.createElement('div');
+        body.appendChild(container);
+        var snackbar = React.createElement(SnackBar, {
+            autoHideDuration: duration,
+            message: message,
+            direction: direction,
+            onHide: function (e) {
+                setTimeout(function () {
+                    ReactDOM.unmountComponentAtNode(container);
+                    body.removeChild(container);
+                    body = doc = container = snackbar = null;
+                }, 400);
+            }
+        });
+        ReactDOM.render(snackbar, container, function () {
+            snackbar = React.cloneElement(snackbar, { open: true });
+            setTimeout(function () {
+                ReactDOM.render(snackbar, container);
+            }, 10);
+        });
+        return snackbar;
     };
     module.exports = SnackBar;
 });

@@ -3,40 +3,36 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var u = require('underscore');
-var React = require('react');
-var PropTypes = React.PropTypes;
-var ReactChildren = React.Children;
+let u = require('underscore');
+let React = require('react');
+let Component = require('./Component');
 
-var Row = require('./table/Row');
-var SelectorColumn = require('./table/SelectorColumn');
+let Row = require('./table/Row');
+let SelectorColumn = require('./table/SelectorColumn');
+
+let {PropTypes, Children} = React;
 
 function getNextSelectedRowData(dataSource, current, action, rowIndex) {
 
-    switch (action) {
-
-        case 'select':
-
-            return current.concat(rowIndex).sort();
-
-        case 'unselect':
-
-            return u.reject(current, function (row) {
-                return row === rowIndex;
-            });
-
-        case 'selectAll':
-
-            return u.range(0, dataSource.length);
-
-        case 'unselectAll':
-
-            return [];
+    if (action === 'selectAll') {
+        return u.range(0, dataSource.length);
     }
+
+    if (action === 'unselectAll') {
+        return [];
+    }
+
+    let selected = action === 'select'
+        ? current.concat(rowIndex).sort()
+        : u.reject(current, function (row) {
+            return row === rowIndex;
+        });
+
+    return selected;
 
 }
 
-class Table extends React.Component {
+class Table extends Component {
 
     constructor(props) {
 
@@ -48,25 +44,26 @@ class Table extends React.Component {
         this.onSelectAll = this.onSelectAll.bind(this);
 
         this.state = {
-            selected: [],
-            ...this.getState(this.props)
+            selected: props.selected,
+            columns: this.getColumns(props)
         };
 
     }
 
     componentWillReceiveProps(nextProps) {
-        return {
-            selected: this.state.selected,
-            ...this.getState(nextProps)
-        };
+
+        this.setState({
+            selected: nextProps.selected,
+            columns: this.getColumns(nextProps)
+        });
+
     }
 
-    getState(props) {
+    getColumns(props) {
 
         var children = [];
 
         if (props.selectable) {
-
             var selector = (
                 <SelectorColumn
                     title=''
@@ -75,32 +72,28 @@ class Table extends React.Component {
                     onSelect={this.onSelect}
                     onSelectAll={this.onSelectAll} />
             );
-
-            children.unshift(selector);
-
+            children = [selector, ...children];
         }
 
-        return {
-            columns: ReactChildren
-                .toArray(props.children)
-                .reduce(
-                    function (children, child) {
+        return Children
+            .toArray(props.children)
+            .reduce(
+                function (children, child) {
 
-                        if (child != null) {
+                    if (child != null) {
 
-                            if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
-                                throw new Error('Table child must be a TableColumn');
-                            }
-
-                            children.push(child);
-
+                        if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
+                            throw new Error('Table child must be a TableColumn');
                         }
 
-                        return children;
-                    },
-                    children
-                )
-        };
+                        children.push(child);
+
+                    }
+
+                    return children;
+                },
+                children
+            );
 
     }
 
@@ -132,22 +125,21 @@ class Table extends React.Component {
     }
 
     renderBody(columns) {
-        var me = this;
         return (
             <div className="ui-table-body">
-                {this.props.dataSource.map(function (rowData, index) {
-                    return me.renderRow(columns, rowData, index);
+                {this.props.dataSource.map((rowData, index) => {
+                    return this.renderRow(columns, rowData, index);
                 })}
             </div>
         );
     }
 
     renderRow(columns, rowData, index) {
-        var props = this.props;
+        let {rowHeight, highlight} = this.props;
         return (
             <Row
-                height={props.rowHeight}
-                highlight={props.highlight}
+                height={rowHeight}
+                highlight={highlight}
                 key={index}
                 rowIndex={index}
                 part='body'
@@ -175,35 +167,36 @@ class Table extends React.Component {
 
     onRowSelectorClick(action, rowIndex) {
 
-        var selected = getNextSelectedRowData(
-            this.props.dataSource,
-            this.state.selected,
+        let {onSelect, selected, dataSource} = this.props;
+
+        selected = getNextSelectedRowData(
+            dataSource,
+            selected,
             action,
             rowIndex
         );
 
-        this.setState(
-            {
-                selected
-            },
-            function () {
-                var handler = this.props.onSelect;
-                if (handler) {
-                    handler({
-                        target: this,
-                        selected
-                    });
-                }
-            }
-        );
+        if (onSelect) {
+            onSelect({
+                target: this,
+                selected: selected
+            });
+            return;
+        }
+
+        this.setState({
+            selected: selected
+        });
+
     }
 
     isRowSelected(rowIndex) {
-        return u.contains(this.state.selected, rowIndex);
+        return this.state.selected.indexOf(rowIndex) !== -1;
     }
 
     isAllRowsSelected() {
-        return this.state.selected.length === this.props.dataSource.length;
+        let selected = this.state.selected;
+        return selected.length === this.props.dataSource.length;
     }
 
 }
@@ -212,8 +205,9 @@ Table.propTypes = {
     rowHeight: PropTypes.number.isRequired,
     highlight: PropTypes.bool,
     headerRowHeight: PropTypes.number,
-    selectable: PropTypes.bool,
+    selectable: PropTypes.bool.isRequired,
     onSelect: PropTypes.func,
+    selected: PropTypes.arrayOf(PropTypes.number).isRequired,
     dataSource: PropTypes.array.isRequired
 },
 
@@ -222,6 +216,7 @@ Table.defaultProps = {
     rowHeight: 48,
     headerRowHeight: 56,
     selectable: false,
+    selected: [],
     columns: []
 };
 
