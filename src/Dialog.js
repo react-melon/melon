@@ -17,7 +17,7 @@ class Dialog extends WindowResizeAware {
         super(props);
         this.originalHTMLBodySize = {};
         this.state = {
-            open: this.props.open || false,
+            open: this.props.open || false
         };
         this.positionDialog = _.throttle.call(this, this.positionDialog, 50);
         this.handleMaskClick = this.handleMaskClick.bind(this);
