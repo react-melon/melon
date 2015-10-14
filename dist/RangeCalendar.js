@@ -190,7 +190,7 @@ define('melon/RangeCalendar', [
                 key: 'stringifyValue',
                 value: function stringifyValue(rawValue) {
                     if (!_.isArray(rawValue)) {
-                        return value;
+                        return rawValue;
                     }
                     var format = this.props.dateFormat.toLowerCase();
                     return [
@@ -205,7 +205,6 @@ define('melon/RangeCalendar', [
                 value: function renderDialog() {
                     var _state2 = this.state;
                     var date = _state2.date;
-                    var month = _state2.month;
                     var mode = _state2.mode;
                     var open = _state2.open;
                     return React.createElement(Confirm, {

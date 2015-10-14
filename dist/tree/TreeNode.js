@@ -23,11 +23,6 @@ define('melon/tree/TreeNode', [
         }
         babelHelpers.createClass(TreeNode, [
             {
-                key: 'getStates',
-                value: function getStates() {
-                }
-            },
-            {
                 key: 'getVariants',
                 value: function getVariants(props) {
                     var variants = babelHelpers.get(Object.getPrototypeOf(TreeNode.prototype), 'getVariants', this).call(this, props);

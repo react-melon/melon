@@ -69,7 +69,7 @@ define('melon/Region', [
             {
                 key: 'parseValue',
                 value: function parseValue(value) {
-                    var value = value.split(',');
+                    value = value.split(',');
                     return _.map(this.props.datasource, helper.parse.bind(this, value));
                 }
             },
