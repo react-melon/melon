@@ -70,7 +70,7 @@ define('melon/Calendar', [
                 key: 'stringifyValue',
                 value: function stringifyValue(rawValue) {
                     if (!_.isDate(rawValue)) {
-                        return value;
+                        return rawValue;
                     }
                     var format = this.props.dateFormat.toLowerCase();
                     return DateTime.format(rawValue, format, this.props.lang);
