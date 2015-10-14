@@ -18,7 +18,7 @@ var helper = {
         if (_.contains(value, child.id)) {
             child.selected;
         }
-        child.selected = _.contains(value, child.id) ? true : false;
+        child.selected = _.contains(value, child.id);
 
         if (_.isArray(child.children)) {
             child.children = _.map(child.children, helper.parse.bind(this, value));

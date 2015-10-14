@@ -73,7 +73,7 @@ class Region extends InputComponent {
     }
 
     parseValue(value) {
-        var value = value.split(',');
+        value = value.split(',');
         return _.map(this.props.datasource, helper.parse.bind(this, value));
     }
 
@@ -129,7 +129,7 @@ class Region extends InputComponent {
                         );
                     }, this)}
                 </ul>
-            ) : null
+            ) : null;
     }
 
 }
