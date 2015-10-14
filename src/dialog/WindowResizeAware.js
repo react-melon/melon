@@ -3,7 +3,6 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
 var Component = require('../Component');
 var dom = require('../common/util/dom');
 

@@ -87,7 +87,7 @@ Tree.defaultProps = {
      * 默认展开树
      * @type {Boolean}
      */
-    defaultExpandAll: false,
+    defaultExpandAll: false
 };
 
 Tree.propTypes = {
@@ -122,7 +122,7 @@ Tree.createTreeNodes = function (datasource, level) {
            </TreeNode>
         );
 
-    }, this)
+    }, this);
 
 };
 

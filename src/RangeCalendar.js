@@ -90,7 +90,7 @@ class RangeCalendar extends InputComponent {
                     target: this
                 });
             }
-        })
+        });
     }
 
     onDateChange(index, e) {
@@ -187,7 +187,7 @@ class RangeCalendar extends InputComponent {
             if (_.isFunction(onChange)) {
                 onChange(e);
             }
-        })
+        });
     }
 
     /**
@@ -235,7 +235,7 @@ class RangeCalendar extends InputComponent {
     stringifyValue(rawValue) {
 
         if (!_.isArray(rawValue)) {
-            return value;
+            return rawValue;
         }
 
         let format = this.props.dateFormat.toLowerCase();
@@ -244,7 +244,7 @@ class RangeCalendar extends InputComponent {
             DateTime.format(rawValue[0], format, this.props.lang),
             '至',
             DateTime.format(rawValue[1], format, this.props.lang)
-        ].join(' ')
+        ].join(' ');
     }
 
 
@@ -252,7 +252,6 @@ class RangeCalendar extends InputComponent {
 
         let {
             date,
-            month,
             mode,
             open
         } = this.state;
