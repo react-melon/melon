@@ -190,8 +190,7 @@ class ScrollView extends Component {
         let directions = this.getDirections();
 
         let {
-            position,
-            onwheel
+            position
         } = this.state;
 
         return directions.map(function (dir, index) {
@@ -205,7 +204,6 @@ class ScrollView extends Component {
             return (
                 <Bar
                     key={dir}
-                    show={onwheel}
                     thumbSize={size}
                     onAction={this.onAction.bind(this, dir)}
                     position={position[dir]}
