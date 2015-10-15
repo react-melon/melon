@@ -40,12 +40,13 @@ class ScrollViewBar extends Component {
         this.positionThumb();
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (Math.abs(nextProps.position - this.props.position) < 0.005) {
-            return;
+    shouldComponentUpdate(nextProps) {
+        if (Math.abs(nextProps.position - this.props.position) < 0.0005) {
+            return false;
         }
         dom.addClass(this.refs.main, 'state-show');
         this.removeStateShow();
+        return true;
     }
 
     componentWillUnmount() {
@@ -126,6 +127,8 @@ class ScrollViewBar extends Component {
         pos = pos > barSize ? barSize : pos;
         pos = pos < 0 ? 0 : pos;
         me.fireAction('change', pos / barSize);
+
+        e.preventDefault();
     }
 
     onMouseDown(e) {
@@ -140,6 +143,8 @@ class ScrollViewBar extends Component {
 
         dom.on(body, 'mousemove', this.onMouseMove);
         dom.on(body, 'mouseup', this.onMouseUp);
+
+        e.preventDefault();
     }
 
     onMouseMove(e) {
