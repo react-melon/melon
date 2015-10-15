@@ -48,11 +48,28 @@ class Calendar extends InputComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(props) {
+
+        var rawValue = props.rawValue == null
+            ? this.parseValue(props.value)
+            : props.rawValue;
+
+        // 如果 rawValue 未发生变化，
+        // 或者控制是非控制的，这种情况下控制自行控制 rawValue
+        // 那么就再见了
+        if (this.props.rawValue === rawValue || !this.isControlled()) {
+            return;
+        }
+
+        var value = this.stringifyValue(rawValue);
+        var validity = this.checkValidity(value);
+
         this.setState({
-            date: nextProps.date,
-            month: nextProps.date
+            date: rawValue,
+            month: rawValue,
+            rawValue
         });
+        this.showValidity(validity);
     }
 
     /**
