@@ -86,14 +86,15 @@ class Table extends WindowResizeAware {
 
     }
 
-    renderHeader(columns) {
+    renderHeader(columns, width) {
         var props = this.props;
         return (
             <div className="ui-table-header">
                 <Row
                     part='header'
                     height={props.headerRowHeight}
-                    columns={columns} />
+                    columns={columns}
+                    tableWidth={width} />
             </div>
         );
     }
@@ -107,7 +108,9 @@ class Table extends WindowResizeAware {
                 return this.renderRow(columns, rowData, index, width);
             })
             : (
-                <div className={this.getPartClassName('body-empty')}>
+                <div
+                    className={this.getPartClassName('body-empty')}
+                    style={{width}}>
                     没有数据
                 </div>
             );
