@@ -38,7 +38,7 @@ Validator.register('maxByteLength', function (value, component) {
 
     return new ValidityState(
         !value || byteLength <= maxByteLength,
-        maxByteLengthErrorMessage || `不能超过${maxByteLength}个字符`
+        maxByteLengthErrorMessage || `不能多于${maxByteLength}个字符，中文及中文符号占2个字符`
     );
 
 });
@@ -50,7 +50,7 @@ Validator.register('minByteLength', function (value, component) {
 
     return new ValidityState(
         !value || byteLength >= minByteLength,
-        minByteLengthErrorMessage || `不能超过${minByteLength}个字符`
+        minByteLengthErrorMessage || `不能少于${minByteLength}个字符，中文及中文符号占2个字符`
     );
 
 });
@@ -63,7 +63,7 @@ Validator.register('max', function (value, component) {
 
     return new ValidityState(
         !value || isValid,
-        maxErrorMessage || '不能为空'
+        maxErrorMessage || `不能大于${max}`
     );
 
 });
@@ -76,7 +76,7 @@ Validator.register('min', function (value, component) {
 
     return new ValidityState(
         !value || isValid,
-        minErrorMessage || '不能为空'
+        minErrorMessage || `不能小于${min}`
     );
 
 });
