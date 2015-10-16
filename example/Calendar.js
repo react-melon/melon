@@ -13,9 +13,10 @@ var UnitCalendar = require('../src/UnitCalendar');
 
 var View = React.createClass({
 
-    getInitialState() {
+    getInitialState: function () {
         return {
             weekRange: [],
+            value: '2015-08-07',
             monthRange: [],
             yearRange: UnitCalendar
                 .getContinuousFragments(
@@ -24,7 +25,10 @@ var View = React.createClass({
                     'year'
                 )
         };
+    },
 
+    onChange: function (e) {
+        this.setState({value: e.value});
     },
 
 
@@ -48,6 +52,12 @@ var View = React.createClass({
                     <div className="melon-column melon-column-4">
                         <Title level={5}>自动确定</Title>
                         <Calendar min="2015-08-07" max="2015-10-12" autoOk size="xs"></Calendar>
+                    </div>
+                </div>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>被控制的控件</Title>
+                        <Calendar autoOk value={this.state.value} onChange={this.onChange} size="xs"></Calendar>
                     </div>
                 </div>
                 <div className="melon-row">
