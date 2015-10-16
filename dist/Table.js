@@ -70,12 +70,13 @@ define('melon/Table', [
             },
             {
                 key: 'renderHeader',
-                value: function renderHeader(columns) {
+                value: function renderHeader(columns, width) {
                     var props = this.props;
                     return React.createElement('div', { className: 'ui-table-header' }, React.createElement(Row, {
                         part: 'header',
                         height: props.headerRowHeight,
-                        columns: columns
+                        columns: columns,
+                        tableWidth: width
                     }));
                 }
             },
@@ -86,7 +87,10 @@ define('melon/Table', [
                     var dataSource = this.props.dataSource;
                     var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
                         return _this.renderRow(columns, rowData, index, width);
-                    }) : React.createElement('div', { className: this.getPartClassName('body-empty') }, '\u6CA1\u6709\u6570\u636E');
+                    }) : React.createElement('div', {
+                        className: this.getPartClassName('body-empty'),
+                        style: { width: width }
+                    }, '\u6CA1\u6709\u6570\u636E');
                     return React.createElement('div', { className: this.getPartClassName('body') }, body);
                 }
             },
