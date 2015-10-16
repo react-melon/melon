@@ -201,7 +201,9 @@ module.exports = {
         var d         = date.getDate();
         var week      = date.getDay();
 
-        week = lang.days.split(',')[week];
+        if (lang && lang.days) {
+            week = lang.days.split(',')[week];
+        }
 
         var map = {
             yyyy: y,
@@ -212,7 +214,7 @@ module.exports = {
             dd: this.datePad(d),
             d: d,
             w: week,
-            ww: lang.week + week
+            ww: lang ? (lang.week + week) : ''
         };
 
         return format.replace(

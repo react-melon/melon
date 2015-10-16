@@ -73,10 +73,13 @@ define('melon/Component', [
             {
                 key: 'getStates',
                 value: function getStates(props) {
-                    var states = {};
-                    states.hidden = props.hidden;
-                    states.disabled = props.disabled;
-                    return states;
+                    var states = props.states;
+                    var hidden = props.hidden;
+                    var disabled = props.disabled;
+                    return babelHelpers._extends({}, states, {
+                        hidden: hidden,
+                        disabled: disabled
+                    });
                 }
             },
             {
