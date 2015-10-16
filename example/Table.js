@@ -58,6 +58,43 @@ var View = React.createClass({
         return (
             <div>
                 <Title level={3}>Table</Title>
+
+                <Table dataSource={this.state.table1DataSource}>
+                    <Table.Column
+                        dataKey='id'
+                        header='ID'
+                        footer='ID'
+                        align='right'
+                        width={100} />
+                    <Table.Column
+                        dataKey='task'
+                        header='Title'
+                        footer='Title'
+                        width={200} />
+                    <Table.Column
+                        dataKey='priority'
+                        header='Priority'
+                        footer='Priority'
+                        width={200} />
+                    <Table.Column
+                        dataKey='issueType'
+                        header='Issue Type'
+                        footer='Issue Type'
+                        width={100} />
+                    <Table.Column
+                        dataKey='complete'
+                        header='% Complete'
+                        footer='% Complete'
+                        width={300} />
+                    <Table.Column
+                        dataKey='haha'
+                        header='% Complete'
+                        footer='% Complete'
+                        width={300} />
+                </Table>
+
+                <Title level={3}>Table</Title>
+
                 <Table dataSource={[]}>
                     <Table.Column
                         dataKey='id'
@@ -86,34 +123,7 @@ var View = React.createClass({
                         footer='% Complete'
                         width={300} />
                 </Table>
-                <Table dataSource={this.state.table1DataSource}>
-                    <Table.Column
-                        dataKey='id'
-                        header='ID'
-                        footer='ID'
-                        align='right'
-                        width={100} />
-                    <Table.Column
-                        dataKey='task'
-                        header='Title'
-                        footer='Title'
-                        width={200} />
-                    <Table.Column
-                        dataKey='priority'
-                        header='Priority'
-                        footer='Priority'
-                        width={200} />
-                    <Table.Column
-                        dataKey='issueType'
-                        header='Issue Type'
-                        footer='Issue Type'
-                        width={100} />
-                    <Table.Column
-                        dataKey='complete'
-                        header='% Complete'
-                        footer='% Complete'
-                        width={300} />
-                </Table>
+
                 <SelectableTable dataSource={this.state.table3DataSource}>
                     <Table.Column
                         dataKey='id'

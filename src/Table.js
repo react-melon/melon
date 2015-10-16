@@ -3,15 +3,14 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let u = require('underscore');
 let React = require('react');
-let Component = require('./Component');
+let WindowResizeAware = require('./dialog/WindowResizeAware');
 
 let Row = require('./table/Row');
 
 let {PropTypes, Children} = React;
 
-class Table extends Component {
+class Table extends WindowResizeAware {
 
     constructor(props) {
 
@@ -29,6 +28,11 @@ class Table extends Component {
             columns: this.getColumns(nextProps)
         });
 
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this.onWindowResize();
     }
 
     getColumns(props) {
@@ -57,13 +61,26 @@ class Table extends Component {
 
     render() {
 
-        var columns = this.state.columns;
+        let {width, columns} = this.state;
+
+        if (width) {
+            // 计算出tableWidth和所有的columnWidth，将更大的一个传递给row使用
+            width = Math.max(
+                width,
+                columns.reduce((width, columns) => {
+                    return width + columns.props.width;
+                }, 0)
+            );
+        }
+        else {
+            width = '';
+        }
 
         return (
-            <div className="ui-table">
-                {this.renderHeader(columns)}
-                {this.renderBody(columns)}
-                {this.renderFooter(columns)}
+            <div className="ui-table" ref="main">
+                {this.renderHeader(columns, width)}
+                {this.renderBody(columns, width)}
+                {this.renderFooter(columns, width)}
             </div>
         );
 
@@ -81,13 +98,13 @@ class Table extends Component {
         );
     }
 
-    renderBody(columns) {
+    renderBody(columns, width) {
 
         let {dataSource} = this.props;
 
         let body = dataSource && dataSource.length
             ? dataSource.map((rowData, index) => {
-                return this.renderRow(columns, rowData, index);
+                return this.renderRow(columns, rowData, index, width);
             })
             : (
                 <div className={this.getPartClassName('body-empty')}>
@@ -101,7 +118,7 @@ class Table extends Component {
 
     }
 
-    renderRow(columns, rowData, index) {
+    renderRow(columns, rowData, index, tableWidth) {
         let {rowHeight, highlight} = this.props;
         return (
             <Row
@@ -111,12 +128,19 @@ class Table extends Component {
                 rowIndex={index}
                 part='body'
                 columns={columns}
-                data={rowData} />
+                data={rowData}
+                tableWidth={tableWidth} />
         );
     }
 
     renderFooter(columns) {
         return null;
+    }
+
+    onWindowResize() {
+        this.setState({
+            width: this.refs.main.offsetWidth
+        });
     }
 
 }

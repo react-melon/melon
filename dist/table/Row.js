@@ -27,15 +27,22 @@ define('melon/table/Row', [
                 key: 'render',
                 value: function render() {
                     var _this = this;
-                    var props = this.props;
-                    var columns = props.columns;
+                    var _props = this.props;
+                    var onClick = _props.onClick;
+                    var onDoubleClick = _props.onDoubleClick;
+                    var onMouseDown = _props.onMouseDown;
+                    var onMouseEnter = _props.onMouseEnter;
+                    var onMouseLeave = _props.onMouseLeave;
+                    var columns = _props.columns;
+                    var tableWidth = _props.tableWidth;
                     return React.createElement('div', {
                         className: this.getClassName(),
-                        onClick: this.props.onClick ? this.onClick : null,
-                        onDoubleClick: this.props.onDoubleClick ? this.onDoubleClick : null,
-                        onMouseDown: this.props.onMouseDown ? this.onMouseDown : null,
-                        onMouseEnter: this.props.onMouseEnter ? this.onMouseEnter : null,
-                        onMouseLeave: this.props.onMouseLeave ? this.onMouseLeave : null
+                        onClick: onClick ? this.onClick : null,
+                        onDoubleClick: onDoubleClick ? this.onDoubleClick : null,
+                        onMouseDown: onMouseDown ? this.onMouseDown : null,
+                        onMouseEnter: onMouseEnter ? this.onMouseEnter : null,
+                        onMouseLeave: onMouseLeave ? this.onMouseLeave : null,
+                        style: { width: tableWidth ? tableWidth - 2 : null }
                     }, columns.map(function (column, index) {
                         return _this.renderCell(column.props, index);
                     }));

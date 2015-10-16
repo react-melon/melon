@@ -22,16 +22,24 @@ class TableRow extends Component {
 
     render() {
 
-        var props = this.props;
-        var columns = props.columns;
+        let {
+            onClick,
+            onDoubleClick,
+            onMouseDown,
+            onMouseEnter,
+            onMouseLeave,
+            columns,
+            tableWidth
+        } = this.props;
 
         return (
             <div className={this.getClassName()}
-                onClick={this.props.onClick ? this.onClick : null}
-                onDoubleClick={this.props.onDoubleClick ? this.onDoubleClick : null}
-                onMouseDown={this.props.onMouseDown ? this.onMouseDown : null}
-                onMouseEnter={this.props.onMouseEnter ? this.onMouseEnter : null}
-                onMouseLeave={this.props.onMouseLeave ? this.onMouseLeave : null}>
+                onClick={onClick ? this.onClick : null}
+                onDoubleClick={onDoubleClick ? this.onDoubleClick : null}
+                onMouseDown={onMouseDown ? this.onMouseDown : null}
+                onMouseEnter={onMouseEnter ? this.onMouseEnter : null}
+                onMouseLeave={onMouseLeave ? this.onMouseLeave : null}
+                style={{width: tableWidth ? tableWidth - 2 : null}}>
                 {columns.map((column, index) => {
                     return this.renderCell(column.props, index);
                 })}

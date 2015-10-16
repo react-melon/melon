@@ -3,21 +3,19 @@ define('melon/Table', [
     'exports',
     'module',
     './babelHelpers',
-    'underscore',
     'react',
-    './Component',
+    './dialog/WindowResizeAware',
     './table/Row',
     './table/Column'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
-    var u = require('underscore');
     var React = require('react');
-    var Component = require('./Component');
+    var WindowResizeAware = require('./dialog/WindowResizeAware');
     var Row = require('./table/Row');
     var PropTypes = React.PropTypes;
     var Children = React.Children;
-    var Table = function (_Component) {
-        babelHelpers.inherits(Table, _Component);
+    var Table = function (_WindowResizeAware) {
+        babelHelpers.inherits(Table, _WindowResizeAware);
         function Table(props) {
             babelHelpers.classCallCheck(this, Table);
             babelHelpers.get(Object.getPrototypeOf(Table.prototype), 'constructor', this).call(this, props);
@@ -28,6 +26,13 @@ define('melon/Table', [
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(nextProps) {
                     this.setState({ columns: this.getColumns(nextProps) });
+                }
+            },
+            {
+                key: 'componentDidMount',
+                value: function componentDidMount() {
+                    babelHelpers.get(Object.getPrototypeOf(Table.prototype), 'componentDidMount', this).call(this);
+                    this.onWindowResize();
                 }
             },
             {
@@ -47,8 +52,20 @@ define('melon/Table', [
             {
                 key: 'render',
                 value: function render() {
-                    var columns = this.state.columns;
-                    return React.createElement('div', { className: 'ui-table' }, this.renderHeader(columns), this.renderBody(columns), this.renderFooter(columns));
+                    var _state = this.state;
+                    var width = _state.width;
+                    var columns = _state.columns;
+                    if (width) {
+                        width = Math.max(width, columns.reduce(function (width, columns) {
+                            return width + columns.props.width;
+                        }, 0));
+                    } else {
+                        width = '';
+                    }
+                    return React.createElement('div', {
+                        className: 'ui-table',
+                        ref: 'main'
+                    }, this.renderHeader(columns, width), this.renderBody(columns, width), this.renderFooter(columns, width));
                 }
             },
             {
@@ -64,18 +81,18 @@ define('melon/Table', [
             },
             {
                 key: 'renderBody',
-                value: function renderBody(columns) {
+                value: function renderBody(columns, width) {
                     var _this = this;
                     var dataSource = this.props.dataSource;
                     var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
-                        return _this.renderRow(columns, rowData, index);
+                        return _this.renderRow(columns, rowData, index, width);
                     }) : React.createElement('div', { className: this.getPartClassName('body-empty') }, '\u6CA1\u6709\u6570\u636E');
                     return React.createElement('div', { className: this.getPartClassName('body') }, body);
                 }
             },
             {
                 key: 'renderRow',
-                value: function renderRow(columns, rowData, index) {
+                value: function renderRow(columns, rowData, index, tableWidth) {
                     var _props = this.props;
                     var rowHeight = _props.rowHeight;
                     var highlight = _props.highlight;
@@ -86,7 +103,8 @@ define('melon/Table', [
                         rowIndex: index,
                         part: 'body',
                         columns: columns,
-                        data: rowData
+                        data: rowData,
+                        tableWidth: tableWidth
                     });
                 }
             },
@@ -95,10 +113,16 @@ define('melon/Table', [
                 value: function renderFooter(columns) {
                     return null;
                 }
+            },
+            {
+                key: 'onWindowResize',
+                value: function onWindowResize() {
+                    this.setState({ width: this.refs.main.offsetWidth });
+                }
             }
         ]);
         return Table;
-    }(Component);
+    }(WindowResizeAware);
     Table.propTypes = {
         rowHeight: PropTypes.number.isRequired,
         highlight: PropTypes.bool,
