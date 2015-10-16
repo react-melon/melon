@@ -48,13 +48,6 @@ class Calendar extends InputComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            date: nextProps.date,
-            month: nextProps.date
-        });
-    }
-
     /**
      * 格式化日期对象
      *
