@@ -6,11 +6,11 @@
 var React = require('react');
 
 var Table = require('../src/Table');
-var Column = Table.Column;
 var Title = require('../src/Title');
-var Button = require('../src/Button');
+var Icon = require('../src/Icon');
+var SelectableTable = require('../src/SelectableTable');
 
-//helper to create a fixed number of rows
+// helper to create a fixed number of rows
 function createDataSource(numberOfRows) {
     var rows = [];
     for (var i = 1; i <= numberOfRows; i++) {
@@ -18,14 +18,12 @@ function createDataSource(numberOfRows) {
             id: i,
             task: 'Task ' + i,
             complete: Math.min(100, Math.round(Math.random() * 110)),
-            priority : ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-            issueType : ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
+            priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
+            issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
         });
     }
     return rows;
 }
-
-
 
 var View = React.createClass({
 
@@ -56,91 +54,129 @@ var View = React.createClass({
         console.log('edit', props);
     },
 
-    render: function() {
+    render() {
         return (
             <div>
                 <Title level={3}>Table</Title>
-                <Table dataSource={this.state.table1DataSource}>
-                    <Column
+                <Table dataSource={[]}>
+                    <Table.Column
                         dataKey='id'
                         header='ID'
                         footer='ID'
                         align='right'
                         width={100} />
-                    <Column
+                    <Table.Column
                         dataKey='task'
                         header='Title'
                         footer='Title'
                         width={200} />
-                    <Column
+                    <Table.Column
                         dataKey='priority'
                         header='Priority'
                         footer='Priority'
                         width={200} />
-                    <Column
+                    <Table.Column
                         dataKey='issueType'
                         header='Issue Type'
                         footer='Issue Type'
                         width={100} />
-                    <Column
+                    <Table.Column
                         dataKey='complete'
                         header='% Complete'
                         footer='% Complete'
                         width={300} />
                 </Table>
-               <Table
-                    selectable={true}
-                    dataSource={this.state.table2DataSource}
-                    onSelect={this.onTableSelect} >
-                    <Column
+                <Table dataSource={this.state.table1DataSource}>
+                    <Table.Column
                         dataKey='id'
                         header='ID'
+                        footer='ID'
                         align='right'
                         width={100} />
-                    <Column
+                    <Table.Column
                         dataKey='task'
                         header='Title'
                         footer='Title'
                         width={200} />
-                    <Column
+                    <Table.Column
                         dataKey='priority'
                         header='Priority'
+                        footer='Priority'
                         width={200} />
-                    <Column
+                    <Table.Column
                         dataKey='issueType'
                         header='Issue Type'
+                        footer='Issue Type'
                         width={100} />
-                    <Column
+                    <Table.Column
                         dataKey='complete'
                         header='% Complete'
+                        footer='% Complete'
                         width={300} />
                 </Table>
+                <SelectableTable dataSource={this.state.table3DataSource}>
+                    <Table.Column
+                        dataKey='id'
+                        header='ID'
+                        footer='ID'
+                        align='right'
+                        width={100} />
+                    <Table.Column
+                        dataKey='task'
+                        header='Title'
+                        footer='Title'
+                        width={200} />
+                    <Table.Column
+                        dataKey='comment'
+                        header='comment'
+                        width={300} />
+                </SelectableTable>
+                <SelectableTable
+                    multiple={false}
+                    dataSource={this.state.table3DataSource}>
+                    <Table.Column
+                        dataKey='id'
+                        header='ID'
+                        footer='ID'
+                        align='right'
+                        width={100} />
+                    <Table.Column
+                        dataKey='task'
+                        header='Title'
+                        footer='Title'
+                        width={200} />
+                    <Table.Column
+                        dataKey='comment'
+                        header='comment'
+                        width={300} />
+                </SelectableTable>
+                <SelectableTable
+                    multiple={false}
+                    dataSource={this.state.table3DataSource}
+                    onSelect={({selected}) => {
+                        console.log(selected);
+                    }}>
+                    <Table.Column
+                        dataKey='id'
+                        header='ID'
+                        footer='ID'
+                        align='right'
+                        width={100} />
+                    <Table.Column
+                        dataKey='task'
+                        header='Title'
+                        footer='Title'
+                        width={200} />
+                    <Table.Column
+                        dataKey='comment'
+                        header='comment'
+                        width={300} />
+                </SelectableTable>
                 <div>
                     {this.renderSelected()}
                 </div>
             </div>
         );
-
-// <Table
-                //     selectable={true}
-                //     dataSource={this.state.table3DataSource}>
-                //     <Column
-                //         dataKey='id'
-                //         header='ID'
-                //         footer='ID'
-                //         align='right'
-                //         width={100} />
-                //     <Column
-                //         dataKey='task'
-                //         header='Title'
-                //         footer='Title'
-                //         width={200} />
-                //     <Column
-                //         dataKey='comment'
-                //         header='comment'
-                //         width={300}
-                //         cellRenderer={this.renderEditableCell} />
-                // </Table>
     },
 
     renderSelected: function () {
@@ -150,7 +186,7 @@ var View = React.createClass({
             : '您没有选中任何一行';
     },
 
-    onTableSelect: function (selectedRows) {
+    onSelectableTable: function (selectedRows) {
         this.setState({
             selected: selectedRows
         });
