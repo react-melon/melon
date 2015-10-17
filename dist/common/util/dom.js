@@ -52,4 +52,18 @@ define('melon/common/util/dom', [
             height: bound.height
         };
     };
+    exports.hasClass = function (element, cls) {
+        return element.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    };
+    exports.addClass = function (element, cls) {
+        if (!this.hasClass(element, cls)) {
+            element.className += ' ' + cls;
+        }
+    };
+    exports.removeClass = function (element, cls) {
+        if (this.hasClass(element, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            element.className = element.className.replace(reg, ' ');
+        }
+    };
 });

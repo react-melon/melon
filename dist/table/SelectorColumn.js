@@ -25,31 +25,53 @@ define('melon/table/SelectorColumn', [
             }]);
         return TableSelectorColumn;
     }(Column);
-    TableSelectorColumn.getIcon = function (selected) {
-        return selected ? 'check-box' : 'check-box-outline-blank';
+    TableSelectorColumn.icons = {
+        radio: {
+            checked: 'radio-button-checked',
+            unchecked: 'radio-button-unchecked'
+        },
+        checkbox: {
+            checked: 'check-box',
+            unchecked: 'check-box-outline-blank'
+        }
+    };
+    TableSelectorColumn.getIcon = function (multiple, selected) {
+        var icons = TableSelectorColumn.icons[multiple ? 'checkbox' : 'radio'];
+        return icons[selected ? 'checked' : 'unchecked'];
     };
     TableSelectorColumn.cellRenderer = function (props) {
         var part = props.part;
         var columnData = props.columnData;
-        var isSelected = part === 'body' ? columnData.isSelected(props.rowIndex) : columnData.isAllSelected();
+        var rowIndex = props.rowIndex;
+        var multiple = columnData.multiple;
+        if (!multiple && part !== 'body') {
+            return null;
+        }
+        var isSelected = part === 'body' ? columnData.isSelected(rowIndex) : columnData.isAllSelected();
         return React.createElement(Icon, {
-            onClick: columnData.onSelect ? TableSelectorColumn.onCellClick.bind(null, props) : null,
-            icon: TableSelectorColumn.getIcon(isSelected),
+            onClick: TableSelectorColumn.onCellClick.bind(null, props),
+            icon: TableSelectorColumn.getIcon(multiple, isSelected),
             states: { selected: isSelected },
             variants: ['table-selector']
         });
     };
-    TableSelectorColumn.onCellClick = function (props, e) {
+    TableSelectorColumn.onCellClick = function (props) {
         var part = props.part;
-        var handler = part === 'body' ? 'onSelect' : 'onSelectAll';
-        props.columnData[handler](e, props.rowIndex);
+        var rowIndex = props.rowIndex;
+        var columnData = props.columnData;
+        var multiple = props.multiple;
+        var handler = columnData[part === 'body' ? 'onSelect' : 'onSelectAll'];
+        if (typeof handler === 'function') {
+            handler(rowIndex);
+        }
     };
     var PropTypes = React.PropTypes;
     TableSelectorColumn.propTypes = {
         isSelected: PropTypes.func.isRequired,
         isAllSelected: PropTypes.func.isRequired,
         onSelect: PropTypes.func,
-        onSelectAll: PropTypes.func
+        onSelectAll: PropTypes.func,
+        name: PropTypes.string
     };
     TableSelectorColumn.defaultProps = {
         width: 66,
@@ -57,7 +79,8 @@ define('melon/table/SelectorColumn', [
         headerRenderer: TableSelectorColumn.headerRenderer,
         footerRenderer: TableSelectorColumn.footerRenderer,
         align: 'center',
-        dataKey: ''
+        dataKey: '',
+        multiple: false
     };
     TableSelectorColumn._TABLE_COMPONENT_ = 'COLUMN';
     module.exports = TableSelectorColumn;

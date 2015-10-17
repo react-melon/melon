@@ -3,48 +3,20 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let u = require('underscore');
 let React = require('react');
-let Component = require('./Component');
+let WindowResizeAware = require('./dialog/WindowResizeAware');
 
 let Row = require('./table/Row');
-let SelectorColumn = require('./table/SelectorColumn');
 
 let {PropTypes, Children} = React;
 
-function getNextSelectedRowData(dataSource, current, action, rowIndex) {
-
-    if (action === 'selectAll') {
-        return u.range(0, dataSource.length);
-    }
-
-    if (action === 'unselectAll') {
-        return [];
-    }
-
-    let selected = action === 'select'
-        ? current.concat(rowIndex).sort()
-        : u.reject(current, function (row) {
-            return row === rowIndex;
-        });
-
-    return selected;
-
-}
-
-class Table extends Component {
+class Table extends WindowResizeAware {
 
     constructor(props) {
 
         super(props);
 
-        this.isRowSelected = this.isRowSelected.bind(this);
-        this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-        this.onSelectAll = this.onSelectAll.bind(this);
-
         this.state = {
-            selected: props.selected,
             columns: this.getColumns(props)
         };
 
@@ -53,32 +25,22 @@ class Table extends Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            selected: nextProps.selected,
             columns: this.getColumns(nextProps)
         });
 
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        this.onWindowResize();
+    }
+
     getColumns(props) {
-
-        var children = [];
-
-        if (props.selectable) {
-            var selector = (
-                <SelectorColumn
-                    title=''
-                    isSelected={this.isRowSelected}
-                    isAllSelected={this.isAllRowsSelected}
-                    onSelect={this.onSelect}
-                    onSelectAll={this.onSelectAll} />
-            );
-            children = [selector, ...children];
-        }
 
         return Children
             .toArray(props.children)
             .reduce(
-                function (children, child) {
+                (children, child) => {
 
                     if (child != null) {
 
@@ -92,49 +54,74 @@ class Table extends Component {
 
                     return children;
                 },
-                children
+                []
             );
 
     }
 
     render() {
 
-        var columns = this.state.columns;
+        let {width, columns} = this.state;
+
+        if (width) {
+            // 计算出tableWidth和所有的columnWidth，将更大的一个传递给row使用
+            width = Math.max(
+                width,
+                columns.reduce((width, columns) => {
+                    return width + columns.props.width;
+                }, 0)
+            );
+        }
+        else {
+            width = '';
+        }
 
         return (
-            <div className="ui-table">
-                {this.renderHeader(columns)}
-                {this.renderBody(columns)}
-                {this.renderFooter(columns)}
+            <div className="ui-table" ref="main">
+                {this.renderHeader(columns, width)}
+                {this.renderBody(columns, width)}
+                {this.renderFooter(columns, width)}
             </div>
         );
 
     }
 
-    renderHeader(columns) {
+    renderHeader(columns, width) {
         var props = this.props;
         return (
             <div className="ui-table-header">
                 <Row
                     part='header'
-                    selected={{selected: this.isAllRowsSelected()}}
                     height={props.headerRowHeight}
-                    columns={columns} />
+                    columns={columns}
+                    tableWidth={width} />
             </div>
         );
     }
 
-    renderBody(columns) {
+    renderBody(columns, width) {
+
+        let {dataSource} = this.props;
+
+        let body = dataSource && dataSource.length
+            ? dataSource.map((rowData, index) => {
+                return this.renderRow(columns, rowData, index, width);
+            })
+            : (
+                <div
+                    className={this.getPartClassName('body-empty')}
+                    style={{width}}>
+                    没有数据
+                </div>
+            );
+
         return (
-            <div className="ui-table-body">
-                {this.props.dataSource.map((rowData, index) => {
-                    return this.renderRow(columns, rowData, index);
-                })}
-            </div>
+            <div className={this.getPartClassName('body')}>{body}</div>
         );
+
     }
 
-    renderRow(columns, rowData, index) {
+    renderRow(columns, rowData, index, tableWidth) {
         let {rowHeight, highlight} = this.props;
         return (
             <Row
@@ -144,7 +131,8 @@ class Table extends Component {
                 rowIndex={index}
                 part='body'
                 columns={columns}
-                data={rowData} />
+                data={rowData}
+                tableWidth={tableWidth} />
         );
     }
 
@@ -152,51 +140,10 @@ class Table extends Component {
         return null;
     }
 
-    onSelect(e, rowIndex) {
-        this.onRowSelectorClick(
-            this.isRowSelected(rowIndex) ? 'unselect' : 'select',
-            rowIndex
-        );
-    }
-
-    onSelectAll(e) {
-        this.onRowSelectorClick(
-            this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
-        );
-    }
-
-    onRowSelectorClick(action, rowIndex) {
-
-        let {onSelect, selected, dataSource} = this.props;
-
-        selected = getNextSelectedRowData(
-            dataSource,
-            selected,
-            action,
-            rowIndex
-        );
-
-        if (onSelect) {
-            onSelect({
-                target: this,
-                selected: selected
-            });
-            return;
-        }
-
+    onWindowResize() {
         this.setState({
-            selected: selected
+            width: this.refs.main.offsetWidth
         });
-
-    }
-
-    isRowSelected(rowIndex) {
-        return this.state.selected.indexOf(rowIndex) !== -1;
-    }
-
-    isAllRowsSelected() {
-        let selected = this.state.selected;
-        return selected.length === this.props.dataSource.length;
     }
 
 }
@@ -205,19 +152,13 @@ Table.propTypes = {
     rowHeight: PropTypes.number.isRequired,
     highlight: PropTypes.bool,
     headerRowHeight: PropTypes.number,
-    selectable: PropTypes.bool.isRequired,
-    onSelect: PropTypes.func,
-    selected: PropTypes.arrayOf(PropTypes.number).isRequired,
     dataSource: PropTypes.array.isRequired
 },
 
 Table.defaultProps = {
     highlight: true,
     rowHeight: 48,
-    headerRowHeight: 56,
-    selectable: false,
-    selected: [],
-    columns: []
+    headerRowHeight: 56
 };
 
 Table.Column = require('./table/Column');

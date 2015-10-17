@@ -52,15 +52,6 @@ define('melon/Calendar', [
         }
         babelHelpers.createClass(Calendar, [
             {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    this.setState({
-                        date: nextProps.date,
-                        month: nextProps.date
-                    });
-                }
-            },
-            {
                 key: 'parseValue',
                 value: function parseValue(value) {
                     return this.parseDate(value);

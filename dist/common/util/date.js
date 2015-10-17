@@ -191,7 +191,9 @@ define('melon/common/util/date', [
             var M = date.getMonth() + 1;
             var d = date.getDate();
             var week = date.getDay();
-            week = lang.days.split(',')[week];
+            if (lang && lang.days) {
+                week = lang.days.split(',')[week];
+            }
             var map = {
                 yyyy: y,
                 yy: y % 100,
@@ -201,7 +203,7 @@ define('melon/common/util/date', [
                 dd: this.datePad(d),
                 d: d,
                 w: week,
-                ww: lang.week + week
+                ww: lang ? lang.week + week : ''
             };
             return _format.replace(/y+|M+|d+|W+/gi, function ($0) {
                 return map[$0] || '';
