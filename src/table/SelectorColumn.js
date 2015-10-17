@@ -14,31 +14,55 @@ class TableSelectorColumn extends Column {
     }
 }
 
-TableSelectorColumn.getIcon = function (selected) {
-    return selected ? 'check-box' : 'check-box-outline-blank';
+TableSelectorColumn.icons = {
+    radio: {
+        checked: 'radio-button-checked',
+        unchecked: 'radio-button-unchecked'
+    },
+    checkbox: {
+        checked: 'check-box',
+        unchecked: 'check-box-outline-blank'
+    }
+};
+
+TableSelectorColumn.getIcon = function (multiple, selected) {
+    let icons = TableSelectorColumn.icons[multiple ? 'checkbox' : 'radio'];
+    return icons[selected ? 'checked' : 'unchecked'];
 };
 
 TableSelectorColumn.cellRenderer = function (props) {
 
-    var part = props.part;
 
-    var columnData = props.columnData;
-    var isSelected = part === 'body' ? columnData.isSelected(props.rowIndex) : columnData.isAllSelected();
+    let {part, columnData, rowIndex} = props;
+    let {multiple} = columnData;
+
+    if (!multiple && part !== 'body') {
+        return null;
+    }
+
+    let isSelected = part === 'body'
+        ? columnData.isSelected(rowIndex)
+        : columnData.isAllSelected();
 
     return (
         <Icon
-            onClick={columnData.onSelect ? TableSelectorColumn.onCellClick.bind(null, props) : null}
-            icon={TableSelectorColumn.getIcon(isSelected)}
+            onClick={TableSelectorColumn.onCellClick.bind(null, props)}
+            icon={TableSelectorColumn.getIcon(multiple, isSelected)}
             states={{selected: isSelected}}
             variants={['table-selector']} />
     );
 
 };
 
-TableSelectorColumn.onCellClick = function (props, e) {
-    var part = props.part;
-    var handler = part === 'body' ? 'onSelect' : 'onSelectAll';
-    props.columnData[handler](e, props.rowIndex);
+TableSelectorColumn.onCellClick = function (props) {
+
+    let {part, rowIndex, columnData, multiple} = props;
+    let handler = columnData[part === 'body' ? 'onSelect' : 'onSelectAll'];
+
+    if (typeof handler === 'function') {
+        handler(rowIndex);
+    }
+
 };
 
 
@@ -48,7 +72,8 @@ TableSelectorColumn.propTypes = {
     isSelected: PropTypes.func.isRequired,
     isAllSelected: PropTypes.func.isRequired,
     onSelect: PropTypes.func,
-    onSelectAll: PropTypes.func
+    onSelectAll: PropTypes.func,
+    name: PropTypes.string
 };
 
 /**
@@ -60,7 +85,8 @@ TableSelectorColumn.defaultProps = {
     headerRenderer: TableSelectorColumn.headerRenderer,
     footerRenderer: TableSelectorColumn.footerRenderer,
     align: 'center',
-    dataKey: ''
+    dataKey: '',
+    multiple: false
 };
 
 TableSelectorColumn._TABLE_COMPONENT_ = 'COLUMN';

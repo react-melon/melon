@@ -24,14 +24,14 @@ define('melon/Validator', [
         var maxByteLength = _component$props2.maxByteLength;
         var maxByteLengthErrorMessage = _component$props2.maxByteLengthErrorMessage;
         var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
-        return new ValidityState(!value || byteLength <= maxByteLength, maxByteLengthErrorMessage || '\u4E0D\u80FD\u8D85\u8FC7' + maxByteLength + '\u4E2A\u5B57\u7B26');
+        return new ValidityState(!value || byteLength <= maxByteLength, maxByteLengthErrorMessage || '\u4E0D\u80FD\u591A\u4E8E' + maxByteLength + '\u4E2A\u5B57\u7B26\uFF0C\u4E2D\u6587\u53CA\u4E2D\u6587\u7B26\u53F7\u53602\u4E2A\u5B57\u7B26');
     });
     Validator.register('minByteLength', function (value, component) {
         var _component$props3 = component.props;
         var minByteLength = _component$props3.minByteLength;
         var minByteLengthErrorMessage = _component$props3.minByteLengthErrorMessage;
         var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
-        return new ValidityState(!value || byteLength >= minByteLength, minByteLengthErrorMessage || '\u4E0D\u80FD\u8D85\u8FC7' + minByteLength + '\u4E2A\u5B57\u7B26');
+        return new ValidityState(!value || byteLength >= minByteLength, minByteLengthErrorMessage || '\u4E0D\u80FD\u5C11\u4E8E' + minByteLength + '\u4E2A\u5B57\u7B26\uFF0C\u4E2D\u6587\u53CA\u4E2D\u6587\u7B26\u53F7\u53602\u4E2A\u5B57\u7B26');
     });
     Validator.register('max', function (value, component) {
         var _component$props4 = component.props;
@@ -39,7 +39,7 @@ define('melon/Validator', [
         var maxErrorMessage = _component$props4.maxErrorMessage;
         var number = +value;
         var isValid = !isNaN(number) && number <= max;
-        return new ValidityState(!value || isValid, maxErrorMessage || '\u4E0D\u80FD\u4E3A\u7A7A');
+        return new ValidityState(!value || isValid, maxErrorMessage || '\u4E0D\u80FD\u5927\u4E8E' + max);
     });
     Validator.register('min', function (value, component) {
         var _component$props5 = component.props;
@@ -47,7 +47,7 @@ define('melon/Validator', [
         var minErrorMessage = _component$props5.minErrorMessage;
         var number = +value;
         var isValid = !isNaN(number) && min <= number;
-        return new ValidityState(!value || isValid, minErrorMessage || '\u4E0D\u80FD\u4E3A\u7A7A');
+        return new ValidityState(!value || isValid, minErrorMessage || '\u4E0D\u80FD\u5C0F\u4E8E' + min);
     });
     Validator.resolve = function (component) {
         var props = component.props;

@@ -3,71 +3,41 @@ define('melon/Table', [
     'exports',
     'module',
     './babelHelpers',
-    'underscore',
     'react',
-    './Component',
+    './dialog/WindowResizeAware',
     './table/Row',
-    './table/SelectorColumn',
     './table/Column'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
-    var u = require('underscore');
     var React = require('react');
-    var Component = require('./Component');
+    var WindowResizeAware = require('./dialog/WindowResizeAware');
     var Row = require('./table/Row');
-    var SelectorColumn = require('./table/SelectorColumn');
     var PropTypes = React.PropTypes;
     var Children = React.Children;
-    function getNextSelectedRowData(dataSource, current, action, rowIndex) {
-        if (action === 'selectAll') {
-            return u.range(0, dataSource.length);
-        }
-        if (action === 'unselectAll') {
-            return [];
-        }
-        var selected = action === 'select' ? current.concat(rowIndex).sort() : u.reject(current, function (row) {
-            return row === rowIndex;
-        });
-        return selected;
-    }
-    var Table = function (_Component) {
-        babelHelpers.inherits(Table, _Component);
+    var Table = function (_WindowResizeAware) {
+        babelHelpers.inherits(Table, _WindowResizeAware);
         function Table(props) {
             babelHelpers.classCallCheck(this, Table);
             babelHelpers.get(Object.getPrototypeOf(Table.prototype), 'constructor', this).call(this, props);
-            this.isRowSelected = this.isRowSelected.bind(this);
-            this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
-            this.onSelect = this.onSelect.bind(this);
-            this.onSelectAll = this.onSelectAll.bind(this);
-            this.state = {
-                selected: props.selected,
-                columns: this.getColumns(props)
-            };
+            this.state = { columns: this.getColumns(props) };
         }
         babelHelpers.createClass(Table, [
             {
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(nextProps) {
-                    this.setState({
-                        selected: nextProps.selected,
-                        columns: this.getColumns(nextProps)
-                    });
+                    this.setState({ columns: this.getColumns(nextProps) });
+                }
+            },
+            {
+                key: 'componentDidMount',
+                value: function componentDidMount() {
+                    babelHelpers.get(Object.getPrototypeOf(Table.prototype), 'componentDidMount', this).call(this);
+                    this.onWindowResize();
                 }
             },
             {
                 key: 'getColumns',
                 value: function getColumns(props) {
-                    var children = [];
-                    if (props.selectable) {
-                        var selector = React.createElement(SelectorColumn, {
-                            title: '',
-                            isSelected: this.isRowSelected,
-                            isAllSelected: this.isAllRowsSelected,
-                            onSelect: this.onSelect,
-                            onSelectAll: this.onSelectAll
-                        });
-                        children = [selector].concat(babelHelpers.toConsumableArray(children));
-                    }
                     return Children.toArray(props.children).reduce(function (children, child) {
                         if (child != null) {
                             if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
@@ -76,40 +46,57 @@ define('melon/Table', [
                             children.push(child);
                         }
                         return children;
-                    }, children);
+                    }, []);
                 }
             },
             {
                 key: 'render',
                 value: function render() {
-                    var columns = this.state.columns;
-                    return React.createElement('div', { className: 'ui-table' }, this.renderHeader(columns), this.renderBody(columns), this.renderFooter(columns));
+                    var _state = this.state;
+                    var width = _state.width;
+                    var columns = _state.columns;
+                    if (width) {
+                        width = Math.max(width, columns.reduce(function (width, columns) {
+                            return width + columns.props.width;
+                        }, 0));
+                    } else {
+                        width = '';
+                    }
+                    return React.createElement('div', {
+                        className: 'ui-table',
+                        ref: 'main'
+                    }, this.renderHeader(columns, width), this.renderBody(columns, width), this.renderFooter(columns, width));
                 }
             },
             {
                 key: 'renderHeader',
-                value: function renderHeader(columns) {
+                value: function renderHeader(columns, width) {
                     var props = this.props;
                     return React.createElement('div', { className: 'ui-table-header' }, React.createElement(Row, {
                         part: 'header',
-                        selected: { selected: this.isAllRowsSelected() },
                         height: props.headerRowHeight,
-                        columns: columns
+                        columns: columns,
+                        tableWidth: width
                     }));
                 }
             },
             {
                 key: 'renderBody',
-                value: function renderBody(columns) {
+                value: function renderBody(columns, width) {
                     var _this = this;
-                    return React.createElement('div', { className: 'ui-table-body' }, this.props.dataSource.map(function (rowData, index) {
-                        return _this.renderRow(columns, rowData, index);
-                    }));
+                    var dataSource = this.props.dataSource;
+                    var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
+                        return _this.renderRow(columns, rowData, index, width);
+                    }) : React.createElement('div', {
+                        className: this.getPartClassName('body-empty'),
+                        style: { width: width }
+                    }, '\u6CA1\u6709\u6570\u636E');
+                    return React.createElement('div', { className: this.getPartClassName('body') }, body);
                 }
             },
             {
                 key: 'renderRow',
-                value: function renderRow(columns, rowData, index) {
+                value: function renderRow(columns, rowData, index, tableWidth) {
                     var _props = this.props;
                     var rowHeight = _props.rowHeight;
                     var highlight = _props.highlight;
@@ -120,7 +107,8 @@ define('melon/Table', [
                         rowIndex: index,
                         part: 'body',
                         columns: columns,
-                        data: rowData
+                        data: rowData,
+                        tableWidth: tableWidth
                     });
                 }
             },
@@ -131,66 +119,23 @@ define('melon/Table', [
                 }
             },
             {
-                key: 'onSelect',
-                value: function onSelect(e, rowIndex) {
-                    this.onRowSelectorClick(this.isRowSelected(rowIndex) ? 'unselect' : 'select', rowIndex);
-                }
-            },
-            {
-                key: 'onSelectAll',
-                value: function onSelectAll(e) {
-                    this.onRowSelectorClick(this.isAllRowsSelected() ? 'unselectAll' : 'selectAll');
-                }
-            },
-            {
-                key: 'onRowSelectorClick',
-                value: function onRowSelectorClick(action, rowIndex) {
-                    var _props2 = this.props;
-                    var onSelect = _props2.onSelect;
-                    var selected = _props2.selected;
-                    var dataSource = _props2.dataSource;
-                    selected = getNextSelectedRowData(dataSource, selected, action, rowIndex);
-                    if (onSelect) {
-                        onSelect({
-                            target: this,
-                            selected: selected
-                        });
-                        return;
-                    }
-                    this.setState({ selected: selected });
-                }
-            },
-            {
-                key: 'isRowSelected',
-                value: function isRowSelected(rowIndex) {
-                    return this.state.selected.indexOf(rowIndex) !== -1;
-                }
-            },
-            {
-                key: 'isAllRowsSelected',
-                value: function isAllRowsSelected() {
-                    var selected = this.state.selected;
-                    return selected.length === this.props.dataSource.length;
+                key: 'onWindowResize',
+                value: function onWindowResize() {
+                    this.setState({ width: this.refs.main.offsetWidth });
                 }
             }
         ]);
         return Table;
-    }(Component);
+    }(WindowResizeAware);
     Table.propTypes = {
         rowHeight: PropTypes.number.isRequired,
         highlight: PropTypes.bool,
         headerRowHeight: PropTypes.number,
-        selectable: PropTypes.bool.isRequired,
-        onSelect: PropTypes.func,
-        selected: PropTypes.arrayOf(PropTypes.number).isRequired,
         dataSource: PropTypes.array.isRequired
     }, Table.defaultProps = {
         highlight: true,
         rowHeight: 48,
-        headerRowHeight: 56,
-        selectable: false,
-        selected: [],
-        columns: []
+        headerRowHeight: 56
     };
     Table.Column = require('./table/Column');
     module.exports = Table;
