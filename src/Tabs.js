@@ -14,11 +14,21 @@ class Tabs extends Component {
     constructor(props) {
         super(props);
 
-        var initialIndex = this.props.initialSelectedIndex || 0;
+        let {selectedIndex} = this.props;
 
         this.state = {
-            selectedIndex: initialIndex
+            selectedIndex: selectedIndex
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.selectedIndex !== this.state.selectedIndex) {
+            this.setState({
+                selectedIndex: nextProps.selectedIndex
+            });
+        }
+
     }
 
 
@@ -46,7 +56,10 @@ class Tabs extends Component {
         }
 
         this.setState({selectedIndex: index}, function () {
-            this.props.onChange && this.props.onChange(index, e);
+            this.props.onChange && this.props.onChange({
+                target: this,
+                selectedIndex: index
+            });
         });
 
     }
@@ -112,10 +125,14 @@ class Tabs extends Component {
 
 }
 
-Tab.propTypes = {
-    initialSelectedIndex: React.PropTypes.number,
+Tabs.propTypes = {
+    selectedIndex: React.PropTypes.number,
     onChange: React.PropTypes.func,
     onBeforeChange: React.PropTypes.func
+};
+
+Tabs.defaultProps = {
+    selectedIndex: 0
 };
 
 Tabs.Tab = Tab;

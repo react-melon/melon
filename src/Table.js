@@ -110,7 +110,7 @@ class Table extends WindowResizeAware {
             : (
                 <div
                     className={this.getPartClassName('body-empty')}
-                    style={{width}}>
+                    style={{width: width - 2}}>
                     没有数据
                 </div>
             );
