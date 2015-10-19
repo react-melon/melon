@@ -48,6 +48,10 @@ class TouchRipple extends Component {
         this.radius = Math.max(this.position.width, this.position.height) / 2;
     }
 
+    componentWillUnmount() {
+        this.position = null;
+    }
+
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
@@ -65,7 +69,7 @@ class TouchRipple extends Component {
 
         const styles = {
             [now]: {
-                opacity: spring(0.16),
+                opacity: spring(this.props.opacity),
                 scale: spring(0)
             }
         };
@@ -106,9 +110,11 @@ class TouchRipple extends Component {
 
 const PropTypes = React.PropTypes;
 
+TouchRipple.defaultProps = {
+    opacity: 0.3
+};
+
 TouchRipple.propTypes = {
-    centerRipple: PropTypes.bool,
-    color: PropTypes.string,
     opacity: PropTypes.number
 };
 
