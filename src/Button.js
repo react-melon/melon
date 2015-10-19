@@ -10,6 +10,10 @@ var TouchRipple = require('./ripples/TouchRipple');
 
 class Button extends Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     getVariants(props) {
         let variants = super.getVariants(props);
         if (props.hasRipple) {
@@ -46,6 +50,10 @@ class Button extends Component {
     }
 
 }
+
+Button.defaultProps = {
+    hasRipple: true
+};
 
 Button.propTypes = {
     hasRipple: React.PropTypes.bool
