@@ -11,7 +11,7 @@ var Icon = require('../src/Icon');
 
 var View = React.createClass({
 
-    render: function() {
+    render: function () {
         return (
             <div>
                 <Title level={3}>按钮</Title>
@@ -139,6 +139,16 @@ var View = React.createClass({
                     </div>
                 </div>
 
+                <Title level={5}>带动画的按钮</Title>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-12">
+                        <Button hasRipple style={{width: '10em'}}>
+                            DEFAULT
+                        </Button>
+                    </div>
+                </div>
+
             </div>
         );
     },
@@ -153,7 +163,6 @@ var View = React.createClass({
 
     onClick: function () {
 
-        var text = this.state.text;
         var count = this.state.count + 1;
 
         var disabled = count === 5;
