@@ -89,7 +89,7 @@ define('melon/Table', [
                         return _this.renderRow(columns, rowData, index, width);
                     }) : React.createElement('div', {
                         className: this.getPartClassName('body-empty'),
-                        style: { width: width }
+                        style: { width: width - 2 }
                     }, '\u6CA1\u6709\u6570\u636E');
                     return React.createElement('div', { className: this.getPartClassName('body') }, body);
                 }

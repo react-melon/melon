@@ -18,10 +18,18 @@ define('melon/Tabs', [
         function Tabs(props) {
             babelHelpers.classCallCheck(this, Tabs);
             babelHelpers.get(Object.getPrototypeOf(Tabs.prototype), 'constructor', this).call(this, props);
-            var initialIndex = this.props.initialSelectedIndex || 0;
-            this.state = { selectedIndex: initialIndex };
+            var selectedIndex = this.props.selectedIndex;
+            this.state = { selectedIndex: selectedIndex };
         }
         babelHelpers.createClass(Tabs, [
+            {
+                key: 'componentWillReceiveProps',
+                value: function componentWillReceiveProps(nextProps) {
+                    if (nextProps.selectedIndex !== this.state.selectedIndex) {
+                        this.setState({ selectedIndex: nextProps.selectedIndex });
+                    }
+                }
+            },
             {
                 key: 'getTabCount',
                 value: function getTabCount() {
@@ -48,7 +56,10 @@ define('melon/Tabs', [
                         }
                     }
                     this.setState({ selectedIndex: index }, function () {
-                        this.props.onChange && this.props.onChange(index, e);
+                        this.props.onChange && this.props.onChange({
+                            target: this,
+                            selectedIndex: index
+                        });
                     });
                 }
             },
@@ -97,11 +108,12 @@ define('melon/Tabs', [
         ]);
         return Tabs;
     }(Component);
-    Tab.propTypes = {
-        initialSelectedIndex: React.PropTypes.number,
+    Tabs.propTypes = {
+        selectedIndex: React.PropTypes.number,
         onChange: React.PropTypes.func,
         onBeforeChange: React.PropTypes.func
     };
+    Tabs.defaultProps = { selectedIndex: 0 };
     Tabs.Tab = Tab;
     module.exports = Tabs;
 });
