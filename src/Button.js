@@ -10,10 +10,6 @@ var TouchRipple = require('./ripples/TouchRipple');
 
 class Button extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     getVariants(props) {
         let variants = super.getVariants(props);
         if (props.hasRipple) {
@@ -25,7 +21,6 @@ class Button extends Component {
     render() {
 
         var {
-            props,
             hasRipple,
             label,
             children,
@@ -33,8 +28,9 @@ class Button extends Component {
         } = this.props;
 
         var content = label || children;
+        var useRipple = hasRipple && !other.disabled;
 
-        var style = hasRipple
+        var style = useRipple
             ? {
                 position: 'relative'
             }
@@ -42,7 +38,7 @@ class Button extends Component {
 
         return (
             <button {...other} className={this.getClassName()} style={style}>
-                {hasRipple ? <TouchRipple /> : null}
+                {useRipple ? <TouchRipple /> : null}
                 {content}
             </button>
         );
