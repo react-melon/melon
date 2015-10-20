@@ -133,7 +133,7 @@ class CalendarSelector extends Component {
 
         // 如果范围中只有一年，则跳过yearview，直接显示month view
         if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {
-            onlyOneYear = DateTime.yearDiff(minDate, maxDate) <= 1;
+            onlyOneYear = (DateTime.yearDiff(minDate, maxDate) === 0);
         }
 
         return mode === 'month' || onlyOneYear;

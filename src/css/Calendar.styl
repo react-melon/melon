@@ -1,5 +1,4 @@
-@import './base.styl'
-@import 'nib'
+@require './base.styl'
 
 @require './Mask.styl'
 @require './Dialog.styl'
@@ -35,12 +34,33 @@ for level, value in $-melon-calendar-sizes
     font-size: $-melon-medium-font-size
     display: inline-block
 
-    .{$-melon-class-prefix}-textbox.variant-calendar
-        font-size: $-melon-medium-font-size
+    & > label
+        font-size: inherit
+        padding: 1em 0 0.5em
         width: 100%
+        line-height: 1.5em
+        border-bottom: 1px solid $-melon-colors.grey300
+        transition border-color 1s
+        cursor: pointer
 
-        input
-            color: $-melon-colors.black
+        > span
+            display: inline-block
+            vertical-align: middle
+
+        > .{$-melon-class-prefix}-icon
+            vertical-align: middle
+            display: inline-block
+            margin-left: 0.8em
+
+    &.state-focus > label
+        border-bottom-color: $-melon-colors.blue500
+
+    &.state-invalid > label
+        border-bottom-color: $-melon-colors.red500
+
+    &.state-disabled > label
+        border-bottom-style: dotted
+        cursor not-allowed
 
     .{$-melon-class-prefix}-dialog
 
@@ -98,7 +118,7 @@ for level, value in $-melon-calendar-sizes
             text-align: center
             cursor: pointer
 
-            a
+            span
                 display: inline-block
                 width: 3.125em
                 height: 3.125em
@@ -108,12 +128,12 @@ for level, value in $-melon-calendar-sizes
                 opacity: 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
                 text-decoration: none
 
-        &-item:hover a
+        &-item:hover span
             color: $-melon-colors.white
             background-color: $-melon-colors.cyan700
             opacity: 0.6
 
-        &-item.state-selected a
+        &-item.state-selected span
             color: $-melon-colors.white
             background-color: $-melon-colors.cyan700
             opacity: 0.8
@@ -121,7 +141,7 @@ for level, value in $-melon-calendar-sizes
         &-item.state-disabled
             cursor: not-allowed
 
-            a
+            span
                 color: $-melon-colors.lightBlack
                 background-color: transparent
                 cursor: not-allowed

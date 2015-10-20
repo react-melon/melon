@@ -6,7 +6,7 @@ define('melon/RangeCalendar', [
     'react',
     './InputComponent',
     './Calendar',
-    './TextBox',
+    './Icon',
     './calendar/Header',
     './calendar/Month',
     './calendar/Selector',
@@ -19,7 +19,7 @@ define('melon/RangeCalendar', [
     var React = require('react');
     var InputComponent = require('./InputComponent');
     var Calendar = require('./Calendar');
-    var TextBox = require('./TextBox');
+    var Icon = require('./Icon');
     var Header = require('./calendar/Header');
     var Month = require('./calendar/Month');
     var Selector = require('./calendar/Selector');
@@ -34,6 +34,12 @@ define('melon/RangeCalendar', [
             babelHelpers.classCallCheck(this, RangeCalendar);
             babelHelpers.get(Object.getPrototypeOf(RangeCalendar.prototype), 'constructor', this).call(this, props);
             var rawValue = this.state.rawValue;
+            var begin = props.begin;
+            var end = props.end;
+            begin = this.parseDate(begin);
+            end = this.parseDate(end);
+            rawValue[0] = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue[0]) ? begin : rawValue[0];
+            rawValue[1] = _.isDate(end) && DateTime.isBeforeDate(end, rawValue[1]) ? end : rawValue[0];
             this.state = babelHelpers._extends({}, this.state, {
                 open: false,
                 month: _.clone(rawValue),
@@ -43,7 +49,7 @@ define('melon/RangeCalendar', [
                     'main'
                 ]
             });
-            this.onInputFocus = this.onInputFocus.bind(this);
+            this.onLabelClick = this.onLabelClick.bind(this);
             this.onHide = this.onHide.bind(this);
             this.onConfirm = this.onConfirm.bind(this);
         }
@@ -57,8 +63,8 @@ define('melon/RangeCalendar', [
                 }
             },
             {
-                key: 'onInputFocus',
-                value: function onInputFocus() {
+                key: 'onLabelClick',
+                value: function onLabelClick() {
                     if (this.props.disabled || this.props.readOnly) {
                         return;
                     }
@@ -115,15 +121,15 @@ define('melon/RangeCalendar', [
                     var mode = _state.mode;
                     var date = _state.date;
                     var _props = this.props;
-                    var max = _props.max;
-                    var min = _props.min;
-                    min = index === 0 ? this.parseDate(min) : date[0];
-                    max = index === 0 ? date[1] : this.parseDate(max);
+                    var end = _props.end;
+                    var begin = _props.begin;
+                    begin = index === 0 ? this.parseDate(begin) : date[0];
+                    end = index === 0 ? date[1] : this.parseDate(end);
                     mode[index] = e.mode === 'year' ? 'month' : 'main';
-                    if (_.isDate(min) && DateTime.isBeforeDate(e.date, min)) {
-                        date[index] = min;
-                    } else if (_.isDate(max) && DateTime.isAfterDate(e.date, max)) {
-                        date[index] = max;
+                    if (_.isDate(begin) && DateTime.isBeforeDate(e.date, begin)) {
+                        date[index] = begin;
+                    } else if (_.isDate(end) && DateTime.isAfterDate(e.date, end)) {
+                        date[index] = end;
                     } else {
                         date[index] = e.date;
                     }
@@ -169,10 +175,10 @@ define('melon/RangeCalendar', [
                         return value;
                     }
                     var format = this.props.dateFormat.toLowerCase();
-                    value = value.split(' ');
+                    value = value.split(',');
                     return [
                         DateTime.parse(value[0], format),
-                        DateTime.parse(value[2], format)
+                        DateTime.parse(value[1], format)
                     ];
                 }
             },
@@ -195,9 +201,17 @@ define('melon/RangeCalendar', [
                     var format = this.props.dateFormat.toLowerCase();
                     return [
                         DateTime.format(rawValue[0], format, this.props.lang),
-                        '\u81F3',
+                        ',',
                         DateTime.format(rawValue[1], format, this.props.lang)
-                    ].join(' ');
+                    ].join('');
+                }
+            },
+            {
+                key: 'getStates',
+                value: function getStates(props) {
+                    var states = babelHelpers.get(Object.getPrototypeOf(RangeCalendar.prototype), 'getStates', this).call(this, props);
+                    states.focus = this.state.open;
+                    return states;
                 }
             },
             {
@@ -233,18 +247,18 @@ define('melon/RangeCalendar', [
                     var month = _state3.month;
                     var _props2 = this.props;
                     var lang = _props2.lang;
-                    var min = _props2.min;
-                    var max = _props2.max;
-                    min = index === 0 ? this.parseDate(min) : date[0];
-                    max = index === 0 ? date[1] : this.parseDate(max);
+                    var begin = _props2.begin;
+                    var end = _props2.end;
+                    begin = index === 0 ? this.parseDate(begin) : date[0];
+                    end = index === 0 ? date[1] : this.parseDate(end);
                     return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Pager, {
-                        minDate: min,
-                        maxDate: max,
+                        minDate: begin,
+                        maxDate: end,
                         onChange: this.onPagerChange.bind(this, index),
                         month: month[index]
                     }), React.createElement(Month, {
-                        minDate: min,
-                        maxDate: max,
+                        minDate: begin,
+                        maxDate: end,
                         lang: lang,
                         month: month[index],
                         date: date[index],
@@ -259,17 +273,30 @@ define('melon/RangeCalendar', [
                     var date = _state4.date;
                     var mode = _state4.mode;
                     var _props3 = this.props;
-                    var min = _props3.min;
-                    var max = _props3.max;
-                    min = index === 0 ? this.parseDate(min) : date[0];
-                    max = index === 0 ? date[1] : this.parseDate(max);
+                    var begin = _props3.begin;
+                    var end = _props3.end;
+                    begin = index === 0 ? this.parseDate(begin) : date[0];
+                    end = index === 0 ? date[1] : this.parseDate(end);
                     return React.createElement('div', { className: this.getPartClassName('main') }, React.createElement(Selector, {
                         date: date[index],
-                        minDate: min,
-                        maxDate: max,
+                        minDate: begin,
+                        maxDate: end,
                         mode: mode[index],
                         onChange: this.onSelectorChange.bind(this, index)
                     }));
+                }
+            },
+            {
+                key: 'renderLabel',
+                value: function renderLabel() {
+                    var rawValue = this.state.rawValue;
+                    var format = this.props.dateFormat.toLowerCase();
+                    var str = [
+                        DateTime.format(rawValue[0], format, this.props.lang),
+                        ' \u81F3 ',
+                        DateTime.format(rawValue[1], format, this.props.lang)
+                    ].join(' ');
+                    return React.createElement('label', { onClick: this.onLabelClick }, str, React.createElement(Icon, { icon: 'expand-more' }));
                 }
             },
             {
@@ -286,16 +313,14 @@ define('melon/RangeCalendar', [
                         'disabled',
                         'size'
                     ]);
-                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(TextBox, {
+                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement('input', {
                         ref: 'input',
-                        readOnly: true,
-                        variants: ['calendar'],
+                        type: 'hidden',
                         value: this.getValue(),
                         disabled: disabled,
                         size: size,
-                        placeholder: placeholder,
-                        onFocus: this.onInputFocus
-                    }), this.renderDialog());
+                        placeholder: placeholder
+                    }), this.renderLabel(), this.renderDialog());
                 }
             }
         ]);
@@ -312,11 +337,11 @@ define('melon/RangeCalendar', [
         rawValue: PropTypes.arrayOf(PropTypes.object),
         autoOk: PropTypes.bool,
         dateFormat: PropTypes.string,
-        max: PropTypes.oneOfType([
+        begin: PropTypes.oneOfType([
             PropTypes.object,
             PropTypes.string
         ]),
-        min: PropTypes.oneOfType([
+        end: PropTypes.oneOfType([
             PropTypes.object,
             PropTypes.string
         ])

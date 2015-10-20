@@ -56,11 +56,11 @@ define('melon/calendar/SelectorItem', [
                         'disabled'
                     ]);
                     return React.createElement('li', babelHelpers._extends({}, others, {
-                        onClick: disabled ? null : this.onClick,
                         'data-mode': mode,
                         'data-value': date,
+                        onClick: disabled ? null : this.onClick,
                         className: this.getClassName()
-                    }), React.createElement('a', { href: '#' }, mode === 'year' ? date.getFullYear() : DateTime.getShortMonth(date)));
+                    }), React.createElement('span', null, mode === 'year' ? date.getFullYear() : DateTime.getShortMonth(date)));
                 }
             },
             {
