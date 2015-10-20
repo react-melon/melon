@@ -1,5 +1,7 @@
 @import "./base.styl"
 
+@require('./Ripple.styl');
+
 $-melon-button = {
 
     display: inline-block
@@ -43,6 +45,7 @@ $-melon-button-swatches-default = {
     background-color: $-melon-colors.transparent
     background-color-hover: rgba(#999, .2)
     background-color-active: rgba(#999, .4)
+    color-ripple: $-melon-colors.darkBlack
 }
 
 $-melon-button-swatches = {
@@ -56,6 +59,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.pinkA200
         background-color-active: $-melon-colors.pinkA200
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.pinkA200
     },
 
     secondery: {
@@ -67,6 +71,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.cyan500
         background-color-active: $-melon-colors.cyan500
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.cyan500
     },
 
     danger: {
@@ -78,6 +83,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.red600
         background-color-active: $-melon-colors.red600
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.red600
     },
 
     success: {
@@ -89,6 +95,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.green500
         background-color-active: $-melon-colors.green500
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.green500
     },
 
     info: {
@@ -100,6 +107,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.blue500
         background-color-active: $-melon-colors.blue500
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.blue500
     },
 
     warning: {
@@ -111,6 +119,7 @@ $-melon-button-swatches = {
         background-color-hover: $-melon-colors.orange500
         background-color-active: $-melon-colors.orange500
         backgorund-color-disabled: $-melon-colors.grey200
+        color-ripple: $-melon-colors.orange500
     }
 
 }
@@ -119,6 +128,9 @@ melon-button-swatch($swatches, $revert = false)
 
     color: $revert ? $-melon-colors.white : $swatches.color
     background-color: $revert ? $swatches.color : $swatches.background-color
+
+    & .{$-melon-class-prefix}-touch-ripple-circle
+        background-color: $swatches.color-ripple
 
     &:hover
         color: $revert ? $-melon-colors.white : $swatches.color-hover
