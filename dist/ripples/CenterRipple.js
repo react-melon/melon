@@ -19,6 +19,7 @@ define('melon/ripples/CenterRipple', [
             babelHelpers.classCallCheck(this, CenterRipple);
             babelHelpers.get(Object.getPrototypeOf(CenterRipple.prototype), 'constructor', this).call(this, props);
             this.state = { now: 't' + 0 };
+            this.willLeave = this.willLeave.bind(this);
             this.type = 'center-ripple';
         }
         babelHelpers.createClass(CenterRipple, [
@@ -29,6 +30,14 @@ define('melon/ripples/CenterRipple', [
                 }
             },
             {
+                key: 'componentWillReceiveProps',
+                value: function componentWillReceiveProps(nextProps) {
+                    if (nextProps.flag === !this.props.flag) {
+                        this.animate();
+                    }
+                }
+            },
+            {
                 key: 'willLeave',
                 value: function willLeave(key, valOfKey) {
                     return babelHelpers._extends({}, valOfKey, {
@@ -36,7 +45,7 @@ define('melon/ripples/CenterRipple', [
                             80,
                             15
                         ]),
-                        scale: spring(2, [
+                        scale: spring(this.props.scale, [
                             80,
                             15
                         ])
@@ -56,10 +65,7 @@ define('melon/ripples/CenterRipple', [
                         willLeave: this.willLeave,
                         styles: styles
                     }, function (circles) {
-                        return React.createElement('div', {
-                            onMouseDown: _this.onMouseDown,
-                            className: _this.getClassName()
-                        }, Object.keys(circles).map(function (key) {
+                        return React.createElement('div', { className: _this.getClassName() }, Object.keys(circles).map(function (key) {
                             var _circles$key = circles[key];
                             var opacity = _circles$key.opacity;
                             var scale = _circles$key.scale;
@@ -82,11 +88,12 @@ define('melon/ripples/CenterRipple', [
     var PropTypes = React.PropTypes;
     CenterRipple.defaultProps = {
         opacity: 0.5,
-        now: 0
+        scale: 2
     };
     CenterRipple.propTypes = {
         opacity: PropTypes.number,
-        now: PropTypes.number
+        scale: PropTypes.number,
+        flag: PropTypes.bool
     };
     module.exports = CenterRipple;
 });

@@ -4,11 +4,17 @@ define('melon/Toggle', [
     'module',
     './babelHelpers',
     'react',
-    './InputComponent'
+    './InputComponent',
+    './ripples/CenterRipple',
+    'react-motion'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var InputComponent = require('./InputComponent');
+    var CenterRipple = require('./ripples/CenterRipple');
+    var _require = require('react-motion');
+    var Motion = _require.Motion;
+    var spring = _require.spring;
     var Toggle = function (_InputComponent) {
         babelHelpers.inherits(Toggle, _InputComponent);
         function Toggle(props) {
@@ -96,18 +102,26 @@ define('melon/Toggle', [
             {
                 key: 'renderBar',
                 value: function renderBar() {
+                    var _this = this;
                     var checked = this.isChecked();
                     var barStyle = checked ? { backgroundColor: 'rgba(0, 188, 212, 0.498039)' } : null;
-                    var circleStyle = checked ? {
-                        left: '45%',
-                        backgroundColor: 'rgb(0, 188, 212)'
-                    } : null;
+                    var circleColor = checked ? 'rgb(0, 188, 212)' : '';
                     return React.createElement('div', { className: this.getPartClassName('bar-container') }, React.createElement('div', {
                         className: this.getPartClassName('bar'),
                         style: barStyle
-                    }), React.createElement('div', {
-                        className: this.getPartClassName('circle'),
-                        style: circleStyle
+                    }), React.createElement(Motion, { style: { x: spring(checked ? 45 : 0) } }, function (_ref) {
+                        var x = _ref.x;
+                        return React.createElement('div', {
+                            className: _this.getPartClassName('circle'),
+                            style: {
+                                left: x + '%',
+                                backgroundColor: circleColor
+                            }
+                        }, React.createElement(CenterRipple, {
+                            flag: checked,
+                            scale: 2.5,
+                            opacity: 0.3
+                        }));
                     }));
                 }
             }
