@@ -36,7 +36,7 @@ define('melon/ripples/CenterRipple', [
                             80,
                             15
                         ]),
-                        scale: spring(2.5, [
+                        scale: spring(2, [
                             80,
                             15
                         ])
