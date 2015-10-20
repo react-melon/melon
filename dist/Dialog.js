@@ -44,13 +44,6 @@ define('melon/Dialog', [
                 }
             },
             {
-                key: 'shouldComponentUpdate',
-                value: function shouldComponentUpdate(nextProps, nextState) {
-                    this.positionDialog();
-                    return true;
-                }
-            },
-            {
                 key: 'componentWillReceiveProps',
                 value: function componentWillReceiveProps(nextProps) {
                     var open = nextProps.open;

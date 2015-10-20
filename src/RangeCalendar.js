@@ -353,6 +353,7 @@ class RangeCalendar extends InputComponent {
             lang,
             placeholder,
             disabled,
+            size,
             ...others
         } = props;
 
@@ -363,6 +364,7 @@ class RangeCalendar extends InputComponent {
                     variants={['calendar']}
                     value={this.getValue()}
                     disabled={disabled}
+                    size={size}
                     placeholder={placeholder}
                     onFocus={this.onInputFocus} />
                 {this.renderDialog()}
