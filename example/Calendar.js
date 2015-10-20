@@ -45,13 +45,13 @@ var View = React.createClass({
                     </div>
                     <div className="melon-column melon-column-4">
                         <Title level={5}>限定区间</Title>
-                        <Calendar min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)}></Calendar>
+                        <Calendar begin={new Date(2015, 7, 10)} end={new Date(2015, 9, 28)}></Calendar>
                     </div>
                 </div>
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">
                         <Title level={5}>自动确定</Title>
-                        <Calendar min="2015-08-07" max="2015-10-12" autoOk size="xs"></Calendar>
+                        <Calendar begin="2015-08-07" end="2015-10-12" autoOk size="xs"></Calendar>
                     </div>
                 </div>
                 <div className="melon-row">
@@ -67,14 +67,18 @@ var View = React.createClass({
                     </div>
                     <div className="melon-column melon-column-4">
                         <Title level={5}>只读</Title>
-                        <Calendar min={new Date(2015, 7, 10)} max={new Date(2015, 9, 28)} readOnly></Calendar>
+                        <Calendar begin={new Date(2014, 9, 10)} end={new Date(2015, 9, 10)} readOnly></Calendar>
                     </div>
                 </div>
 
                 <div className="melon-row">
                     <div className="melon-column melon-column-8">
                         <Title level={5}>日期区间</Title>
-                        <RangeCalendar size="xxs"></RangeCalendar>
+                        <RangeCalendar
+                            defaultValue="2014-10-20,2015-10-20"
+                            begin="2014-10-21"
+                            end="2015-10-19"
+                            size="xxs" />
                     </div>
                 </div>
 
@@ -100,7 +104,7 @@ var View = React.createClass({
                         <UnitCalendar
                             size="xxs"
                             rawValue={this.state.monthRange}
-                            begin={new Date(2015, 0, 1)}
+                            begin={new Date(2014, 10, 1)}
                             end={new Date(2015, 11, 1)}
                             unit="month" />
                     </div>
