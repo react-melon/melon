@@ -192,10 +192,12 @@ define('melon/Calendar', [
                     var lang = props.lang;
                     var placeholder = props.placeholder;
                     var disabled = props.disabled;
+                    var size = props.size;
                     var others = babelHelpers.objectWithoutProperties(props, [
                         'lang',
                         'placeholder',
-                        'disabled'
+                        'disabled',
+                        'size'
                     ]);
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(TextBox, {
                         ref: 'input',
@@ -203,6 +205,7 @@ define('melon/Calendar', [
                         variants: ['calendar'],
                         value: this.getValue(),
                         disabled: disabled,
+                        size: size,
                         placeholder: placeholder,
                         onFocus: this.onInputFocus
                     }), this.renderDialog());
