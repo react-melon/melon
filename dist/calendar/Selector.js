@@ -108,7 +108,7 @@ define('melon/calendar/Selector', [
                     var mode = _props2.mode;
                     var onlyOneYear = false;
                     if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {
-                        onlyOneYear = DateTime.yearDiff(minDate, maxDate) <= 1;
+                        onlyOneYear = DateTime.yearDiff(minDate, maxDate) === 0;
                     }
                     return mode === 'month' || onlyOneYear;
                 }

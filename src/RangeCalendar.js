@@ -7,7 +7,7 @@ var React = require('react');
 
 var InputComponent = require('./InputComponent');
 var Calendar = require('./Calendar');
-var TextBox = require('./TextBox');
+var Icon = require('./Icon');
 var Header = require('./calendar/Header');
 var Month = require('./calendar/Month');
 var Selector = require('./calendar/Selector');
@@ -28,6 +28,17 @@ class RangeCalendar extends InputComponent {
 
         let rawValue = this.state.rawValue;
 
+        let {
+            begin,
+            end
+        } = props;
+
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
+
+        rawValue[0] = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue[0]) ? begin : rawValue[0];
+        rawValue[1] = _.isDate(end) && DateTime.isBeforeDate(end, rawValue[1]) ? end : rawValue[0];
+
         this.state = {
             ...this.state,
             open: false,
@@ -36,7 +47,7 @@ class RangeCalendar extends InputComponent {
             mode: ['main', 'main']
         };
 
-        this.onInputFocus     = this.onInputFocus.bind(this);
+        this.onLabelClick     = this.onLabelClick.bind(this);
         this.onHide           = this.onHide.bind(this);
         this.onConfirm        = this.onConfirm.bind(this);
 
@@ -56,7 +67,7 @@ class RangeCalendar extends InputComponent {
      *
      * @private
      */
-    onInputFocus() {
+    onLabelClick() {
 
         if (this.props.disabled || this.props.readOnly) {
             return;
@@ -129,20 +140,20 @@ class RangeCalendar extends InputComponent {
         } = this.state;
 
         let {
-            max,
-            min
+            end,
+            begin
         } = this.props;
 
-        min = index === 0 ? this.parseDate(min) : date[0];
-        max = index === 0 ? date[1] : this.parseDate(max);
+        begin = index === 0 ? this.parseDate(begin) : date[0];
+        end = index === 0 ? date[1] : this.parseDate(end);
 
         mode[index] = e.mode === 'year' ? 'month' : 'main';
 
-        if (_.isDate(min) && DateTime.isBeforeDate(e.date, min)) {
-            date[index] = min;
+        if (_.isDate(begin) && DateTime.isBeforeDate(e.date, begin)) {
+            date[index] = begin;
         }
-        else if (_.isDate(max) && DateTime.isAfterDate(e.date, max)) {
-            date[index] = max;
+        else if (_.isDate(end) && DateTime.isAfterDate(e.date, end)) {
+            date[index] = end;
         }
         else {
             date[index] = e.date;
@@ -205,11 +216,11 @@ class RangeCalendar extends InputComponent {
 
         let format = this.props.dateFormat.toLowerCase();
 
-        value = value.split(' ');
+        value = value.split(',');
 
         return [
             DateTime.parse(value[0], format),
-            DateTime.parse(value[2], format)
+            DateTime.parse(value[1], format)
         ];
     }
 
@@ -242,9 +253,17 @@ class RangeCalendar extends InputComponent {
 
         return [
             DateTime.format(rawValue[0], format, this.props.lang),
-            '至',
+            ',',
             DateTime.format(rawValue[1], format, this.props.lang)
-        ].join(' ');
+        ].join('');
+    }
+
+    getStates(props) {
+        let states = super.getStates(props);
+
+        states.focus = this.state.open;
+
+        return states;
     }
 
 
@@ -292,23 +311,23 @@ class RangeCalendar extends InputComponent {
 
         let {
             lang,
-            min,
-            max
+            begin,
+            end
         } = this.props;
 
-        min = index === 0 ? this.parseDate(min) : date[0];
-        max = index === 0 ? date[1] : this.parseDate(max);
+        begin = index === 0 ? this.parseDate(begin) : date[0];
+        end = index === 0 ? date[1] : this.parseDate(end);
 
         return (
             <div className={this.getPartClassName('main')}>
                 <Pager
-                    minDate={min}
-                    maxDate={max}
+                    minDate={begin}
+                    maxDate={end}
                     onChange={this.onPagerChange.bind(this, index)}
                     month={month[index]} />
                 <Month
-                    minDate={min}
-                    maxDate={max}
+                    minDate={begin}
+                    maxDate={end}
                     lang={lang}
                     month={month[index]}
                     date={date[index]}
@@ -325,24 +344,44 @@ class RangeCalendar extends InputComponent {
         } = this.state;
 
         let {
-            min,
-            max
+            begin,
+            end
         } = this.props;
 
-        min = index === 0 ? this.parseDate(min) : date[0];
-        max = index === 0 ? date[1] : this.parseDate(max);
+        begin = index === 0 ? this.parseDate(begin) : date[0];
+        end = index === 0 ? date[1] : this.parseDate(end);
 
         return (
             <div className={this.getPartClassName('main')}>
                 <Selector
                     date={date[index]}
-                    minDate={min}
-                    maxDate={max}
+                    minDate={begin}
+                    maxDate={end}
                     mode={mode[index]}
                     onChange={this.onSelectorChange.bind(this, index)} />
             </div>
         );
 
+    }
+
+    renderLabel() {
+
+        let rawValue = this.state.rawValue;
+
+        let format = this.props.dateFormat.toLowerCase();
+
+        let str = [
+            DateTime.format(rawValue[0], format, this.props.lang),
+            ' 至 ',
+            DateTime.format(rawValue[1], format, this.props.lang)
+        ].join(' ');
+
+        return (
+            <label onClick={this.onLabelClick}>
+                {str}
+                <Icon icon='expand-more' />
+            </label>
+        );
     }
 
     render() {
@@ -359,14 +398,14 @@ class RangeCalendar extends InputComponent {
 
         return (
             <div {...others} className={this.getClassName()}>
-                <TextBox
-                    ref="input" readOnly
-                    variants={['calendar']}
+                <input
+                    ref="input"
+                    type="hidden"
                     value={this.getValue()}
                     disabled={disabled}
                     size={size}
-                    placeholder={placeholder}
-                    onFocus={this.onInputFocus} />
+                    placeholder={placeholder} />
+                {this.renderLabel()}
                 {this.renderDialog()}
             </div>
         );
@@ -391,11 +430,11 @@ RangeCalendar.propTypes = {
     rawValue: PropTypes.arrayOf(PropTypes.object),
     autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
-    max: PropTypes.oneOfType([
+    begin: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ]),
-    min: PropTypes.oneOfType([
+    end: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ])
