@@ -33,9 +33,11 @@ for level, value in $-melon-calendar-sizes
 .{$-melon-class-prefix}-calendar
 
     font-size: $-melon-medium-font-size
+    display: inline-block
 
     .{$-melon-class-prefix}-textbox.variant-calendar
         font-size: $-melon-medium-font-size
+        width: 100%
 
         input
             color: $-melon-colors.black
@@ -232,9 +234,6 @@ for level, value in $-melon-calendar-sizes
 
 
 .{$-melon-class-prefix}-rangecalendar
-
-    .{$-melon-class-prefix}-textbox.variant-calendar
-        min-width: 15em
 
     .{$-melon-class-prefix}-dialog.variant-calendar
 

@@ -11,6 +11,7 @@
         line-height: 2em
         color: rgba($-melon-colors.black, .54)
         cursor: pointer
+        position: relative
 
         > input
             display: none
@@ -20,6 +21,14 @@
             font-size: $-melon-large-font-size
             vertical-align: middle
             transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+            position: relative
+            z-index: 1
+
+        .{$-melon-class-prefix}-center-ripple-circle
+            height: 18px
+            width: 18px
+            top: 50%
+            margin-top: -7px
 
         > span
             vertical-align: middle

@@ -244,6 +244,7 @@ class Calendar extends InputComponent {
             lang,
             placeholder,
             disabled,
+            size,
             ...others
         } = props;
 
@@ -254,6 +255,7 @@ class Calendar extends InputComponent {
                     variants={['calendar']}
                     value={this.getValue()}
                     disabled={disabled}
+                    size={size}
                     placeholder={placeholder}
                     onFocus={this.onInputFocus} />
                 {this.renderDialog()}
