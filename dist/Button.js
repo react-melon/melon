@@ -32,27 +32,27 @@ define('melon/Button', [
                 key: 'render',
                 value: function render() {
                     var _props = this.props;
-                    var props = _props.props;
                     var hasRipple = _props.hasRipple;
                     var label = _props.label;
                     var children = _props.children;
                     var other = babelHelpers.objectWithoutProperties(_props, [
-                        'props',
                         'hasRipple',
                         'label',
                         'children'
                     ]);
                     var content = label || children;
-                    var style = hasRipple ? { position: 'relative' } : {};
+                    var useRipple = hasRipple && !other.disabled;
+                    var style = useRipple ? { position: 'relative' } : {};
                     return React.createElement('button', babelHelpers._extends({}, other, {
                         className: this.getClassName(),
                         style: style
-                    }), hasRipple ? React.createElement(TouchRipple, null) : null, content);
+                    }), useRipple ? React.createElement(TouchRipple, null) : null, content);
                 }
             }
         ]);
         return Button;
     }(Component);
+    Button.defaultProps = { hasRipple: true };
     Button.propTypes = { hasRipple: React.PropTypes.bool };
     module.exports = Button;
 });

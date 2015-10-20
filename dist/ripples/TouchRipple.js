@@ -59,6 +59,12 @@ define('melon/ripples/TouchRipple', [
                 }
             },
             {
+                key: 'componentWillUnmount',
+                value: function componentWillUnmount() {
+                    this.position = null;
+                }
+            },
+            {
                 key: 'willLeave',
                 value: function willLeave(key, valOfKey) {
                     return babelHelpers._extends({}, valOfKey, {
@@ -83,7 +89,7 @@ define('melon/ripples/TouchRipple', [
                     var centerY = _state$center[1];
                     var now = _state.now;
                     var styles = babelHelpers.defineProperty({}, now, {
-                        opacity: spring(0.16),
+                        opacity: spring(this.props.opacity),
                         scale: spring(0)
                     });
                     return React.createElement(TransitionMotion, {
@@ -118,10 +124,7 @@ define('melon/ripples/TouchRipple', [
         return TouchRipple;
     }(Component);
     var PropTypes = React.PropTypes;
-    TouchRipple.propTypes = {
-        centerRipple: PropTypes.bool,
-        color: PropTypes.string,
-        opacity: PropTypes.number
-    };
+    TouchRipple.defaultProps = { opacity: 0.3 };
+    TouchRipple.propTypes = { opacity: PropTypes.number };
     module.exports = TouchRipple;
 });
