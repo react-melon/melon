@@ -34,7 +34,7 @@ class CenterRipple extends Component {
         return {
             ...valOfKey,
             opacity: spring(0, [80, 15]),
-            scale: spring(2.5, [80, 15])
+            scale: spring(2, [80, 15])
         };
     }
 
