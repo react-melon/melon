@@ -34,11 +34,6 @@ class Dialog extends WindowResizeAware {
         this.positionDialog();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        this.positionDialog();
-        return true;
-    }
-
     componentWillReceiveProps(nextProps) {
 
         var open = nextProps.open;
