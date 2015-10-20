@@ -6,7 +6,7 @@
 var React = require('react');
 
 var InputComponent = require('./InputComponent');
-var TextBox = require('./TextBox');
+var Icon = require('./Icon');
 var Header = require('./calendar/Header');
 var Month = require('./calendar/Month');
 var Selector = require('./calendar/Selector');
@@ -25,6 +25,17 @@ class Calendar extends InputComponent {
 
         let rawValue = this.state.rawValue;
 
+        let {
+            begin,
+            end
+        } = props;
+
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
+
+        rawValue = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue) ? begin : rawValue;
+        rawValue = _.isDate(end) && DateTime.isBeforeDate(end, rawValue) ? end : rawValue;
+
         let open = false;
         let month = rawValue;
         let mode = 'main';
@@ -38,7 +49,7 @@ class Calendar extends InputComponent {
             date
         };
 
-        this.onInputFocus     = this.onInputFocus.bind(this);
+        this.onLabelClick     = this.onLabelClick.bind(this);
         this.onHide           = this.onHide.bind(this);
         this.onConfirm        = this.onConfirm.bind(this);
         this.onHeaderClick    = this.onHeaderClick.bind(this);
@@ -90,12 +101,20 @@ class Calendar extends InputComponent {
         return DateTime.parse(date, format);
     }
 
+    getStates(props) {
+        let states = super.getStates(props);
+
+        states.focus = this.state.open;
+
+        return states;
+    }
+
     /**
      * 点击textbox时触发
      *
      * @private
      */
-    onInputFocus() {
+    onLabelClick() {
 
         if (this.props.disabled || this.props.readOnly) {
             return;
@@ -185,20 +204,20 @@ class Calendar extends InputComponent {
         } = e;
 
         let {
-            max,
-            min
+            end,
+            begin
         } = this.props;
 
-        min = this.parseDate(min);
-        max = this.parseDate(max);
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
 
         mode = mode === 'year' ? 'month' : 'main';
 
-        if (_.isDate(min) && DateTime.isBeforeDate(date, min)) {
-            date = min;
+        if (_.isDate(begin) && DateTime.isBeforeDate(date, begin)) {
+            date = begin;
         }
-        else if (_.isDate(max) && DateTime.isAfterDate(date, max)) {
-            date = max;
+        else if (_.isDate(end) && DateTime.isAfterDate(date, end)) {
+            date = end;
         }
 
         this.setState({
@@ -250,18 +269,31 @@ class Calendar extends InputComponent {
 
         return (
             <div {...others} className={this.getClassName()}>
-                <TextBox
-                    ref="input" readOnly
-                    variants={['calendar']}
+                <input
+                    ref="input"
+                    type="hidden"
                     value={this.getValue()}
                     disabled={disabled}
                     size={size}
-                    placeholder={placeholder}
-                    onFocus={this.onInputFocus} />
+                    placeholder={placeholder} />
+                {this.renderLabel()}
                 {this.renderDialog()}
             </div>
         );
 
+    }
+
+    renderLabel() {
+
+        let rawValue = this.state.rawValue;
+        let format = this.props.dateFormat.toLowerCase();
+
+        return (
+            <label onClick={this.onLabelClick}>
+                {DateTime.format(rawValue, format, this.props.lang)}
+                <Icon icon='expand-more' />
+            </label>
+        );
     }
 
     renderDialog() {
@@ -301,23 +333,23 @@ class Calendar extends InputComponent {
 
         let {
             lang,
-            min,
-            max
+            begin,
+            end
         } = this.props;
 
-        min = this.parseDate(min);
-        max = this.parseDate(max);
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
 
         return (
             <div className={this.getPartClassName('main')}>
                 <Pager
-                    minDate={min}
-                    maxDate={max}
+                    minDate={begin}
+                    maxDate={end}
                     onChange={this.onPagerChange}
                     month={month} />
                 <Month
-                    minDate={min}
-                    maxDate={max}
+                    minDate={begin}
+                    maxDate={end}
                     lang={lang}
                     month={month}
                     date={date}
@@ -334,18 +366,18 @@ class Calendar extends InputComponent {
         } = this.state;
 
         let {
-            min,
-            max
+            begin,
+            end
         } = this.props;
 
-        min = this.parseDate(min);
-        max = this.parseDate(max);
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
 
         return (
             <Selector
                 date={date}
-                minDate={min}
-                maxDate={max}
+                minDate={begin}
+                maxDate={end}
                 mode={mode}
                 onChange={this.onSelectorChange} />
         );
@@ -379,11 +411,11 @@ Calendar.propTypes = {
     value: PropTypes.string,
     autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
-    max: PropTypes.oneOfType([
+    end: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ]),
-    min: PropTypes.oneOfType([
+    begin: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ]),

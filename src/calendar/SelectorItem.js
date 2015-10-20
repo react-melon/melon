@@ -60,13 +60,13 @@ class CalendarSelectorItem extends Component {
         return (
             <li
                 {...others}
-                onClick={disabled ? null : this.onClick}
                 data-mode={mode}
                 data-value={date}
+                onClick={disabled ? null : this.onClick}
                 className={this.getClassName()} >
-                <a href="#">
+                <span>
                     {mode === 'year' ? date.getFullYear() : DateTime.getShortMonth(date)}
-                </a>
+                </span>
             </li>
         );
     }
