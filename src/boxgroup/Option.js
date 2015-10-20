@@ -7,8 +7,18 @@ var React = require('react');
 var cx = require('../common/util/classname');
 var Icon = require('../Icon');
 var Component = require('../Component');
+var CenterRipple = require('../ripples/CenterRipple');
 
 class BoxGroupOption extends Component {
+
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick() {
+        this.refs.ripple && this.refs.ripple.animate();
+    }
 
     render() {
 
@@ -26,7 +36,7 @@ class BoxGroupOption extends Component {
         );
 
         return (
-            <label className={className}>
+            <label className={className} onClick={this.onClick}>
                 <input
                     disabled={disabled}
                     checked={isChecked}
@@ -36,6 +46,7 @@ class BoxGroupOption extends Component {
                     onChange={props.onChange} />
                 <Icon icon={this.getIcon(boxModel, isChecked)} />
                 {props.label}
+                {disabled ? null : <CenterRipple ref="ripple" />}
             </label>
         );
 
