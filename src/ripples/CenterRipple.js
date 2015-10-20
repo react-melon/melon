@@ -21,6 +21,8 @@ class CenterRipple extends Component {
             now: 't' + 0
         };
 
+        this.willLeave = this.willLeave.bind(this);
+
         this.type = 'center-ripple';
     }
 
@@ -30,11 +32,17 @@ class CenterRipple extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.flag === !this.props.flag) {
+            this.animate();
+        }
+    }
+
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
             opacity: spring(0, [80, 15]),
-            scale: spring(2, [80, 15])
+            scale: spring(this.props.scale, [80, 15])
         };
     }
 
@@ -56,9 +64,7 @@ class CenterRipple extends Component {
                 willLeave={this.willLeave}
                 styles={styles}>
                 {circles =>
-                    <div
-                        onMouseDown={this.onMouseDown}
-                        className={this.getClassName()}>
+                    <div className={this.getClassName()}>
                         {Object.keys(circles).map(key => {
                             const {opacity, scale} = circles[key];
                             return (
@@ -86,12 +92,13 @@ const PropTypes = React.PropTypes;
 
 CenterRipple.defaultProps = {
     opacity: 0.5,
-    now: 0
+    scale: 2
 };
 
 CenterRipple.propTypes = {
     opacity: PropTypes.number,
-    now: PropTypes.number
+    scale: PropTypes.number,
+    flag: PropTypes.bool
 };
 
 module.exports = CenterRipple;
