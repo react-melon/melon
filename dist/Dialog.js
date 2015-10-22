@@ -4,42 +4,49 @@ define('melon/Dialog', [
     'module',
     './babelHelpers',
     'react',
-    'react-dom',
     './Mask',
     'underscore',
-    './dialog/WindowResizeAware',
-    './dialog/windowScrollHelper'
+    './common/util/dom',
+    './Component',
+    './dialog/windowScrollHelper',
+    'react-motion'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var ReactDOM = require('react-dom');
     var Mask = require('./Mask');
     var _ = require('underscore');
-    var WindowResizeAware = require('./dialog/WindowResizeAware');
+    var dom = require('./common/util/dom');
+    var Component = require('./Component');
     var windowScrollHelper = require('./dialog/windowScrollHelper');
-    var Dialog = function (_WindowResizeAware) {
-        babelHelpers.inherits(Dialog, _WindowResizeAware);
+    var _require = require('react-motion');
+    var Motion = _require.Motion;
+    var spring = _require.spring;
+    var Dialog = function (_Component) {
+        babelHelpers.inherits(Dialog, _Component);
         function Dialog(props) {
             babelHelpers.classCallCheck(this, Dialog);
             babelHelpers.get(Object.getPrototypeOf(Dialog.prototype), 'constructor', this).call(this, props);
             this.originalHTMLBodySize = {};
             this.state = { open: this.props.open || false };
-            this.positionDialog = _.throttle.call(this, this.positionDialog, 50);
+            this.positionDialog = _.debounce.call(this, this.positionDialog, 50);
             this.handleMaskClick = this.handleMaskClick.bind(this);
             this.onShow = this.onShow.bind(this);
             this.onHide = this.onHide.bind(this);
+            this.marginTop = -150;
         }
         babelHelpers.createClass(Dialog, [
             {
                 key: 'componentDidMount',
                 value: function componentDidMount() {
-                    babelHelpers.get(Object.getPrototypeOf(Dialog.prototype), 'componentDidMount', this).call(this);
                     this.positionDialog();
+                    if (this.state.open) {
+                        this.dialogWindow.style.marginTop = this.marginTop + 'px';
+                    }
                 }
             },
             {
-                key: 'componentDidUpdate',
-                value: function componentDidUpdate() {
+                key: 'componentWillUpdate',
+                value: function componentWillUpdate() {
                     this.positionDialog();
                 }
             },
@@ -55,28 +62,13 @@ define('melon/Dialog', [
                 }
             },
             {
-                key: 'onWindowResize',
-                value: function onWindowResize(e) {
-                    this.positionDialog();
-                }
-            },
-            {
                 key: 'positionDialog',
                 value: function positionDialog() {
-                    if (!this.state.open) {
-                        return;
-                    }
-                    var container = ReactDOM.findDOMNode(this);
-                    var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-                    var dialogWindow = this.refs.dialogWindow;
-                    var minTop = 16;
-                    dialogWindow.style.height = '';
-                    var dialogWindowHeight = dialogWindow.offsetHeight;
-                    var top = (clientHeight - dialogWindowHeight) / 2 - 30;
-                    top = Math.max(top, minTop);
-                    dialogWindow.style.top = top + 'px';
+                    var dialogWindow = this.dialogWindow;
+                    this.marginTop = -dialogWindow.offsetHeight / 2;
+                    var windowHeight = dom.getClientHeight();
+                    this.marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : this.marginTop;
                     dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
-                    container.style.left = 0;
                 }
             },
             {
@@ -113,12 +105,6 @@ define('melon/Dialog', [
                     if (_.isFunction(this.props.onHide)) {
                         this.props.onHide();
                     }
-                    var dialogWindow = this.refs.dialogWindow;
-                    dialogWindow.style.top = '';
-                    var main = ReactDOM.findDOMNode(this);
-                    setTimeout(function () {
-                        main.style.left = '-10000px';
-                    }, 200);
                 }
             },
             {
@@ -132,6 +118,7 @@ define('melon/Dialog', [
             {
                 key: 'render',
                 value: function render() {
+                    var _this = this;
                     var _props = this.props;
                     var title = _props.title;
                     var children = _props.children;
@@ -140,13 +127,17 @@ define('melon/Dialog', [
                         'children'
                     ]);
                     var open = this.state.open;
-                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement('div', {
-                        ref: 'dialogWindow',
-                        className: this.getPartClassName('window')
-                    }, this.renderTitle(), React.createElement('div', {
-                        ref: 'dialogContent',
-                        className: this.getPartClassName('body')
-                    }, children), this.renderAction()), React.createElement(Mask, {
+                    var top = this.marginTop;
+                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(Motion, { style: { y: spring(open ? top : -150) } }, function (_ref) {
+                        var y = _ref.y;
+                        return React.createElement('div', {
+                            style: { marginTop: y },
+                            ref: function (c) {
+                                return _this.dialogWindow = c;
+                            },
+                            className: _this.getPartClassName('window')
+                        }, _this.renderTitle(), React.createElement('div', { className: _this.getPartClassName('body') }, children), _this.renderAction());
+                    }), React.createElement(Mask, {
                         ref: 'dialogMask',
                         show: open,
                         autoLockScrolling: false,
@@ -173,7 +164,7 @@ define('melon/Dialog', [
             }
         ]);
         return Dialog;
-    }(WindowResizeAware);
+    }(Component);
     Dialog.propTypes = {
         actions: React.PropTypes.array,
         maskClickClose: React.PropTypes.bool,
@@ -185,6 +176,6 @@ define('melon/Dialog', [
             React.PropTypes.element
         ])
     };
-    Dialog.defaultProps = babelHelpers._extends({}, WindowResizeAware.defaultProps, { maskClickClose: true });
+    Dialog.defaultProps = { maskClickClose: true };
     module.exports = Dialog;
 });

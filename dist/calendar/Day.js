@@ -23,7 +23,7 @@ define('melon/calendar/Day', [
         babelHelpers.createClass(CalendarDay, [
             {
                 key: 'shouldComponentUpdate',
-                value: function shouldComponentUpdate(nextProps, nextState) {
+                value: function shouldComponentUpdate(nextProps) {
                     var _props = this.props;
                     var disabled = _props.disabled;
                     var selected = _props.selected;
