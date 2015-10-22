@@ -7,6 +7,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const Component = require('../Component');
+const RippleCircle = require('./RippleCircle');
 
 const {
     spring,
@@ -55,8 +56,8 @@ class TouchRipple extends Component {
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
-            opacity: spring(0, [40, 15]),
-            scale: spring(2, [40, 15])
+            opacity: spring(0, [60, 15]),
+            scale: spring(2, [60, 15])
         };
     }
 
@@ -83,19 +84,22 @@ class TouchRipple extends Component {
                         onMouseDown={this.onMouseDown}
                         className={this.getClassName()}>
                         {Object.keys(circles).map(key => {
-                            const {opacity, scale} = circles[key];
+                            let {opacity, scale} = circles[key];
+                            if (opacity < 0.01) {
+                                opacity = 0;
+                                scale = 2;
+                            }
                             return (
-                                <div
+                                <RippleCircle
                                     key={key}
                                     className={this.getPartClassName('circle')}
+                                    opacity={opacity}
+                                    scale={scale}
                                     style={{
                                         width: this.radius * 2 || 0,
                                         height: this.radius * 2 || 0,
-                                        opacity: opacity,
                                         left: centerX,
-                                        top: centerY,
-                                        transform: `scale(${scale})`,
-                                        WebkitTransform: `scale(${scale})`
+                                        top: centerY
                                     }} />
                             );
                         })}
