@@ -21,7 +21,7 @@ class CalendarDay extends Component {
         this.type = 'calendar-day';
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
 
         var {
             disabled,
