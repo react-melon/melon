@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test": "npm test",
-    "build-amd": "sh tool/build-amd.sh"
+    "build:amd": "sh tool/build-amd.sh"
   },
   "repository": {
     "type": "git",
@@ -51,7 +51,12 @@
     "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/1-8-2/esl.js",
     "dependencies": {}
   },
-  "dependencies": {
+  "devDepedencies": {
     "babel": "^5.8.23"
+  },
+  "dependencies": {
+    "react": "0.14.0",
+    "react-motion": "~0.3.1",
+    "underscore": "~1.8.3"
   }
 }
