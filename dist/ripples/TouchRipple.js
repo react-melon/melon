@@ -6,6 +6,7 @@ define('melon/ripples/TouchRipple', [
     'react',
     'react-dom',
     '../Component',
+    './RippleCircle',
     'react-motion',
     '../common/util/dom'
 ], function (require, exports, module) {
@@ -13,6 +14,7 @@ define('melon/ripples/TouchRipple', [
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Component = require('../Component');
+    var RippleCircle = require('./RippleCircle');
     var _require = require('react-motion');
     var spring = _require.spring;
     var TransitionMotion = _require.TransitionMotion;
@@ -69,11 +71,11 @@ define('melon/ripples/TouchRipple', [
                 value: function willLeave(key, valOfKey) {
                     return babelHelpers._extends({}, valOfKey, {
                         opacity: spring(0, [
-                            40,
+                            60,
                             15
                         ]),
                         scale: spring(2, [
-                            40,
+                            60,
                             15
                         ])
                     });
@@ -103,17 +105,20 @@ define('melon/ripples/TouchRipple', [
                             var _circles$key = circles[key];
                             var opacity = _circles$key.opacity;
                             var scale = _circles$key.scale;
-                            return React.createElement('div', {
+                            if (opacity < 0.01) {
+                                opacity = 0;
+                                scale = 2;
+                            }
+                            return React.createElement(RippleCircle, {
                                 key: key,
                                 className: _this.getPartClassName('circle'),
+                                opacity: opacity,
+                                scale: scale,
                                 style: {
                                     width: _this.radius * 2 || 0,
                                     height: _this.radius * 2 || 0,
-                                    opacity: opacity,
                                     left: centerX,
-                                    top: centerY,
-                                    transform: 'scale(' + scale + ')',
-                                    WebkitTransform: 'scale(' + scale + ')'
+                                    top: centerY
                                 }
                             });
                         }));

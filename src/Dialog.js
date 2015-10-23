@@ -4,14 +4,19 @@
  */
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 var Mask = require('./Mask');
 var _  = require('underscore');
+var dom = require('./common/util/dom');
 
-var WindowResizeAware = require('./dialog/WindowResizeAware');
+var Component = require('./Component');
 var windowScrollHelper = require('./dialog/windowScrollHelper');
 
-class Dialog extends WindowResizeAware {
+var {
+    Motion,
+    spring
+} = require('react-motion');
+
+class Dialog extends Component {
 
     constructor(props) {
         super(props);
@@ -19,18 +24,22 @@ class Dialog extends WindowResizeAware {
         this.state = {
             open: this.props.open || false
         };
-        this.positionDialog = _.throttle.call(this, this.positionDialog, 50);
+        this.positionDialog = _.debounce.call(this, this.positionDialog, 50);
         this.handleMaskClick = this.handleMaskClick.bind(this);
         this.onShow = this.onShow.bind(this);
         this.onHide = this.onHide.bind(this);
+
+        this.marginTop = -150;
     }
 
     componentDidMount() {
-        super.componentDidMount();
         this.positionDialog();
+        if (this.state.open) {
+            this.dialogWindow.style.marginTop = this.marginTop + 'px';
+        }
     }
 
-    componentDidUpdate() {
+    componentWillUpdate() {
         this.positionDialog();
     }
 
@@ -47,34 +56,16 @@ class Dialog extends WindowResizeAware {
 
     }
 
-    onWindowResize(e) {
-        this.positionDialog();
-    }
-
     positionDialog() {
+        var dialogWindow = this.dialogWindow;
+        this.marginTop = -dialogWindow.offsetHeight / 2;
 
-        if (!this.state.open) {
-            return;
-        }
+        var windowHeight = dom.getClientHeight();
 
-        var container = ReactDOM.findDOMNode(this);
-        var clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-        var dialogWindow = this.refs.dialogWindow;
-        var minTop = 16;
-
-        dialogWindow.style.height = '';
-
-        var dialogWindowHeight = dialogWindow.offsetHeight;
-        var top = ((clientHeight - dialogWindowHeight) / 2) - 30;
-
-        top = Math.max(top, minTop);
-
-        dialogWindow.style.top = top + 'px';
-
+        this.marginTop = dialogWindow.offsetHeight > windowHeight
+                        ? (-windowHeight / 2 + 16)
+                        : this.marginTop;
         dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
-
-        container.style.left = 0;
-
     }
 
     bodyScrolling() {
@@ -104,17 +95,6 @@ class Dialog extends WindowResizeAware {
         if (_.isFunction(this.props.onHide)) {
             this.props.onHide();
         }
-
-        // 隐藏时，向上滚动动画的hack
-        // 隐藏的时候把inline的top样式去掉，下次打开的时候才会出动画
-        // main的left属性要延迟设置
-        var dialogWindow =  this.refs.dialogWindow;
-        dialogWindow.style.top = '';
-
-        var main = ReactDOM.findDOMNode(this);
-        setTimeout(function () {
-            main.style.left = '-10000px';
-        }, 200);
     }
 
     getStates(props) {
@@ -132,16 +112,24 @@ class Dialog extends WindowResizeAware {
         } = this.props;
 
         var open = this.state.open;
+        var top = this.marginTop;
 
         return (
             <div {...others} className={this.getClassName()}>
-                <div ref="dialogWindow" className={this.getPartClassName('window')} >
-                    {this.renderTitle()}
-                    <div ref="dialogContent" className={this.getPartClassName('body')}>
-                        {children}
-                    </div>
-                    {this.renderAction()}
-                </div>
+                <Motion style={{y: spring(open ? top : -150)}}>
+                    {({y}) =>
+                        <div
+                            style={{marginTop: y}}
+                            ref={(c) => this.dialogWindow = c}
+                            className={this.getPartClassName('window')} >
+                            {this.renderTitle()}
+                            <div className={this.getPartClassName('body')}>
+                                {children}
+                            </div>
+                            {this.renderAction()}
+                        </div>
+                    }
+                </Motion>
                 <Mask
                   ref="dialogMask"
                   show={open}
@@ -186,7 +174,6 @@ Dialog.propTypes = {
 };
 
 Dialog.defaultProps = {
-    ...WindowResizeAware.defaultProps,
     maskClickClose: true
 };
 
