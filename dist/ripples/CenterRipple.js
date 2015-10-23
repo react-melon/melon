@@ -5,11 +5,13 @@ define('melon/ripples/CenterRipple', [
     '../babelHelpers',
     'react',
     '../Component',
+    './RippleCircle',
     'react-motion'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Component = require('../Component');
+    var RippleCircle = require('./RippleCircle');
     var _require = require('react-motion');
     var spring = _require.spring;
     var TransitionMotion = _require.TransitionMotion;
@@ -42,11 +44,11 @@ define('melon/ripples/CenterRipple', [
                 value: function willLeave(key, valOfKey) {
                     return babelHelpers._extends({}, valOfKey, {
                         opacity: spring(0, [
-                            80,
+                            60,
                             15
                         ]),
                         scale: spring(this.props.scale, [
-                            80,
+                            60,
                             15
                         ])
                     });
@@ -69,14 +71,15 @@ define('melon/ripples/CenterRipple', [
                             var _circles$key = circles[key];
                             var opacity = _circles$key.opacity;
                             var scale = _circles$key.scale;
-                            return React.createElement('div', {
+                            if (opacity < 0.01) {
+                                opacity = 0;
+                                scale = _this.props.scale;
+                            }
+                            return React.createElement(RippleCircle, {
                                 key: key,
                                 className: _this.getPartClassName('circle'),
-                                style: {
-                                    opacity: opacity,
-                                    transform: 'scale(' + scale + ')',
-                                    WebkitTransform: 'scale(' + scale + ')'
-                                }
+                                opacity: opacity,
+                                scale: scale
                             });
                         }), _this.props.children);
                     });

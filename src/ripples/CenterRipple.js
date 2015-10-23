@@ -6,6 +6,7 @@
 const React = require('react');
 
 const Component = require('../Component');
+const RippleCircle = require('./RippleCircle');
 
 const {
     spring,
@@ -41,8 +42,8 @@ class CenterRipple extends Component {
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
-            opacity: spring(0, [80, 15]),
-            scale: spring(this.props.scale, [80, 15])
+            opacity: spring(0, [60, 15]),
+            scale: spring(this.props.scale, [60, 15])
         };
     }
 
@@ -66,16 +67,17 @@ class CenterRipple extends Component {
                 {circles =>
                     <div className={this.getClassName()}>
                         {Object.keys(circles).map(key => {
-                            const {opacity, scale} = circles[key];
+                            let {opacity, scale} = circles[key];
+                            if (opacity < 0.01) {
+                                opacity = 0;
+                                scale = this.props.scale;
+                            }
                             return (
-                                <div
+                                <RippleCircle
                                     key={key}
                                     className={this.getPartClassName('circle')}
-                                    style={{
-                                        opacity: opacity,
-                                        transform: `scale(${scale})`,
-                                        WebkitTransform: `scale(${scale})`
-                                    }} />
+                                    opacity={opacity}
+                                    scale={scale} />
                             );
                         })}
                         {this.props.children}
