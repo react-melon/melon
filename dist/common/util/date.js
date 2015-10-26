@@ -6,43 +6,43 @@ define('melon/common/util/date', [
 ], function (require, exports, module) {
     var _ = require('underscore');
     module.exports = {
-        addDays: function (d, days) {
+        addDays: function addDays(d, days) {
             var newDate = this.clone(d);
             newDate.setDate(d.getDate() + days);
             return newDate;
         },
-        addMonths: function (d, months) {
+        addMonths: function addMonths(d, months) {
             var newDate = this.clone(d);
             newDate.setMonth(d.getMonth() + months);
             return newDate;
         },
-        addYears: function (d, years) {
+        addYears: function addYears(d, years) {
             var newDate = this.clone(d);
             newDate.setFullYear(d.getFullYear() + years);
             return newDate;
         },
-        clone: function (d) {
+        clone: function clone(d) {
             return new Date(d.getTime());
         },
-        cloneAsDate: function (d) {
+        cloneAsDate: function cloneAsDate(d) {
             var clonedDate = this.clone(d);
             clonedDate.setHours(0, 0, 0, 0);
             return clonedDate;
         },
-        getDaysInMonth: function (d) {
+        getDaysInMonth: function getDaysInMonth(d) {
             var resultDate = this.getFirstDayOfMonth(d);
             resultDate.setMonth(resultDate.getMonth() + 1);
             resultDate.setDate(resultDate.getDate() - 1);
             return resultDate.getDate();
         },
-        getFirstDayOfMonth: function (d) {
+        getFirstDayOfMonth: function getFirstDayOfMonth(d) {
             return new Date(d.getFullYear(), d.getMonth(), 1);
         },
-        getLastDayOfMonth: function (d) {
+        getLastDayOfMonth: function getLastDayOfMonth(d) {
             var date = new Date(d.getFullYear(), d.getMonth() + 1, 1);
             return this.addDays(date, -1);
         },
-        getFullMonth: function (d) {
+        getFullMonth: function getFullMonth(d) {
             var month = d.getMonth();
             switch (month) {
             case 0:
@@ -71,7 +71,7 @@ define('melon/common/util/date', [
                 return 'December';
             }
         },
-        getShortMonth: function (d) {
+        getShortMonth: function getShortMonth(d) {
             var month = d.getMonth();
             switch (month) {
             case 0:
@@ -100,7 +100,7 @@ define('melon/common/util/date', [
                 return '12\u6708';
             }
         },
-        getDayOfWeek: function (d) {
+        getDayOfWeek: function getDayOfWeek(d) {
             var dow = d.getDay();
             switch (dow) {
             case 0:
@@ -119,7 +119,7 @@ define('melon/common/util/date', [
                 return '\u661F\u671F\u516D';
             }
         },
-        getFullWeekArray: function (d) {
+        getFullWeekArray: function getFullWeekArray(d) {
             var weekArray = this.getWeekArray(d);
             var firstWeek = weekArray[0];
             var lastWeek = weekArray[weekArray.length - 1];
@@ -148,7 +148,7 @@ define('melon/common/util/date', [
             }
             return [].concat([preArray], weekArray, [lastArray]);
         },
-        getWeekArray: function (d) {
+        getWeekArray: function getWeekArray(d) {
             var dayArray = [];
             var daysInMonth = this.getDaysInMonth(d);
             var daysInWeek;
@@ -172,7 +172,7 @@ define('melon/common/util/date', [
             }
             return weekArray;
         },
-        parse: function (value, format) {
+        parse: function parse(value, format) {
             format = format.split(/[^yMdW]+/i);
             value = value.split(/\D+/);
             var map = {};
@@ -186,7 +186,7 @@ define('melon/common/util/date', [
             var date = (map.d || map.dd) | 0;
             return new Date(year | 0, month - 1, date);
         },
-        format: function (date, format, lang) {
+        format: function format(date, _format, lang) {
             var y = date.getFullYear();
             var M = date.getMonth() + 1;
             var d = date.getDate();
@@ -205,54 +205,54 @@ define('melon/common/util/date', [
                 w: week,
                 ww: lang ? lang.week + week : ''
             };
-            return format.replace(/y+|M+|d+|W+/gi, function ($0) {
+            return _format.replace(/y+|M+|d+|W+/gi, function ($0) {
                 return map[$0] || '';
             });
         },
-        datePad: function (num) {
+        datePad: function datePad(num) {
             num = num < 10 ? '0' + num : num;
             return num;
         },
-        isEqualDate: function (d1, d2) {
+        isEqualDate: function isEqualDate(d1, d2) {
             return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
         },
-        isEqualMonth: function (d1, d2) {
+        isEqualMonth: function isEqualMonth(d1, d2) {
             return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
         },
-        isBeforeDate: function (d1, d2) {
+        isBeforeDate: function isBeforeDate(d1, d2) {
             var date1 = this.cloneAsDate(d1);
             var date2 = this.cloneAsDate(d2);
             return date1.getTime() < date2.getTime();
         },
-        isAfterDate: function (d1, d2) {
+        isAfterDate: function isAfterDate(d1, d2) {
             var date1 = this.cloneAsDate(d1);
             var date2 = this.cloneAsDate(d2);
             return date1.getTime() > date2.getTime();
         },
-        isBeforeMonth: function (d1, d2) {
+        isBeforeMonth: function isBeforeMonth(d1, d2) {
             var date1 = this.cloneAsDate(d1);
             var date2 = this.cloneAsDate(d2);
             return date1.getFullYear() <= date2.getFullYear() && date1.getMonth() < date2.getMonth();
         },
-        isAfterMonth: function (d1, d2) {
+        isAfterMonth: function isAfterMonth(d1, d2) {
             var date1 = this.cloneAsDate(d1);
             var date2 = this.cloneAsDate(d2);
             return date1.getFullYear() >= date2.getFullYear() && date1.getMonth() > date2.getMonth();
         },
-        isBetweenDates: function (dateToCheck, startDate, endDate) {
+        isBetweenDates: function isBetweenDates(dateToCheck, startDate, endDate) {
             return !this.isBeforeDate(dateToCheck, startDate) && !this.isAfterDate(dateToCheck, endDate);
         },
-        isDateObject: function (d) {
+        isDateObject: function isDateObject(d) {
             return d instanceof Date;
         },
-        monthDiff: function (d1, d2) {
+        monthDiff: function monthDiff(d1, d2) {
             var m;
             m = (d1.getFullYear() - d2.getFullYear()) * 12;
             m += d1.getMonth();
             m -= d2.getMonth();
             return m;
         },
-        yearDiff: function (d1, d2) {
+        yearDiff: function yearDiff(d1, d2) {
             return ~~(this.monthDiff(d1, d2) / 12);
         }
     };

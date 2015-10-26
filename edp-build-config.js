@@ -35,7 +35,7 @@ exports.getProcessors = function () {
     });
 
     var babel = new BabelProcessor({
-        files: ['src/BoxGroup.js'],
+        files: ['src/**/*.js'],
         compileOptions: {
             stage: 0,
             modules: 'commonStrict',
