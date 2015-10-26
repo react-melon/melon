@@ -4,11 +4,13 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Mask = require('./Mask');
 var _  = require('underscore');
 var dom = require('./common/util/dom');
 
 var Component = require('./Component');
+var DialogWindow = require('./dialog/DialogWindow');
 var windowScrollHelper = require('./dialog/windowScrollHelper');
 
 var {
@@ -59,7 +61,7 @@ class Dialog extends Component {
     }
 
     positionDialog() {
-        var dialogWindow = this.dialogWindow;
+        var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
         this.marginTop = -dialogWindow.offsetHeight / 2;
 
         var windowHeight = dom.getClientHeight();
@@ -127,20 +129,19 @@ class Dialog extends Component {
             <div {...others} className={this.getClassName()}>
                 <Motion style={{y: spring(open ? top : -150)}}>
                     {({y}) =>
-                        <div
-                            style={{marginTop: Math.round(y)}}
+                        <DialogWindow
+                            top={Math.round(y)}
                             ref={(c) => {
                                 this.dialogWindow = c;
                             }}
+                            title={title}
+                            footer={footer}
                             className={windowPartClassName} >
-                            {title}
                             {body}
-                            {footer}
-                        </div>
+                        </DialogWindow>
                     }
                 </Motion>
                 <Mask
-                  ref="dialogMask"
                   show={open}
                   autoLockScrolling={false}
                   onClick={this.handleMaskClick} />
