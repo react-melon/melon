@@ -26,7 +26,7 @@ class Dialog extends Component {
         this.state = {
             open: this.props.open || false
         };
-        this.positionDialog = _.debounce.call(this, this.positionDialog, 50);
+        this.positionDialog = this.positionDialog.bind(this);
         this.handleMaskClick = this.handleMaskClick.bind(this);
         this.onShow = this.onShow.bind(this);
         this.onHide = this.onHide.bind(this);

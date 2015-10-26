@@ -34,12 +34,6 @@ define('melon/Progress', [
                 }
             },
             {
-                key: 'getStates',
-                value: function getStates(props) {
-                    return null;
-                }
-            },
-            {
                 key: 'barUpdate',
                 value: function barUpdate(step, barName, stepValues) {
                     step = step || 0;

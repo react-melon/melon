@@ -31,11 +31,6 @@ class Progress extends Component {
         return variants;
     }
 
-    getStates(props) {
-        // no states
-        return null;
-    }
-
     barUpdate(step, barName, stepValues) {
 
         step = step || 0;
