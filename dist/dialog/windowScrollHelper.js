@@ -29,7 +29,7 @@ define('melon/dialog/windowScrollHelper', [
         exports.restore();
     };
     exports.stop = function () {
-        stop('body').style.overflow = 'visible';
+        stop('body').style.overflow = 'hidden';
         stop('html').style.overflow = 'hidden';
     };
     exports.restore = function () {

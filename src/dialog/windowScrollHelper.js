@@ -33,7 +33,7 @@ exports.update = function () {
 };
 
 exports.stop = function () {
-    stop('body').style.overflow = 'visible';
+    stop('body').style.overflow = 'hidden';
     stop('html').style.overflow = 'hidden';
 };
 
