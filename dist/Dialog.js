@@ -4,19 +4,23 @@ define('melon/Dialog', [
     'module',
     './babelHelpers',
     'react',
+    'react-dom',
     './Mask',
     'underscore',
     './common/util/dom',
     './Component',
+    './dialog/DialogWindow',
     './dialog/windowScrollHelper',
     'react-motion'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
+    var ReactDOM = require('react-dom');
     var Mask = require('./Mask');
     var _ = require('underscore');
     var dom = require('./common/util/dom');
     var Component = require('./Component');
+    var DialogWindow = require('./dialog/DialogWindow');
     var windowScrollHelper = require('./dialog/windowScrollHelper');
     var _require = require('react-motion');
     var Motion = _require.Motion;
@@ -69,7 +73,7 @@ define('melon/Dialog', [
             {
                 key: 'positionDialog',
                 value: function positionDialog() {
-                    var dialogWindow = this.dialogWindow;
+                    var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
                     this.marginTop = -dialogWindow.offsetHeight / 2;
                     var windowHeight = dom.getClientHeight();
                     this.marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : this.marginTop;
@@ -135,15 +139,16 @@ define('melon/Dialog', [
                     var windowPartClassName = this.getPartClassName('window');
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(Motion, { style: { y: spring(open ? top : -150) } }, function (_ref) {
                         var y = _ref.y;
-                        return React.createElement('div', {
-                            style: { marginTop: Math.round(y) },
+                        return React.createElement(DialogWindow, {
+                            top: Math.round(y),
                             ref: function (c) {
                                 _this.dialogWindow = c;
                             },
+                            title: title,
+                            footer: footer,
                             className: windowPartClassName
-                        }, title, body, footer);
+                        }, body);
                     }), React.createElement(Mask, {
-                        ref: 'dialogMask',
                         show: open,
                         autoLockScrolling: false,
                         onClick: this.handleMaskClick
