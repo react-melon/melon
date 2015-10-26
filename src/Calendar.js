@@ -69,7 +69,6 @@ class Calendar extends InputComponent {
      * @private
      */
     parseValue(value) {
-
         return this.parseDate(value);
     }
 

@@ -53,10 +53,7 @@ define('melon/dialog/Confirm', [
                     var _props = this.props;
                     var buttonVariants = _props.buttonVariants;
                     var size = _props.size;
-                    return React.createElement('div', {
-                        ref: 'dialogActions',
-                        className: this.getPartClassName('actions')
-                    }, React.createElement(Button, {
+                    return React.createElement('div', { className: this.getPartClassName('actions') }, React.createElement(Button, {
                         label: '\u53D6\u6D88',
                         key: 'cancel',
                         size: size,

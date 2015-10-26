@@ -12,11 +12,8 @@ class Confirm extends Dialog {
     static displayName = 'Confirm';
 
     constructor(props) {
-
         super(props);
-
         this.type = 'dialog';
-
     }
 
     onConfirmSubmit(confirm) {
@@ -51,8 +48,7 @@ class Confirm extends Dialog {
         } = this.props;
 
         return (
-            <div ref="dialogActions"
-                className={this.getPartClassName('actions')}>
+            <div className={this.getPartClassName('actions')}>
                 <Button
                     label="取消"
                     key="cancel"

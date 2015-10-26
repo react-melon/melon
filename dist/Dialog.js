@@ -125,23 +125,23 @@ define('melon/Dialog', [
                 value: function render() {
                     var _this = this;
                     var _props = this.props;
-                    var title = _props.title;
                     var children = _props.children;
-                    var others = babelHelpers.objectWithoutProperties(_props, [
-                        'title',
-                        'children'
-                    ]);
+                    var others = babelHelpers.objectWithoutProperties(_props, ['children']);
                     var open = this.state.open;
                     var top = this.marginTop;
+                    var title = this.renderTitle();
+                    var body = React.createElement('div', { className: this.getPartClassName('body') }, children);
+                    var footer = this.renderAction();
+                    var windowPartClassName = this.getPartClassName('window');
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(Motion, { style: { y: spring(open ? top : -150) } }, function (_ref) {
                         var y = _ref.y;
                         return React.createElement('div', {
-                            style: { marginTop: y },
+                            style: { marginTop: Math.round(y) },
                             ref: function (c) {
-                                return _this.dialogWindow = c;
+                                _this.dialogWindow = c;
                             },
-                            className: _this.getPartClassName('window')
-                        }, _this.renderTitle(), React.createElement('div', { className: _this.getPartClassName('body') }, children), _this.renderAction());
+                            className: windowPartClassName
+                        }, title, body, footer);
                     }), React.createElement(Mask, {
                         ref: 'dialogMask',
                         show: open,
