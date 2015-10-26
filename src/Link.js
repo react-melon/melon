@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Link extends Component {
 
+    static displayName = 'Link';
+
     render() {
         var props = this.props;
         return (

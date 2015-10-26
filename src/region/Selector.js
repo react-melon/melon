@@ -10,6 +10,8 @@ var Component = require('../Component');
 
 class RegionSelector extends Component {
 
+    static displayName = 'RegionSelector';
+
     constructor(props) {
 
         super(props);

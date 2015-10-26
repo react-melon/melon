@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Progress extends Component {
 
+    static displayName = 'Progress';
+
     constructor(props) {
         super(props);
         this.timers = {};

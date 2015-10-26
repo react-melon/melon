@@ -18,6 +18,8 @@ var {
 
 class Dialog extends Component {
 
+    static displayName = 'Dialog';
+
     constructor(props) {
         super(props);
         this.originalHTMLBodySize = {};

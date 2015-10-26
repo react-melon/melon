@@ -9,6 +9,8 @@ const Component = require('../Component');
 
 class RippleCircle extends Component {
 
+    static displayName = 'RippleCircle';
+
     constructor(props) {
         super(props);
 

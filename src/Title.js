@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Title extends Component {
 
+    static displayName = 'Title';
+
     render() {
 
         var {level, ...rest} = this.props;

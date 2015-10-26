@@ -11,6 +11,8 @@ var Component = require('../Component');
 
 class TreeNode extends Component {
 
+    static displayName = 'TreeNode';
+
     constructor(props) {
         super(props);
         this.state = {

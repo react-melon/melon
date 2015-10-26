@@ -19,6 +19,8 @@ var PropTypes = React.PropTypes;
 
 class Calendar extends InputComponent {
 
+    static displayName = 'Calendar';
+
     constructor(props) {
 
         super(props);

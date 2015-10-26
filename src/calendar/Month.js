@@ -14,6 +14,8 @@ var PropTypes = React.PropTypes;
 
 class CalendarMonth extends Component {
 
+    static displayName = 'CalendarMonth';
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);

@@ -15,6 +15,8 @@ var _ = require('underscore');
 
 class Region extends InputComponent {
 
+    static displayName = 'Region';
+
     constructor(props) {
 
         super(props);

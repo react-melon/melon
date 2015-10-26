@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Form extends Component {
 
+    static displayName = 'Form';
+
     constructor(props) {
         super(props);
         this.fields = [];

@@ -18,12 +18,18 @@ var View = React.createClass({
 
     componentDidMount: function () {
         var me = this;
-        var value = this.state.value
-        setTimeout(function tick() {
+        var value = me.state.value;
+        me.timer = setTimeout(function tick() {
             value += 10;
-            value < 100 && this.setTimeout(tick, 800);
-            me.setState({value: value})
-        }, 800)
+            if (value < 100) {
+                me.timer = setTimeout(tick, 800);
+                me.setState({value: value});
+            }
+        }, 800);
+    },
+
+    componentWillUnmount() {
+        clearTimeout(this.timer);
     },
 
     render: function() {

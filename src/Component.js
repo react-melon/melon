@@ -33,7 +33,7 @@ class Component extends React.Component {
 
     constructor(props) {
         super(props);
-        this.type = this.constructor.name.toLowerCase();
+        this.type = this.constructor.displayName.toLowerCase();
     }
 
     getClassName() {

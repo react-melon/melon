@@ -10,6 +10,8 @@ var InputComponent = require('./InputComponent');
 
 class BoxGroup extends InputComponent {
 
+    static displayName = 'BoxGroup';
+
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);

@@ -43,7 +43,8 @@ Babel.prototype.process = function (file, processContext, callback) {
         file.data,
         {
             ...this.compileOptions,
-            filename: file.path
+            filename: file.path,
+            optional: ['es7.classProperties']
         }
     );
 

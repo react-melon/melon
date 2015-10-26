@@ -41,7 +41,7 @@ define('melon/form/FormData', [
         });
         return this;
     };
-    FormData.prototype['delete'] = function (name) {
+    FormData.prototype.delete = function (name) {
         this.entries = this.entries.reduce(function (result, entry) {
             if (entry.name !== name) {
                 result.push(entry);
@@ -77,7 +77,7 @@ define('melon/form/FormData', [
         return false;
     };
     FormData.prototype.set = function (name, value) {
-        return this['delete'](name).append(name, value);
+        return this.delete(name).append(name, value);
     };
     module.exports = FormData;
 });

@@ -16,6 +16,8 @@ var {
 
 class Toggle extends InputComponent {
 
+    static displayName = 'Toggle';
+
     constructor(props) {
 
         super(props);

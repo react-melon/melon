@@ -12,6 +12,8 @@ var PropTypes = React.PropTypes;
 
 class CalendarDay extends Component {
 
+    static displayName = 'CalendarDay';
+
     constructor(props) {
 
         super(props);

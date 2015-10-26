@@ -8,6 +8,8 @@ var Component = require('../Component');
 
 class BreadcrumbItem extends Component {
 
+    static displayName = 'BreadcrumbItem';
+
     render() {
 
         var props = this.props;

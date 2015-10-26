@@ -23,6 +23,8 @@ var Component = require('../Component');
 
 class TableCell extends Component {
 
+    static displayName = 'TableCell';
+
     shouldComponentUpdate(nextProps) {
         return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
     }

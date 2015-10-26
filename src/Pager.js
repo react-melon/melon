@@ -13,6 +13,8 @@ var MainClickAware = require('./MainClickAware');
 
 class Pager extends MainClickAware {
 
+    static displayName = 'Pager';
+
     constructor(props) {
         super(props);
 

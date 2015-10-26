@@ -17,6 +17,8 @@ var PropTypes = React.PropTypes;
 
 class RegionArea extends Component {
 
+    static displayName = 'RegionArea';
+
     constructor(props) {
 
         super(props);

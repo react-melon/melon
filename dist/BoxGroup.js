@@ -13,6 +13,11 @@ define('melon/BoxGroup', [
     var InputComponent = require('./InputComponent');
     var BoxGroup = function (_InputComponent) {
         babelHelpers.inherits(BoxGroup, _InputComponent);
+        babelHelpers.createClass(BoxGroup, null, [{
+                key: 'displayName',
+                value: 'BoxGroup',
+                enumerable: true
+            }]);
         function BoxGroup(props) {
             babelHelpers.classCallCheck(this, BoxGroup);
             babelHelpers.get(Object.getPrototypeOf(BoxGroup.prototype), 'constructor', this).call(this, props);

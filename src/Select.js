@@ -12,6 +12,8 @@ var InputComponent = require('./InputComponent');
 
 class Select extends InputComponent {
 
+    static displayName = 'Select';
+
     constructor(props) {
 
         super(props);

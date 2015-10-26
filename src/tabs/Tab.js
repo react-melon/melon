@@ -9,6 +9,8 @@ var Component = require('../Component');
 
 class Tab extends Component {
 
+    static displayName = 'Tab';
+
     constructor(props) {
         super(props);
     }

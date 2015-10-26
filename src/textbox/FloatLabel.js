@@ -8,6 +8,8 @@ var Component = require('../Component');
 
 class TextBoxFloatingLabel extends Component {
 
+    static displayName = 'TextBoxFloatingLabel';
+
     render() {
 
         var props = this.props;

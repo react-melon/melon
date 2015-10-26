@@ -10,6 +10,8 @@ var FloatingLabel = require('./textbox/FloatLabel');
 
 class TextBox extends InputComponent {
 
+    static displayName = 'TextBox';
+
     constructor(props) {
 
         super(props);

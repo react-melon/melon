@@ -8,6 +8,8 @@ var dom = require('../common/util/dom');
 
 class WindowResizeAware extends Component {
 
+    static displayName = 'WindowResizeAware';
+
     constructor(props) {
         super(props);
         this.onWindowResize = this.onWindowResize.bind(this);

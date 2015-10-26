@@ -13,6 +13,8 @@ var Link = require('./Link');
 
 class Uploader extends InputComponent {
 
+    static displayName = 'Uploader';
+
     constructor(props) {
 
         super(props);

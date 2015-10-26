@@ -10,6 +10,8 @@ let date = require('./common/util/date');
 
 class UnitCalendar extends InputComponent {
 
+    static displayName = 'UnitCalendar';
+
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);

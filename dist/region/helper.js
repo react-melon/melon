@@ -6,15 +6,15 @@ define('melon/region/helper', [
 ], function (require, exports, module) {
     var _ = require('underscore');
     var helper = {
-        selectAll: function selectAll(child) {
+        selectAll: function (child) {
             child.selected = true;
             _.isArray(child.children) && _.each(child.children, helper.selectAll);
         },
-        cancelAll: function cancelAll(child) {
+        cancelAll: function (child) {
             child.selected = false;
             _.isArray(child.children) && _.each(child.children, helper.cancelAll);
         },
-        parse: function parse(value, child, index) {
+        parse: function (value, child, index) {
             if (_.contains(value, child.id)) {
                 child.selected;
             }
@@ -24,7 +24,7 @@ define('melon/region/helper', [
             }
             return child;
         },
-        isAllSelected: function isAllSelected(data) {
+        isAllSelected: function (data) {
             if (!_.isArray(data.children) || !(data.children.length > 0)) {
                 return;
             }
