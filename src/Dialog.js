@@ -108,27 +108,34 @@ class Dialog extends Component {
     render() {
 
         var {
-            title,
             children,
             ...others
         } = this.props;
 
-        var open = this.state.open;
-        var top = this.marginTop;
+        let open = this.state.open;
+        let top = this.marginTop;
+        let title = this.renderTitle();
+        let body = (
+            <div className={this.getPartClassName('body')}>
+                {children}
+            </div>
+        );
+        let footer = this.renderAction();
+        let windowPartClassName = this.getPartClassName('window');
 
         return (
             <div {...others} className={this.getClassName()}>
                 <Motion style={{y: spring(open ? top : -150)}}>
                     {({y}) =>
                         <div
-                            style={{marginTop: y}}
-                            ref={(c) => this.dialogWindow = c}
-                            className={this.getPartClassName('window')} >
-                            {this.renderTitle()}
-                            <div className={this.getPartClassName('body')}>
-                                {children}
-                            </div>
-                            {this.renderAction()}
+                            style={{marginTop: Math.round(y)}}
+                            ref={(c) => {
+                                this.dialogWindow = c;
+                            }}
+                            className={windowPartClassName} >
+                            {title}
+                            {body}
+                            {footer}
                         </div>
                     }
                 </Motion>
