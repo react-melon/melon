@@ -11,6 +11,8 @@ var Component = require('../Component');
 
 class TableRow extends Component {
 
+    static displayName = 'TableRow';
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);

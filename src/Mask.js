@@ -8,6 +8,8 @@ var Component = require('./Component');
 
 class Mask extends Component {
 
+    static displayName = 'Mask';
+
     constructor(props) {
         super(props);
         this.originalBodyOverflow = '';

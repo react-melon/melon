@@ -7,7 +7,9 @@ var React = require('react');
 
 var Component = require('../Component');
 
-class Panel extends Component {
+class TabsPanel extends Component {
+
+    static displayName = 'TabsPanel';
 
     getStates(props) {
 
@@ -34,8 +36,8 @@ class Panel extends Component {
 
 }
 
-Panel.propTypes = {
+TabsPanel.propTypes = {
     active: React.PropTypes.bool
 };
 
-module.exports = Panel;
+module.exports = TabsPanel;

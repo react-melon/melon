@@ -12,6 +12,8 @@ let {PropTypes, Children} = React;
 
 class Table extends WindowResizeAware {
 
+    static displayName = 'Table';
+
     constructor(props) {
 
         super(props);

@@ -15,6 +15,8 @@ var PropTypes = React.PropTypes;
 
 class CalendarPager extends Component {
 
+    static displayName = 'CalendarPager';
+
     constructor(props) {
 
         super(props);

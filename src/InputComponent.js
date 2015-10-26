@@ -12,6 +12,8 @@ var ValidityLabel = require('./Validity');
 
 class InputComponent extends Component {
 
+    static displayName = 'InputComponent';
+
     constructor(props) {
 
         super(props);

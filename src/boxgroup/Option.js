@@ -11,6 +11,8 @@ var CenterRipple = require('../ripples/CenterRipple');
 
 class BoxGroupOption extends Component {
 
+    static displayName = 'BoxGroupOption';
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);

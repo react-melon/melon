@@ -47,7 +47,14 @@ exports.getLocations = function () {
                 file(),
                 function (context) {
                     try {
-                        context.content = babel.transform(context.content).code;
+                        context.content = babel
+                            .transform(
+                                context.content,
+                                {
+                                    optional: ['es7.classProperties']
+                                }
+                            )
+                            .code;
                     }
                     catch (e) {
                         console.error(e.stack);

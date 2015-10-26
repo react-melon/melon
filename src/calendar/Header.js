@@ -13,6 +13,8 @@ var PropTypes = React.PropTypes;
 
 class CalendarHeader extends Component {
 
+    static displayName = 'CalendarHeader';
+
     constructor(props) {
 
         super(props);

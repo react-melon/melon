@@ -12,6 +12,8 @@ var _ = require('underscore');
 
 class ScrollViewBar extends Component {
 
+    static displayName = 'ScrollViewBar';
+
     constructor(props) {
         super(props);
         this.type = 'scrollview-bar';

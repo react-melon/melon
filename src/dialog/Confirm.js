@@ -9,6 +9,8 @@ var Button = require('../Button');
 
 class Confirm extends Dialog {
 
+    static displayName = 'Confirm';
+
     constructor(props) {
 
         super(props);

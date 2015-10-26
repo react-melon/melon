@@ -36,6 +36,8 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
 
 class SelectableTable extends Component {
 
+    static displayName = 'SelectableTable';
+
     constructor(props) {
         super(props);
         this.isRowSelected = this.isRowSelected.bind(this);

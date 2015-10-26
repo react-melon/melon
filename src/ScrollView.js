@@ -21,6 +21,8 @@ var SIZES = {
 
 class ScrollView extends Component {
 
+    static displayName = 'ScrollView';
+
     constructor(props) {
         super(props);
 

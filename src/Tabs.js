@@ -11,6 +11,8 @@ var TabPanel = require('./tabs/Panel');
 
 class Tabs extends Component {
 
+    static displayName = 'Tabs';
+
     constructor(props) {
         super(props);
 
@@ -86,7 +88,6 @@ class Tabs extends Component {
             if (children) {
                 tabContent.push(
                     <TabPanel
-                        className={this.getPartClassName('panel')}
                         key={index}
                         active={selected} >
                         {children}

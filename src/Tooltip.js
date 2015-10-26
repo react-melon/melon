@@ -10,6 +10,8 @@ var dom = require('./common/util/dom');
 
 class Tooltip extends Component {
 
+    static displayName = 'Tooltip';
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);

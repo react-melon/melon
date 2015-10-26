@@ -11,6 +11,8 @@ var Item = require('./breadcrumb/Item');
 
 class Breadcrumb extends Component {
 
+    static displayName = 'Breadcrumb';
+
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);

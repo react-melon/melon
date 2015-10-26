@@ -12,6 +12,8 @@ var PropTypes = React.PropTypes;
 
 class RegionCity extends Component {
 
+    static displayName = 'RegionCity';
+
     constructor(props) {
 
         super(props);

@@ -9,6 +9,8 @@ var dom = require('./common/util/dom');
 
 class MainClickAware extends Component {
 
+    static displayName = 'MainClickAware';
+
     constructor(props) {
         super(props);
         this.onMainClick = this.onMainClick.bind(this);

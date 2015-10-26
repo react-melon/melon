@@ -10,6 +10,8 @@ var Component = require('../Component');
 
 class TableColumn extends Component {
 
+    static displayName = 'TableColumn';
+
     render() {
         return null;
     }

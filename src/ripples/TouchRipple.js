@@ -18,6 +18,8 @@ const dom = require('../common/util/dom');
 
 class TouchRipple extends Component {
 
+    static displayName = 'TouchRipple';
+
     constructor(props) {
         super(props);
 

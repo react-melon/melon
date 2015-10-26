@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Icon extends Component {
 
+    static displayName = 'Icon';
+
     render() {
 
         var props = this.props;

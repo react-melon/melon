@@ -9,6 +9,8 @@ var Component = require('./Component');
 
 class Validity extends Component {
 
+    static displayName = 'Validity';
+
     shouldComponentUpdate(nextProps) {
         var props = this.props;
         return nextProps.isValid !== props.isValid || nextProps.message !== props.message;

@@ -9,6 +9,8 @@ var Button = require('../Button');
 
 class Alert extends Dialog {
 
+    static displayName = 'Alert';
+
     constructor(props) {
 
         super(props);

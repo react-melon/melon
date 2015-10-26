@@ -12,6 +12,8 @@ var PropTypes = React.PropTypes;
 
 class CalendarSelectorItem extends Component {
 
+    static displayName = 'CalendarSelectorItem';
+
     constructor(props) {
 
         super(props);

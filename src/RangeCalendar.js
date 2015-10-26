@@ -22,6 +22,8 @@ var PropTypes = React.PropTypes;
 
 class RangeCalendar extends InputComponent {
 
+    static displayName = 'RangeCalendar';
+
     constructor(props) {
 
         super(props);

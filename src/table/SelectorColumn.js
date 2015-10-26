@@ -9,6 +9,9 @@ var Icon = require('../Icon');
 var Column = require('./Column');
 
 class TableSelectorColumn extends Column {
+
+    static displayName = 'TableSelectorColumn';
+
     render() {
         return null;
     }

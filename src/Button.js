@@ -10,6 +10,8 @@ var TouchRipple = require('./ripples/TouchRipple');
 
 class Button extends Component {
 
+    static displayName = 'Button';
+
     getVariants(props) {
         let variants = super.getVariants(props);
         if (props.hasRipple) {

@@ -14,6 +14,8 @@ var PropTypes = React.PropTypes;
 
 class SnackBar extends Component {
 
+    static displayName = 'SnackBar';
+
     constructor(props) {
         super(props);
 

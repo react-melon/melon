@@ -13,6 +13,8 @@ var MainClickAware = require('./MainClickAware');
 
 class Tree extends Component {
 
+    static displayName = 'Tree';
+
     constructor(props) {
         super(props);
         this.onTreeNodeClick = this.onTreeNodeClick.bind(this);

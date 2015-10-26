@@ -15,6 +15,8 @@ const {
 
 class CenterRipple extends Component {
 
+    static displayName = 'CenterRipple';
+
     constructor(props) {
         super(props);
 
