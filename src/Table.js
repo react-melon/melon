@@ -103,7 +103,7 @@ class Table extends WindowResizeAware {
 
     renderBody(columns, width) {
 
-        let {dataSource} = this.props;
+        let {dataSource, noDataContent} = this.props;
 
         let body = dataSource && dataSource.length
             ? dataSource.map((rowData, index) => {
@@ -113,7 +113,7 @@ class Table extends WindowResizeAware {
                 <div
                     className={this.getPartClassName('body-empty')}
                     style={{width: width - 2}}>
-                    没有数据
+                    {noDataContent}
                 </div>
             );
 
@@ -154,13 +154,15 @@ Table.propTypes = {
     rowHeight: PropTypes.number.isRequired,
     highlight: PropTypes.bool,
     headerRowHeight: PropTypes.number,
-    dataSource: PropTypes.array.isRequired
+    dataSource: PropTypes.array.isRequired,
+    noDataContent: PropTypes.node
 },
 
 Table.defaultProps = {
     highlight: true,
     rowHeight: 48,
-    headerRowHeight: 56
+    headerRowHeight: 56,
+    noDataContent: '没有数据'
 };
 
 Table.Column = require('./table/Column');
