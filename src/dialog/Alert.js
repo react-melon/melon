@@ -42,8 +42,7 @@ class Alert extends Dialog {
         } = this.props;
 
         return (
-            <div ref="dialogActions"
-                className={this.getPartClassName('actions')} >
+            <div className={this.getPartClassName('actions')} >
                 <Button
                     label="确定"
                     key="submit"
