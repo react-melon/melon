@@ -144,7 +144,15 @@ class UnitCalendar extends InputComponent {
         return date.format(time, 'yyyy-mm-dd');
     }
 
-    stringifyValue(rawValue) {
+    parseValue(value = '') {
+        return value
+            .split(',')
+            .map((date) => {
+                return this.parse(date);
+            });
+    }
+
+    stringifyValue(rawValue = []) {
         return rawValue
             .map((term) => {
                 return this.format(term);

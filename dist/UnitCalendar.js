@@ -127,11 +127,22 @@ define('melon/UnitCalendar', [
                 }
             },
             {
-                key: 'stringifyValue',
-                value: function stringifyValue(rawValue) {
+                key: 'parseValue',
+                value: function parseValue() {
                     var _this2 = this;
+                    var value = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+                    return value.split(',').map(function (date) {
+                        return _this2.parse(date);
+                    });
+                }
+            },
+            {
+                key: 'stringifyValue',
+                value: function stringifyValue() {
+                    var _this3 = this;
+                    var rawValue = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
                     return rawValue.map(function (term) {
-                        return _this2.format(term);
+                        return _this3.format(term);
                     }).join(',');
                 }
             }
