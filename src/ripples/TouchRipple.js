@@ -87,10 +87,8 @@ class TouchRipple extends Component {
                         className={this.getClassName()}>
                         {Object.keys(circles).map(key => {
                             let {opacity, scale} = circles[key];
-                            if (opacity < 0.01) {
-                                opacity = 0;
-                                scale = 2;
-                            }
+                            opacity = Math.round(opacity * 100) / 100;
+                            scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
                             return (
                                 <RippleCircle
                                     key={key}

@@ -9,11 +9,6 @@ var React = require('react');
 var InputComponent = require('./InputComponent');
 var CenterRipple = require('./ripples/CenterRipple');
 
-var {
-    Motion,
-    spring
-} = require('react-motion');
-
 class Toggle extends InputComponent {
 
     static displayName = 'Toggle';
@@ -130,28 +125,26 @@ class Toggle extends InputComponent {
     renderBar() {
 
         var checked = this.isChecked();
+        var disabled = this.props.disabled;
 
         var barStyle = checked
             ? {backgroundColor: 'rgba(0, 188, 212, 0.498039)'}
             : null;
 
         var circleColor = checked ? 'rgb(0, 188, 212)' : '';
+        var circleLeft = checked ? 45 : 0;
 
         return (
             <div className={this.getPartClassName('bar-container')}>
                 <div className={this.getPartClassName('bar')} style={barStyle} />
-                <Motion style={{x: spring(checked ? 45 : 0)}}>
-                    {({x}) =>
-                        <div
-                            className={this.getPartClassName('circle')}
-                            style={{
-                                left: x + '%',
-                                backgroundColor: circleColor
-                            }} >
-                            <CenterRipple flag={checked} scale={2.5} opacity={0.3} />
-                        </div>
-                    }
-                </Motion>
+                <div
+                    className={this.getPartClassName('circle')}
+                    style={{
+                        left: circleLeft + '%',
+                        backgroundColor: circleColor
+                    }} >
+                    {disabled ? null : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
+                </div>
             </div>
         );
 

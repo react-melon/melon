@@ -70,10 +70,8 @@ class CenterRipple extends Component {
                     <div className={this.getClassName()}>
                         {Object.keys(circles).map(key => {
                             let {opacity, scale} = circles[key];
-                            if (opacity < 0.01) {
-                                opacity = 0;
-                                scale = this.props.scale;
-                            }
+                            opacity = Math.round(opacity * 100) / 100;
+                            scale = opacity <= 0.01 ? this.props.scale : Math.round(scale * 100) / 100;
                             return (
                                 <RippleCircle
                                     key={key}
