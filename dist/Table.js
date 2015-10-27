@@ -89,22 +89,24 @@ define('melon/Table', [
                 key: 'renderBody',
                 value: function renderBody(columns, width) {
                     var _this = this;
-                    var dataSource = this.props.dataSource;
+                    var _props = this.props;
+                    var dataSource = _props.dataSource;
+                    var noDataContent = _props.noDataContent;
                     var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
                         return _this.renderRow(columns, rowData, index, width);
                     }) : React.createElement('div', {
                         className: this.getPartClassName('body-empty'),
                         style: { width: width - 2 }
-                    }, '\u6CA1\u6709\u6570\u636E');
+                    }, noDataContent);
                     return React.createElement('div', { className: this.getPartClassName('body') }, body);
                 }
             },
             {
                 key: 'renderRow',
                 value: function renderRow(columns, rowData, index, tableWidth) {
-                    var _props = this.props;
-                    var rowHeight = _props.rowHeight;
-                    var highlight = _props.highlight;
+                    var _props2 = this.props;
+                    var rowHeight = _props2.rowHeight;
+                    var highlight = _props2.highlight;
                     return React.createElement(Row, {
                         height: rowHeight,
                         highlight: highlight,
@@ -136,11 +138,13 @@ define('melon/Table', [
         rowHeight: PropTypes.number.isRequired,
         highlight: PropTypes.bool,
         headerRowHeight: PropTypes.number,
-        dataSource: PropTypes.array.isRequired
+        dataSource: PropTypes.array.isRequired,
+        noDataContent: PropTypes.node
     }, Table.defaultProps = {
         highlight: true,
         rowHeight: 48,
-        headerRowHeight: 56
+        headerRowHeight: 56,
+        noDataContent: '\u6CA1\u6709\u6570\u636E'
     };
     Table.Column = require('./table/Column');
     module.exports = Table;
