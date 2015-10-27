@@ -17,10 +17,15 @@ class Pager extends MainClickAware {
 
     constructor(props) {
         super(props);
-
         this.state = {
             page: this.props.page || 0
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            page: nextProps.page
+        });
     }
 
     getVariants(props) {
