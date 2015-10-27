@@ -39,7 +39,8 @@ class Dialog extends Component {
     componentDidMount() {
         this.positionDialog();
         if (this.state.open) {
-            this.dialogWindow.style.marginTop = this.marginTop + 'px';
+            var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
+            dialogWindow.style.marginTop = this.marginTop + 'px';
         }
     }
 

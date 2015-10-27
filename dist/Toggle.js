@@ -5,16 +5,12 @@ define('melon/Toggle', [
     './babelHelpers',
     'react',
     './InputComponent',
-    './ripples/CenterRipple',
-    'react-motion'
+    './ripples/CenterRipple'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var InputComponent = require('./InputComponent');
     var CenterRipple = require('./ripples/CenterRipple');
-    var _require = require('react-motion');
-    var Motion = _require.Motion;
-    var spring = _require.spring;
     var Toggle = function (_InputComponent) {
         babelHelpers.inherits(Toggle, _InputComponent);
         babelHelpers.createClass(Toggle, null, [{
@@ -107,27 +103,25 @@ define('melon/Toggle', [
             {
                 key: 'renderBar',
                 value: function renderBar() {
-                    var _this = this;
                     var checked = this.isChecked();
+                    var disabled = this.props.disabled;
                     var barStyle = checked ? { backgroundColor: 'rgba(0, 188, 212, 0.498039)' } : null;
                     var circleColor = checked ? 'rgb(0, 188, 212)' : '';
+                    var circleLeft = checked ? 45 : 0;
                     return React.createElement('div', { className: this.getPartClassName('bar-container') }, React.createElement('div', {
                         className: this.getPartClassName('bar'),
                         style: barStyle
-                    }), React.createElement(Motion, { style: { x: spring(checked ? 45 : 0) } }, function (_ref) {
-                        var x = _ref.x;
-                        return React.createElement('div', {
-                            className: _this.getPartClassName('circle'),
-                            style: {
-                                left: x + '%',
-                                backgroundColor: circleColor
-                            }
-                        }, React.createElement(CenterRipple, {
-                            flag: checked,
-                            scale: 2.5,
-                            opacity: 0.3
-                        }));
-                    }));
+                    }), React.createElement('div', {
+                        className: this.getPartClassName('circle'),
+                        style: {
+                            left: circleLeft + '%',
+                            backgroundColor: circleColor
+                        }
+                    }, disabled ? null : React.createElement(CenterRipple, {
+                        flag: checked,
+                        scale: 2.5,
+                        opacity: 0.3
+                    })));
                 }
             }
         ]);

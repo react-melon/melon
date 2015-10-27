@@ -110,10 +110,8 @@ define('melon/ripples/TouchRipple', [
                             var _circles$key = circles[key];
                             var opacity = _circles$key.opacity;
                             var scale = _circles$key.scale;
-                            if (opacity < 0.01) {
-                                opacity = 0;
-                                scale = 2;
-                            }
+                            opacity = Math.round(opacity * 100) / 100;
+                            scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
                             return React.createElement(RippleCircle, {
                                 key: key,
                                 className: _this.getPartClassName('circle'),

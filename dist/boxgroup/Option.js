@@ -44,7 +44,7 @@ define('melon/boxgroup/Option', [
                     var className = cx.create(this.getClassName(), { 'state-checked': isChecked });
                     return React.createElement('label', {
                         className: className,
-                        onClick: this.onClick
+                        onClick: disabled ? null : this.onClick
                     }, React.createElement('input', {
                         disabled: disabled,
                         checked: isChecked,

@@ -38,7 +38,7 @@ class BoxGroupOption extends Component {
         );
 
         return (
-            <label className={className} onClick={this.onClick}>
+            <label className={className} onClick={disabled ? null : this.onClick}>
                 <input
                     disabled={disabled}
                     checked={isChecked}
