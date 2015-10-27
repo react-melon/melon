@@ -31,6 +31,12 @@ define('melon/Pager', [
         }
         babelHelpers.createClass(Pager, [
             {
+                key: 'componentWillReceiveProps',
+                value: function componentWillReceiveProps(nextProps) {
+                    this.setState({ page: nextProps.page });
+                }
+            },
+            {
                 key: 'getVariants',
                 value: function getVariants(props) {
                     var variants = babelHelpers.get(Object.getPrototypeOf(Pager.prototype), 'getVariants', this).call(this, props) || [];
