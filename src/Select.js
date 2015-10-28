@@ -4,9 +4,10 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var cx = require('./common/util/classname');
-var dom = require('./common/util/dom');
 var Icon = require('./Icon');
+var SeparatePopup = require('./select/SeparatePopup');
 
 var InputComponent = require('./InputComponent');
 
@@ -20,91 +21,143 @@ class Select extends InputComponent {
 
         this.state = {
             ...this.state,
-            isOpen: props.isOpen
+            open: props.open
         };
 
         this.onClick = this.onClick.bind(this);
+        this.onClickOption = this.onClickOption.bind(this);
+        this.onPopupHide = this.onPopupHide.bind(this);
+
+    }
+
+    componentDidMount() {
+
+        super.componentDidMount();
+
+        let container = this.container = document.createElement('div');
+
+        container.className = this.getPartClassName('popup');
+
+        document.body.appendChild(container);
+
+        this.popup = ReactDOM.render(
+            <SeparatePopup
+                target={ReactDOM.findDOMNode(this)}
+                open={false}
+                onHide={this.onPopupHide}>
+                {React.Children.map(
+                    this.props.children,
+                    this.renderItem,
+                    this
+                )}
+            </SeparatePopup>,
+            container
+        );
+
+    }
+
+    componentWillUnmount() {
+
+        super.componentWillUnmount();
+
+        let {container} = this;
+
+        if (container) {
+            ReactDOM.unmountComponentAtNode(container);
+            container.parentElement.removeChild(container);
+            this.container = container = null;
+        }
+
+    }
+
+    showOptions() {
+
+        this.setState({
+            open: true
+        }, () => {
+            ReactDOM.render(
+                <SeparatePopup
+                    target={ReactDOM.findDOMNode(this)}
+                    open={true}
+                    onHide={this.onPopupHide}>
+                    {React.Children.map(
+                        this.props.children,
+                        this.renderItem,
+                        this
+                    )}
+                </SeparatePopup>,
+                this.container
+            );
+        });
+
+    }
+
+    hideOptions() {
+
+        this.setState({
+            open: false
+        }, () => {
+            ReactDOM.render(
+                <SeparatePopup
+                    target={ReactDOM.findDOMNode(this)}
+                    open={false}
+                    onHide={this.onPopupHide}>
+                    {React.Children.map(
+                        this.props.children,
+                        this.renderItem,
+                        this
+                    )}
+                </SeparatePopup>,
+                this.container
+            );
+        });
+
+        super.onBlur({type: 'blur', target: this});
+
     }
 
     render() {
         return (
-            <div ref="main" className={this.getClassName()}>
+            <div
+                onClick={this.onClick}
+                className={this.getClassName()}>
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
-                {this.renderPopup()}
                 {this.renderValidateMessage()}
             </div>
         );
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-        dom.on(document.body, 'click', this.onClick);
-    }
+    onClick() {
 
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        dom.off(document.body, 'click', this.onClick);
-    }
-
-    onClick(e) {
-
-        e = e || window.event;
-        var target = e.target || e.srcElement;
-
-        // @hack 这里你妹的在ie8上有问题。
-        // 虽然我们添加了`componentWillUnmount`的，但是还会有已经`unmount`的控件的`click`被回调。
-        // 所以我们加上这个吧。。。
-        // if (!this.isMounted()) {
-        //     return;
-        // }
-
-        var main = this.refs.main;
-
-        // 点击不在 select内部，那么就把 select 收起
-        if (main !== target && !dom.contains(main, target)) {
-            if (this.state.isOpen) {
-                this.hideOptions();
-            }
-            return;
-        }
-
-        // 如果当前是收起的，那么就展开
-        if (!this.isOpen()) {
-            this.showOptions();
-            return;
-        }
-
-        // 向上查找，找到可用的 option
-        var role = target.getAttribute('data-role');
-
-        while (target !== main && role !== 'option') {
-            target = target.parentElement;
-            role = target.getAttribute('data-role');
-        }
-
-        // 没找到的话就收起
-        if (!role) {
+        if (this.isOpen()) {
             this.hideOptions();
-            return;
         }
+        else {
+            this.showOptions();
+        }
+
+    }
+
+    onClickOption(e) {
+
+        let {target} = e;
+
+        this.hideOptions();
 
         // 如果选项是禁用状态的，收起
         var disabled = target.getAttribute('data-disabled');
 
         if (disabled) {
-            this.hideOptions();
             return;
         }
-
 
         // 取值
         var rawValue = target.getAttribute('data-value');
 
         // 值未发生变化，收起
         if (rawValue === this.state.rawValue) {
-            this.hideOptions();
             return;
         }
 
@@ -117,8 +170,6 @@ class Select extends InputComponent {
         };
 
         super.onChange(e);
-
-        this.hideOptions();
 
         // 被控制的状态，交给控制者处理
         if (this.isControlled()) {
@@ -138,32 +189,10 @@ class Select extends InputComponent {
             }
 
         });
-
     }
 
-    renderPopup() {
-
-        var isOpen = this.isOpen();
-
-        var style = isOpen
-            ? {
-                height: 'auto',
-                opacity: 1,
-                overflow: 'auto'
-            }
-            : {
-                height: 0,
-                opacity: 0,
-                padding: 0,
-                overflow: 'hidden'
-            };
-
-        return (
-            <div className="ui-select-popup" style={style}>
-                {React.Children.map(this.props.children, this.renderItem, this)}
-            </div>
-        );
-
+    onPopupHide(e) {
+        this.hideOptions();
     }
 
     renderItem(child) {
@@ -235,7 +264,8 @@ class Select extends InputComponent {
                 data-value={value}
                 data-role="option"
                 data-disabled={disabled}
-                title={name}>
+                title={name}
+                onClick={this.onClickOption}>
                 {props.label || props.children}
             </div>
         );
@@ -245,7 +275,12 @@ class Select extends InputComponent {
     renderHiddenInput() {
         var name = this.props.name;
         return name
-            ? (<input name={name} type="hidden" value={this.state.rawValue} />)
+            ? (
+                <input
+                    name={name}
+                    type="hidden"
+                    value={this.state.rawValue} />
+            )
             : null;
     }
 
@@ -303,25 +338,7 @@ class Select extends InputComponent {
     }
 
     isOpen() {
-        return this.state.isOpen;
-    }
-
-    showOptions() {
-
-        this.setState({
-            isOpen: true
-        });
-
-    }
-
-    hideOptions() {
-
-        this.setState({
-            isOpen: false
-        });
-
-        super.onBlur({type: 'blur', target: this});
-
+        return this.state.open;
     }
 
 }
