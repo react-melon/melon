@@ -121,7 +121,10 @@ class Uploader extends InputComponent {
 
         this
             .props
-            .upload(e.files)
+            .upload({
+                target: this,
+                files: e.target.files
+            })
             .then(
                 (result) => {
                     this.setFile(result);

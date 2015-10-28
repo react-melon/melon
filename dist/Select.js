@@ -4,16 +4,18 @@ define('melon/Select', [
     'module',
     './babelHelpers',
     'react',
+    'react-dom',
     './common/util/classname',
-    './common/util/dom',
     './Icon',
+    './select/SeparatePopup',
     './InputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
+    var ReactDOM = require('react-dom');
     var cx = require('./common/util/classname');
-    var dom = require('./common/util/dom');
     var Icon = require('./Icon');
+    var SeparatePopup = require('./select/SeparatePopup');
     var InputComponent = require('./InputComponent');
     var Select = function (_InputComponent) {
         babelHelpers.inherits(Select, _InputComponent);
@@ -25,66 +27,99 @@ define('melon/Select', [
         function Select(props) {
             babelHelpers.classCallCheck(this, Select);
             babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'constructor', this).call(this, props);
-            this.state = babelHelpers._extends({}, this.state, { isOpen: props.isOpen });
+            this.state = babelHelpers._extends({}, this.state, { open: props.open });
             this.onClick = this.onClick.bind(this);
+            this.onClickOption = this.onClickOption.bind(this);
+            this.onPopupHide = this.onPopupHide.bind(this);
         }
         babelHelpers.createClass(Select, [
-            {
-                key: 'render',
-                value: function render() {
-                    return React.createElement('div', {
-                        ref: 'main',
-                        className: this.getClassName()
-                    }, this.renderLabel(), this.renderHiddenInput(), this.renderIcon(), this.renderPopup(), this.renderValidateMessage());
-                }
-            },
             {
                 key: 'componentDidMount',
                 value: function componentDidMount() {
                     babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'componentDidMount', this).call(this);
-                    dom.on(document.body, 'click', this.onClick);
+                    var container = this.container = document.createElement('div');
+                    container.className = this.getPartClassName('popup');
+                    document.body.appendChild(container);
+                    this.popup = ReactDOM.render(React.createElement(SeparatePopup, {
+                        target: ReactDOM.findDOMNode(this),
+                        open: false,
+                        onHide: this.onPopupHide
+                    }, React.Children.map(this.props.children, this.renderItem, this)), container);
                 }
             },
             {
                 key: 'componentWillUnmount',
                 value: function componentWillUnmount() {
                     babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'componentWillUnmount', this).call(this);
-                    dom.off(document.body, 'click', this.onClick);
+                    var container = this.container;
+                    if (container) {
+                        ReactDOM.unmountComponentAtNode(container);
+                        container.parentElement.removeChild(container);
+                        this.container = container = null;
+                    }
+                }
+            },
+            {
+                key: 'showOptions',
+                value: function showOptions() {
+                    var _this = this;
+                    this.setState({ open: true }, function () {
+                        ReactDOM.render(React.createElement(SeparatePopup, {
+                            target: ReactDOM.findDOMNode(_this),
+                            open: true,
+                            onHide: _this.onPopupHide
+                        }, React.Children.map(_this.props.children, _this.renderItem, _this)), _this.container);
+                    });
+                }
+            },
+            {
+                key: 'hideOptions',
+                value: function hideOptions() {
+                    var _this2 = this;
+                    this.setState({ open: false }, function () {
+                        ReactDOM.render(React.createElement(SeparatePopup, {
+                            target: ReactDOM.findDOMNode(_this2),
+                            open: false,
+                            onHide: _this2.onPopupHide
+                        }, React.Children.map(_this2.props.children, _this2.renderItem, _this2)), _this2.container);
+                    });
+                    babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'onBlur', this).call(this, {
+                        type: 'blur',
+                        target: this
+                    });
+                }
+            },
+            {
+                key: 'render',
+                value: function render() {
+                    return React.createElement('div', {
+                        onClick: this.onClick,
+                        className: this.getClassName()
+                    }, this.renderLabel(), this.renderHiddenInput(), this.renderIcon(), this.renderValidateMessage());
                 }
             },
             {
                 key: 'onClick',
-                value: function onClick(e) {
-                    e = e || window.event;
-                    var target = e.target || e.srcElement;
-                    var main = this.refs.main;
-                    if (main !== target && !dom.contains(main, target)) {
-                        if (this.state.isOpen) {
-                            this.hideOptions();
-                        }
-                        return;
-                    }
-                    if (!this.isOpen()) {
-                        this.showOptions();
-                        return;
-                    }
-                    var role = target.getAttribute('data-role');
-                    while (target !== main && role !== 'option') {
-                        target = target.parentElement;
-                        role = target.getAttribute('data-role');
-                    }
-                    if (!role) {
+                value: function onClick() {
+                    if (this.isOpen()) {
                         this.hideOptions();
-                        return;
+                    } else {
+                        this.showOptions();
                     }
+                }
+            },
+            {
+                key: 'onClickOption',
+                value: function onClickOption(e) {
+                    var _e = e;
+                    var target = _e.target;
+                    this.hideOptions();
                     var disabled = target.getAttribute('data-disabled');
                     if (disabled) {
-                        this.hideOptions();
                         return;
                     }
                     var rawValue = target.getAttribute('data-value');
                     if (rawValue === this.state.rawValue) {
-                        this.hideOptions();
                         return;
                     }
                     e = {
@@ -94,7 +129,6 @@ define('melon/Select', [
                         rawValue: rawValue
                     };
                     babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'onChange', this).call(this, e);
-                    this.hideOptions();
                     if (this.isControlled()) {
                         this.props.onChange(e);
                         return;
@@ -108,23 +142,9 @@ define('melon/Select', [
                 }
             },
             {
-                key: 'renderPopup',
-                value: function renderPopup() {
-                    var isOpen = this.isOpen();
-                    var style = isOpen ? {
-                        height: 'auto',
-                        opacity: 1,
-                        overflow: 'auto'
-                    } : {
-                        height: 0,
-                        opacity: 0,
-                        padding: 0,
-                        overflow: 'hidden'
-                    };
-                    return React.createElement('div', {
-                        className: 'ui-select-popup',
-                        style: style
-                    }, React.Children.map(this.props.children, this.renderItem, this));
+                key: 'onPopupHide',
+                value: function onPopupHide(e) {
+                    this.hideOptions();
                 }
             },
             {
@@ -169,7 +189,8 @@ define('melon/Select', [
                         'data-value': value,
                         'data-role': 'option',
                         'data-disabled': disabled,
-                        title: name
+                        title: name,
+                        onClick: this.onClickOption
                     }, props.label || props.children);
                 }
             },
@@ -225,23 +246,7 @@ define('melon/Select', [
             {
                 key: 'isOpen',
                 value: function isOpen() {
-                    return this.state.isOpen;
-                }
-            },
-            {
-                key: 'showOptions',
-                value: function showOptions() {
-                    this.setState({ isOpen: true });
-                }
-            },
-            {
-                key: 'hideOptions',
-                value: function hideOptions() {
-                    this.setState({ isOpen: false });
-                    babelHelpers.get(Object.getPrototypeOf(Select.prototype), 'onBlur', this).call(this, {
-                        type: 'blur',
-                        target: this
-                    });
+                    return this.state.open;
                 }
             }
         ]);
