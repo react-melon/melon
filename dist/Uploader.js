@@ -108,7 +108,10 @@ define('melon/Uploader', [
                 value: function onFileChange(e) {
                     var _this = this;
                     this.setUploading();
-                    this.props.upload(e.files).then(function (result) {
+                    this.props.upload({
+                        target: this,
+                        files: e.target.files
+                    }).then(function (result) {
                         _this.setFile(result);
                     }, function (error) {
                         _this.clearFile();
