@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "ui components for react",
   "main": "./src",
   "directories": {
