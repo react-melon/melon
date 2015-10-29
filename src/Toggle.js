@@ -88,6 +88,13 @@ class Toggle extends InputComponent {
         return props.disabled || props.readOnly || props.checked != null && props.onChange;
     }
 
+    getStates(props) {
+        return {
+            ...super.getStates(props),
+            checked: this.isChecked()
+        };
+    }
+
     onChange(e) {
 
         var props = this.props;
@@ -127,22 +134,10 @@ class Toggle extends InputComponent {
         var checked = this.isChecked();
         var disabled = this.props.disabled;
 
-        var barStyle = checked
-            ? {backgroundColor: 'rgba(0, 188, 212, 0.498039)'}
-            : null;
-
-        var circleColor = checked ? 'rgb(0, 188, 212)' : '';
-        var circleLeft = checked ? 45 : 0;
-
         return (
             <div className={this.getPartClassName('bar-container')}>
-                <div className={this.getPartClassName('bar')} style={barStyle} />
-                <div
-                    className={this.getPartClassName('circle')}
-                    style={{
-                        left: circleLeft + '%',
-                        backgroundColor: circleColor
-                    }} >
+                <div className={this.getPartClassName('bar')} />
+                <div className={this.getPartClassName('circle')}>
                     {disabled ? null : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
                 </div>
             </div>

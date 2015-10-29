@@ -75,6 +75,12 @@ define('melon/Toggle', [
                 }
             },
             {
+                key: 'getStates',
+                value: function getStates(props) {
+                    return babelHelpers._extends({}, babelHelpers.get(Object.getPrototypeOf(Toggle.prototype), 'getStates', this).call(this, props), { checked: this.isChecked() });
+                }
+            },
+            {
                 key: 'onChange',
                 value: function onChange(e) {
                     var props = this.props;
@@ -105,19 +111,7 @@ define('melon/Toggle', [
                 value: function renderBar() {
                     var checked = this.isChecked();
                     var disabled = this.props.disabled;
-                    var barStyle = checked ? { backgroundColor: 'rgba(0, 188, 212, 0.498039)' } : null;
-                    var circleColor = checked ? 'rgb(0, 188, 212)' : '';
-                    var circleLeft = checked ? 45 : 0;
-                    return React.createElement('div', { className: this.getPartClassName('bar-container') }, React.createElement('div', {
-                        className: this.getPartClassName('bar'),
-                        style: barStyle
-                    }), React.createElement('div', {
-                        className: this.getPartClassName('circle'),
-                        style: {
-                            left: circleLeft + '%',
-                            backgroundColor: circleColor
-                        }
-                    }, disabled ? null : React.createElement(CenterRipple, {
+                    return React.createElement('div', { className: this.getPartClassName('bar-container') }, React.createElement('div', { className: this.getPartClassName('bar') }), React.createElement('div', { className: this.getPartClassName('circle') }, disabled ? null : React.createElement(CenterRipple, {
                         flag: checked,
                         scale: 2.5,
                         opacity: 0.3

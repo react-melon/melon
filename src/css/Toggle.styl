@@ -1,17 +1,5 @@
 @import "./base.styl"
 
-
-$-melon-toggle-bar = {
-
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
-    width: 100%
-    height: 0.8em
-    border-radius: 30px
-    background-color: rgba(0, 0, 0, 0.258824)
-
-}
-
-
 .{$-melon-class-prefix}-toggle
 
     display: inline-block
@@ -25,23 +13,33 @@ $-melon-toggle-bar = {
         cursor: not-allowed
 
         .{$-melon-class-prefix}-toggle-circle
-            background-color: $-melon-colors.grey400
+            background-color: $-melon-toggle-circle-disabled.background-color
 
         .{$-melon-class-prefix}-toggle-bar
-            background-color: $-melon-colors.faintBlack
+            background-color: $-melon-toggle-bar-disabled.background-color
+
+    &.state-checked
+
+        .{$-melon-class-prefix}-toggle-circle
+            left: 45%
+            background-color: $-melon-toggle-circle.background-color
+
+        .{$-melon-class-prefix}-toggle-bar
+            background-color: $-melon-toggle-bar.background-color
+
 
     > input
         display: none
 
     &-bar-container
 
+        float: left
         position: relative
         display: inline-block
         transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
         width: 2em
         padding: 0.2em 0px 0.2em 0.1em
 
-        float: left
 
     &-circle
         transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
@@ -52,10 +50,15 @@ $-melon-toggle-bar = {
         position: absolute
         top: 0
         left: 0
+        left: 0
         width: 1.2em
         height: 1.2em
         line-height: 2em
         background-color: $-melon-colors.white
 
     &-bar
-        {$-melon-toggle-bar}
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+        width: 100%
+        height: 0.8em
+        border-radius: 30px
+        background-color: rgba(0, 0, 0, 0.258824)
