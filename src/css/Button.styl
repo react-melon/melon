@@ -9,7 +9,6 @@ $-melon-button = {
 
     padding: 0 1em
     height: 2em
-    min-width: 4em
 
     font-size: $-melon-medium-font-size
     line-height: 2em
@@ -27,99 +26,15 @@ $-melon-button = {
     cursor: pointer
     user-select: none
 
-    '&:disabled': {
-        cursor: not-allowed
-    }
-
     transition: all .3s
 
     // Gets rid of tap active state
     -webkit-tap-highlight-color: transparent
 
-}
-
-$-melon-button-swatches-default = {
-    color: $-melon-colors.grey800
-    color-hover: $-melon-colors.grey800
-    color-active: $-melon-colors.grey800
-    background-color: $-melon-colors.transparent
-    background-color-hover: rgba(#999, .2)
-    background-color-active: rgba(#999, .4)
-    color-ripple: $-melon-colors.darkBlack
-}
-
-$-melon-button-swatches = {
-
-    primary: {
-        color: $-melon-colors.pinkA200
-        color-hover: $-melon-colors.pinkA200
-        color-active: $-melon-colors.pinkA200
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.pinkA200
-        background-color-active: $-melon-colors.pinkA200
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.pinkA200
-    },
-
-    secondery: {
-        color: $-melon-colors.cyan500
-        color-hover: $-melon-colors.cyan500
-        color-active: $-melon-colors.cyan500
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.cyan500
-        background-color-active: $-melon-colors.cyan500
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.cyan500
-    },
-
-    danger: {
-        color: $-melon-colors.red600
-        color-hover: $-melon-colors.red600
-        color-active: $-melon-colors.red600
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.red600
-        background-color-active: $-melon-colors.red600
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.red600
-    },
-
-    success: {
-        color: $-melon-colors.green500
-        color-hover: $-melon-colors.green500
-        color-active: $-melon-colors.green500
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.green500
-        background-color-active: $-melon-colors.green500
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.green500
-    },
-
-    info: {
-        color: $-melon-colors.blue500
-        color-hover: $-melon-colors.blue500
-        color-active: $-melon-colors.blue500
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.blue500
-        background-color-active: $-melon-colors.blue500
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.blue500
-    },
-
-    warning: {
-        color: $-melon-colors.orange500
-        color-hover: $-melon-colors.orange500
-        color-active: $-melon-colors.orange500
-        color-disabled: $-melon-colors.grey900
-        background-color: $-melon-colors.transparent
-        background-color-hover: $-melon-colors.orange500
-        background-color-active: $-melon-colors.orange500
-        backgorund-color-disabled: $-melon-colors.grey200
-        color-ripple: $-melon-colors.orange500
+    '&:disabled': {
+        cursor: not-allowed
+        color: rgba(#000, .26) !important
+        background-color: $-melon-colors.white !important
     }
 
 }
@@ -141,47 +56,23 @@ melon-button-swatch($swatches, $revert = false)
         background-color: rgba($swatches.background-color-active, $revert ? .8 : .4)
 
 
-$-melon-button-raised = {
-
-    box-shadow: melon-get-z-depth('1')
-
-    '&:active': {
-        box-shadow: melon-get-z-depth('2')
-    }
-
-    '&:disabled': {
-        box-shadow: none
-    }
-
-}
-
-$-melon-button-variants = {
-    'raised': $-melon-button-raised
-}
-
 .{$-melon-class-prefix}-button
 
     {$-melon-button}
 
-    melon-button-swatch($-melon-button-swatches-default)
+    melon-button-swatch($-melon-button-default)
 
-    for $swatch, $hashes in $-melon-button-swatches
-        &.variant-{$swatch}
-            melon-button-swatch($hashes)
+    for $color-theme, $value in $-melon-button-color-themes
+        &.variant-{$color-theme}
+            melon-button-swatch($value)
             &.variant-raised
-                melon-button-swatch($hashes, true)
+                melon-button-swatch($value, true)
 
-    &:disabled
-        color: rgba(#000, .26) !important
-        background-color: $-melon-colors.white !important
-
-        &.variant-raised
+    &.variant-raised
+        {$-melon-button-raised}
+        &:disabled
             color: rgba(#000, .26) !important
             background-color: $-melon-colors.grey200 !important
-
-    for $variant, $hashes in $-melon-button-variants
-        &.{$-melon-variant-prefix}-{$variant}
-            {$hashes}
 
     .{$-melon-class-prefix}-icon
         display: inline-block

@@ -2,31 +2,29 @@
 @require "./Button.styl"
 
 .{$-melon-class-prefix}-link
-    color: rgba($-melon-colors.black, .9)
+    color: $-melon-link.color
     text-decoration: none
 
     &:hover
-        color: $-melon-colors.blue500
+        color: $-melon-link.states.hover.color
 
-    // {$-melon-button}
-    // melon-button-swatch($-melon-button-swatches-default)
-    for $variant, $hashes in $-melon-button-variants
-        &.{$-melon-variant-prefix}-{$variant}
-            {$hashes}
+    &.variant-button
 
-    for $swatch, $hashes in $-melon-button-swatches
-        &.variant-{$swatch}
-            melon-button-swatch($hashes)
-            &.variant-raised
-                melon-button-swatch($hashes, true)
+        {$-melon-button}
 
-    &:disabled
-        color: rgba(#000, .26) !important
-        background-color: $-melon-colors.white !important
+        melon-button-swatch($-melon-button-default)
+
+        for $color-theme, $value in $-melon-button-color-themes
+            &.variant-{$color-theme}
+                melon-button-swatch($value)
+                &.variant-raised
+                    melon-button-swatch($value, true)
 
         &.variant-raised
-            color: rgba(#000, .26) !important
-            background-color: $-melon-colors.grey200 !important
+            {$-melon-button-raised}
+            &:disabled
+                color: rgba(#000, .26) !important
+                background-color: $-melon-colors.grey200 !important
 
     .{$-melon-class-prefix}-icon
         display: inline-block
