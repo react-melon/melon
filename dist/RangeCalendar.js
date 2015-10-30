@@ -44,7 +44,7 @@ define('melon/RangeCalendar', [
             begin = this.parseDate(begin);
             end = this.parseDate(end);
             rawValue[0] = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue[0]) ? begin : rawValue[0];
-            rawValue[1] = _.isDate(end) && DateTime.isBeforeDate(end, rawValue[1]) ? end : rawValue[0];
+            rawValue[1] = _.isDate(end) && DateTime.isBeforeDate(end, rawValue[1]) ? end : rawValue[1];
             this.state = babelHelpers._extends({}, this.state, {
                 open: false,
                 month: _.clone(rawValue),
