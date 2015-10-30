@@ -83,6 +83,7 @@ define('melon/Uploader', [
                         }), '\u5DF2\u4E0A\u4F20', React.createElement(Link, {
                             size: this.props.size,
                             href: this.getValue(),
+                            variants: ['button'],
                             target: '_blank'
                         }, '\u67E5\u770B'), React.createElement(Button, {
                             size: this.props.size,

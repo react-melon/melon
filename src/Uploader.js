@@ -87,6 +87,7 @@ class Uploader extends InputComponent {
                     <Link
                         size={this.props.size}
                         href={this.getValue()}
+                        variants={['button']}
                         target="_blank">
                         查看
                     </Link>
