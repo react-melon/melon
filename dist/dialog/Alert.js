@@ -51,6 +51,7 @@ define('melon/dialog/Alert', [
                         label: '\u786E\u5B9A',
                         key: 'submit',
                         size: size,
+                        type: 'button',
                         onClick: this.onAlertSubmit,
                         variants: buttonVariants
                     }));

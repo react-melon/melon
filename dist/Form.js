@@ -4,10 +4,12 @@ define('melon/Form', [
     'module',
     './babelHelpers',
     'react',
+    'react-dom',
     './Component'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
+    var ReactDOM = require('react-dom');
     var Component = require('./Component');
     var Form = function (_Component) {
         babelHelpers.inherits(Form, _Component);
@@ -100,10 +102,13 @@ define('melon/Form', [
                 key: 'validate',
                 value: function validate() {
                     var isValid = true;
-                    for (var fields = this.fields, i = fields.length - 1; i >= 0; --i) {
+                    for (var fields = this.fields, i = 0, len = fields.length; i < len; ++i) {
                         var field = fields[i];
                         var value = field.getValue();
                         if (!field.validate(value).isValid()) {
+                            if (isValid) {
+                                ReactDOM.findDOMNode(field).scrollIntoView();
+                            }
                             isValid = false;
                         }
                     }

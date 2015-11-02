@@ -265,12 +265,14 @@ class Calendar extends InputComponent {
             placeholder,
             disabled,
             size,
+            name,
             ...others
         } = props;
 
         return (
             <div {...others} className={this.getClassName()}>
                 <input
+                    name={name}
                     ref="input"
                     type="hidden"
                     value={this.getValue()}
@@ -279,6 +281,7 @@ class Calendar extends InputComponent {
                     placeholder={placeholder} />
                 {this.renderLabel()}
                 {this.renderDialog()}
+                {this.renderValidateMessage()}
             </div>
         );
 

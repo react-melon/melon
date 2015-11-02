@@ -53,11 +53,13 @@ class Confirm extends Dialog {
                     label="取消"
                     key="cancel"
                     size={size}
+                    type="button"
                     onClick={this.onConfirmSubmit.bind(this, false)}
                     variants={buttonVariants} />
                 <Button
                     label="确定"
                     key="submit"
+                    type="button"
                     size={size}
                     onClick={this.onConfirmSubmit.bind(this, true)}
                     variants={buttonVariants} />

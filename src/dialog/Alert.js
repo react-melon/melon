@@ -47,6 +47,7 @@ class Alert extends Dialog {
                     label="确定"
                     key="submit"
                     size={size}
+                    type="button"
                     onClick={this.onAlertSubmit}
                     variants={buttonVariants} />
             </div>

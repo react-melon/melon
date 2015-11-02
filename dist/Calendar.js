@@ -212,20 +212,23 @@ define('melon/Calendar', [
                     var placeholder = props.placeholder;
                     var disabled = props.disabled;
                     var size = props.size;
+                    var name = props.name;
                     var others = babelHelpers.objectWithoutProperties(props, [
                         'lang',
                         'placeholder',
                         'disabled',
-                        'size'
+                        'size',
+                        'name'
                     ]);
                     return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement('input', {
+                        name: name,
                         ref: 'input',
                         type: 'hidden',
                         value: this.getValue(),
                         disabled: disabled,
                         size: size,
                         placeholder: placeholder
-                    }), this.renderLabel(), this.renderDialog());
+                    }), this.renderLabel(), this.renderDialog(), this.renderValidateMessage());
                 }
             },
             {
