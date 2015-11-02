@@ -7,20 +7,20 @@
 
         display: inline-block
         text-decoration: none
-        color: $-melon-colors.blue500
+        color: $-melon-breadcrumb.item.color
         line-height: 2em
 
         &[href]:hover
-            color: $-melon-colors.blue500
+            color: $-melon-breadcrumb.item.hover.color
 
         &:after
             display: inline-block
             content: '/'
             padding: 0 0.5em
-            color: $-melon-colors.grey600
+            color: $-melon-breadcrumb.seperator.color
 
         &:last-child
-            color: $-melon-colors.grey600
+            color: $-melon-breadcrumb.item.lastChild.color
             &:after
                 display: none
 
