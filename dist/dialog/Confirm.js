@@ -57,11 +57,13 @@ define('melon/dialog/Confirm', [
                         label: '\u53D6\u6D88',
                         key: 'cancel',
                         size: size,
+                        type: 'button',
                         onClick: this.onConfirmSubmit.bind(this, false),
                         variants: buttonVariants
                     }), React.createElement(Button, {
                         label: '\u786E\u5B9A',
                         key: 'submit',
+                        type: 'button',
                         size: size,
                         onClick: this.onConfirmSubmit.bind(this, true),
                         variants: buttonVariants

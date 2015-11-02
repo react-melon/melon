@@ -51,6 +51,8 @@ var View = React.createClass({
                                 required
                                 defaultValue={this.state.name} />
                         </div>
+                    </div>
+                    <div className="melon-row">
                         <div className="melon-column melon-column-6">
                             <TextBox
                                 variants={['fluid']}
@@ -69,6 +71,8 @@ var View = React.createClass({
                             <option value="man">男</option>
                             <option value="woman">女</option>
                         </Select>
+                    </div>
+                    <div className="melon-row">
                         <Uploader
                             className="melon-column melon-column-6"
                             name="avater"
@@ -88,6 +92,8 @@ var View = React.createClass({
                                 <option value="Pear" label="Pear" disabled />
                             </BoxGroup>
                         </div>
+                    </div>
+                    <div className="melon-row">
                         <div className="melon-column melon-column-6">
                             <Title level={5}>CheckBox / 复选框</Title>
                             <BoxGroup
@@ -110,9 +116,11 @@ var View = React.createClass({
                             <Calendar
                                 name="date"
                                 defaultValue={this.state.date}
-                                min="2015-08-01"
-                                max="2016-09-30" />
+                                begin="2015-08-01"
+                                end="2016-09-30" />
                         </div>
+                    </div>
+                    <div className="melon-row">
                         <div className="melon-column melon-column-6">
 
                         </div>

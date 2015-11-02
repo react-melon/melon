@@ -4,7 +4,7 @@
  */
 
 var React = require('react');
-
+var ReactDOM = require('react-dom');
 var Component = require('./Component');
 
 class Form extends Component {
@@ -121,11 +121,18 @@ class Form extends Component {
 
         var isValid = true;
 
-        for (var fields = this.fields, i = fields.length - 1; i >= 0; --i) {
+        for (var fields = this.fields, i = 0, len = fields.length; i < len; ++i) {
             var field = fields[i];
             var value = field.getValue();
+
             if (!field.validate(value).isValid()) {
+
+                if (isValid) {
+                    ReactDOM.findDOMNode(field).scrollIntoView();
+                }
+
                 isValid = false;
+
             }
         }
 
