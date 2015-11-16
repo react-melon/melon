@@ -187,7 +187,7 @@ SnackBar.defaultProps = {
 SnackBar.propTypes = {
     action: PropTypes.string,
     autoHideDuration: PropTypes.number,
-    message: PropTypes.string,
+    message: PropTypes.node.isRequired,
     openOnMount: PropTypes.bool,
     onHide: PropTypes.func,
     onShow: PropTypes.func,
@@ -195,9 +195,7 @@ SnackBar.propTypes = {
 };
 
 
-SnackBar.show = function (message, duration, direction) {
-    duration = duration || 0;
-    direction = direction || 'bl';
+SnackBar.show = function (message, duration = 0, direction = 'bl') {
 
     var doc = document;
     var body = doc.body;
@@ -210,20 +208,31 @@ SnackBar.show = function (message, duration, direction) {
             autoHideDuration={duration}
             message={message}
             direction={direction}
-            onHide={function (e) {
-                setTimeout(function () {
-                    ReactDOM.unmountComponentAtNode(container);
-                    body.removeChild(container);
-                    body = doc = container = snackbar = null;
-                }, 400);
+            onHide={() => {
+
+                // 这里 delay 400 是因为要等动画搞完
+                setTimeout(
+                    () => {
+                        if (container) {
+                            ReactDOM.unmountComponentAtNode(container);
+                            body.removeChild(container);
+                            body = doc = container = snackbar = null;
+                        }
+                    },
+                    400
+                );
+
             }} />
     );
 
-    ReactDOM.render(snackbar, container, function () {
+    ReactDOM.render(snackbar, container, () => {
         snackbar = React.cloneElement(snackbar, {open: true});
-        setTimeout(function () {
-            ReactDOM.render(snackbar, container);
-        }, 10);
+        setTimeout(
+            () => {
+                ReactDOM.render(snackbar, container);
+            },
+            0
+        );
     });
 
     return snackbar;

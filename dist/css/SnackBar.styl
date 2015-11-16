@@ -61,10 +61,8 @@ $-melon-snackbar-variants = {
 .{$-melon-class-prefix}-snackbar
     color: $-melon-colors.white
     border-radius: 2px
-    padding: 0 24px
-    padding-right: 10px
-    height: 48px
-    line-height: 48px
+    padding: 0.75em 0.5em 0.75em 1em
+    line-height: 2em
     min-width: 288px
     max-width: 568px
     position: fixed
@@ -97,10 +95,10 @@ $-melon-snackbar-variants = {
 
     &-message
         display: inline-block
+        word-break: break-word
 
     &-action.{$-melon-class-prefix}-button
         color: $-melon-colors.pinkA200
-        margin-top: 8px
         float: right
 
         &:hover,

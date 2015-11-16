@@ -18,11 +18,13 @@ class View extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onDirChange = this.onDirChange.bind(this);
         this.onHide = this.onHide.bind(this);
+        this.onContentChange = this.onContentChange.bind(this);
 
         this.state = {
             open: false,
             duration: 0,
-            direction: 'bl'
+            direction: 'bl',
+            content: 'hello snack bar'
         };
     }
 
@@ -50,10 +52,17 @@ class View extends React.Component {
     onBarClick() {
         var {
             direction,
-            duration
+            duration,
+            content
         } = this.state;
 
-        SnackBar.show('这是一个新鲜出炉的通知', duration, direction);
+        SnackBar.show(content, duration, direction);
+    }
+
+    onContentChange({value}) {
+        this.setState({
+            content: value
+        });
     }
 
     render() {
@@ -75,10 +84,28 @@ class View extends React.Component {
                     defaultValue='bl'
                     onChange={this.onDirChange}
                     value={this.state.direction + ''} />
+                <br />
+                <TextBox
+                    floatingLabel="Content"
+                    defaultValue="这里输入一些内容"
+                    onChange={this.onContentChange}
+                    multiline={true}
+                    value={this.state.content} />
                 <SnackBar
                     open={this.state.open}
                     autoHideDuration={this.state.duration}
-                    message='This is a SnackBar'
+                    message={
+                        <div style={{clear: 'both'}}>
+                            <h1>以下结点操作异常</h1>
+                            <ul>
+                                {['华北', '华南', '华东', '日本', '台湾', '美国'].map((number) => {
+                                    return (
+                                        <li key={number}>{number}{number}{number}{number}{number}</li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    }
                     direction={this.state.direction}
                     action='close'
                     onHide={this.onHide} />
