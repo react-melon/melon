@@ -152,8 +152,9 @@ BoxGroup.propTypes = {
     disabled: PropTypes.bool,
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
     onChange: PropTypes.func,
-    defaultValue: PropTypes.arrayOf(PropTypes.string),
+    defaultRawValue: PropTypes.arrayOf(PropTypes.string),
     rawValue: PropTypes.arrayOf(PropTypes.string),
+    defaultValue: PropTypes.string,
     value: PropTypes.string,
     name: PropTypes.string,
     children: PropTypes.node.isRequired
