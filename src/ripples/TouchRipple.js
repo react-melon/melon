@@ -46,13 +46,21 @@ class TouchRipple extends Component {
     }
 
     componentDidMount() {
-        let main = ReactDOM.findDOMNode(this);
-        this.position = dom.getPosition(main);
-        this.radius = Math.max(this.position.width, this.position.height) / 2;
+        this.updatePosition();
+    }
+
+    componentDidUpdate() {
+        this.updatePosition();
     }
 
     componentWillUnmount() {
         this.position = null;
+    }
+
+    updatePosition() {
+        let main = ReactDOM.findDOMNode(this);
+        this.position = dom.getPosition(main);
+        this.radius = Math.max(this.position.width, this.position.height) / 2;
     }
 
     willLeave(key, valOfKey) {
