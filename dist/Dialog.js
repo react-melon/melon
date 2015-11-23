@@ -6,9 +6,8 @@ define('melon/Dialog', [
     'react',
     'react-dom',
     './Mask',
-    'underscore',
     './common/util/dom',
-    './Component',
+    './common/util/cxBuilder',
     './dialog/DialogWindow',
     './dialog/windowScrollHelper',
     'react-motion'
@@ -17,176 +16,128 @@ define('melon/Dialog', [
     var React = require('react');
     var ReactDOM = require('react-dom');
     var Mask = require('./Mask');
-    var _ = require('underscore');
     var dom = require('./common/util/dom');
-    var Component = require('./Component');
+    var cx = require('./common/util/cxBuilder').create('Dialog');
     var DialogWindow = require('./dialog/DialogWindow');
     var windowScrollHelper = require('./dialog/windowScrollHelper');
     var _require = require('react-motion');
     var Motion = _require.Motion;
     var spring = _require.spring;
-    var Dialog = function (_Component) {
-        babelHelpers.inherits(Dialog, _Component);
-        babelHelpers.createClass(Dialog, null, [{
-                key: 'displayName',
-                value: 'Dialog',
-                enumerable: true
-            }]);
-        function Dialog(props) {
-            babelHelpers.classCallCheck(this, Dialog);
-            babelHelpers.get(Object.getPrototypeOf(Dialog.prototype), 'constructor', this).call(this, props);
+    var PropTypes = React.PropTypes;
+    var Dialog = React.createClass({
+        displayName: 'Dialog',
+        propTypes: {
+            actions: PropTypes.node,
+            maskClickClose: PropTypes.bool,
+            open: PropTypes.bool,
+            onHide: PropTypes.func,
+            onShow: PropTypes.func,
+            title: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.element
+            ])
+        },
+        getDefaultProps: function getDefaultProps() {
+            return {
+                maskClickClose: true,
+                open: false
+            };
+        },
+        getInitialState: function getInitialState() {
             this.originalHTMLBodySize = {};
-            this.state = { open: this.props.open || false };
-            this.positionDialog = this.positionDialog.bind(this);
-            this.handleMaskClick = this.handleMaskClick.bind(this);
-            this.onShow = this.onShow.bind(this);
-            this.onHide = this.onHide.bind(this);
             this.marginTop = -150;
-        }
-        babelHelpers.createClass(Dialog, [
-            {
-                key: 'componentDidMount',
-                value: function componentDidMount() {
-                    this.positionDialog();
-                    if (this.state.open) {
-                        var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-                        dialogWindow.style.marginTop = this.marginTop + 'px';
-                    }
-                }
-            },
-            {
-                key: 'componentWillUpdate',
-                value: function componentWillUpdate() {
-                    this.positionDialog();
-                }
-            },
-            {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    var open = nextProps.open;
-                    if (open === this.state.open) {
-                        return;
-                    }
-                    var onEvent = open ? this.onShow : this.onHide;
-                    this.setState({ open: open }, onEvent);
-                }
-            },
-            {
-                key: 'positionDialog',
-                value: function positionDialog() {
-                    var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-                    this.marginTop = -dialogWindow.offsetHeight / 2;
-                    var windowHeight = dom.getClientHeight();
-                    this.marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : this.marginTop;
-                    dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
-                }
-            },
-            {
-                key: 'bodyScrolling',
-                value: function bodyScrolling() {
-                    var show = this.state.open;
-                    windowScrollHelper[show ? 'stop' : 'restore']();
-                }
-            },
-            {
-                key: 'handleMaskClick',
-                value: function handleMaskClick(e) {
-                    if (this.props.maskClickClose) {
-                        this.setState({ open: false }, this.onHide);
-                    } else {
-                        e.stopPropagation();
-                    }
-                }
-            },
-            {
-                key: 'onShow',
-                value: function onShow() {
-                    this.bodyScrolling();
-                    var onShow = this.props.onShow;
-                    if (_.isFunction(onShow)) {
-                        onShow();
-                    }
-                }
-            },
-            {
-                key: 'onHide',
-                value: function onHide() {
-                    this.bodyScrolling();
-                    if (_.isFunction(this.props.onHide)) {
-                        this.props.onHide();
-                    }
-                }
-            },
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = babelHelpers.get(Object.getPrototypeOf(Dialog.prototype), 'getStates', this).call(this, props);
-                    states.open = this.state.open;
-                    return states;
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var _this = this;
-                    var _props = this.props;
-                    var children = _props.children;
-                    var others = babelHelpers.objectWithoutProperties(_props, ['children']);
-                    var open = this.state.open;
-                    var top = this.marginTop;
-                    var title = this.renderTitle();
-                    var body = React.createElement('div', { className: this.getPartClassName('body') }, children);
-                    var footer = this.renderAction();
-                    var windowPartClassName = this.getPartClassName('window');
-                    return React.createElement('div', babelHelpers._extends({}, others, { className: this.getClassName() }), React.createElement(Motion, { style: { y: spring(open ? top : -150) } }, function (_ref) {
-                        var y = _ref.y;
-                        return React.createElement(DialogWindow, {
-                            top: Math.round(y),
-                            ref: function (c) {
-                                _this.dialogWindow = c;
-                            },
-                            title: title,
-                            footer: footer,
-                            className: windowPartClassName
-                        }, body);
-                    }), React.createElement(Mask, {
-                        show: open,
-                        autoLockScrolling: false,
-                        onClick: this.handleMaskClick
-                    }));
-                }
-            },
-            {
-                key: 'renderTitle',
-                value: function renderTitle() {
-                    var title = this.props.title;
-                    return title ? React.createElement('h1', { className: this.getPartClassName('title') }, title) : null;
-                }
-            },
-            {
-                key: 'renderAction',
-                value: function renderAction() {
-                    var actions = this.props.actions;
-                    return actions ? React.createElement('div', {
-                        ref: 'dialogActions',
-                        className: this.getPartClassName('actions')
-                    }, actions) : null;
-                }
+            return { open: this.props.open };
+        },
+        componentDidMount: function componentDidMount() {
+            this.positionDialog();
+            if (this.state.open) {
+                var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
+                dialogWindow.style.marginTop = this.marginTop + 'px';
             }
-        ]);
-        return Dialog;
-    }(Component);
-    Dialog.propTypes = {
-        actions: React.PropTypes.array,
-        maskClickClose: React.PropTypes.bool,
-        open: React.PropTypes.bool,
-        onHide: React.PropTypes.func,
-        onShow: React.PropTypes.func,
-        title: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element
-        ])
-    };
-    Dialog.defaultProps = { maskClickClose: true };
+        },
+        componentWillUpdate: function componentWillUpdate() {
+            this.positionDialog();
+        },
+        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+            var open = nextProps.open;
+            if (open === this.state.open) {
+                return;
+            }
+            var onEvent = open ? this.onShow : this.onHide;
+            this.setState({ open: open }, onEvent);
+        },
+        positionDialog: function positionDialog() {
+            var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
+            this.marginTop = -dialogWindow.offsetHeight / 2;
+            var windowHeight = dom.getClientHeight();
+            this.marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : this.marginTop;
+            dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+        },
+        bodyScrolling: function bodyScrolling() {
+            var show = this.state.open;
+            windowScrollHelper[show ? 'stop' : 'restore']();
+        },
+        handleMaskClick: function handleMaskClick(e) {
+            if (this.props.maskClickClose) {
+                this.setState({ open: false }, this.onHide);
+            } else {
+                e.stopPropagation();
+            }
+        },
+        onShow: function onShow() {
+            this.bodyScrolling();
+            var onShow = this.props.onShow;
+            if (onShow) {
+                onShow();
+            }
+        },
+        onHide: function onHide() {
+            this.bodyScrolling();
+            var onHide = this.props.onHide;
+            if (onHide) {
+                onHide();
+            }
+        },
+        renderTitle: function renderTitle() {
+            var title = this.props.title;
+            return title ? React.createElement('h1', { className: cx().part('title').build() }, title) : null;
+        },
+        renderAction: function renderAction() {
+            var actions = this.props.actions;
+            return actions ? React.createElement('div', {
+                ref: 'dialogActions',
+                className: cx().part('actions').build()
+            }, actions) : null;
+        },
+        render: function render() {
+            var _this = this;
+            var marginTop = this.marginTop;
+            var props = this.props;
+            var state = this.state;
+            var children = props.children;
+            var others = babelHelpers.objectWithoutProperties(props, ['children']);
+            var open = state.open;
+            var title = this.renderTitle();
+            var body = React.createElement('div', { className: cx().part('body').build() }, children);
+            var footer = this.renderAction();
+            var windowPartClassName = cx().part('window').build();
+            return React.createElement('div', babelHelpers._extends({}, others, { className: cx(props).addStates({ open: open }).build() }), React.createElement(Motion, { style: { y: spring(open ? marginTop : -150) } }, function (_ref) {
+                var y = _ref.y;
+                return React.createElement(DialogWindow, {
+                    top: Math.round(y),
+                    ref: function (c) {
+                        _this.dialogWindow = c;
+                    },
+                    title: title,
+                    footer: footer,
+                    className: windowPartClassName
+                }, body);
+            }), React.createElement(Mask, {
+                show: open,
+                autoLockScrolling: false,
+                onClick: this.handleMaskClick
+            }));
+        }
+    });
     module.exports = Dialog;
 });

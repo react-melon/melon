@@ -22,94 +22,77 @@ define('melon/Tabs', [
             }]);
         function Tabs(props) {
             babelHelpers.classCallCheck(this, Tabs);
-            babelHelpers.get(Object.getPrototypeOf(Tabs.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             var selectedIndex = this.props.selectedIndex;
             this.state = { selectedIndex: selectedIndex };
         }
-        babelHelpers.createClass(Tabs, [
-            {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    if (nextProps.selectedIndex !== this.state.selectedIndex) {
-                        this.setState({ selectedIndex: nextProps.selectedIndex });
-                    }
-                }
-            },
-            {
-                key: 'getTabCount',
-                value: function getTabCount() {
-                    return React.Children.count(this.props.children);
-                }
-            },
-            {
-                key: 'getSelected',
-                value: function getSelected(tab, index) {
-                    return this.state.selectedIndex === index;
-                }
-            },
-            {
-                key: 'handleTabClick',
-                value: function handleTabClick(index, e) {
-                    if (index === this.state.selectedIndex) {
-                        return;
-                    }
-                    var onBeforeChange = this.props.onBeforeChange;
-                    if (onBeforeChange) {
-                        var cancel = onBeforeChange(index, e);
-                        if (cancel === false) {
-                            return;
-                        }
-                    }
-                    this.setState({ selectedIndex: index }, function () {
-                        this.props.onChange && this.props.onChange({
-                            target: this,
-                            selectedIndex: index
-                        });
-                    });
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    var percent = 1 / this.getTabCount() * 100 + '%';
-                    var tabIndex = 0;
-                    var tabContent = [];
-                    var tabs = React.Children.map(props.children, function (tab, index) {
-                        var selected = this.getSelected(tab, index);
-                        var _tab$props = tab.props;
-                        var disabled = _tab$props.disabled;
-                        var children = _tab$props.children;
-                        if (selected) {
-                            tabIndex = index;
-                        }
-                        if (children) {
-                            tabContent.push(React.createElement(TabPanel, {
-                                key: index,
-                                active: selected
-                            }, children));
-                        }
-                        return React.cloneElement(tab, {
-                            key: index,
-                            selected: selected,
-                            disabled: disabled,
-                            tabIndex: index,
-                            style: { width: percent },
-                            onClick: disabled ? null : this.handleTabClick.bind(this, index),
-                            className: this.getPartClassName('item')
-                        });
-                    }, this);
-                    var InkBarStyles = {
-                        width: percent,
-                        left: 'calc(' + percent + '*' + tabIndex + ')'
-                    };
-                    return React.createElement('div', babelHelpers._extends({}, props, { className: this.getClassName() }), React.createElement('ul', null, tabs, React.createElement('li', {
-                        className: this.getPartClassName('inkbar'),
-                        style: InkBarStyles
-                    })), tabContent);
+        Tabs.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            if (nextProps.selectedIndex !== this.state.selectedIndex) {
+                this.setState({ selectedIndex: nextProps.selectedIndex });
+            }
+        };
+        Tabs.prototype.getTabCount = function getTabCount() {
+            return React.Children.count(this.props.children);
+        };
+        Tabs.prototype.getSelected = function getSelected(tab, index) {
+            return this.state.selectedIndex === index;
+        };
+        Tabs.prototype.handleTabClick = function handleTabClick(index, e) {
+            if (index === this.state.selectedIndex) {
+                return;
+            }
+            var onBeforeChange = this.props.onBeforeChange;
+            if (onBeforeChange) {
+                var cancel = onBeforeChange(index, e);
+                if (cancel === false) {
+                    return;
                 }
             }
-        ]);
+            this.setState({ selectedIndex: index }, function () {
+                this.props.onChange && this.props.onChange({
+                    target: this,
+                    selectedIndex: index
+                });
+            });
+        };
+        Tabs.prototype.render = function render() {
+            var props = this.props;
+            var percent = 1 / this.getTabCount() * 100 + '%';
+            var tabIndex = 0;
+            var tabContent = [];
+            var tabs = React.Children.map(props.children, function (tab, index) {
+                var selected = this.getSelected(tab, index);
+                var _tab$props = tab.props;
+                var disabled = _tab$props.disabled;
+                var children = _tab$props.children;
+                if (selected) {
+                    tabIndex = index;
+                }
+                if (children) {
+                    tabContent.push(React.createElement(TabPanel, {
+                        key: index,
+                        active: selected
+                    }, children));
+                }
+                return React.cloneElement(tab, {
+                    key: index,
+                    selected: selected,
+                    disabled: disabled,
+                    tabIndex: index,
+                    style: { width: percent },
+                    onClick: disabled ? null : this.handleTabClick.bind(this, index),
+                    className: this.getPartClassName('item')
+                });
+            }, this);
+            var InkBarStyles = {
+                width: percent,
+                left: 'calc(' + percent + '*' + tabIndex + ')'
+            };
+            return React.createElement('div', babelHelpers._extends({}, props, { className: this.getClassName() }), React.createElement('ul', null, tabs, React.createElement('li', {
+                className: this.getPartClassName('inkbar'),
+                style: InkBarStyles
+            })), tabContent);
+        };
         return Tabs;
     }(Component);
     Tabs.propTypes = {

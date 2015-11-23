@@ -15,14 +15,12 @@ define('melon/table/SelectorColumn', [
         babelHelpers.inherits(TableSelectorColumn, _Column);
         function TableSelectorColumn() {
             babelHelpers.classCallCheck(this, TableSelectorColumn);
-            babelHelpers.get(Object.getPrototypeOf(TableSelectorColumn.prototype), 'constructor', this).apply(this, arguments);
+            _Column.apply(this, arguments);
         }
-        babelHelpers.createClass(TableSelectorColumn, [{
-                key: 'render',
-                value: function render() {
-                    return null;
-                }
-            }], [{
+        TableSelectorColumn.prototype.render = function render() {
+            return null;
+        };
+        babelHelpers.createClass(TableSelectorColumn, null, [{
                 key: 'displayName',
                 value: 'TableSelectorColumn',
                 enumerable: true
@@ -63,7 +61,6 @@ define('melon/table/SelectorColumn', [
         var part = props.part;
         var rowIndex = props.rowIndex;
         var columnData = props.columnData;
-        var multiple = props.multiple;
         var handler = columnData[part === 'body' ? 'onSelect' : 'onSelectAll'];
         if (typeof handler === 'function') {
             handler(rowIndex);

@@ -3,24 +3,18 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Component = require('../Component');
-var Day = require('./Day');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('CalendarMonth');
+const Day = require('./Day');
 
-var _ = require('underscore');
-var DateTime = require('../common/util/date');
+const _ = require('underscore');
+const DateTime = require('../common/util/date');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class CalendarMonth extends Component {
+const CalendarMonth = React.createClass({
 
-    static displayName = 'CalendarMonth';
-
-    constructor(props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-        this.type = 'calendar-month';
-    }
+    displayName: 'CalendarMonth',
 
     onClick(e) {
         var onChange = this.props.onChange;
@@ -30,19 +24,19 @@ class CalendarMonth extends Component {
                 date: e.date
             });
         }
-    }
+    },
 
     renderWeekHeader() {
         var days = this.props.lang.days.split(',');
 
         return (
-            <div className={this.getPartClassName('weekheader')}>
+            <div className={cx().part('weekheader').build()}>
                 {_.map(days, function (day, index) {
                     return <span key={index}>{day}</span>;
                 })}
             </div>
         );
-    }
+    },
 
     renderDates() {
         var props = this.props;
@@ -75,16 +69,16 @@ class CalendarMonth extends Component {
                 {_.map(weeks, this.renderWeek, this)}
             </ul>
         );
-    }
+    },
 
     renderWeek(week, index) {
 
         return (
-            <li key={index} className={this.getPartClassName('week')}>
+            <li key={index} className={cx().part('week').build()}>
                 {week}
             </li>
         );
-    }
+    },
 
     renderDay(array, variants) {
 
@@ -110,19 +104,19 @@ class CalendarMonth extends Component {
                     onClick={this.onClick} />
             );
         }, this);
-    }
+    },
 
     render() {
 
         return (
-            <div className={this.getClassName()}>
+            <div className={cx(this.props).build()}>
                 {this.renderWeekHeader()}
                 {this.renderDates()}
             </div>
         );
     }
 
-}
+});
 
 CalendarMonth.propTypes = {
     date: PropTypes.object.isRequired,

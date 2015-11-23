@@ -3,63 +3,42 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
+const DateTime = require('../common/util/date');
+const cx = require('../common/util/cxBuilder').create('CalendarHeader');
+const PropTypes = React.PropTypes;
 
-var Component = require('../Component');
+function CalendarHeader(props) {
 
-var DateTime = require('../common/util/date');
+    const {
+        date,
+        ...rest
+    } = props;
 
-var PropTypes = React.PropTypes;
+    const year = date.getFullYear();
 
-class CalendarHeader extends Component {
+    const week = DateTime.getDayOfWeek(date);
+    const month = DateTime.getShortMonth(date);
+    const day = date.getDate();
 
-    static displayName = 'CalendarHeader';
+    const fullDate = month + day + '日';
 
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
-
-        this.type = 'calendar-header';
-    }
-
-    render() {
-
-        var date = this.props.date;
-
-        var year = date.getFullYear();
-
-        var week = DateTime.getDayOfWeek(date);
-        var month = DateTime.getShortMonth(date);
-        var day = date.getDate();
-
-        var fullDate = month + day + '日';
-
-        return (
-            <div className={this.getClassName('header')} onClick={this.onClick}>
-                <p className={this.getPartClassName('year')}>{year}</p>
-                <p className={this.getPartClassName('week')}>{week}</p>
-                <p className={this.getPartClassName('date')}>{fullDate}</p>
-            </div>
-        );
-    }
-
-    onClick(e) {
-        var onClick = this.props.onClick;
-        if (onClick) {
-            onClick({
-                target: this
-            });
-        }
-    }
+    return (
+        <div
+            {...rest}
+            className={cx(props).build()}>
+            <p className={cx().part('year').build()}>{year}</p>
+            <p className={cx().part('week').build()}>{week}</p>
+            <p className={cx().part('date').build()}>{fullDate}</p>
+        </div>
+    );
 
 }
 
+CalendarHeader.displayName = 'CalendarHeader';
 
 CalendarHeader.propTypes = {
-    date: PropTypes.object.isRequired,
-    onClick: PropTypes.func
+    date: PropTypes.object.isRequired
 };
 
 module.exports = CalendarHeader;

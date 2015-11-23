@@ -3,38 +3,53 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Mask = require('./Mask');
-var _  = require('underscore');
-var dom = require('./common/util/dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Mask = require('./Mask');
+const dom = require('./common/util/dom');
+const cx = require('./common/util/cxBuilder').create('Dialog');
+const DialogWindow = require('./dialog/DialogWindow');
+const windowScrollHelper = require('./dialog/windowScrollHelper');
 
-var Component = require('./Component');
-var DialogWindow = require('./dialog/DialogWindow');
-var windowScrollHelper = require('./dialog/windowScrollHelper');
-
-var {
+const {
     Motion,
     spring
 } = require('react-motion');
 
-class Dialog extends Component {
+const {PropTypes} = React;
 
-    static displayName = 'Dialog';
+const Dialog = React.createClass({
 
-    constructor(props) {
-        super(props);
-        this.originalHTMLBodySize = {};
-        this.state = {
-            open: this.props.open || false
+    propTypes: {
+        actions: PropTypes.node,
+        maskClickClose: PropTypes.bool,
+        open: PropTypes.bool,
+        onHide: PropTypes.func,
+        onShow: PropTypes.func,
+        title: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.element
+        ])
+    },
+
+    getDefaultProps: function () {
+        return {
+            maskClickClose: true,
+            open: false
         };
-        this.positionDialog = this.positionDialog.bind(this);
-        this.handleMaskClick = this.handleMaskClick.bind(this);
-        this.onShow = this.onShow.bind(this);
-        this.onHide = this.onHide.bind(this);
+    },
+
+    getInitialState() {
+
+        this.originalHTMLBodySize = {};
 
         this.marginTop = -150;
-    }
+
+        return {
+            open: this.props.open
+        };
+
+    },
 
     componentDidMount() {
         this.positionDialog();
@@ -42,11 +57,11 @@ class Dialog extends Component {
             var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
             dialogWindow.style.marginTop = this.marginTop + 'px';
         }
-    }
+    },
 
     componentWillUpdate() {
         this.positionDialog();
-    }
+    },
 
     componentWillReceiveProps(nextProps) {
 
@@ -59,7 +74,7 @@ class Dialog extends Component {
         var onEvent = open ? this.onShow : this.onHide;
         this.setState({open: open}, onEvent);
 
-    }
+    },
 
     positionDialog() {
         var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
@@ -71,12 +86,12 @@ class Dialog extends Component {
                         ? (-windowHeight / 2 + 16)
                         : this.marginTop;
         dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
-    }
+    },
 
     bodyScrolling() {
         var show = this.state.open;
         windowScrollHelper[show ? 'stop' : 'restore']();
-    }
+    },
 
     handleMaskClick(e) {
         if (this.props.maskClickClose) {
@@ -85,50 +100,68 @@ class Dialog extends Component {
         else {
             e.stopPropagation();
         }
-    }
+    },
 
     onShow() {
         this.bodyScrolling();
-        var onShow = this.props.onShow;
-        if (_.isFunction(onShow)) {
+        const {onShow} = this.props;
+        if (onShow) {
             onShow();
         }
-    }
+    },
 
     onHide() {
         this.bodyScrolling();
-        if (_.isFunction(this.props.onHide)) {
-            this.props.onHide();
+        const {onHide} = this.props;
+        if (onHide) {
+            onHide();
         }
-    }
+    },
 
-    getStates(props) {
-        var states = super.getStates(props);
-        states.open = this.state.open;
-        return states;
-    }
+    renderTitle() {
+        var title = this.props.title;
+        return title
+            ? <h1 className={cx().part('title').build()}>{title}</h1>
+            : null;
+    },
+
+    renderAction() {
+        var actions = this.props.actions;
+        return actions
+            ? (
+                <div ref="dialogActions" className={cx().part('actions').build()}>
+                    {actions}
+                </div>
+            )
+            : null;
+    },
 
     render() {
 
-        var {
+        let {marginTop, props, state} = this;
+
+        const {
             children,
             ...others
-        } = this.props;
+        } = props;
 
-        let open = this.state.open;
-        let top = this.marginTop;
+        const {open} = state;
+
         let title = this.renderTitle();
-        let body = (
-            <div className={this.getPartClassName('body')}>
+
+        const body = (
+            <div className={cx().part('body').build()}>
                 {children}
             </div>
         );
-        let footer = this.renderAction();
-        let windowPartClassName = this.getPartClassName('window');
+
+        const footer = this.renderAction();
+
+        const windowPartClassName = cx().part('window').build();
 
         return (
-            <div {...others} className={this.getClassName()}>
-                <Motion style={{y: spring(open ? top : -150)}}>
+            <div {...others} className={cx(props).addStates({open}).build()}>
+                <Motion style={{y: spring(open ? marginTop : -150)}}>
                     {({y}) =>
                         <DialogWindow
                             top={Math.round(y)}
@@ -143,49 +176,14 @@ class Dialog extends Component {
                     }
                 </Motion>
                 <Mask
-                  show={open}
-                  autoLockScrolling={false}
-                  onClick={this.handleMaskClick} />
+                    show={open}
+                    autoLockScrolling={false}
+                    onClick={this.handleMaskClick} />
             </div>
         );
 
     }
 
-    renderTitle() {
-        var title = this.props.title;
-        return title
-            ? <h1 className={this.getPartClassName('title')}>{title}</h1>
-            : null;
-    }
-
-    renderAction() {
-        var actions = this.props.actions;
-        return actions
-            ? (
-                <div ref="dialogActions"
-                    className={this.getPartClassName('actions')}>
-                    {actions}
-                </div>
-            )
-            : null;
-    }
-
-}
-
-Dialog.propTypes = {
-    actions: React.PropTypes.array,
-    maskClickClose: React.PropTypes.bool,
-    open: React.PropTypes.bool,
-    onHide: React.PropTypes.func,
-    onShow: React.PropTypes.func,
-    title: React.PropTypes.oneOfType([
-        React.PropTypes.string,
-        React.PropTypes.element
-    ])
-};
-
-Dialog.defaultProps = {
-    maskClickClose: true
-};
+});
 
 module.exports = Dialog;

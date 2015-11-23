@@ -18,7 +18,7 @@ for level, value in $-melon-calendar-sizes
         height: value,
         line-height: value
     }
-    .{$-melon-class-prefix}-rangecalendar.variant-size-{level},
+    .{$-melon-class-prefix}-range-calendar.variant-size-{level},
     .{$-melon-class-prefix}-calendar.variant-size-{level}
         .{$-melon-class-prefix}-calendar
             &-day
@@ -28,7 +28,7 @@ for level, value in $-melon-calendar-sizes
                     {$-size}
 
 
-.{$-melon-class-prefix}-rangecalendar,
+.{$-melon-class-prefix}-range-calendar,
 .{$-melon-class-prefix}-calendar
 
     font-size: $-melon-medium-font-size
@@ -109,10 +109,18 @@ for level, value in $-melon-calendar-sizes
             margin-right: 1em
             white-space: nowrap
 
+    &-panel-main
+        position: relative
+        padding-top: 0.5em
 
     &-selector
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
         margin-top: 0.5em
-        height: 17.5em
+        background-color: #fff
         overflow-y: scroll
 
         &-item
@@ -149,7 +157,6 @@ for level, value in $-melon-calendar-sizes
 
     &-pager
         position: relative
-        margin-top: 0.5em
         height: 1.875em
         line-height: 1.875em
         text-align: center
@@ -254,31 +261,29 @@ for level, value in $-melon-calendar-sizes
             color: $-melon-colors.darkBlack
 
 
-.{$-melon-class-prefix}-rangecalendar
+.{$-melon-class-prefix}-range-calendar
 
     .{$-melon-class-prefix}-dialog.variant-calendar
 
         .{$-melon-class-prefix}-dialog-window
             width: 40em
 
-        .{$-melon-class-prefix}-dialog-body
-            display: table
-            width: 40em
-            table-layout: fixed
 
+    // .{$-melon-class-prefix}-calendar
 
-    .{$-melon-class-prefix}-calendar
+    //     &-header
+    //         display: table-cell
+    //         vertical-align: middle
 
-        &-header
-            display: table-cell
-            vertical-align: middle
+    &-row
+        display: inline-block
+        white-space: nowrap
 
-    .{$-melon-class-prefix}-rangecalendar-row
-        display: table-row
+    .{$-melon-class-prefix}-calendar-panel
+        position: relative
+        display: inline-block
 
-    .{$-melon-class-prefix}-rangecalendar-main
-        display: table-cell
-        width: 20em
+    $-main
         vertical-align: top
 
 

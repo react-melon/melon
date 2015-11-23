@@ -3,74 +3,69 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var Component = require('./Component');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Mask');
+const PropTypes = React.PropTypes;
 
-class Mask extends Component {
+const Mask = React.createClass({
 
-    static displayName = 'Mask';
-
-    constructor(props) {
-        super(props);
+    getInitialState() {
         this.originalBodyOverflow = '';
-    }
+        return {};
+    },
+
+    propTypes: {
+        autoLockScrolling: PropTypes.bool,
+        show: PropTypes.bool
+    },
+
+    getDefaultProps() {
+        return {
+            autoLockScrolling: true
+        };
+    },
 
     componentDidMount() {
         this.originalBodyOverflow = document.getElementsByTagName('body')[0].style.oveflow;
-    }
+    },
 
     componentDidUpdate() {
 
-        if (!this.props.autoLockScrolling) {
+        const {autoLockScrolling, show} = this.props;
+
+        if (!autoLockScrolling) {
             return;
         }
 
-        this.props.show
-            ? this.preventScrolling()
-            : this.allowScrolling();
+        show ? this.preventScrolling() : this.allowScrolling();
 
-    }
+    },
 
     componentWillUnmount() {
         this.allowScrolling();
-    }
+    },
 
     preventScrolling() {
         var body = document.getElementsByTagName('body')[0];
         body.style.overflow = 'hidden';
-    }
+    },
 
     allowScrolling() {
         var body = document.getElementsByTagName('body')[0];
         body.style.overflow = this.originalBodyOverflow || '';
-    }
-
-    getStates(props) {
-        var states = super.getStates(props);
-        states.show = !!props.show;
-        return states;
-    }
+    },
 
     render() {
 
+        const {props} = this;
+        const {show} = props;
+
         return (
-            <div {...this.props} className={this.getClassName()} />
+            <div {...props} className={cx(props).addStates({show}).build()} />
         );
 
     }
 
-}
-
-var PropTypes = React.PropTypes;
-
-Mask.propTypes = {
-    autoLockScrolling: PropTypes.bool,
-    show: PropTypes.bool
-};
-
-Mask.defaultProps = {
-    ...Component.defaultProps,
-    autoLockScrolling: true
-};
+});
 
 module.exports = Mask;

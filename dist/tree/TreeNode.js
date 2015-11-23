@@ -22,93 +22,76 @@ define('melon/tree/TreeNode', [
             }]);
         function TreeNode(props) {
             babelHelpers.classCallCheck(this, TreeNode);
-            babelHelpers.get(Object.getPrototypeOf(TreeNode.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             this.state = { expand: props.expand || false };
             this.handleOnClick = this.handleOnClick.bind(this);
         }
-        babelHelpers.createClass(TreeNode, [
-            {
-                key: 'getVariants',
-                value: function getVariants(props) {
-                    var variants = babelHelpers.get(Object.getPrototypeOf(TreeNode.prototype), 'getVariants', this).call(this, props);
-                    variants.push('level' + props.level);
-                    return variants;
-                }
-            },
-            {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(props) {
-                    if (props.expand === this.props.expand) {
-                        return;
-                    }
-                    this.setState({ expand: props.expand });
-                }
-            },
-            {
-                key: 'handleOnClick',
-                value: function handleOnClick(e) {
-                    var state = this.state;
-                    var expand = state.expand;
-                    this.setState({ expand: !expand });
-                }
-            },
-            {
-                key: 'shouldComponentUpdate',
-                value: function shouldComponentUpdate(nextProps, nextState) {
-                    return nextState.expand !== this.state.expand;
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    var expand = this.state.expand;
-                    var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
-                    var children = props.children;
-                    var iconStyle;
-                    var labelStyle;
-                    if (props.level) {
-                        var level = props.level - 0;
-                        labelStyle = { paddingLeft: level * 1.2 + 0.4 + 'em' };
-                        iconStyle = { left: 0.25 + (level - 1) * 1.2 + 'em' };
-                    }
-                    if (React.Children.count(children) > 0) {
-                        children = [
-                            React.createElement(Icon, {
-                                key: 'icon',
-                                icon: icon,
-                                onClick: this.handleOnClick,
-                                style: iconStyle
-                            }),
-                            React.createElement('span', {
-                                onClick: this.handleOnClick,
-                                key: 'label',
-                                'data-role': 'tree-node-label',
-                                style: labelStyle,
-                                className: cx.create(this.getPartClassName('label'), cx.createVariantClass(['parent']), cx.createStateClass({ expand: expand }))
-                            }, props.label),
-                            React.createElement('ul', {
-                                className: cx.create(this.getPartClassName('root'), cx.createStateClass({ expand: expand })),
-                                key: 'root',
-                                ref: 'list'
-                            }, children)
-                        ];
-                    } else {
-                        children = React.createElement('span', {
-                            onClick: this.handleOnClick,
-                            key: 'label',
-                            'data-role': 'tree-node-label',
-                            style: labelStyle,
-                            className: this.getPartClassName('label')
-                        }, props.label);
-                    }
-                    return React.createElement('li', babelHelpers._extends({}, props, {
-                        'data-role': 'tree-node',
-                        className: this.getClassName()
-                    }), children);
-                }
+        TreeNode.prototype.getVariants = function getVariants(props) {
+            var variants = _Component.prototype.getVariants.call(this, props);
+            variants.push('level' + props.level);
+            return variants;
+        };
+        TreeNode.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+            if (props.expand === this.props.expand) {
+                return;
             }
-        ]);
+            this.setState({ expand: props.expand });
+        };
+        TreeNode.prototype.handleOnClick = function handleOnClick(e) {
+            var state = this.state;
+            var expand = state.expand;
+            this.setState({ expand: !expand });
+        };
+        TreeNode.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+            return nextState.expand !== this.state.expand;
+        };
+        TreeNode.prototype.render = function render() {
+            var props = this.props;
+            var expand = this.state.expand;
+            var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
+            var children = props.children;
+            var iconStyle;
+            var labelStyle;
+            if (props.level) {
+                var level = props.level - 0;
+                labelStyle = { paddingLeft: level * 1.2 + 0.4 + 'em' };
+                iconStyle = { left: 0.25 + (level - 1) * 1.2 + 'em' };
+            }
+            if (React.Children.count(children) > 0) {
+                children = [
+                    React.createElement(Icon, {
+                        key: 'icon',
+                        icon: icon,
+                        onClick: this.handleOnClick,
+                        style: iconStyle
+                    }),
+                    React.createElement('span', {
+                        onClick: this.handleOnClick,
+                        key: 'label',
+                        'data-role': 'tree-node-label',
+                        style: labelStyle,
+                        className: cx.create(this.getPartClassName('label'), cx.createVariantClass(['parent']), cx.createStateClass({ expand: expand }))
+                    }, props.label),
+                    React.createElement('ul', {
+                        className: cx.create(this.getPartClassName('root'), cx.createStateClass({ expand: expand })),
+                        key: 'root',
+                        ref: 'list'
+                    }, children)
+                ];
+            } else {
+                children = React.createElement('span', {
+                    onClick: this.handleOnClick,
+                    key: 'label',
+                    'data-role': 'tree-node-label',
+                    style: labelStyle,
+                    className: this.getPartClassName('label')
+                }, props.label);
+            }
+            return React.createElement('li', babelHelpers._extends({}, props, {
+                'data-role': 'tree-node',
+                className: this.getClassName()
+            }), children);
+        };
         return TreeNode;
     }(Component);
     TreeNode.ICON = [

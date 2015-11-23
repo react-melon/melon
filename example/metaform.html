@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>melon meta form demo</title>
+    <link rel="stylesheet" href="metaform.styl">
+</head>
+<body>
+<div id="app"></div>
+<script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-6/esl.js"></script>
+<script>
+require.config({
+    baseUrl: '.',
+    paths: {
+        'melon': '../src',
+        'react': '../dep/react/react',
+        'react-motion': '../dep/react-motion/build/react-motion',
+        'react-dom': '../dep/react/react-dom',
+        'underscore': '../dep/underscore/underscore'
+    },
+    waitSeconds: 5
+});
+require(['metaform']);
+</script>
+</body>
+</html>
