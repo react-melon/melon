@@ -3,23 +3,21 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
+const React = require('react');
+const {PropTypes} = React;
+const cx = require('../common/util/cxBuilder').create('DialogWindow');
 
-var Component = require('../Component');
+const DialogWindow = React.createClass({
 
-var _ = require('underscore');
-
-class DialogWindow extends Component {
-
-    static displayName = 'DialogWindow';
-
-    shouldComponentUpdate(nextProps) {
-        return !_.isEqual(nextProps, this.props);
-    }
+    propTypes: {
+        top: PropTypes.number,
+        footer: PropTypes.element,
+        title: PropTypes.element
+    },
 
     render() {
 
-        var {
+        const {
             children,
             top,
             title,
@@ -28,21 +26,17 @@ class DialogWindow extends Component {
         } = this.props;
 
         return (
-            <div {...others} style={{marginTop: top}}>
+            <div
+                {...others}
+                style={{marginTop: top}}
+                className={cx(this.props).build()}>
                 {title}
                 {children}
                 {footer}
             </div>
         );
-
     }
 
-}
-
-DialogWindow.propTypes = {
-    top: React.PropTypes.number,
-    footer: React.PropTypes.element,
-    title: React.PropTypes.element
-};
+});
 
 module.exports = DialogWindow;

@@ -4,168 +4,172 @@ define('melon/TextBox', [
     'module',
     './babelHelpers',
     'react',
-    './InputComponent',
-    './textbox/FloatLabel'
+    'react-dom',
+    './createInputComponent',
+    './textbox/FloatLabel',
+    './textbox/Input',
+    './common/util/createClassNameBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var PropTypes = React.PropTypes;
-    var InputComponent = require('./InputComponent');
+    var ReactDOM = require('react-dom');
+    var createInputComponent = require('./createInputComponent');
     var FloatingLabel = require('./textbox/FloatLabel');
-    var TextBox = function (_InputComponent) {
-        babelHelpers.inherits(TextBox, _InputComponent);
-        babelHelpers.createClass(TextBox, null, [{
-                key: 'displayName',
-                value: 'TextBox',
-                enumerable: true
-            }]);
-        function TextBox(props) {
-            babelHelpers.classCallCheck(this, TextBox);
-            babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'constructor', this).call(this, props);
-            this.state = babelHelpers._extends({}, this.state, {
-                isFloating: !!this.getValue(),
+    var TextBoxInput = require('./textbox/Input');
+    var cxBuilder = require('./common/util/createClassNameBuilder')('Textbox');
+    var TextBox = React.createClass({
+        displayName: 'TextBox',
+        getInitialState: function getInitialState() {
+            var value = this.props.value;
+            return {
+                isFloating: !!value,
+                isFocus: false
+            };
+        },
+        onFocus: function onFocus(e) {
+            var _props = this.props;
+            var onFocus = _props.onFocus;
+            var willValidate = _props.willValidate;
+            var validate = _props.validate;
+            var value = _props.value;
+            if (onFocus) {
+                onFocus({
+                    type: 'focus',
+                    target: this
+                });
+            }
+            this.setState({
+                isFocus: true,
+                isFloating: true
+            });
+            if (willValidate('focus')) {
+                validate(value);
+            }
+        },
+        onBlur: function onBlur(e) {
+            var _props2 = this.props;
+            var onBlur = _props2.onBlur;
+            var value = _props2.value;
+            var willValidate = _props2.willValidate;
+            var validate = _props2.validate;
+            if (onBlur) {
+                onBlur({
+                    type: 'blur',
+                    target: this
+                });
+            }
+            this.setState({
+                isFloating: !!value,
                 isFocus: false
             });
-            this.onFocus = this.onFocus.bind(this);
-            this.onBlur = this.onBlur.bind(this);
-            this.onChange = this.onChange.bind(this);
-        }
-        babelHelpers.createClass(TextBox, [
-            {
-                key: 'render',
-                value: function render() {
-                    return React.createElement('div', { className: this.getClassName() }, this.renderFloatingLabel(this.props.floatingLabel), this.renderInput(), this.renderValidateMessage());
-                }
-            },
-            {
-                key: 'renderInput',
-                value: function renderInput() {
-                    var props = this.props;
-                    var multiline = props.multiline;
-                    var tag = multiline ? 'textarea' : 'input';
-                    props = {
-                        name: props.name,
-                        disabled: props.disabled,
-                        readOnly: props.readOnly,
-                        type: props.type,
-                        value: this.getValue(),
-                        placeholder: props.placeholder,
-                        className: this.getPartClassName('input'),
-                        onFocus: this.onFocus,
-                        onBlur: this.onBlur,
-                        onChange: this.onChange,
-                        ref: 'input'
-                    };
-                    if (multiline) {
-                        props.rows = 1;
-                    }
-                    return React.createElement(tag, props);
-                }
-            },
-            {
-                key: 'renderFloatingLabel',
-                value: function renderFloatingLabel(floatingLabel) {
-                    var state = this.state;
-                    return floatingLabel ? React.createElement(FloatingLabel, {
-                        floating: state.isFloating || state.isFocus,
-                        focused: state.isFocus,
-                        label: floatingLabel
-                    }) : null;
-                }
-            },
-            {
-                key: 'onFocus',
-                value: function onFocus(e) {
-                    e = {
-                        type: 'focus',
-                        target: this
-                    };
-                    babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'onFocus', this).call(this, e);
-                    var onFocus = this.props.onFocus;
-                    if (onFocus) {
-                        onFocus(e);
-                    }
-                    this.setState({
-                        isFocus: true,
-                        isFloating: true
-                    });
-                }
-            },
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'getStates', this).call(this, props);
-                    states.focus = this.state.isFocus;
-                    return states;
-                }
-            },
-            {
-                key: 'onBlur',
-                value: function onBlur(e) {
-                    e = {
-                        type: 'blur',
-                        target: this
-                    };
-                    babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'onBlur', this).call(this, e);
-                    var onBlur = this.props.onBlur;
-                    if (onBlur) {
-                        onBlur(e);
-                    }
-                    this.setState({
-                        isFloating: !!this.getValue(),
-                        isFocus: false
-                    });
-                }
-            },
-            {
-                key: 'onChange',
-                value: function onChange(e) {
-                    var rawValue = e.target.value;
-                    e = {
-                        type: 'change',
-                        target: this,
-                        value: this.stringifyValue(rawValue),
-                        rawValue: rawValue
-                    };
-                    babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'onChange', this).call(this, e);
-                    if (this.isControlled()) {
-                        this.props.onChange(e);
-                        return;
-                    }
-                    this.setState({ rawValue: rawValue });
-                    if (this.props.multiline) {
-                        this.syncTextareaHeight();
-                    }
-                }
-            },
-            {
-                key: 'componentWillReceiveProps',
-                value: function componentWillReceiveProps(nextProps) {
-                    babelHelpers.get(Object.getPrototypeOf(TextBox.prototype), 'componentWillReceiveProps', this).call(this, nextProps);
-                    if (nextProps.multiline && this.isControlled() && this.props.value !== nextProps.value) {
-                        this.syncTextareaHeight();
-                    }
-                }
-            },
-            {
-                key: 'syncTextareaHeight',
-                value: function syncTextareaHeight() {
-                    var dom = this.refs.input;
-                    dom.style.height = 'auto';
-                    dom.style.height = dom.scrollHeight + 'px';
-                }
+            if (willValidate('blur')) {
+                validate(value);
             }
-        ]);
-        return TextBox;
-    }(InputComponent);
-    TextBox.defaultProps = babelHelpers._extends({}, InputComponent.defaultProps, { value: '' });
+        },
+        onChange: function onChange(e) {
+            var rawValue = e.target.value;
+            var _props3 = this.props;
+            var onChange = _props3.onChange;
+            var willValidate = _props3.willValidate;
+            var validate = _props3.validate;
+            onChange({
+                type: 'change',
+                target: this,
+                value: rawValue,
+                rawValue: rawValue
+            });
+            if (willValidate('change')) {
+                validate(rawValue);
+            }
+        },
+        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+            var value = nextProps.value;
+            if (nextProps.multiline && this.props.value !== value) {
+                this.syncTextareaHeight();
+            }
+            var _state = this.state;
+            var isFloating = _state.isFloating;
+            var isFocus = _state.isFocus;
+            var nextIsFloating = !!value || isFocus;
+            if (isFloating !== nextIsFloating) {
+                this.setState({ isFloating: nextIsFloating });
+            }
+        },
+        syncTextareaHeight: function syncTextareaHeight() {
+            var input = this.input;
+            if (input) {
+                input.style.height = 'auto';
+                input.style.height = input.scrollHeight + 'px';
+            }
+        },
+        renderFloatingLabel: function renderFloatingLabel(floatingLabel, isFloating, isFocus) {
+            if (!floatingLabel) {
+                return null;
+            }
+            return React.createElement(FloatingLabel, {
+                floating: isFloating || isFocus,
+                focused: isFocus,
+                label: floatingLabel
+            });
+        },
+        render: function render() {
+            var _this = this;
+            var onFocus = this.onFocus;
+            var onBlur = this.onBlur;
+            var onChange = this.onChange;
+            var props = this.props;
+            var renderValidateMessage = props.renderValidateMessage;
+            var floatingLabel = props.floatingLabel;
+            var className = props.className;
+            var getStateClassName = props.getStateClassName;
+            var value = props.value;
+            var rest = babelHelpers.objectWithoutProperties(props, [
+                'renderValidateMessage',
+                'floatingLabel',
+                'className',
+                'getStateClassName',
+                'value'
+            ]);
+            var _state2 = this.state;
+            var isFocus = _state2.isFocus;
+            var isFloating = _state2.isFloating;
+            var statefulClassName = cxBuilder.resolve(props).addState({
+                focus: isFocus,
+                floating: isFloating,
+                fulfilled: !!value
+            }).build();
+            return React.createElement('div', { className: statefulClassName }, this.renderFloatingLabel(floatingLabel, isFloating, isFocus), React.createElement(TextBoxInput, babelHelpers._extends({}, rest, {
+                onFocus: onFocus,
+                onBlur: onBlur,
+                onChange: onChange,
+                isFocus: isFocus,
+                value: value,
+                ref: function (input) {
+                    if (input) {
+                        _this.input = ReactDOM.findDOMNode(input);
+                    }
+                }
+            })), renderValidateMessage());
+        }
+    });
+    TextBox.defaultProps = {
+        value: '',
+        defaultValue: ''
+    };
+    var PropTypes = React.PropTypes;
     TextBox.propTypes = {
+        type: PropTypes.oneOf([
+            'text',
+            'password'
+        ]),
         value: PropTypes.string,
-        onChange: PropTypes.func,
         defaultValue: PropTypes.string,
         placeholder: PropTypes.string,
         floatingLabel: PropTypes.string,
-        multiline: PropTypes.bool
+        multiline: PropTypes.bool,
+        onChange: PropTypes.func,
+        onFocus: PropTypes.func,
+        onBlur: PropTypes.func
     };
-    module.exports = TextBox;
+    module.exports = createInputComponent('Textbox', TextBox);
 });

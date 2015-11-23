@@ -3,162 +3,161 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Component = require('./Component');
+const React = require('react');
+const validator = require('./LiteValiditor');
 
-class Form extends Component {
+const {PropTypes} = React;
 
-    static displayName = 'Form';
+let Form = React.createClass({
 
-    constructor(props) {
-        super(props);
+    displayName: 'Form',
+
+    propTypes: {
+        onSumbit: PropTypes.func,
+        target: PropTypes.string,
+        action: PropTypes.string,
+        method: PropTypes.oneOf(['POST', 'GET']),
+        validator: PropTypes.shape({
+            validate: PropTypes.func.isRequired
+        })
+    },
+
+    getDefaultProps() {
+        return {
+            validator: validator
+        };
+    },
+
+    getInitialState() {
         this.fields = [];
-        this.onSubmit = this.onSubmit.bind(this);
-        this.attachField = this.attachField.bind(this);
-        this.detachField = this.detachField.bind(this);
-    }
+        return {};
+    },
+
+    childContextTypes: {
+        attachForm: PropTypes.func,
+        detachForm: PropTypes.func,
+        validator: PropTypes.shape({
+            validate: PropTypes.func.isRequired
+        }),
+        pointer: PropTypes.string.isRequired
+    },
 
     getChildContext() {
-
-        var context = {};
-
-        // 如果不想使用校验功能，那么可以这么干
-        if (!this.props.novalidate) {
-            context.form = {
-                // 这两个是给提交获取数据用的
-                // 每个字段都通过这两个方法注册自己的存在
-                attach: this.attachField,
-                detach: this.detachField
-            };
-        }
-
-        return context;
-    }
-
-    /**
-     * 绑定字段
-     *
-     * @param {module:Component} component 字段
-     * @return {module:Form}
-     */
-    attachField(component) {
-        this.fields = this.fields.concat(component);
-        return this;
-    }
-
-    /**
-     * 解除字段
-     *
-     * @param {module:InputComponent} component 字段
-     * @return {module:Form}
-     */
-    detachField(component) {
-
-        var fields = this.fields;
-
-        // 这里先检测 fields 是否存在是因为在 `unmount` 的过程中，form 会先被 `unmount`
-        // 然后才是其中的子组件，这时 form 对子组件的引用已经被解除了，直接返回即可
-        if (fields) {
-
-            var index = fields.indexOf(component);
-
-            if (index !== -1) {
-                this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
-            }
-
-        }
-
-        return this;
-
-    }
-
-    render() {
-
-        var {children, ...props} = this.props;
-
-        return (
-            <form
-                {...props}
-                className={this.getClassName()}
-                onSubmit={this.onSubmit}>
-                {this.props.children}
-            </form>
-        );
-
-    }
-
-    getData() {
-        return this.fields.reduce(
-            function (data, field) {
-                var name = field.props.name;
-                if (name) {
-                    data[name] = field.getValue();
-                }
-                return data;
-            },
-            {}
-        );
-    }
-
-    onSubmit(e) {
-
-        if (!this.validate()) {
-            e.preventDefault();
-            return;
-        }
-
-        if (!this.props.onSubmit) {
-            return;
-        }
-
-        e.target = this;
-        this.props.onSubmit(e);
-
-    }
-
-    validate() {
-
-        var isValid = true;
-
-        for (var fields = this.fields, i = 0, len = fields.length; i < len; ++i) {
-            var field = fields[i];
-            var value = field.getValue();
-
-            if (!field.validate(value).isValid()) {
-
-                if (isValid) {
-                    ReactDOM.findDOMNode(field).scrollIntoView();
-                }
-
-                isValid = false;
-
-            }
-        }
-
-        return isValid;
-
-    }
+        return {
+            pointer: '/',
+            attachForm: this.addField,
+            detachForm: this.removeField,
+            validator: this.props.validator
+        };
+    },
 
     componentWillUnmount() {
         this.fields.length = 0;
         this.fields = null;
+    },
+
+    addField(field) {
+        this.fields.push(field);
+    },
+
+    removeField(field) {
+        this.fields = this.fields.filter((f) => {
+            return f !== field;
+        });
+    },
+
+    isValidFormField(field) {
+
+        const value = field.getValue();
+        const {pointer, props} = field;
+        const {name, disabled} = props;
+
+        return name
+            && !disabled
+            && value != null
+            && pointer
+            && pointer.lastIndexOf('/') === 0;
+
+    },
+
+    getData() {
+        return this
+            .fields
+            .reduce(
+                (data, field) => {
+
+                    if (this.isValidFormField(field)) {
+                        data[field.props.name] = field.getValue();
+                    }
+
+                    return data;
+                },
+                {}
+            );
+    },
+
+    validate() {
+        return this.checkValidity().isValid;
+    },
+
+    checkValidity() {
+        return this
+            .fields
+            .reduce((formValidity, field) => {
+
+                // 不校验以下字段
+                if (!this.isValidFormField(field)) {
+                    return formValidity;
+                }
+
+                const value = field.getValue();
+                const validity = field.validate(value);
+
+                return {
+                    isValid: formValidity.isValid && validity.isValid(),
+                    errors: [
+                        ...formValidity.errors,
+                        ...validity.states.filter((state) => !state.isValid)
+                    ]
+                };
+
+            }, {
+                isValid: true,
+                errors: []
+            });
+    },
+
+    onSubmit(e) {
+
+        const {
+            onSubmit,
+            noValidate
+        } = this.props;
+
+        if (!noValidate) {
+            if (!this.validate()) {
+                e.preventDefault();
+                return;
+            }
+        }
+
+        if (onSubmit) {
+            e.data = this.getData();
+            onSubmit(e);
+        }
+
+    },
+
+    render() {
+
+        const {props} = this;
+
+        return (
+            <form {...props} onSubmit={this.onSubmit} />
+        );
+
     }
 
-}
-
-Form.childContextTypes = {
-    form: React.PropTypes.object
-};
-
-var PropTypes = React.PropTypes;
-
-Form.propTypes = {
-    novalidate: PropTypes.bool,
-    validate: PropTypes.func,
-    onValid: PropTypes.func,
-    onInvalid: PropTypes.func,
-    onSumbit: PropTypes.func
-};
+});
 
 module.exports = Form;

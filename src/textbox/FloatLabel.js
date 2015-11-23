@@ -3,40 +3,41 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var Component = require('../Component');
+const React = require('react');
 
-class TextBoxFloatingLabel extends Component {
+const createComponent = require('../createComponent');
+const cx = require('../common/util/classname');
 
-    static displayName = 'TextBoxFloatingLabel';
+function TextBoxFloatingLabel(props) {
 
-    render() {
+    const {
+        className,
+        floating,
+        focused,
+        getStateClassName,
+        label
+    } = props;
 
-        var props = this.props;
-
-        return (
-            <label
-                className={this.getClassName()}>
-                {props.label}
-            </label>
-        );
-
-    }
-
-    getStates(props) {
-        var states = super.getStates(props);
-        states.floating = props.floating;
-        states.focus = props.focused;
-        return states;
-    }
+    return (
+        <label className={cx.createClassName(
+            className,
+            getStateClassName({
+                focus: focused,
+                floating
+            })
+        )}>
+            {label}
+        </label>
+    );
 
 }
 
-var PropTypes = React.PropTypes;
+
+const {PropTypes} = React;
 
 TextBoxFloatingLabel.propTypes = {
     label: PropTypes.string.isRequired,
     floating: PropTypes.bool.isRequired
 };
 
-module.exports = TextBoxFloatingLabel;
+module.exports = createComponent('TextboxFloatingLabel', TextBoxFloatingLabel);

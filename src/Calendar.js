@@ -3,63 +3,44 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Calendar');
+const Icon = require('./Icon');
+const Confirm = require('./dialog/Confirm');
+const Panel = require('./calendar/Panel');
 
-var InputComponent = require('./InputComponent');
-var Icon = require('./Icon');
-var Header = require('./calendar/Header');
-var Month = require('./calendar/Month');
-var Selector = require('./calendar/Selector');
-var Pager = require('./calendar/Pager');
-var Confirm = require('./dialog/Confirm');
+const DateTime = require('./common/util/date');
+const _ = require('underscore');
+const PropTypes = React.PropTypes;
 
-var DateTime = require('./common/util/date');
-var _ = require('underscore');
-var PropTypes = React.PropTypes;
+const Calendar = React.createClass({
 
-class Calendar extends InputComponent {
+    displayName: 'Calendar',
 
-    static displayName = 'Calendar';
+    getInitialState() {
 
-    constructor(props) {
+        return {
 
-        super(props);
+            // 缓存用户在 confirm 前的选中值
+            date: this.parseDate(this.props.value),
 
-        let rawValue = this.state.rawValue;
-
-        let {
-            begin,
-            end
-        } = props;
-
-        begin = this.parseDate(begin);
-        end = this.parseDate(end);
-
-        rawValue = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue) ? begin : rawValue;
-        rawValue = _.isDate(end) && DateTime.isBeforeDate(end, rawValue) ? end : rawValue;
-
-        let open = false;
-        let month = rawValue;
-        let mode = 'main';
-        let date = rawValue;
-
-        this.state = {
-            ...this.state,
-            open,
-            month,
-            mode,
-            date
+            // 是否打开选择窗
+            open: false
         };
 
-        this.onLabelClick     = this.onLabelClick.bind(this);
-        this.onHide           = this.onHide.bind(this);
-        this.onConfirm        = this.onConfirm.bind(this);
-        this.onHeaderClick    = this.onHeaderClick.bind(this);
-        this.onSelectorChange = this.onSelectorChange.bind(this);
-        this.onPagerChange    = this.onPagerChange.bind(this);
-        this.onDateChange     = this.onDateChange.bind(this);
+    },
 
-    }
+    componentWillReceiveProps(nextProps) {
+
+        const {value} = nextProps;
+
+        if (value !== this.props.value) {
+            this.setState({
+                date: this.parseDate(value)
+            });
+        }
+
+    },
 
     /**
      * 格式化日期对象
@@ -70,7 +51,7 @@ class Calendar extends InputComponent {
      */
     parseValue(value) {
         return this.parseDate(value);
-    }
+    },
 
     /**
      * 格式化日期
@@ -89,7 +70,8 @@ class Calendar extends InputComponent {
         let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.format(rawValue, format, this.props.lang);
-    }
+
+    },
 
     parseDate(date) {
 
@@ -100,15 +82,11 @@ class Calendar extends InputComponent {
         let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.parse(date, format);
-    }
+    },
 
-    getStates(props) {
-        let states = super.getStates(props);
-
-        states.focus = this.state.open;
-
-        return states;
-    }
+    getValue() {
+        return this.stringifyValue(this.props.value);
+    },
 
     /**
      * 点击textbox时触发
@@ -121,274 +99,119 @@ class Calendar extends InputComponent {
             return;
         }
 
-        this.setState({open: true, mode: 'main'}, function () {
+        this.setState({open: true});
 
-            let onShow = this.props.onShow;
-
-            if (_.isFunction(onShow)) {
-                onShow({
-                    target: this
-                });
-            }
-        });
-    }
-
-    /**
-     * Calendar DialogCalendar隐藏时触发
-     *
-     * @private
-     */
-    onHide() {
-
-        this.setState({open: false}, function () {
-
-            let onHide = this.props.onHide;
-
-            if (_.isFunction(onHide)) {
-                onHide({
-                    target: this
-                });
-            }
-        });
-    }
+    },
 
     /**
      * rawValue 在Calendar Dialog上点击确定或取消按钮触发
      *
-     * @param  {Object} e 事件对象
-     * @param  {Date}   e.date 改变的日期
-     * @param  {Object} e.target CalendarDialog对象
      * @private
      */
-    onConfirm(e) {
+    onConfirm() {
 
-        let date = this.state.date;
-        let value = e.value;
+        const {value, date} = this.state;
 
-        if (!value || DateTime.isEqualDate(date, this.state.rawValue)) {
+        if (DateTime.isEqualDate(date, value)) {
             this.setState({open: false});
             return;
         }
 
-
-        this.setState({rawValue: date, open: false}, function () {
-
-            // 生成事件
-            let e = {
+        this.setState({
+            open: false
+        }, () => {
+            this.props.onChange({
                 type: 'change',
                 target: this,
-                value: this.stringifyValue(date),
-                rawValue: date
-            };
+                value: this.stringifyValue(date)
+            });
+        });
 
-            super.onChange(e);
+    },
 
-            let onChange = this.props.onChange;
+    onCancel() {
+        this.setState({open: false});
+    },
 
-            if (_.isFunction(onChange)) {
-                onChange(e);
+    onDateChange(e) {
+
+        const {value} = e;
+        const {autoConfirm} = this.props;
+
+        this.setState({
+            date: value
+        }, () => {
+            if (autoConfirm) {
+                this.onConfirm();
             }
         });
-    }
 
-    onHeaderClick(e) {
-        let mode = this.state.mode;
+    },
 
-        this.setState({mode: mode === 'main' ? 'year' : 'main'});
-    }
+    render() {
 
-    onSelectorChange(e) {
+        const {
+            state,
+            props
+        } = this;
+
+        const {
+            lang,
+            value,
+            disabled,
+            size,
+            name,
+            dateFormat,
+            ...others
+        } = props;
 
         let {
-            mode,
-            date
-        } = e;
-
-        let {
-            end,
-            begin
-        } = this.props;
+            begin, end
+        } = props;
 
         begin = this.parseDate(begin);
         end = this.parseDate(end);
 
-        mode = mode === 'year' ? 'month' : 'main';
-
-        if (_.isDate(begin) && DateTime.isBeforeDate(date, begin)) {
-            date = begin;
-        }
-        else if (_.isDate(end) && DateTime.isAfterDate(date, end)) {
-            date = end;
-        }
-
-        this.setState({
-            date: date,
-            month: date,
-            mode: mode
-        });
-    }
-
-    onPagerChange(e) {
-
-        let month = e.month;
-
-        this.setState({
-            month: month
-        });
-
-    }
-
-    onDateChange(e) {
-
-        let date = e.date;
-
-        let autoOk = this.props.autoOk;
-
-        this.setState({
-            date: date,
-            month: date
-        }, function () {
-            if (autoOk) {
-                this.onConfirm({
-                    value: true
-                });
-            }
-        });
-    }
-
-    render() {
-
-        let props = this.props;
-
-        let {
-            lang,
-            placeholder,
-            disabled,
-            size,
-            name,
-            ...others
-        } = props;
+        const {open, date} = state;
 
         return (
-            <div {...others} className={this.getClassName()}>
+            <div
+                {...others}
+                className={cx(props).addStates({focus: open}).build()}>
                 <input
                     name={name}
                     ref="input"
                     type="hidden"
-                    value={this.getValue()}
+                    value={value}
                     disabled={disabled}
+                    size={size} />
+                <label onClick={this.onLabelClick}>
+                    {DateTime.format(
+                        this.parseDate(value),
+                        dateFormat.toLowerCase(),
+                        lang
+                    )}
+                    <Icon icon='expand-more' />
+                </label>
+                <Confirm
+                    open={open}
+                    variants={['calendar']}
+                    onConfirm={this.onConfirm}
+                    onCancel={this.onCancel}
                     size={size}
-                    placeholder={placeholder} />
-                {this.renderLabel()}
-                {this.renderDialog()}
-                {this.renderValidateMessage()}
+                    buttonVariants={['secondery', 'calendar']} >
+                    <Panel
+                        date={date}
+                        begin={begin}
+                        end={end}
+                        lang={lang}
+                        onChange={this.onDateChange} />
+                </Confirm>
             </div>
         );
 
     }
-
-    renderLabel() {
-
-        let rawValue = this.state.rawValue;
-        let format = this.props.dateFormat.toLowerCase();
-
-        return (
-            <label onClick={this.onLabelClick}>
-                {DateTime.format(rawValue, format, this.props.lang)}
-                <Icon icon='expand-more' />
-            </label>
-        );
-    }
-
-    renderDialog() {
-
-        let {
-            date,
-            mode,
-            open
-        } = this.state;
-
-        let isMain = mode === 'main';
-
-        return (
-            <Confirm
-                open={open}
-                variants={['calendar']}
-                onConfirm={this.onConfirm}
-                size={this.props.size}
-                buttonVariants={['secondery', 'calendar']} >
-                <Header
-                    date={date}
-                    onClick={this.onHeaderClick} />
-                {isMain
-                    ? this.renderMain()
-                    : this.renderSelector()
-                }
-            </Confirm>
-        );
-    }
-
-    renderMain() {
-
-        let {
-            date,
-            month
-        } = this.state;
-
-        let {
-            lang,
-            begin,
-            end
-        } = this.props;
-
-        begin = this.parseDate(begin);
-        end = this.parseDate(end);
-
-        return (
-            <div className={this.getPartClassName('main')}>
-                <Pager
-                    minDate={begin}
-                    maxDate={end}
-                    onChange={this.onPagerChange}
-                    month={month} />
-                <Month
-                    minDate={begin}
-                    maxDate={end}
-                    lang={lang}
-                    month={month}
-                    date={date}
-                    onChange={this.onDateChange} />
-            </div>
-        );
-    }
-
-    renderSelector() {
-
-        let {
-            date,
-            mode
-        } = this.state;
-
-        let {
-            begin,
-            end
-        } = this.props;
-
-        begin = this.parseDate(begin);
-        end = this.parseDate(end);
-
-        return (
-            <Selector
-                date={date}
-                minDate={begin}
-                maxDate={end}
-                mode={mode}
-                onChange={this.onSelectorChange} />
-        );
-
-    }
-
-}
+});
 
 Calendar.LANG = {
 
@@ -401,36 +224,37 @@ Calendar.LANG = {
 };
 
 Calendar.defaultProps = {
-    ...InputComponent.defaultProps,
-    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+    value: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
     dateFormat: 'yyyy-MM-dd',
     lang: Calendar.LANG,
     validateEvents: ['change']
 };
 
 Calendar.propTypes = {
-    disabled: PropTypes.bool,
-    readOnly: PropTypes.bool,
-    rawValue: PropTypes.object,
+
     value: PropTypes.string,
-    autoOk: PropTypes.bool,
+
+    autoConfirm: PropTypes.bool,
+
     dateFormat: PropTypes.string,
+
     end: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ]),
+
     begin: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string
     ]),
-    onHide: PropTypes.func,
+
     onChange: PropTypes.func,
-    onShow: PropTypes.func,
-    placeholder: PropTypes.string,
+
     lang: PropTypes.shape({
         week: PropTypes.string,
         days: PropTypes.string
     })
+
 };
 
-module.exports = Calendar;
+module.exports = require('./createInputComponent').create(Calendar);

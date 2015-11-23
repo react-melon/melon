@@ -2,111 +2,77 @@ define('melon/calendar/Month', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
     'react',
-    '../Component',
+    '../common/util/cxBuilder',
     './Day',
     'underscore',
     '../common/util/date'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Component = require('../Component');
+    var cx = require('../common/util/cxBuilder').create('CalendarMonth');
     var Day = require('./Day');
     var _ = require('underscore');
     var DateTime = require('../common/util/date');
     var PropTypes = React.PropTypes;
-    var CalendarMonth = function (_Component) {
-        babelHelpers.inherits(CalendarMonth, _Component);
-        babelHelpers.createClass(CalendarMonth, null, [{
-                key: 'displayName',
-                value: 'CalendarMonth',
-                enumerable: true
-            }]);
-        function CalendarMonth(props) {
-            babelHelpers.classCallCheck(this, CalendarMonth);
-            babelHelpers.get(Object.getPrototypeOf(CalendarMonth.prototype), 'constructor', this).call(this, props);
-            this.onClick = this.onClick.bind(this);
-            this.type = 'calendar-month';
-        }
-        babelHelpers.createClass(CalendarMonth, [
-            {
-                key: 'onClick',
-                value: function onClick(e) {
-                    var onChange = this.props.onChange;
-                    if (onChange) {
-                        onChange({
-                            target: this,
-                            date: e.date
-                        });
-                    }
-                }
-            },
-            {
-                key: 'renderWeekHeader',
-                value: function renderWeekHeader() {
-                    var days = this.props.lang.days.split(',');
-                    return React.createElement('div', { className: this.getPartClassName('weekheader') }, _.map(days, function (day, index) {
-                        return React.createElement('span', { key: index }, day);
-                    }));
-                }
-            },
-            {
-                key: 'renderDates',
-                value: function renderDates() {
-                    var props = this.props;
-                    var month = props.month;
-                    var weekArray = DateTime.getFullWeekArray(month);
-                    var weeks = [];
-                    var len = weekArray.length;
-                    weeks.push(this.renderDay(weekArray[0], ['pre-month']));
-                    weeks[0] = weeks[0].concat(this.renderDay(weekArray[1], []));
-                    for (var i = 2; i < len - 1; i++) {
-                        weeks.push(this.renderDay(weekArray[i], []));
-                    }
-                    weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month']));
-                    return React.createElement('ul', null, _.map(weeks, this.renderWeek, this));
-                }
-            },
-            {
-                key: 'renderWeek',
-                value: function renderWeek(week, index) {
-                    return React.createElement('li', {
-                        key: index,
-                        className: this.getPartClassName('week')
-                    }, week);
-                }
-            },
-            {
-                key: 'renderDay',
-                value: function renderDay(array, variants) {
-                    var props = this.props;
-                    var date = props.date;
-                    var minDate = props.minDate;
-                    var maxDate = props.maxDate;
-                    return _.map(array, function (day, index) {
-                        var selected = DateTime.isEqualDate(day, date);
-                        var disabled = _.isDate(minDate) && DateTime.isBeforeDate(day, minDate) || _.isDate(maxDate) && DateTime.isAfterDate(day, maxDate);
-                        return React.createElement(Day, {
-                            key: day,
-                            date: day,
-                            variants: variants,
-                            disabled: disabled,
-                            selected: selected,
-                            onClick: this.onClick
-                        });
-                    }, this);
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    return React.createElement('div', { className: this.getClassName() }, this.renderWeekHeader(), this.renderDates());
-                }
+    var CalendarMonth = React.createClass({
+        displayName: 'CalendarMonth',
+        onClick: function onClick(e) {
+            var onChange = this.props.onChange;
+            if (onChange) {
+                onChange({
+                    target: this,
+                    date: e.date
+                });
             }
-        ]);
-        return CalendarMonth;
-    }(Component);
+        },
+        renderWeekHeader: function renderWeekHeader() {
+            var days = this.props.lang.days.split(',');
+            return React.createElement('div', { className: cx().part('weekheader').build() }, _.map(days, function (day, index) {
+                return React.createElement('span', { key: index }, day);
+            }));
+        },
+        renderDates: function renderDates() {
+            var props = this.props;
+            var month = props.month;
+            var weekArray = DateTime.getFullWeekArray(month);
+            var weeks = [];
+            var len = weekArray.length;
+            weeks.push(this.renderDay(weekArray[0], ['pre-month']));
+            weeks[0] = weeks[0].concat(this.renderDay(weekArray[1], []));
+            for (var i = 2; i < len - 1; i++) {
+                weeks.push(this.renderDay(weekArray[i], []));
+            }
+            weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month']));
+            return React.createElement('ul', null, _.map(weeks, this.renderWeek, this));
+        },
+        renderWeek: function renderWeek(week, index) {
+            return React.createElement('li', {
+                key: index,
+                className: cx().part('week').build()
+            }, week);
+        },
+        renderDay: function renderDay(array, variants) {
+            var props = this.props;
+            var date = props.date;
+            var minDate = props.minDate;
+            var maxDate = props.maxDate;
+            return _.map(array, function (day, index) {
+                var selected = DateTime.isEqualDate(day, date);
+                var disabled = _.isDate(minDate) && DateTime.isBeforeDate(day, minDate) || _.isDate(maxDate) && DateTime.isAfterDate(day, maxDate);
+                return React.createElement(Day, {
+                    key: day,
+                    date: day,
+                    variants: variants,
+                    disabled: disabled,
+                    selected: selected,
+                    onClick: this.onClick
+                });
+            }, this);
+        },
+        render: function render() {
+            return React.createElement('div', { className: cx(this.props).build() }, this.renderWeekHeader(), this.renderDates());
+        }
+    });
     CalendarMonth.propTypes = {
         date: PropTypes.object.isRequired,
         month: PropTypes.object.isRequired,

@@ -4,135 +4,115 @@ define('melon/Form', [
     'module',
     './babelHelpers',
     'react',
-    'react-dom',
-    './Component'
+    './LiteValiditor'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var ReactDOM = require('react-dom');
-    var Component = require('./Component');
-    var Form = function (_Component) {
-        babelHelpers.inherits(Form, _Component);
-        babelHelpers.createClass(Form, null, [{
-                key: 'displayName',
-                value: 'Form',
-                enumerable: true
-            }]);
-        function Form(props) {
-            babelHelpers.classCallCheck(this, Form);
-            babelHelpers.get(Object.getPrototypeOf(Form.prototype), 'constructor', this).call(this, props);
+    var validator = require('./LiteValiditor');
+    var PropTypes = React.PropTypes;
+    var Form = React.createClass({
+        displayName: 'Form',
+        propTypes: {
+            onSumbit: PropTypes.func,
+            target: PropTypes.string,
+            action: PropTypes.string,
+            method: PropTypes.oneOf([
+                'POST',
+                'GET'
+            ]),
+            validator: PropTypes.shape({ validate: PropTypes.func.isRequired })
+        },
+        getDefaultProps: function getDefaultProps() {
+            return { validator: validator };
+        },
+        getInitialState: function getInitialState() {
             this.fields = [];
-            this.onSubmit = this.onSubmit.bind(this);
-            this.attachField = this.attachField.bind(this);
-            this.detachField = this.detachField.bind(this);
-        }
-        babelHelpers.createClass(Form, [
-            {
-                key: 'getChildContext',
-                value: function getChildContext() {
-                    var context = {};
-                    if (!this.props.novalidate) {
-                        context.form = {
-                            attach: this.attachField,
-                            detach: this.detachField
-                        };
-                    }
-                    return context;
+            return {};
+        },
+        childContextTypes: {
+            attachForm: PropTypes.func,
+            detachForm: PropTypes.func,
+            validator: PropTypes.shape({ validate: PropTypes.func.isRequired }),
+            pointer: PropTypes.string.isRequired
+        },
+        getChildContext: function getChildContext() {
+            return {
+                pointer: '/',
+                attachForm: this.addField,
+                detachForm: this.removeField,
+                validator: this.props.validator
+            };
+        },
+        componentWillUnmount: function componentWillUnmount() {
+            this.fields.length = 0;
+            this.fields = null;
+        },
+        addField: function addField(field) {
+            this.fields.push(field);
+        },
+        removeField: function removeField(field) {
+            this.fields = this.fields.filter(function (f) {
+                return f !== field;
+            });
+        },
+        isValidFormField: function isValidFormField(field) {
+            var value = field.getValue();
+            var pointer = field.pointer;
+            var props = field.props;
+            var name = props.name;
+            var disabled = props.disabled;
+            return name && !disabled && value != null && pointer && pointer.lastIndexOf('/') === 0;
+        },
+        getData: function getData() {
+            var _this = this;
+            return this.fields.reduce(function (data, field) {
+                if (_this.isValidFormField(field)) {
+                    data[field.props.name] = field.getValue();
                 }
-            },
-            {
-                key: 'attachField',
-                value: function attachField(component) {
-                    this.fields = this.fields.concat(component);
-                    return this;
+                return data;
+            }, {});
+        },
+        validate: function validate() {
+            return this.checkValidity().isValid;
+        },
+        checkValidity: function checkValidity() {
+            var _this2 = this;
+            return this.fields.reduce(function (formValidity, field) {
+                if (!_this2.isValidFormField(field)) {
+                    return formValidity;
                 }
-            },
-            {
-                key: 'detachField',
-                value: function detachField(component) {
-                    var fields = this.fields;
-                    if (fields) {
-                        var index = fields.indexOf(component);
-                        if (index !== -1) {
-                            this.fields = fields.slice(0, index).concat(fields.slice(index + 1));
-                        }
-                    }
-                    return this;
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var _props = this.props;
-                    var children = _props.children;
-                    var props = babelHelpers.objectWithoutProperties(_props, ['children']);
-                    return React.createElement('form', babelHelpers._extends({}, props, {
-                        className: this.getClassName(),
-                        onSubmit: this.onSubmit
-                    }), this.props.children);
-                }
-            },
-            {
-                key: 'getData',
-                value: function getData() {
-                    return this.fields.reduce(function (data, field) {
-                        var name = field.props.name;
-                        if (name) {
-                            data[name] = field.getValue();
-                        }
-                        return data;
-                    }, {});
-                }
-            },
-            {
-                key: 'onSubmit',
-                value: function onSubmit(e) {
-                    if (!this.validate()) {
-                        e.preventDefault();
-                        return;
-                    }
-                    if (!this.props.onSubmit) {
-                        return;
-                    }
-                    e.target = this;
-                    this.props.onSubmit(e);
-                }
-            },
-            {
-                key: 'validate',
-                value: function validate() {
-                    var isValid = true;
-                    for (var fields = this.fields, i = 0, len = fields.length; i < len; ++i) {
-                        var field = fields[i];
-                        var value = field.getValue();
-                        if (!field.validate(value).isValid()) {
-                            if (isValid) {
-                                ReactDOM.findDOMNode(field).scrollIntoView();
-                            }
-                            isValid = false;
-                        }
-                    }
-                    return isValid;
-                }
-            },
-            {
-                key: 'componentWillUnmount',
-                value: function componentWillUnmount() {
-                    this.fields.length = 0;
-                    this.fields = null;
+                var value = field.getValue();
+                var validity = field.validate(value);
+                return {
+                    isValid: formValidity.isValid && validity.isValid(),
+                    errors: [].concat(formValidity.errors, validity.states.filter(function (state) {
+                        return !state.isValid;
+                    }))
+                };
+            }, {
+                isValid: true,
+                errors: []
+            });
+        },
+        onSubmit: function onSubmit(e) {
+            var _props = this.props;
+            var onSubmit = _props.onSubmit;
+            var noValidate = _props.noValidate;
+            if (!noValidate) {
+                if (!this.validate()) {
+                    e.preventDefault();
+                    return;
                 }
             }
-        ]);
-        return Form;
-    }(Component);
-    Form.childContextTypes = { form: React.PropTypes.object };
-    var PropTypes = React.PropTypes;
-    Form.propTypes = {
-        novalidate: PropTypes.bool,
-        validate: PropTypes.func,
-        onValid: PropTypes.func,
-        onInvalid: PropTypes.func,
-        onSumbit: PropTypes.func
-    };
+            if (onSubmit) {
+                e.data = this.getData();
+                onSubmit(e);
+            }
+        },
+        render: function render() {
+            var props = this.props;
+            return React.createElement('form', babelHelpers._extends({}, props, { onSubmit: this.onSubmit }));
+        }
+    });
     module.exports = Form;
 });

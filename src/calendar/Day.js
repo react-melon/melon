@@ -3,83 +3,27 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('CalendarDay');
+const DateTime = require('../common/util/date');
 
-var Component = require('../Component');
-var DateTime = require('../common/util/date');
+const PropTypes = React.PropTypes;
 
-var PropTypes = React.PropTypes;
+const CalendarDay = React.createClass({
 
-class CalendarDay extends Component {
-
-    static displayName = 'CalendarDay';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
-
-        this.type = 'calendar-day';
-    }
+    displayName: 'CalendarDay',
 
     shouldComponentUpdate(nextProps) {
 
-        var {
+        const {
             disabled,
             selected
         } = this.props;
 
-        if (nextProps.disabled !== disabled
-            || nextProps.selected !== selected) {
-            return true;
-        }
+        return nextProps.disabled !== disabled
+            || nextProps.selected !== selected;
 
-        return false;
-
-    }
-
-    getStates(props) {
-        var states = super.getStates(props);
-        states.selected = props.selected;
-
-        return states;
-    }
-
-    getVariants(props) {
-
-        var variants = super.getVariants(props);
-
-        var date = props.date;
-
-        if (DateTime.isEqualDate(date, new Date())) {
-            variants.push('today');
-        }
-
-        return variants;
-    }
-
-    render() {
-
-        var props = this.props;
-
-        var {
-            date,
-            onClick,
-            ...others
-        } = props;
-
-
-        return (
-            <a
-                {...others}
-                className={this.getClassName()}
-                href="#"
-                onClick={this.onClick} >
-                {date.getDate()}
-            </a>
-        );
-    }
+    },
 
     onClick(e) {
 
@@ -101,9 +45,35 @@ class CalendarDay extends Component {
                 date: date
             });
         }
+    },
+
+    render() {
+
+        const {
+            date,
+            onClick,
+            selected,
+            ...others
+        } = this.props;
+
+        const className = cx(this.props)
+            .addVariants(DateTime.isEqualDate(date, new Date()) ? 'today' : null)
+            .addStates({selected})
+            .build();
+
+
+        return (
+            <a
+                {...others}
+                className={className}
+                href="#"
+                onClick={this.onClick} >
+                {date.getDate()}
+            </a>
+        );
     }
 
-}
+});
 
 
 CalendarDay.propTypes = {

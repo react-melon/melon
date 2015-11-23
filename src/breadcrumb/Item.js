@@ -3,32 +3,18 @@
   * @author leon(ludafa@outlook.com)
   */
 
-var React = require('react');
-var Component = require('../Component');
+const React = require('react');
 
-class BreadcrumbItem extends Component {
+const cx = require('../common/util/cxBuilder').create('BreadcrumbItem');
 
-    static displayName = 'BreadcrumbItem';
-
-    render() {
-
-        var props = this.props;
-
-        return (
-            <a {...props} className={this.getClassName()}>
-                {props.children}
-            </a>
-        );
-
-    }
-
+function BreadcrumbItem(props) {
+    return (
+        <a {...props} className={cx(props).build()} />
+    );
 }
 
-var PropTypes = React.PropTypes;
-
 BreadcrumbItem.propTypes = {
-    ...Component.propTypes,
-    href: PropTypes.string
+    href: React.PropTypes.string
 };
 
 module.exports = BreadcrumbItem;

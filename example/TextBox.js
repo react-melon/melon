@@ -89,7 +89,17 @@ class View extends React.Component {
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={5}>前缀</Title>
-                        <TextBox floatingLabel="出价" /><span className="ui-textbox-suffix">万元</span>
+                        <TextBox
+                            required={true}
+                            max={1000}
+                            maxErrorMessage="出价不能多于1000元哟！"
+                            min={100}
+                            minErrorMessage="出价不能少于100元哟！"
+                            pattern="\d+"
+                            patternErrorMessage="出价需要是整数呢"
+                            floatingLabel="出价" />
+                            <span className="ui-textbox-suffix">万元
+                        </span>
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={5}>后缀</Title>

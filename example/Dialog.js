@@ -78,7 +78,12 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={4}>Confirm</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog6Show}>弹出窗口</Button>
-                    <Confirm open={this.state.dialog6} onConfirm={this.onConfirm}>This is Content.</Confirm>
+                    <Confirm
+                        open={this.state.dialog6}
+                        onConfirm={this.onConfirm}
+                        onCancel={this.onConfirm}>
+                        This is Content.
+                    </Confirm>
                 </div>
             </div>
         );

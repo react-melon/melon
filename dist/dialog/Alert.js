@@ -5,66 +5,50 @@ define('melon/dialog/Alert', [
     '../babelHelpers',
     'react',
     '../Dialog',
-    '../Button'
+    '../Button',
+    '../common/util/cxBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Dialog = require('../Dialog');
     var Button = require('../Button');
-    var Alert = function (_Dialog) {
-        babelHelpers.inherits(Alert, _Dialog);
-        babelHelpers.createClass(Alert, null, [{
-                key: 'displayName',
-                value: 'Alert',
-                enumerable: true
-            }]);
-        function Alert(props) {
-            babelHelpers.classCallCheck(this, Alert);
-            babelHelpers.get(Object.getPrototypeOf(Alert.prototype), 'constructor', this).call(this, props);
-            this.onAlertSubmit = this.onAlertSubmit.bind(this);
-            this.type = 'dialog';
+    var cx = require('../common/util/cxBuilder').create('Alert');
+    var Alert = React.createClass({
+        displayName: 'Alert',
+        propTypes: babelHelpers._extends({}, Dialog.propTypes, { buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string) }),
+        getDefaultProps: function getDefaultProps() {
+            return babelHelpers._extends({}, Dialog.defaultProps, {
+                maskClickClose: false,
+                title: null,
+                buttonVariants: ['primary']
+            });
+        },
+        onAlertSubmit: function onAlertSubmit() {
+            var onHide = this.props.onHide;
+            onHide();
+        },
+        renderAction: function renderAction() {
+            var _props = this.props;
+            var buttonVariants = _props.buttonVariants;
+            var size = _props.size;
+            return React.createElement('div', { className: cx().part('actions').build() }, React.createElement(Button, {
+                label: '\u786E\u5B9A',
+                key: 'submit',
+                size: size,
+                type: 'button',
+                onClick: this.onAlertSubmit,
+                variants: buttonVariants
+            }));
+        },
+        render: function render() {
+            var _props2 = this.props;
+            var variants = _props2.variants;
+            var rest = babelHelpers.objectWithoutProperties(_props2, ['variants']);
+            return React.createElement(Dialog, babelHelpers._extends({}, rest, {
+                actions: this.renderAction(),
+                variants: [].concat(variants || [], ['alert'])
+            }));
         }
-        babelHelpers.createClass(Alert, [
-            {
-                key: 'getVariants',
-                value: function getVariants(props) {
-                    var variants = babelHelpers.get(Object.getPrototypeOf(Alert.prototype), 'getVariants', this).call(this, props);
-                    variants.push('alert');
-                    return variants;
-                }
-            },
-            {
-                key: 'onAlertSubmit',
-                value: function onAlertSubmit() {
-                    this.setState({ open: false }, function () {
-                        this.onHide();
-                    });
-                }
-            },
-            {
-                key: 'renderAction',
-                value: function renderAction() {
-                    var _props = this.props;
-                    var buttonVariants = _props.buttonVariants;
-                    var size = _props.size;
-                    return React.createElement('div', { className: this.getPartClassName('actions') }, React.createElement(Button, {
-                        label: '\u786E\u5B9A',
-                        key: 'submit',
-                        size: size,
-                        type: 'button',
-                        onClick: this.onAlertSubmit,
-                        variants: buttonVariants
-                    }));
-                }
-            }
-        ]);
-        return Alert;
-    }(Dialog);
-    Alert.propTypes = babelHelpers._extends({}, Dialog.propTypes, { buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string) });
-    Alert.defaultProps = babelHelpers._extends({}, Dialog.defaultProps, {
-        maskClickClose: false,
-        title: null,
-        buttonVariants: ['primary']
     });
     module.exports = Alert;
 });

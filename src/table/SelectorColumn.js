@@ -59,7 +59,7 @@ TableSelectorColumn.cellRenderer = function (props) {
 
 TableSelectorColumn.onCellClick = function (props) {
 
-    let {part, rowIndex, columnData, multiple} = props;
+    let {part, rowIndex, columnData} = props;
     let handler = columnData[part === 'body' ? 'onSelect' : 'onSelectAll'];
 
     if (typeof handler === 'function') {

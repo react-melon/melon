@@ -4,98 +4,56 @@ define('melon/calendar/Day', [
     'module',
     '../babelHelpers',
     'react',
-    '../Component',
+    '../common/util/cxBuilder',
     '../common/util/date'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Component = require('../Component');
+    var cx = require('../common/util/cxBuilder').create('CalendarDay');
     var DateTime = require('../common/util/date');
     var PropTypes = React.PropTypes;
-    var CalendarDay = function (_Component) {
-        babelHelpers.inherits(CalendarDay, _Component);
-        babelHelpers.createClass(CalendarDay, null, [{
-                key: 'displayName',
-                value: 'CalendarDay',
-                enumerable: true
-            }]);
-        function CalendarDay(props) {
-            babelHelpers.classCallCheck(this, CalendarDay);
-            babelHelpers.get(Object.getPrototypeOf(CalendarDay.prototype), 'constructor', this).call(this, props);
-            this.onClick = this.onClick.bind(this);
-            this.type = 'calendar-day';
-        }
-        babelHelpers.createClass(CalendarDay, [
-            {
-                key: 'shouldComponentUpdate',
-                value: function shouldComponentUpdate(nextProps) {
-                    var _props = this.props;
-                    var disabled = _props.disabled;
-                    var selected = _props.selected;
-                    if (nextProps.disabled !== disabled || nextProps.selected !== selected) {
-                        return true;
-                    }
-                    return false;
-                }
-            },
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = babelHelpers.get(Object.getPrototypeOf(CalendarDay.prototype), 'getStates', this).call(this, props);
-                    states.selected = props.selected;
-                    return states;
-                }
-            },
-            {
-                key: 'getVariants',
-                value: function getVariants(props) {
-                    var variants = babelHelpers.get(Object.getPrototypeOf(CalendarDay.prototype), 'getVariants', this).call(this, props);
-                    var date = props.date;
-                    if (DateTime.isEqualDate(date, new Date())) {
-                        variants.push('today');
-                    }
-                    return variants;
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    var date = props.date;
-                    var onClick = props.onClick;
-                    var others = babelHelpers.objectWithoutProperties(props, [
-                        'date',
-                        'onClick'
-                    ]);
-                    return React.createElement('a', babelHelpers._extends({}, others, {
-                        className: this.getClassName(),
-                        href: '#',
-                        onClick: this.onClick
-                    }), date.getDate());
-                }
-            },
-            {
-                key: 'onClick',
-                value: function onClick(e) {
-                    e.preventDefault();
-                    var _props2 = this.props;
-                    var disabled = _props2.disabled;
-                    var onClick = _props2.onClick;
-                    var date = _props2.date;
-                    if (disabled) {
-                        return;
-                    }
-                    if (onClick) {
-                        onClick({
-                            target: this,
-                            date: date
-                        });
-                    }
-                }
+    var CalendarDay = React.createClass({
+        displayName: 'CalendarDay',
+        shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+            var _props = this.props;
+            var disabled = _props.disabled;
+            var selected = _props.selected;
+            return nextProps.disabled !== disabled || nextProps.selected !== selected;
+        },
+        onClick: function onClick(e) {
+            e.preventDefault();
+            var _props2 = this.props;
+            var disabled = _props2.disabled;
+            var onClick = _props2.onClick;
+            var date = _props2.date;
+            if (disabled) {
+                return;
             }
-        ]);
-        return CalendarDay;
-    }(Component);
+            if (onClick) {
+                onClick({
+                    target: this,
+                    date: date
+                });
+            }
+        },
+        render: function render() {
+            var _props3 = this.props;
+            var date = _props3.date;
+            var onClick = _props3.onClick;
+            var selected = _props3.selected;
+            var others = babelHelpers.objectWithoutProperties(_props3, [
+                'date',
+                'onClick',
+                'selected'
+            ]);
+            var className = cx(this.props).addVariants(DateTime.isEqualDate(date, new Date()) ? 'today' : null).addStates({ selected: selected }).build();
+            return React.createElement('a', babelHelpers._extends({}, others, {
+                className: className,
+                href: '#',
+                onClick: this.onClick
+            }), date.getDate());
+        }
+    });
     CalendarDay.propTypes = {
         date: PropTypes.object.isRequired,
         onClick: PropTypes.func,

@@ -3,22 +3,14 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Link');
 
-var Component = require('./Component');
+function Link(props) {
 
-class Link extends Component {
-
-    static displayName = 'Link';
-
-    render() {
-        var props = this.props;
-        return (
-            <a {...props} className={this.getClassName()}>
-                {props.children}
-            </a>
-        );
-    }
+    return (
+        <a {...props} className={cx(props).build()} />
+    );
 
 }
 

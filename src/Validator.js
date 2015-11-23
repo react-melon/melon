@@ -1,109 +1,91 @@
 /**
- * @file melon/Validator
+ * @file Validitor
  * @author leon(ludafa@outlook.com)
  */
 
-var rules = {};
+const Validity = require('./validator/Validity');
 
-var ValidityState = require('./validator/ValidityState');
+function Validator() {
+    this.rules = [];
+}
 
-var Validator = {};
-
-Validator.register = function (ruleName, check) {
-    rules[ruleName] = check;
+Validator.prototype.addRule = function (rule) {
+    this.rules.push(rule);
+    return this;
 };
 
-Validator.register('required', function (value, component) {
-    return new ValidityState(
-        !!value,
-        component.props.requiredErrorMessage || '不能为空'
-    );
-});
+Validator.prototype.resolveCheckers = function (config) {
 
-Validator.register('pattern', function (value, component) {
+    const {rules} = this;
 
-    var {pattern, patternErrorMessage} = component.props;
-
-    return new ValidityState(
-        !value || new RegExp(pattern).test(value),
-        patternErrorMessage || '格式非法'
-    );
-
-});
-
-Validator.register('maxByteLength', function (value, component) {
-
-    var {maxByteLength, maxByteLengthErrorMessage} = component.props;
-    var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
-
-    return new ValidityState(
-        !value || byteLength <= maxByteLength,
-        maxByteLengthErrorMessage || `不能多于${maxByteLength}个字符，中文及中文符号占2个字符`
-    );
-
-});
-
-Validator.register('minByteLength', function (value, component) {
-
-    var {minByteLength, minByteLengthErrorMessage} = component.props;
-    var byteLength = value.replace(/[^\x00-\xff]/g, 'xx').length;
-
-    return new ValidityState(
-        !value || byteLength >= minByteLength,
-        minByteLengthErrorMessage || `不能少于${minByteLength}个字符，中文及中文符号占2个字符`
-    );
-
-});
-
-Validator.register('max', function (value, component) {
-
-    var {max, maxErrorMessage} = component.props;
-    var number = +value;
-    var isValid = !isNaN(number) && number <= max;
-
-    return new ValidityState(
-        !value || isValid,
-        maxErrorMessage || `不能大于${max}`
-    );
-
-});
-
-Validator.register('min', function (value, component) {
-
-    var {min, minErrorMessage} = component.props;
-    var number = +value;
-    var isValid = !isNaN(number) && min <= number;
-
-    return new ValidityState(
-        !value || isValid,
-        minErrorMessage || `不能小于${min}`
-    );
-
-});
-
-Validator.resolve = function (component) {
-
-    var props = component.props;
-
-    if (props.novalidate) {
-        return [];
-    }
-
-    return Object
-        .keys(rules)
+    return rules
         .reduce(
-            function (result, ruleName) {
-                if (ruleName in component.props) {
-                    result.push({
-                        name: ruleName,
-                        check: rules[ruleName]
+            (activeCheckers, checker) => {
+
+                const {name, check} = checker;
+
+                if (name in config) {
+                    activeCheckers.push({
+                        name,
+                        check: check,
+                        value: config[name]
                     });
                 }
-                return result;
+
+                return activeCheckers;
+
             },
             []
         );
+
 };
 
+Validator.prototype.validate = function (value, component) {
 
-module.exports = Validator;
+    return this
+        .resolveCheckers(component.props)
+        .reduce(
+            (validity, checker) => {
+                const {check} = checker;
+                const state = check(value, component);
+                validity.addState(state);
+                return validity;
+            },
+            new Validity()
+        );
+
+};
+
+Validator.prototype.createCustomValidity = function (customValidity) {
+    const validity = new Validity();
+    validity.addState({
+        isValid: false,
+        message: customValidity
+    });
+    return validity;
+};
+
+const validator = new Validator();
+
+validator.create = () => {
+    return new Validator();
+};
+
+validator.addRule({
+    name: 'min',
+    check: (value, component) => {
+        const {min, minErrorMessage} = component.props;
+        const num = +value;
+        if (value && isNaN(num)) {
+            return {
+                isValid: true
+            };
+        }
+        return {
+            isValid: num >= min,
+            message: minErrorMessage || `不能小于${min}`
+        };
+    }
+});
+
+module.exports = validator;

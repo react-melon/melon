@@ -5,8 +5,7 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-
-const Component = require('../Component');
+const cx = require('../common/util/cxBuilder').create('TouchRipple');
 const RippleCircle = require('./RippleCircle');
 
 const {
@@ -16,21 +15,14 @@ const {
 
 const dom = require('../common/util/dom');
 
-class TouchRipple extends Component {
+const TouchRipple = React.createClass({
 
-    static displayName = 'TouchRipple';
-
-    constructor(props) {
-        super(props);
-
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.state = {
+    getInitialState() {
+        return  {
             now: 't' + 0,
             center: [0, 0]
         };
-
-        this.type = 'touch-ripple';
-    }
+    },
 
     onMouseDown({pageX, pageY}) {
 
@@ -43,25 +35,26 @@ class TouchRipple extends Component {
             center: [pageX - left - this.radius, pageY - top - this.radius],
             now: 't' + Date.now()
         });
-    }
+
+    },
 
     componentDidMount() {
         this.updatePosition();
-    }
+    },
 
     componentDidUpdate() {
         this.updatePosition();
-    }
+    },
 
     componentWillUnmount() {
-        this.position = null;
-    }
+        this.position = this.radius = null;
+    },
 
     updatePosition() {
         let main = ReactDOM.findDOMNode(this);
         this.position = dom.getPosition(main);
         this.radius = Math.max(this.position.width, this.position.height) / 2;
-    }
+    },
 
     willLeave(key, valOfKey) {
         return {
@@ -69,7 +62,7 @@ class TouchRipple extends Component {
             opacity: spring(0, [60, 15]),
             scale: spring(2, [60, 15])
         };
-    }
+    },
 
     render() {
 
@@ -85,42 +78,47 @@ class TouchRipple extends Component {
             }
         };
 
+        const circleClassName = cx().part('circle').build();
+
         return (
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
-                {circles =>
-                    <div
-                        onMouseDown={this.onMouseDown}
-                        className={this.getClassName()}>
-                        {Object.keys(circles).map(key => {
-                            let {opacity, scale} = circles[key];
-                            opacity = Math.round(opacity * 100) / 100;
-                            scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
-                            return (
-                                <RippleCircle
-                                    key={key}
-                                    className={this.getPartClassName('circle')}
-                                    opacity={opacity}
-                                    scale={scale}
-                                    style={{
-                                        width: this.radius * 2 || 0,
-                                        height: this.radius * 2 || 0,
-                                        left: centerX,
-                                        top: centerY
-                                    }} />
-                            );
-                        })}
-                    </div>
-                }
+                {(circles) => {
+
+                    return (
+                        <div
+                            onMouseDown={this.onMouseDown}
+                            className={cx(this.props).build()}>
+                            {Object.keys(circles).map((key) => {
+                                let {opacity, scale} = circles[key];
+                                opacity = Math.round(opacity * 100) / 100;
+                                scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
+                                return (
+                                    <RippleCircle
+                                        key={key}
+                                        className={circleClassName}
+                                        opacity={opacity}
+                                        scale={scale}
+                                        style={{
+                                            width: this.radius * 2 || 0,
+                                            height: this.radius * 2 || 0,
+                                            left: centerX,
+                                            top: centerY
+                                        }} />
+                                );
+                            })}
+                        </div>
+                    );
+                }}
             </TransitionMotion>
         );
 
     }
 
-}
+});
 
-const PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 TouchRipple.defaultProps = {
     opacity: 0.3

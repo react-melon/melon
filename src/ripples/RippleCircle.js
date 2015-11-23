@@ -5,17 +5,9 @@
 
 const React = require('react');
 
-const Component = require('../Component');
-
-class RippleCircle extends Component {
+class RippleCircle extends React.Component {
 
     static displayName = 'RippleCircle';
-
-    constructor(props) {
-        super(props);
-
-        this.type = 'ripple-circle';
-    }
 
     shouldComponentUpdate(nextProps) {
 
@@ -52,7 +44,7 @@ class RippleCircle extends Component {
 
 }
 
-const PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 RippleCircle.defaultProps = {
     opacity: 0.3,

@@ -2,10 +2,28 @@
 
 @require('./Ripple.styl');
 
-$-melon-button = {
+melon-button-swatch($swatches, $revert = false)
+
+    color: $revert ? $-melon-colors.white : $swatches.color
+    background-color: $revert ? $swatches.color : $swatches.background-color
+
+    & .{$-melon-class-prefix}-touch-ripple-circle
+        background-color: $swatches.color-ripple
+
+    &:hover
+        color: $revert ? $-melon-colors.white : $swatches.color-hover
+        background-color: rgba($swatches.background-color-hover, $revert ? .6 : .2)
+
+    &:active
+        color: $revert ? $-melon-colors.white : $swatches.color-active
+        background-color: rgba($swatches.background-color-active, $revert ? .8 : .4)
+
+
+.{$-melon-class-prefix}-button
 
     display: inline-block
     box-sizing: border-box
+    position: relative
 
     padding: 0 1em
     height: 2em
@@ -31,34 +49,10 @@ $-melon-button = {
     // Gets rid of tap active state
     -webkit-tap-highlight-color: transparent
 
-    '&:disabled': {
+    &:disabled
         cursor: not-allowed
         color: rgba(#000, .26) !important
         background-color: $-melon-colors.white !important
-    }
-
-}
-
-melon-button-swatch($swatches, $revert = false)
-
-    color: $revert ? $-melon-colors.white : $swatches.color
-    background-color: $revert ? $swatches.color : $swatches.background-color
-
-    & .{$-melon-class-prefix}-touch-ripple-circle
-        background-color: $swatches.color-ripple
-
-    &:hover
-        color: $revert ? $-melon-colors.white : $swatches.color-hover
-        background-color: rgba($swatches.background-color-hover, $revert ? .6 : .2)
-
-    &:active
-        color: $revert ? $-melon-colors.white : $swatches.color-active
-        background-color: rgba($swatches.background-color-active, $revert ? .8 : .4)
-
-
-.{$-melon-class-prefix}-button
-
-    {$-melon-button}
 
     melon-button-swatch($-melon-button-default)
 
