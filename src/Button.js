@@ -3,49 +3,32 @@
  * @author leon<lupengyu@baidu.com>
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Button');
+const TouchRipple = require('./ripples/TouchRipple');
 
-var Component = require('./Component');
-var TouchRipple = require('./ripples/TouchRipple');
+function Button(props) {
 
-class Button extends Component {
+    const {
+        hasRipple,
+        label,
+        children,
+        disabled,
+        getVariantClassName,
+        ...others
+    } = props;
 
-    static displayName = 'Button';
+    const className = cx(props).addVariants({ripple: hasRipple && !disabled}).build();
 
-    getVariants(props) {
-        let variants = super.getVariants(props);
-        if (props.hasRipple) {
-            variants.push('ripple');
-        }
-        return variants;
-    }
-
-    render() {
-
-        var {
-            hasRipple,
-            label,
-            children,
-            ...other
-        } = this.props;
-
-        var content = label || children;
-        var useRipple = hasRipple && !other.disabled;
-
-        var style = useRipple
-            ? {
-                position: 'relative'
-            }
-            : {};
-
-        return (
-            <button {...other} className={this.getClassName()} style={style}>
-                {useRipple ? <TouchRipple /> : null}
-                {content}
-            </button>
-        );
-
-    }
+    return (
+        <button
+            {...others}
+            disabled={disabled}
+            className={className}>
+            {hasRipple ? <TouchRipple /> : null}
+            {label || children}
+        </button>
+    );
 
 }
 

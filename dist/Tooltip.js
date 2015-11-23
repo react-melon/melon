@@ -22,155 +22,111 @@ define('melon/Tooltip', [
             }]);
         function Tooltip(props) {
             babelHelpers.classCallCheck(this, Tooltip);
-            babelHelpers.get(Object.getPrototypeOf(Tooltip.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             this.onClick = this.onClick.bind(this);
             this.onMouseEnter = this.onMouseEnter.bind(this);
             this.onMouseLeave = this.onMouseLeave.bind(this);
             this.state = babelHelpers._extends({}, this.state, { isShown: false });
         }
-        babelHelpers.createClass(Tooltip, [
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    var mode = props.mode;
-                    var onClick = mode === 'click' ? this.onClick : null;
-                    var onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
-                    var onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
-                    return React.createElement('div', babelHelpers._extends({}, props, {
-                        ref: 'main',
-                        className: this.getClassName(),
-                        onClick: onClick,
-                        onMouseEnter: onMouseEnter,
-                        onMouseLeave: onMouseLeave
-                    }), props.children);
-                }
-            },
-            {
-                key: 'renderPopup',
-                value: function renderPopup(target, content) {
-                    var styles = this.getPosition();
-                    content = React.createElement('div', {
-                        className: this.getPartClassName('popup'),
-                        style: styles
-                    }, content);
-                    ReactDOM.render(content, target);
-                }
-            },
-            {
-                key: 'getPosition',
-                value: function getPosition() {
-                    if (!this.isShown()) {
-                        return {
-                            left: -10000,
-                            top: 0,
-                            opacity: 0,
-                            width: 'auto',
-                            height: 'auto'
-                        };
-                    }
-                    var props = this.props;
-                    var direction = props.direction;
-                    var offsetX = props.offsetX;
-                    var offsetY = props.offsetY;
-                    var popup = this.popup.childNodes[0];
-                    var position = dom.getPosition(this.refs.main);
-                    var offsetWidth = popup.offsetWidth;
-                    var offsetHeight = popup.offsetHeight;
-                    var styles = { opacity: 1 };
-                    switch (direction) {
-                    case 'top':
-                        styles.left = position.left + (position.width - offsetWidth) / 2;
-                        styles.top = position.top - offsetHeight - offsetY;
-                        break;
-                    case 'bottom':
-                        styles.left = (position.width - offsetWidth) / 2 + position.left;
-                        styles.top = position.top + position.height + offsetY;
-                        break;
-                    case 'left':
-                        styles.top = (position.height - offsetHeight) / 2 + position.top;
-                        styles.left = position.left - offsetWidth - offsetY;
-                        break;
-                    case 'right':
-                        styles.top = (position.height - offsetHeight) / 2 + position.top;
-                        styles.left = position.left + position.width + offsetX;
-                        break;
-                    }
-                    return styles;
-                }
-            },
-            {
-                key: 'componentDidMount',
-                value: function componentDidMount() {
-                    var popup = this.popup = Tooltip.createPopup();
-                    this.renderPopup(popup, this.props.content);
-                }
-            },
-            {
-                key: 'componentWillUnmount',
-                value: function componentWillUnmount() {
-                    Tooltip.destroyPopup(this.popup);
-                    this.popup = null;
-                }
-            },
-            {
-                key: 'componentDidUpdate',
-                value: function componentDidUpdate() {
-                    this.renderPopup(this.popup, this.props.content);
-                }
-            },
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = babelHelpers.get(Object.getPrototypeOf(Tooltip.prototype), 'getStates', this).call(this, props);
-                    var direction = props.direction;
-                    states[direction] = true;
-                    return states;
-                }
-            },
-            {
-                key: 'onClick',
-                value: function onClick(e) {
-                    this.toggle();
-                }
-            },
-            {
-                key: 'onMouseEnter',
-                value: function onMouseEnter(e) {
-                    this.show();
-                }
-            },
-            {
-                key: 'onMouseLeave',
-                value: function onMouseLeave(e) {
-                    this.hide();
-                }
-            },
-            {
-                key: 'isShown',
-                value: function isShown() {
-                    return this.state.isShown;
-                }
-            },
-            {
-                key: 'toggle',
-                value: function toggle() {
-                    this.isShown() ? this.hide() : this.show();
-                }
-            },
-            {
-                key: 'show',
-                value: function show() {
-                    this.setState({ isShown: true });
-                }
-            },
-            {
-                key: 'hide',
-                value: function hide() {
-                    this.setState({ isShown: false });
-                }
+        Tooltip.prototype.render = function render() {
+            var props = this.props;
+            var mode = props.mode;
+            var onClick = mode === 'click' ? this.onClick : null;
+            var onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
+            var onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
+            return React.createElement('div', babelHelpers._extends({}, props, {
+                ref: 'main',
+                className: this.getClassName(),
+                onClick: onClick,
+                onMouseEnter: onMouseEnter,
+                onMouseLeave: onMouseLeave
+            }), props.children);
+        };
+        Tooltip.prototype.renderPopup = function renderPopup(target, content) {
+            var styles = this.getPosition();
+            content = React.createElement('div', {
+                className: this.getPartClassName('popup'),
+                style: styles
+            }, content);
+            ReactDOM.render(content, target);
+        };
+        Tooltip.prototype.getPosition = function getPosition() {
+            if (!this.isShown()) {
+                return {
+                    left: -10000,
+                    top: 0,
+                    opacity: 0,
+                    width: 'auto',
+                    height: 'auto'
+                };
             }
-        ]);
+            var props = this.props;
+            var direction = props.direction;
+            var offsetX = props.offsetX;
+            var offsetY = props.offsetY;
+            var popup = this.popup.childNodes[0];
+            var position = dom.getPosition(this.refs.main);
+            var offsetWidth = popup.offsetWidth;
+            var offsetHeight = popup.offsetHeight;
+            var styles = { opacity: 1 };
+            switch (direction) {
+            case 'top':
+                styles.left = position.left + (position.width - offsetWidth) / 2;
+                styles.top = position.top - offsetHeight - offsetY;
+                break;
+            case 'bottom':
+                styles.left = (position.width - offsetWidth) / 2 + position.left;
+                styles.top = position.top + position.height + offsetY;
+                break;
+            case 'left':
+                styles.top = (position.height - offsetHeight) / 2 + position.top;
+                styles.left = position.left - offsetWidth - offsetY;
+                break;
+            case 'right':
+                styles.top = (position.height - offsetHeight) / 2 + position.top;
+                styles.left = position.left + position.width + offsetX;
+                break;
+            }
+            return styles;
+        };
+        Tooltip.prototype.componentDidMount = function componentDidMount() {
+            var popup = this.popup = Tooltip.createPopup();
+            this.renderPopup(popup, this.props.content);
+        };
+        Tooltip.prototype.componentWillUnmount = function componentWillUnmount() {
+            Tooltip.destroyPopup(this.popup);
+            this.popup = null;
+        };
+        Tooltip.prototype.componentDidUpdate = function componentDidUpdate() {
+            this.renderPopup(this.popup, this.props.content);
+        };
+        Tooltip.prototype.getStates = function getStates(props) {
+            var states = _Component.prototype.getStates.call(this, props);
+            var direction = props.direction;
+            states[direction] = true;
+            return states;
+        };
+        Tooltip.prototype.onClick = function onClick(e) {
+            this.toggle();
+        };
+        Tooltip.prototype.onMouseEnter = function onMouseEnter(e) {
+            this.show();
+        };
+        Tooltip.prototype.onMouseLeave = function onMouseLeave(e) {
+            this.hide();
+        };
+        Tooltip.prototype.isShown = function isShown() {
+            return this.state.isShown;
+        };
+        Tooltip.prototype.toggle = function toggle() {
+            this.isShown() ? this.hide() : this.show();
+        };
+        Tooltip.prototype.show = function show() {
+            this.setState({ isShown: true });
+        };
+        Tooltip.prototype.hide = function hide() {
+            this.setState({ isShown: false });
+        };
         return Tooltip;
     }(Component);
     var PropTypes = React.PropTypes;

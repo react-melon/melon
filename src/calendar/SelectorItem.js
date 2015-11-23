@@ -3,25 +3,16 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('CalendarSelectorItem');
 
-var Component = require('../Component');
-var DateTime = require('../common/util/date');
+const DateTime = require('../common/util/date');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class CalendarSelectorItem extends Component {
+const CalendarSelectorItem = React.createClass({
 
-    static displayName = 'CalendarSelectorItem';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
-
-        this.type = 'calendar-selector-item';
-    }
+    displayName: 'CalendarSelectorItem',
 
     shouldComponentUpdate(nextProps, nextState) {
 
@@ -37,14 +28,7 @@ class CalendarSelectorItem extends Component {
 
         return false;
 
-    }
-
-    getStates(props) {
-        var states = super.getStates(props);
-        states.selected = props.selected;
-
-        return states;
-    }
+    },
 
     render() {
 
@@ -55,6 +39,7 @@ class CalendarSelectorItem extends Component {
             onClick,
             mode,
             disabled,
+            selected,
             ...others
         } = props;
 
@@ -65,13 +50,13 @@ class CalendarSelectorItem extends Component {
                 data-mode={mode}
                 data-value={date}
                 onClick={disabled ? null : this.onClick}
-                className={this.getClassName()} >
+                className={cx(props).addStates({selected}).build()} >
                 <span>
                     {mode === 'year' ? date.getFullYear() : DateTime.getShortMonth(date)}
                 </span>
             </li>
         );
-    }
+    },
 
     onClick(e) {
 
@@ -97,7 +82,7 @@ class CalendarSelectorItem extends Component {
         }
     }
 
-}
+});
 
 
 CalendarSelectorItem.propTypes = {

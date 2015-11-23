@@ -4,42 +4,49 @@
  */
 
 const React = require('react');
-
-const Component = require('../Component');
+const cx = require('../common/util/cxBuilder').create('CenterRipple');
 const RippleCircle = require('./RippleCircle');
+const {PropTypes} = React;
 
 const {
     spring,
     TransitionMotion
 } = require('react-motion');
 
-class CenterRipple extends Component {
+const CenterRipple = React.createClass({
 
-    static displayName = 'CenterRipple';
+    displayName: 'CenterRipple',
 
-    constructor(props) {
-        super(props);
+    getInitialState() {
 
         this.state = {
             now: 't' + 0
         };
 
-        this.willLeave = this.willLeave.bind(this);
+    },
 
-        this.type = 'center-ripple';
-    }
+    defaultProps: {
+        opacity: 0.5,
+        scale: 2
+    },
+
+    propTypes: {
+        opacity: PropTypes.number,
+        scale: PropTypes.number,
+        flag: PropTypes.bool
+    },
 
     animate() {
         this.setState({
             now: 't' + Date.now()
         });
-    }
+    },
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.flag === !this.props.flag) {
             this.animate();
         }
-    }
+    },
 
     willLeave(key, valOfKey) {
         return {
@@ -47,13 +54,11 @@ class CenterRipple extends Component {
             opacity: spring(0, [60, 15]),
             scale: spring(this.props.scale, [60, 15])
         };
-    }
+    },
 
     render() {
 
-        const {
-            now
-        } = this.state;
+        const {now} = this.state;
 
         const styles = {
             [now]: {
@@ -62,20 +67,25 @@ class CenterRipple extends Component {
             }
         };
 
+        const className = cx(this.props).build();
+        const circleClassName = cx().part('circle');
+
         return (
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
                 {circles =>
-                    <div className={this.getClassName()}>
+                    <div className={className}>
                         {Object.keys(circles).map(key => {
                             let {opacity, scale} = circles[key];
                             opacity = Math.round(opacity * 100) / 100;
-                            scale = opacity <= 0.01 ? this.props.scale : Math.round(scale * 100) / 100;
+                            scale = opacity <= 0.01
+                                ? this.props.scale
+                                : Math.round(scale * 100) / 100;
                             return (
                                 <RippleCircle
                                     key={key}
-                                    className={this.getPartClassName('circle')}
+                                    className={circleClassName}
                                     opacity={opacity}
                                     scale={scale} />
                             );
@@ -88,19 +98,6 @@ class CenterRipple extends Component {
 
     }
 
-}
-
-const PropTypes = React.PropTypes;
-
-CenterRipple.defaultProps = {
-    opacity: 0.5,
-    scale: 2
-};
-
-CenterRipple.propTypes = {
-    opacity: PropTypes.number,
-    scale: PropTypes.number,
-    flag: PropTypes.bool
-};
+});
 
 module.exports = CenterRipple;

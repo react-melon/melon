@@ -3,46 +3,43 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Dialog = require('../Dialog');
-var Button = require('../Button');
+const React = require('react');
+const Dialog = require('../Dialog');
+const Button = require('../Button');
+const cx = require('../common/util/cxBuilder').create('Alert');
 
-class Alert extends Dialog {
+const Alert = React.createClass({
 
-    static displayName = 'Alert';
+    displayName: 'Alert',
 
-    constructor(props) {
+    propTypes: {
+        ...Dialog.propTypes,
+        buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
+    },
 
-        super(props);
-
-        this.onAlertSubmit = this.onAlertSubmit.bind(this);
-
-        this.type = 'dialog';
-    }
-
-    getVariants(props) {
-
-        var variants = super.getVariants(props);
-
-        variants.push('alert');
-
-        return variants;
-    }
+    getDefaultProps: function () {
+        return {
+            ...Dialog.defaultProps,
+            maskClickClose: false,
+            title: null,
+            buttonVariants: ['primary']
+        };
+    },
 
     onAlertSubmit() {
-        this.setState({open: false}, function () {
-            this.onHide();
-        });
-    }
+        const {onHide} = this.props;
+        onHide();
+    },
 
     renderAction() {
-        let {
+
+        const {
             buttonVariants,
             size
         } = this.props;
 
         return (
-            <div className={this.getPartClassName('actions')} >
+            <div className={cx().part('actions').build()} >
                 <Button
                     label="确定"
                     key="submit"
@@ -52,21 +49,23 @@ class Alert extends Dialog {
                     variants={buttonVariants} />
             </div>
         );
+    },
+
+    render() {
+
+        const {
+            variants,
+            ...rest
+        } = this.props;
+
+        return (
+            <Dialog
+                {...rest}
+                actions={this.renderAction()}
+                variants={[...(variants || []), 'alert']} />
+        );
     }
 
-}
-
-Alert.propTypes = {
-    ...Dialog.propTypes,
-    buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
-};
-
-
-Alert.defaultProps = {
-    ...Dialog.defaultProps,
-    maskClickClose: false,
-    title: null,
-    buttonVariants: ['primary']
-};
+});
 
 module.exports = Alert;

@@ -1,68 +1,79 @@
 /**
  * @file esui-react/RangeCalendar
  * @author cxtom <cxtom2010@gmail.com>
+ * @author leon <ludafa@outlook.com>
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('RangeCalendar');
+const Calendar = require('./Calendar');
+const Icon = require('./Icon');
+const Confirm = require('./dialog/Confirm');
+const Panel = require('./calendar/Panel');
 
-var InputComponent = require('./InputComponent');
-var Calendar = require('./Calendar');
-var Icon = require('./Icon');
-var Header = require('./calendar/Header');
-var Month = require('./calendar/Month');
-var Selector = require('./calendar/Selector');
-var Pager = require('./calendar/Pager');
-var Confirm = require('./dialog/Confirm');
+const DateTime = require('./common/util/date');
+const _ = require('underscore');
 
+const RangeCalendar = React.createClass({
 
-var DateTime = require('./common/util/date');
-var _ = require('underscore');
-var PropTypes = React.PropTypes;
+    displayName: 'RangeCalendar',
 
+    getInitialState() {
 
-class RangeCalendar extends InputComponent {
+        return {
+            open: false,
+            date: this.getNormalizeValue(this.props)
+        };
 
-    static displayName = 'RangeCalendar';
+    },
 
-    constructor(props) {
+    componentWillReceiveProps(nextProps) {
 
-        super(props);
+        const {value} = nextProps;
 
-        let rawValue = this.state.rawValue;
+        if (value !== this.props.value) {
+            this.setState({
+                date: this.getNormalizeValue(nextProps)
+            });
+        }
+
+    },
+
+    getNormalizeValue(props) {
 
         let {
             begin,
-            end
+            end,
+            value
         } = props;
 
         begin = this.parseDate(begin);
         end = this.parseDate(end);
 
-        rawValue[0] = _.isDate(begin) && DateTime.isAfterDate(begin, rawValue[0]) ? begin : rawValue[0];
-        rawValue[1] = _.isDate(end) && DateTime.isBeforeDate(end, rawValue[1]) ? end : rawValue[1];
+        let valueBegin = this.parseDate(value[0]);
+        let valueEnd = this.parseDate(value[1]);
 
-        this.state = {
-            ...this.state,
-            open: false,
-            month: _.clone(rawValue),
-            date: rawValue,
-            mode: ['main', 'main']
-        };
+        // 这里我们需要一个全新的 value
+        value = [
+            valueBegin && DateTime.isAfterDate(begin, valueBegin) ? begin : valueBegin,
+            valueEnd && DateTime.isBeforeDate(end, valueEnd) ? end : valueEnd
+        ];
 
-        this.onLabelClick     = this.onLabelClick.bind(this);
-        this.onHide           = this.onHide.bind(this);
-        this.onConfirm        = this.onConfirm.bind(this);
+        // 下边这种做法是错误的，不能直接修改 props 中的值
+        // value[0] = _.isDate(begin) && DateTime.isAfterDate(begin, value[0]) ? begin : value[0];
+        // value[1] = _.isDate(end) && DateTime.isBeforeDate(end, value[1]) ? end : value[1];
 
-    }
+        return value;
 
-    onHeaderClick(index, e) {
+    },
 
-        let mode = this.state.mode;
-
-        mode[index] = mode[index] === 'main' ? 'year' : 'main';
-
-        this.setState({mode: mode});
-    }
+    getValue() {
+        return this
+            .getNormalizeValue(this.props)
+            .map((date) => {
+                return this.formatDate(date);
+            });
+    },
 
     /**
      * 点击textbox时触发
@@ -71,160 +82,88 @@ class RangeCalendar extends InputComponent {
      */
     onLabelClick() {
 
-        if (this.props.disabled || this.props.readOnly) {
+        const {
+            disabled,
+            readOnly
+        } = this.props;
+
+        if (disabled || readOnly) {
             return;
         }
 
-        this.setState({open: true, mode: ['main', 'main']}, function () {
+        this.setState({open: true});
 
-            let onShow = this.props.onShow;
-
-            if (_.isFunction(onShow)) {
-                onShow({
-                    target: this
-                });
-            }
-        });
-    }
+    },
 
     /**
      * Calendar DialogCalendar隐藏时触发
      *
      * @private
      */
-    onHide() {
-
-        this.setState({open: false}, function () {
-
-            let onHide = this.props.onHide;
-
-            if (_.isFunction(onHide)) {
-                onHide({
-                    target: this
-                });
-            }
+    onCancel() {
+        this.setState({
+            open: false
         });
-    }
+    },
 
     onDateChange(index, e) {
 
-        let newDate = e.date;
+        const {value} = e;
 
-        let date = _.clone(this.state.date);
+        let date = [...this.state.date];
 
-        date[index] = newDate;
+        date[index] = value;
 
         this.setState({
             date: date,
             month: date
         });
-    }
 
-    onPagerChange(index, e) {
+    },
 
-        let newMonth = e.month;
+    onConfirm() {
 
-        let month = _.clone(this.state.month);
+        const {date} = this.state;
+        const {value, onChange} = this.props;
 
-        month[index] = newMonth;
-
+        // 不管怎么样，先把窗口关了
         this.setState({
-            month: month
-        });
+            open: false
+        }, () => {
 
-    }
-
-    onSelectorChange(index, e) {
-
-        let {
-            mode,
-            date
-        } = this.state;
-
-        let {
-            end,
-            begin
-        } = this.props;
-
-        begin = index === 0 ? this.parseDate(begin) : date[0];
-        end = index === 0 ? date[1] : this.parseDate(end);
-
-        mode[index] = e.mode === 'year' ? 'month' : 'main';
-
-        if (_.isDate(begin) && DateTime.isBeforeDate(e.date, begin)) {
-            date[index] = begin;
-        }
-        else if (_.isDate(end) && DateTime.isAfterDate(e.date, end)) {
-            date[index] = end;
-        }
-        else {
-            date[index] = e.date;
-        }
-
-        this.setState({
-            date: date,
-            month: date,
-            mode: mode
-        });
-    }
-
-    onConfirm(e) {
-
-        let dates = this.state.date;
-        let value = e.value;
-
-        if (!value || (
-                DateTime.isEqualDate(dates[0], this.state.rawValue[0])
-                && DateTime.isEqualDate(dates[1], this.state.rawValue[1])
-            )
-        ) {
-            this.setState({open: false});
-            return;
-        }
-
-
-        this.setState({rawValue: dates, open: false}, function () {
-
-            // 生成事件
-            let e = {
-                type: 'change',
-                target: this,
-                value: this.stringifyValue(dates),
-                rawValue: dates
-            };
-
-            super.onChange(e);
-
-            let onChange = this.props.onChange;
-
-            if (_.isFunction(onChange)) {
-                onChange(e);
+            // 如果值发生了变化，那么释放一个 change 事件
+            if (
+                !DateTime.isEqualDate(date[0], this.parseDate(value[0]))
+                || !DateTime.isEqualDate(date[1], this.parseDate(value[1]))
+            ) {
+                onChange({
+                    type: 'change',
+                    target: this,
+                    value: date.map(this.formatDate)
+                });
             }
+
         });
-    }
+
+    },
 
     /**
-     * 格式化日期对象
+     * 按设置格式化日期
      *
-     * @param  {string} value 日期字符串
-     * @return {Date}         转化后的日期对象
-     * @private
+     * @param {Date} date 日期
+     * @return {string}
      */
-    parseValue(value) {
+    formatDate(date) {
 
-        if (!_.isString(value)) {
-            return value;
-        }
+        const {dateFormat, lang} = this.props;
 
-        let format = this.props.dateFormat.toLowerCase();
+        return DateTime.format(
+            date,
+            dateFormat.toLowerCase(),
+            lang
+        );
 
-        value = value.split(',');
-
-        return [
-            DateTime.parse(value[0], format),
-            DateTime.parse(value[1], format)
-        ];
-    }
+    },
 
     parseDate(date) {
 
@@ -235,201 +174,86 @@ class RangeCalendar extends InputComponent {
         let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.parse(date, format);
-    }
-
-    /**
-     * 格式化日期
-     *
-     * @param {Date} rawValue 源日期对象
-     * @param {string=} format 日期格式，默认为当前实例的dateFormat
-     * @return {string} 格式化后的日期字符串
-     * @private
-     */
-    stringifyValue(rawValue) {
-
-        if (!_.isArray(rawValue)) {
-            return rawValue;
-        }
-
-        let format = this.props.dateFormat.toLowerCase();
-
-        return [
-            DateTime.format(rawValue[0], format, this.props.lang),
-            ',',
-            DateTime.format(rawValue[1], format, this.props.lang)
-        ].join('');
-    }
-
-    getStates(props) {
-        let states = super.getStates(props);
-
-        states.focus = this.state.open;
-
-        return states;
-    }
-
-
-    renderDialog() {
-
-        let {
-            date,
-            mode,
-            open
-        } = this.state;
-
-        return (
-            <Confirm
-                open={open}
-                variants={['calendar']}
-                onConfirm={this.onConfirm}
-                size={this.props.size}
-                buttonVariants={['secondery', 'calendar']} >
-                    <div className={this.getPartClassName('row')}>
-                        <Header
-                            date={date[0]}
-                            onClick={this.onHeaderClick.bind(this, 0)} />
-                        <Header
-                            date={date[1]}
-                            onClick={this.onHeaderClick.bind(this, 1)} />
-                    </div>
-                    <div className={this.getPartClassName('row')}>
-                        {mode[0] === 'main'
-                            ? this.renderMain(0)
-                            : this.renderSelector(0)}
-                        {mode[1] === 'main'
-                            ? this.renderMain(1)
-                            : this.renderSelector(1)}
-                    </div>
-            </Confirm>
-        );
-    }
-
-    renderMain(index) {
-
-        let {
-            date,
-            month
-        } = this.state;
-
-        let {
-            lang,
-            begin,
-            end
-        } = this.props;
-
-        begin = index === 0 ? this.parseDate(begin) : date[0];
-        end = index === 0 ? date[1] : this.parseDate(end);
-
-        return (
-            <div className={this.getPartClassName('main')}>
-                <Pager
-                    minDate={begin}
-                    maxDate={end}
-                    onChange={this.onPagerChange.bind(this, index)}
-                    month={month[index]} />
-                <Month
-                    minDate={begin}
-                    maxDate={end}
-                    lang={lang}
-                    month={month[index]}
-                    date={date[index]}
-                    onChange={this.onDateChange.bind(this, index)} />
-            </div>
-        );
-    }
-
-    renderSelector(index) {
-
-        let {
-            date,
-            mode
-        } = this.state;
-
-        let {
-            begin,
-            end
-        } = this.props;
-
-        begin = index === 0 ? this.parseDate(begin) : date[0];
-        end = index === 0 ? date[1] : this.parseDate(end);
-
-        return (
-            <div className={this.getPartClassName('main')}>
-                <Selector
-                    date={date[index]}
-                    minDate={begin}
-                    maxDate={end}
-                    mode={mode[index]}
-                    onChange={this.onSelectorChange.bind(this, index)} />
-            </div>
-        );
-
-    }
-
-    renderLabel() {
-
-        let rawValue = this.state.rawValue;
-
-        let format = this.props.dateFormat.toLowerCase();
-
-        let str = [
-            DateTime.format(rawValue[0], format, this.props.lang),
-            ' 至 ',
-            DateTime.format(rawValue[1], format, this.props.lang)
-        ].join(' ');
-
-        return (
-            <label onClick={this.onLabelClick}>
-                {str}
-                <Icon icon='expand-more' />
-            </label>
-        );
-    }
+    },
 
     render() {
 
-        let props = this.props;
+        const props = this.props;
 
         let {
             lang,
-            placeholder,
             disabled,
             size,
+            dateFormat,
+            name,
+            begin,
+            end,
             ...others
         } = props;
 
+        const value = this.getValue();
+
+        const {open, date} = this.state;
+
+        begin = this.parseDate(begin);
+        end = this.parseDate(end);
+
         return (
-            <div {...others} className={this.getClassName()}>
+            <div
+                {...others}
+                className={cx(props).addStates({focus: open}).build()}>
                 <input
+                    name={name}
                     ref="input"
                     type="hidden"
-                    value={this.getValue()}
-                    disabled={disabled}
+                    value={value.join(',')}
+                    disabled={disabled} />
+                <label onClick={this.onLabelClick}>
+                    {`${value[0]} 至 ${value[1]}`}
+                    <Icon icon='expand-more' />
+                </label>
+                <Confirm
+                    open={open}
+                    variants={['calendar']}
+                    onConfirm={this.onConfirm}
+                    onCancel={this.onCancel}
                     size={size}
-                    placeholder={placeholder} />
-                {this.renderLabel()}
-                {this.renderDialog()}
+                    buttonVariants={['secondery', 'calendar']} >
+                        <div className={cx().part('row').build()}>
+                            <Panel
+                                lang={lang}
+                                date={date[0]}
+                                begin={begin}
+                                end={date[1]}
+                                onChange={this.onDateChange.bind(this, 0)} />
+                            <Panel
+                                lang={lang}
+                                date={date[1]}
+                                begin={date[0]}
+                                end={end}
+                                onChange={this.onDateChange.bind(this, 1)}/>
+                        </div>
+                </Confirm>
             </div>
         );
 
     }
 
-
-}
+});
 
 RangeCalendar.defaultProps = {
     ...Calendar.defaultProps,
-    defaultValue: [
+    value: [
         DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
-        '至',
         DateTime.format(DateTime.addMonths(new Date(), 1), 'yyyy-mm-dd', Calendar.LANG)
-    ].join(' ')
+    ]
 };
 
+const {PropTypes} = React;
 
 RangeCalendar.propTypes = {
     ...Calendar.propTypes,
-    rawValue: PropTypes.arrayOf(PropTypes.object),
+    value: PropTypes.arrayOf(PropTypes.string),
     autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
     begin: PropTypes.oneOfType([
@@ -442,4 +266,4 @@ RangeCalendar.propTypes = {
     ])
 };
 
-module.exports = RangeCalendar;
+module.exports = require('./createInputComponent').create(RangeCalendar);

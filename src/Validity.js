@@ -3,43 +3,38 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Component = require('./Component');
+const cxBuilder = require('./common/util/cxBuilder').create('Validity');
 
-class Validity extends Component {
+function Validity(props) {
 
-    static displayName = 'Validity';
+    const {
+        isValid,
+        message
+    } = props;
 
-    shouldComponentUpdate(nextProps) {
-        var props = this.props;
-        return nextProps.isValid !== props.isValid || nextProps.message !== props.message;
-    }
-
-    render() {
-
-        var props = this.props;
-
-        return (
-            <span className={this.getClassName()}>
-                {props.message}
-            </span>
-        );
-
-    }
-
-    getStates(props) {
-
-        var isValid = props.isValid;
-
-        return {
-            ...super.getStates(props),
+    const statefulClassName = cxBuilder
+        .resolve(props)
+        .addState({
             valid: isValid,
             invalid: !isValid
-        };
+        })
+        .build();
 
-    }
+    return (
+        <div className={statefulClassName}>
+            {message}
+        </div>
+    );
 
 }
+
+const {PropTypes} = React;
+
+Validity.propTypes = {
+    isValid: PropTypes.bool.isRequired,
+    message: PropTypes.string
+};
 
 module.exports = Validity;

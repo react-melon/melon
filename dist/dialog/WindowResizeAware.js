@@ -18,29 +18,18 @@ define('melon/dialog/WindowResizeAware', [
             }]);
         function WindowResizeAware(props) {
             babelHelpers.classCallCheck(this, WindowResizeAware);
-            babelHelpers.get(Object.getPrototypeOf(WindowResizeAware.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             this.onWindowResize = this.onWindowResize.bind(this);
         }
-        babelHelpers.createClass(WindowResizeAware, [
-            {
-                key: 'componentDidMount',
-                value: function componentDidMount() {
-                    dom.on(window, 'resize', this.onWindowResize);
-                }
-            },
-            {
-                key: 'componentWillUnmount',
-                value: function componentWillUnmount() {
-                    dom.off(window, 'resize', this.onWindowResize);
-                }
-            },
-            {
-                key: 'onWindowResize',
-                value: function onWindowResize(e) {
-                    throw new Error('WindowResizeAware onWindowResize need implement');
-                }
-            }
-        ]);
+        WindowResizeAware.prototype.componentDidMount = function componentDidMount() {
+            dom.on(window, 'resize', this.onWindowResize);
+        };
+        WindowResizeAware.prototype.componentWillUnmount = function componentWillUnmount() {
+            dom.off(window, 'resize', this.onWindowResize);
+        };
+        WindowResizeAware.prototype.onWindowResize = function onWindowResize(e) {
+            throw new Error('WindowResizeAware onWindowResize need implement');
+        };
         return WindowResizeAware;
     }(Component);
     WindowResizeAware.defaultProps = babelHelpers._extends({}, Component.defaultProps);

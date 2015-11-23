@@ -3,36 +3,20 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var config = require('../../config');
+function classnames() {
 
-exports.createClassName = function (type, value) {
-    return config[type] + '-' + value;
-};
+    let classes = [];
+    const toString = Object.prototype.toString;
 
-exports.createVariantClass = function (variants) {
+    for (let i = 0, len = arguments.length; i < len; i++) {
 
-    return []
-        .concat(variants)
-        .map(function (variant) {
-            return config.COMPONENT_VARIANT_PREFIX + '-' + variant;
-        })
-        .join(' ');
-
-};
-
-function classNames() {
-
-    var classes = [];
-
-    for (var i = 0, len = arguments.length; i < len; i++) {
-
-        var arg = arguments[i];
+        const arg = arguments[i];
 
         if (!arg) {
             continue;
         }
 
-        switch (Object.prototype.toString.call(arg).slice(8, -1)) {
+        switch (toString.call(arg).slice(8, -1)) {
 
             case 'String':
             case 'Number':
@@ -40,7 +24,7 @@ function classNames() {
                 break;
 
             case 'Array':
-                classes = classes.concat(classNames.apply(null, arg));
+                classes = classes.concat(classnames.apply(null, arg));
                 break;
 
             case 'Object':
@@ -57,46 +41,43 @@ function classNames() {
     return classes;
 }
 
-exports.create = function () {
-    return classNames.apply(null, arguments).join(' ');
-};
+// const {
+//     COMPONENT_VARIANT_PREFIX,
+//     COMPONENT_STATE_PREFIX
+// } = require('./config');
 
-exports.createComponentClass = function (type, variants, states) {
+// function addVariantPrefix(variant) {
+//     return `${COMPONENT_VARIANT_PREFIX}-${variant}`;
+// }
 
-    return exports.create(
-        this.createPrimaryClass(type),
-        this.createVariantClass(variants),
-        this.createStateClass(states)
-    );
+// function createVariantsClasses() {
+//     return classnames.apply(null, arguments).map(addVariantPrefix);
+// }
 
-};
+// exports.addVariantPrefix = addVariantPrefix;
+// exports.createVariantClasses = createVariantsClasses;
+// exports.createVariantClassName = () => {
+//     return createVariantsClasses(arguments).join(' ');
+// };
 
-exports.createPrimaryClass = function (type) {
-    return config.COMPONENT_CLASS_PREFIX + '-' + classNames(type)[0].toLowerCase();
-};
+// function addStatePrefix(state) {
+//     return `${COMPONENT_STATE_PREFIX}-${state}`;
+// }
 
-exports.createPartClass = function (type, part) {
-    return exports.createPrimaryClass(type) + '-' + part.toLowerCase();
-};
+// function createStateClasses() {
+//     return classnames.apply(null, arguments).map(addStatePrefix);
+// }
 
-exports.createVariantClass = function () {
-    return classNames
-        .apply(null, arguments)
-        .map(function (classname) {
-            return config.COMPONENT_VARIANT_PREFIX + '-' + classname;
-        })
-        .join(' ')
-        .toLowerCase();
-};
+// function createStateClassName() {
+//     return createStateClasses(arguments).join(' ');
+// }
 
-exports.createStateClass = function () {
+// exports.addStatePrefix = addStatePrefix;
+// exports.createStateClasses = createStateClasses;
+// exports.createStateClassName = createStateClassName;
 
-    return classNames
-        .apply(null, arguments)
-        .map(function (classname) {
-            return config.COMPONENT_STATE_PREFIX + '-' + classname;
-        })
-        .join(' ')
-        .toLowerCase();
+exports.createClasses = classnames;
 
+exports.createClassName = function () {
+    return classnames.apply(null, arguments).join(' ');
 };

@@ -26,59 +26,45 @@ define('melon/Tree', [
             }]);
         function Tree(props) {
             babelHelpers.classCallCheck(this, Tree);
-            babelHelpers.get(Object.getPrototypeOf(Tree.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             this.onTreeNodeClick = this.onTreeNodeClick.bind(this);
         }
-        babelHelpers.createClass(Tree, [
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = {};
-                    if (props.selected) {
-                        states.selected = true;
-                    }
-                    return states;
-                }
-            },
-            {
-                key: 'onTreeNodeClick',
-                value: function onTreeNodeClick(e) {
-                    var target = e.currentTarget;
-                    var main = ReactDOM.findDOMNode(this);
-                    e.stopPropagation();
-                    _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
-                        var className = ele.className.split(' ');
-                        ele.className = _.without(className, 'state-selected').join(' ');
-                    });
-                    target.className += ' state-selected';
-                }
-            },
-            {
-                key: 'renderTreeNode',
-                value: function renderTreeNode(children, level) {
-                    if (!children) {
-                        return;
-                    }
-                    var expand = this.props.defaultExpandAll;
-                    return React.Children.map(children, function (child, index) {
-                        return React.cloneElement(child, {
-                            onClick: this.onTreeNodeClick,
-                            key: index,
-                            level: level,
-                            expand: expand
-                        }, this.renderTreeNode(child.props.children, level + 1));
-                    }, this);
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    var children = props.children;
-                    return React.createElement('ul', babelHelpers._extends({}, props, { className: this.getClassName() }), this.renderTreeNode(children, 1));
-                }
+        Tree.prototype.getStates = function getStates(props) {
+            var states = {};
+            if (props.selected) {
+                states.selected = true;
             }
-        ]);
+            return states;
+        };
+        Tree.prototype.onTreeNodeClick = function onTreeNodeClick(e) {
+            var target = e.currentTarget;
+            var main = ReactDOM.findDOMNode(this);
+            e.stopPropagation();
+            _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
+                var className = ele.className.split(' ');
+                ele.className = _.without(className, 'state-selected').join(' ');
+            });
+            target.className += ' state-selected';
+        };
+        Tree.prototype.renderTreeNode = function renderTreeNode(children, level) {
+            if (!children) {
+                return;
+            }
+            var expand = this.props.defaultExpandAll;
+            return React.Children.map(children, function (child, index) {
+                return React.cloneElement(child, {
+                    onClick: this.onTreeNodeClick,
+                    key: index,
+                    level: level,
+                    expand: expand
+                }, this.renderTreeNode(child.props.children, level + 1));
+            }, this);
+        };
+        Tree.prototype.render = function render() {
+            var props = this.props;
+            var children = props.children;
+            return React.createElement('ul', babelHelpers._extends({}, props, { className: this.getClassName() }), this.renderTreeNode(children, 1));
+        };
         return Tree;
     }(Component);
     Tree.defaultProps = babelHelpers._extends({}, MainClickAware.defaultProps, { defaultExpandAll: false });

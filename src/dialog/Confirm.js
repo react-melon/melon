@@ -3,52 +3,34 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Dialog = require('../Dialog');
-var Button = require('../Button');
+const React = require('react');
+const Dialog = require('../Dialog');
+const Button = require('../Button');
+const cx = require('../common/util/cxBuilder').create('Confirm');
 
-class Confirm extends Dialog {
+const Confirm = React.createClass({
 
-    static displayName = 'Confirm';
-
-    constructor(props) {
-        super(props);
-        this.type = 'dialog';
-    }
+    displayName: 'Confirm',
 
     onConfirmSubmit(confirm) {
-        this.setState({open: false}, function () {
-            var onConfirm = this.props.onConfirm;
 
-            if (onConfirm) {
-                onConfirm({
-                    target: this,
-                    value: confirm
-                });
-            }
+        const {onConfirm, onCancel} = this.props;
 
-            this.onHide();
-        });
-    }
+        const callback = confirm ? onConfirm : onCancel;
 
-    getVariants(props) {
+        callback && callback();
 
-        var variants = super.getVariants(props);
-
-        variants.push('confirm');
-
-        return variants;
-    }
+    },
 
     renderAction() {
 
-        let {
+        const {
             buttonVariants,
             size
         } = this.props;
 
         return (
-            <div className={this.getPartClassName('actions')}>
+            <div className={cx().part('actions').build()}>
                 <Button
                     label="取消"
                     key="cancel"
@@ -65,14 +47,32 @@ class Confirm extends Dialog {
                     variants={buttonVariants} />
             </div>
         );
+    },
+
+    render() {
+
+        const {
+            variants = [],
+            ...rest
+        } = this.props;
+
+        return (
+            <Dialog
+                {...rest}
+                actions={this.renderAction()}
+                variants={[...variants, 'confirm']} />
+        );
+
     }
 
-}
+});
+
+const {PropTypes} = React;
 
 Confirm.propTypes = {
     ...Dialog.propTypes,
-    onConfirm: React.PropTypes.func,
-    buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
+    onConfirm: PropTypes.func,
+    buttonVariants: PropTypes.arrayOf(PropTypes.string)
 };
 
 Confirm.defaultProps = {

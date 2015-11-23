@@ -18,30 +18,22 @@ define('melon/tabs/Tab', [
             }]);
         function Tab(props) {
             babelHelpers.classCallCheck(this, Tab);
-            babelHelpers.get(Object.getPrototypeOf(Tab.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
         }
-        babelHelpers.createClass(Tab, [
-            {
-                key: 'getStates',
-                value: function getStates(props) {
-                    var states = {};
-                    if (props.selected) {
-                        states.selected = true;
-                    }
-                    if (props.disabled) {
-                        states.disabled = true;
-                    }
-                    return states;
-                }
-            },
-            {
-                key: 'render',
-                value: function render() {
-                    var props = this.props;
-                    return React.createElement('li', babelHelpers._extends({}, props, { className: this.getClassName() }), props.label);
-                }
+        Tab.prototype.getStates = function getStates(props) {
+            var states = {};
+            if (props.selected) {
+                states.selected = true;
             }
-        ]);
+            if (props.disabled) {
+                states.disabled = true;
+            }
+            return states;
+        };
+        Tab.prototype.render = function render() {
+            var props = this.props;
+            return React.createElement('li', babelHelpers._extends({}, props, { className: this.getClassName() }), props.label);
+        };
         return Tab;
     }(Component);
     Tab.propTypes = {

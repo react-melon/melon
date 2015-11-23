@@ -4,29 +4,25 @@
  */
 
 var React = require('react');
-var ReactDOM = require('react-dom');
-var _     = require('underscore');
-var Icon  = require('./Icon');
-var cx    = require('./common/util/classname');
+var _ = require('underscore');
+var Icon = require('./Icon');
+var cx = require('./common/util/cxBuilder').create('Pager');
 
-var MainClickAware = require('./MainClickAware');
+const Pager = React.createClass({
 
-class Pager extends MainClickAware {
+    displayName: 'Pager',
 
-    static displayName = 'Pager';
-
-    constructor(props) {
-        super(props);
-        this.state = {
+    getInitialState() {
+        return {
             page: this.props.page || 0
         };
-    }
+    },
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             page: nextProps.page
         });
-    }
+    },
 
     getVariants(props) {
 
@@ -37,12 +33,12 @@ class Pager extends MainClickAware {
         }
 
         return variants;
-    }
+    },
 
     onMainClick(e) {
 
-        e = e || window.event;
-        var target = e.target || e.srcElement;
+        const {currentTarget} = e;
+        let {target} = e;
 
         e.preventDefault();
 
@@ -54,16 +50,14 @@ class Pager extends MainClickAware {
             e.cancelBubble = true;
         }
 
-        var main = ReactDOM.findDOMNode(this);
-
         var role = target.getAttribute('data-role');
 
-        while (role !== 'pager-item' && target !== main) {
+        while (role !== 'pager-item' && target !== currentTarget) {
             target = target.parentNode;
             role = target.getAttribute('data-role');
         }
 
-        if (target === main) {
+        if (target === currentTarget) {
             return;
         }
 
@@ -83,7 +77,7 @@ class Pager extends MainClickAware {
             });
         });
 
-    }
+    },
 
     /**
      * 生成一个页码数组, 如果需要ellipsis, 那么ellpsis用负数表示它;
@@ -104,13 +98,53 @@ class Pager extends MainClickAware {
                 .concat(-start - paddingLeft)
                 .concat(_.range(stop - paddingRight, stop))
             : _.range(start, stop);
-    }
+    },
+
+    renderItem(conf) {
+
+        const {
+            page,
+            part,
+            states
+        } = conf;
+
+        const {
+            lang,
+            useLang
+        } = this.props;
+
+        const classNames = cx()
+            .part('item')
+            .addStates(states)
+            .build();
+
+        let pageText;
+
+        if (!useLang && part) {
+            pageText = (<Icon icon={Pager.ICONS[part]} />);
+        }
+        else {
+            pageText = lang[part] || page + 1;
+        }
+
+        return (
+            <li
+                className={classNames}
+                key={part + page}
+                data-role="pager-item"
+                data-page={page}>
+                <a href="#">
+                    {pageText}
+                </a>
+            </li>
+        );
+    },
 
     render() {
 
-        var props = this.props;
+        const {props, state} = this;
 
-        var {
+        let {
             total,
             first,
             padding,
@@ -119,18 +153,19 @@ class Pager extends MainClickAware {
             ...others
         } = props;
 
-        var page = this.state.page;
+        let {page} = state;
 
         showCount = showCount > total ? total : showCount;
         page = page - first;
 
-        var wing = Math.floor(showCount / 2);
+        const wing = Math.floor(showCount / 2);
 
-        var paddingLeft = padding;
-        var wingLeft = wing;
-        var paddingRight = padding;
-        var wingRight = wing;
-        var reduceLeftToRight = page - wing;
+        const paddingLeft = padding;
+        const paddingRight = padding;
+        const reduceLeftToRight = page - wing;
+
+        let wingLeft = wing;
+        let wingRight = wing;
 
         // 如果wingLeft小于0, 那么把小于0的部分移动到wingRight
         if (reduceLeftToRight < 0) {
@@ -138,7 +173,7 @@ class Pager extends MainClickAware {
             wingRight -= reduceLeftToRight;
         }
 
-        var reduceRightToLeft = page + wing + 1 - total;
+        const reduceRightToLeft = page + wing + 1 - total;
 
         // 如果wingRight大于total, 那么把超长的部分移动到wingLeft
         if (reduceRightToLeft > 0) {
@@ -147,34 +182,38 @@ class Pager extends MainClickAware {
         }
 
         // 生成左半端页码
-        var left = this.range(0, page, paddingLeft, wingLeft);
+        const left = this.range(0, page, paddingLeft, wingLeft);
         // 生成右半端页码
-        var right = this.range(page + 1, total, wingRight, paddingRight);
+        const right = this.range(page + 1, total, wingRight, paddingRight);
 
-        var result = [{
+        const result = [{
             page: Math.max(page - 1, 0),
             states: {
                 prev: true,
                 disabled: page === 0
             },
             part: 'prev'
-        }].concat(left).concat({
+        }]
+        .concat(left)
+        .concat({
             page: page,
             states: {
                 current: true
             },
             part: ''
-        }).concat(right).concat({
+        })
+        .concat(right)
+        .concat({
             page: Math.min(page + 1, total - 1),
             states: {
                 next: true,
                 disabled: page >= total - 1
             },
             part: 'next'
-        });
+        })
+        .map((conf) => {
 
-        result = result.map(function (conf) {
-            if (_.isNumber(conf)) {
+            if (typeof conf === 'number') {
                 var part = conf >= 0 ? '' : 'ellipsis';
                 conf = {
                     page: Math.abs(conf),
@@ -187,55 +226,22 @@ class Pager extends MainClickAware {
 
             return this.renderItem(conf);
 
-        }, this);
+        });
 
         return (
-            <ul {...others} className={this.getClassName()}>
+            <ul
+                {...others}
+                className={cx(props).build()}
+                onClick={this.onMainClick}>
                 {result}
             </ul>
         );
 
     }
 
-    renderItem(conf) {
-        var page = conf.page;
-        var part = conf.part;
-
-        var props = this.props;
-
-        var useLang = props.useLang;
-
-        var classNames = cx.create(
-            cx.createPrimaryClass('pager-item'),
-            cx.createStateClass(conf.states)
-        );
-        var pageText;
-
-        if (!useLang && part) {
-            pageText = (<Icon icon={Pager.ICONS[part]} />);
-        }
-        else {
-            var lang = props.lang;
-            pageText = lang[part] || page + 1;
-        }
-
-        return (
-            <li className={classNames}
-                key={part + page}
-                 data-role="pager-item"
-                 data-page={page} >
-                <a href="#">
-                    {pageText}
-                </a>
-            </li>
-        );
-    }
-
-}
+});
 
 Pager.defaultProps = {
-
-    ...MainClickAware.defaultProps,
 
     // 当前页，第一页从0开始
     page: 0,
