@@ -3,28 +3,18 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('CalendarPager');
+const Icon = require('../Icon');
 
-var Component = require('../Component');
-var Icon = require('../Icon');
+const _ = require('underscore');
+const DateTime = require('../common/util/date');
 
-var _ = require('underscore');
-var DateTime = require('../common/util/date');
+const PropTypes = React.PropTypes;
 
-var PropTypes = React.PropTypes;
+const CalendarPager = React.createClass({
 
-class CalendarPager extends Component {
-
-    static displayName = 'CalendarPager';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
-
-        this.type = 'calendar-pager';
-    }
+    displayName: 'CalendarPager',
 
     render() {
 
@@ -46,7 +36,7 @@ class CalendarPager extends Component {
         };
 
         return (
-            <div className={this.getClassName()}>
+            <div className={cx(this.props).build()}>
                 <Icon
                     icon="navigate-before"
                     data-role="pager"
@@ -62,7 +52,7 @@ class CalendarPager extends Component {
                 {y + ' 年 ' + m + ' 月'}
             </div>
         );
-    }
+    },
 
     onClick(e) {
 
@@ -73,15 +63,17 @@ class CalendarPager extends Component {
         var newMonth = DateTime.addMonths(month, action === 'next' ? 1 : -1);
 
         var onChange = this.props.onChange;
+
         if (onChange) {
             onChange({
                 target: this,
                 month: newMonth
             });
         }
+
     }
 
-}
+});
 
 
 CalendarPager.propTypes = {

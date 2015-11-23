@@ -5,77 +5,58 @@ define('melon/dialog/Confirm', [
     '../babelHelpers',
     'react',
     '../Dialog',
-    '../Button'
+    '../Button',
+    '../common/util/cxBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Dialog = require('../Dialog');
     var Button = require('../Button');
-    var Confirm = function (_Dialog) {
-        babelHelpers.inherits(Confirm, _Dialog);
-        babelHelpers.createClass(Confirm, null, [{
-                key: 'displayName',
-                value: 'Confirm',
-                enumerable: true
-            }]);
-        function Confirm(props) {
-            babelHelpers.classCallCheck(this, Confirm);
-            babelHelpers.get(Object.getPrototypeOf(Confirm.prototype), 'constructor', this).call(this, props);
-            this.type = 'dialog';
+    var cx = require('../common/util/cxBuilder').create('Confirm');
+    var Confirm = React.createClass({
+        displayName: 'Confirm',
+        onConfirmSubmit: function onConfirmSubmit(confirm) {
+            var _props = this.props;
+            var onConfirm = _props.onConfirm;
+            var onCancel = _props.onCancel;
+            var callback = confirm ? onConfirm : onCancel;
+            callback && callback();
+        },
+        renderAction: function renderAction() {
+            var _props2 = this.props;
+            var buttonVariants = _props2.buttonVariants;
+            var size = _props2.size;
+            return React.createElement('div', { className: cx().part('actions').build() }, React.createElement(Button, {
+                label: '\u53D6\u6D88',
+                key: 'cancel',
+                size: size,
+                type: 'button',
+                onClick: this.onConfirmSubmit.bind(this, false),
+                variants: buttonVariants
+            }), React.createElement(Button, {
+                label: '\u786E\u5B9A',
+                key: 'submit',
+                type: 'button',
+                size: size,
+                onClick: this.onConfirmSubmit.bind(this, true),
+                variants: buttonVariants
+            }));
+        },
+        render: function render() {
+            var _props3 = this.props;
+            var _props3$variants = _props3.variants;
+            var variants = _props3$variants === undefined ? [] : _props3$variants;
+            var rest = babelHelpers.objectWithoutProperties(_props3, ['variants']);
+            return React.createElement(Dialog, babelHelpers._extends({}, rest, {
+                actions: this.renderAction(),
+                variants: [].concat(variants, ['confirm'])
+            }));
         }
-        babelHelpers.createClass(Confirm, [
-            {
-                key: 'onConfirmSubmit',
-                value: function onConfirmSubmit(confirm) {
-                    this.setState({ open: false }, function () {
-                        var onConfirm = this.props.onConfirm;
-                        if (onConfirm) {
-                            onConfirm({
-                                target: this,
-                                value: confirm
-                            });
-                        }
-                        this.onHide();
-                    });
-                }
-            },
-            {
-                key: 'getVariants',
-                value: function getVariants(props) {
-                    var variants = babelHelpers.get(Object.getPrototypeOf(Confirm.prototype), 'getVariants', this).call(this, props);
-                    variants.push('confirm');
-                    return variants;
-                }
-            },
-            {
-                key: 'renderAction',
-                value: function renderAction() {
-                    var _props = this.props;
-                    var buttonVariants = _props.buttonVariants;
-                    var size = _props.size;
-                    return React.createElement('div', { className: this.getPartClassName('actions') }, React.createElement(Button, {
-                        label: '\u53D6\u6D88',
-                        key: 'cancel',
-                        size: size,
-                        type: 'button',
-                        onClick: this.onConfirmSubmit.bind(this, false),
-                        variants: buttonVariants
-                    }), React.createElement(Button, {
-                        label: '\u786E\u5B9A',
-                        key: 'submit',
-                        type: 'button',
-                        size: size,
-                        onClick: this.onConfirmSubmit.bind(this, true),
-                        variants: buttonVariants
-                    }));
-                }
-            }
-        ]);
-        return Confirm;
-    }(Dialog);
+    });
+    var PropTypes = React.PropTypes;
     Confirm.propTypes = babelHelpers._extends({}, Dialog.propTypes, {
-        onConfirm: React.PropTypes.func,
-        buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
+        onConfirm: PropTypes.func,
+        buttonVariants: PropTypes.arrayOf(PropTypes.string)
     });
     Confirm.defaultProps = babelHelpers._extends({}, Dialog.defaultProps, {
         maskClickClose: false,

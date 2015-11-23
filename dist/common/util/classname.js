@@ -1,32 +1,23 @@
 define('melon/common/util/classname', [
     'require',
     'exports',
-    'module',
-    '../../config'
+    'module'
 ], function (require, exports, module) {
-    var config = require('../../config');
-    exports.createClassName = function (type, value) {
-        return config[type] + '-' + value;
-    };
-    exports.createVariantClass = function (variants) {
-        return [].concat(variants).map(function (variant) {
-            return config.COMPONENT_VARIANT_PREFIX + '-' + variant;
-        }).join(' ');
-    };
-    function classNames() {
+    function classnames() {
         var classes = [];
+        var toString = Object.prototype.toString;
         for (var i = 0, len = arguments.length; i < len; i++) {
             var arg = arguments[i];
             if (!arg) {
                 continue;
             }
-            switch (Object.prototype.toString.call(arg).slice(8, -1)) {
+            switch (toString.call(arg).slice(8, -1)) {
             case 'String':
             case 'Number':
                 classes.push(arg);
                 break;
             case 'Array':
-                classes = classes.concat(classNames.apply(null, arg));
+                classes = classes.concat(classnames.apply(null, arg));
                 break;
             case 'Object':
                 for (var key in arg) {
@@ -39,26 +30,8 @@ define('melon/common/util/classname', [
         }
         return classes;
     }
-    exports.create = function () {
-        return classNames.apply(null, arguments).join(' ');
-    };
-    exports.createComponentClass = function (type, variants, states) {
-        return exports.create(this.createPrimaryClass(type), this.createVariantClass(variants), this.createStateClass(states));
-    };
-    exports.createPrimaryClass = function (type) {
-        return config.COMPONENT_CLASS_PREFIX + '-' + classNames(type)[0].toLowerCase();
-    };
-    exports.createPartClass = function (type, part) {
-        return exports.createPrimaryClass(type) + '-' + part.toLowerCase();
-    };
-    exports.createVariantClass = function () {
-        return classNames.apply(null, arguments).map(function (classname) {
-            return config.COMPONENT_VARIANT_PREFIX + '-' + classname;
-        }).join(' ').toLowerCase();
-    };
-    exports.createStateClass = function () {
-        return classNames.apply(null, arguments).map(function (classname) {
-            return config.COMPONENT_STATE_PREFIX + '-' + classname;
-        }).join(' ').toLowerCase();
+    exports.createClasses = classnames;
+    exports.createClassName = function () {
+        return classnames.apply(null, arguments).join(' ');
     };
 });

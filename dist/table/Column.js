@@ -14,14 +14,12 @@ define('melon/table/Column', [
         babelHelpers.inherits(TableColumn, _Component);
         function TableColumn() {
             babelHelpers.classCallCheck(this, TableColumn);
-            babelHelpers.get(Object.getPrototypeOf(TableColumn.prototype), 'constructor', this).apply(this, arguments);
+            _Component.apply(this, arguments);
         }
-        babelHelpers.createClass(TableColumn, [{
-                key: 'render',
-                value: function render() {
-                    return null;
-                }
-            }], [{
+        TableColumn.prototype.render = function render() {
+            return null;
+        };
+        babelHelpers.createClass(TableColumn, null, [{
                 key: 'displayName',
                 value: 'TableColumn',
                 enumerable: true

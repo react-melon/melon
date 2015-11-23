@@ -43,6 +43,7 @@ exports.getProcessors = function () {
             ast: false,
             blacklist: ['strict'],
             externalHelpers: true,
+            loose: 'all',
             moduleId: '',
             getModuleId: function (filename) {
                 return filename.replace('src/', '');

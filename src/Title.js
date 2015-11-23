@@ -3,25 +3,23 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Title');
 
-var Component = require('./Component');
+function Title(props) {
 
-class Title extends Component {
+    const {
+        level,
+        ...rest
+    } = props;
 
-    static displayName = 'Title';
-
-    render() {
-
-        var {level, ...rest} = this.props;
-        var tag = 'h' + level;
-
-        return React.createElement(
-            tag,
-            {...rest, className: this.getClassName()}
-        );
-
-    }
+    return React.createElement(
+        `h${level}`,
+        {
+            ...rest,
+            className: cx(props).build()
+        }
+    );
 
 }
 

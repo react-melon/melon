@@ -22,7 +22,8 @@
   },
   "scripts": {
     "test": "npm test",
-    "build:amd": "sh tool/build-amd.sh"
+    "lint": "fecs src",
+    "build:amd": "fecs src && sh tool/build-amd.sh"
   },
   "repository": {
     "type": "git",

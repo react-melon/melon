@@ -3,46 +3,38 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const cx = require('../common/util/cxBuilder').create('CalendarSelector');
 
-var Component = require('../Component');
-var Item = require('./SelectorItem');
+const Item = require('./SelectorItem');
 
-var _ = require('underscore');
-var DateTime = require('../common/util/date');
+const _ = require('underscore');
+const DateTime = require('../common/util/date');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class CalendarSelector extends Component {
+const CalendarSelector = React.createClass({
 
-    static displayName = 'CalendarSelector';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
-
-        this.type = 'calendar-selector';
-    }
+    displayName: 'CalendarSelector',
 
     componentDidMount() {
         this.refs.item
         && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
-    }
+    },
 
     componentDidUpdate() {
         this.refs.item
         && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
-    }
+    },
 
     render() {
 
         var {
             minDate,
             maxDate,
-            date
+            date,
+            ...rest
         } = this.props;
 
         var children = [];
@@ -98,11 +90,11 @@ class CalendarSelector extends Component {
         }
 
         return (
-            <ul className={this.getClassName()}>
+            <ul {...rest} className={cx(this.props).build()}>
                 {children}
             </ul>
         );
-    }
+    },
 
     onClick(e) {
 
@@ -115,7 +107,7 @@ class CalendarSelector extends Component {
                 date: e.date
             });
         }
-    }
+    },
 
     /**
      * 是否显示日期
@@ -141,7 +133,8 @@ class CalendarSelector extends Component {
         return mode === 'month' || onlyOneYear;
 
     }
-}
+
+});
 
 CalendarSelector.MAX_RANGE = 10;
 

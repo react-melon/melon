@@ -3,94 +3,44 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var PropTypes = React.PropTypes;
-var InputComponent = require('./InputComponent');
-var FloatingLabel = require('./textbox/FloatLabel');
+const React = require('react');
+const ReactDOM = require('react-dom');
 
-class TextBox extends InputComponent {
+const createInputComponent = require('./createInputComponent');
+const FloatingLabel = require('./textbox/FloatLabel');
+const TextBoxInput = require('./textbox/Input');
 
-    static displayName = 'TextBox';
+const cxBuilder = require('./common/util/createClassNameBuilder')('Textbox');
 
-    constructor(props) {
+let TextBox = React.createClass({
 
-        super(props);
+    getInitialState() {
 
-        this.state = {
-            ...this.state,
-            isFloating: !!this.getValue(),
+        const {
+            value
+        } = this.props;
+
+        return {
+            isFloating: !!value,
             isFocus: false
         };
 
-        this.onFocus = this.onFocus.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this.onChange = this.onChange.bind(this);
-
-    }
-
-    render() {
-
-        return (
-            <div className={this.getClassName()}>
-                {this.renderFloatingLabel(this.props.floatingLabel)}
-                {this.renderInput()}
-                {this.renderValidateMessage()}
-            </div>
-        );
-
-    }
-
-    renderInput() {
-
-        var props = this.props;
-        var multiline = props.multiline;
-        var tag = multiline ? 'textarea' : 'input';
-
-        props = {
-            name: props.name,
-            disabled: props.disabled,
-            readOnly: props.readOnly,
-            type: props.type,
-            value: this.getValue(),
-            placeholder: props.placeholder,
-            className: this.getPartClassName('input'),
-            onFocus: this.onFocus,
-            onBlur: this.onBlur,
-            onChange: this.onChange,
-            ref: 'input'
-        };
-
-        if (multiline) {
-            props.rows = 1;
-        }
-
-        return React.createElement(tag, props);
-
-    }
-
-    renderFloatingLabel(floatingLabel) {
-
-        var state = this.state;
-
-        return floatingLabel
-            ? <FloatingLabel
-                floating={state.isFloating || state.isFocus}
-                focused={state.isFocus}
-                label={floatingLabel} />
-            : null;
-
-    }
+    },
 
     onFocus(e) {
 
-        e = {type: 'focus', target: this};
-
-        super.onFocus(e);
-
-        var onFocus = this.props.onFocus;
+        var {
+            onFocus,
+            willValidate,
+            validate,
+            value
+        } = this.props;
 
         if (onFocus)  {
-            onFocus(e);
+            onFocus({
+                type: 'focus',
+                target: this
+            });
         }
 
         this.setState({
@@ -98,96 +48,193 @@ class TextBox extends InputComponent {
             isFloating: true
         });
 
-    }
+        if (willValidate('focus')) {
+            validate(value);
+        }
 
-    getStates(props) {
-        var states = super.getStates(props);
-        states.focus = this.state.isFocus;
-        return states;
-    }
+    },
 
     onBlur(e) {
 
-        e = {type: 'blur', target: this};
-
-        super.onBlur(e);
-
-        var onBlur = this.props.onBlur;
+        const {
+            onBlur,
+            value,
+            willValidate,
+            validate
+        } = this.props;
 
         if (onBlur)  {
-            onBlur(e);
+            onBlur({
+                type: 'blur',
+                target: this
+            });
         }
 
         this.setState({
-            isFloating: !!this.getValue(),
+            isFloating: !!value,
             isFocus: false
         });
 
-    }
+        if (willValidate('blur')) {
+            validate(value);
+        }
+
+    },
 
     onChange(e) {
 
         var rawValue = e.target.value;
 
-        e = {
+        const {
+            onChange,
+            willValidate,
+            validate
+        } = this.props;
+
+        onChange({
             type: 'change',
             target: this,
-            value: this.stringifyValue(rawValue),
+            value: rawValue,
             rawValue
-        };
+        });
 
-        super.onChange(e);
-
-        // 如果被控制了，那么就交给控制者管理
-        if (this.isControlled()) {
-            this.props.onChange(e);
-            return;
+        if (willValidate('change')) {
+            validate(rawValue);
         }
 
-        // 如果没有被控制，那么数据自行使用状态管理
-        // 这时多行文本框需要自行更新高度
-        this.setState({rawValue});
-
-        if (this.props.multiline) {
-            this.syncTextareaHeight();
-        }
-
-    }
+    },
 
     componentWillReceiveProps(nextProps) {
 
-        super.componentWillReceiveProps(nextProps);
+        const {value} = nextProps;
 
         // 多行文本框应该可以自动更新高度
-        if (nextProps.multiline
-            && this.isControlled()
-            && this.props.value !== nextProps.value
-        ) {
+        if (nextProps.multiline && this.props.value !== value) {
             this.syncTextareaHeight();
         }
 
-    }
+        const {
+            isFloating,
+            isFocus
+        } = this.state;
+
+        const nextIsFloating = !!value || isFocus;
+
+        if (isFloating !== nextIsFloating) {
+            this.setState({
+                isFloating: nextIsFloating
+            });
+        }
+
+    },
 
     syncTextareaHeight() {
-        var dom = this.refs.input;
-        dom.style.height = 'auto';
-        dom.style.height = dom.scrollHeight + 'px';
+
+        const {
+            input
+        } = this;
+
+        if (input) {
+            input.style.height = 'auto';
+            input.style.height = input.scrollHeight + 'px';
+        }
+
+    },
+
+    renderFloatingLabel(floatingLabel, isFloating, isFocus) {
+
+        if (!floatingLabel) {
+            return null;
+        }
+
+        return (
+            <FloatingLabel
+                floating={isFloating || isFocus}
+                focused={isFocus}
+                label={floatingLabel} />
+        );
+
+    },
+
+
+    render() {
+
+        const {
+            onFocus,
+            onBlur,
+            onChange,
+            props
+        } = this;
+
+        const {
+            renderValidateMessage,
+            floatingLabel,
+            className,
+            getStateClassName,
+            value,
+            ...rest
+        } = props;
+
+        const {
+            isFocus,
+            isFloating
+        } = this.state;
+
+        const statefulClassName = cxBuilder
+            .resolve(props)
+            .addState({
+                focus: isFocus,
+                floating: isFloating,
+                fulfilled: !!value
+            })
+            .build();
+
+        return (
+            <div className={statefulClassName}>
+                {this.renderFloatingLabel(floatingLabel, isFloating, isFocus)}
+                <TextBoxInput
+                    {...rest}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    isFocus={isFocus}
+                    value={value}
+                    ref={(input) => {
+                        if (input) {
+                            this.input = ReactDOM.findDOMNode(input);
+                        }
+                    }} />
+                {renderValidateMessage()}
+            </div>
+        );
+
     }
 
-}
+});
 
 TextBox.defaultProps = {
-    ...InputComponent.defaultProps,
-    value: ''
+    value: '',
+    defaultValue: ''
 };
+
+const {PropTypes} = React;
 
 TextBox.propTypes = {
+
+    type: PropTypes.oneOf(['text', 'password']),
+
     value: PropTypes.string,
-    onChange: PropTypes.func,
     defaultValue: PropTypes.string,
+
     placeholder: PropTypes.string,
     floatingLabel: PropTypes.string,
-    multiline: PropTypes.bool
+
+    multiline: PropTypes.bool,
+
+    onChange: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func
+
 };
 
-module.exports = TextBox;
+module.exports = createInputComponent('Textbox', TextBox);

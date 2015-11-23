@@ -20,31 +20,20 @@ define('melon/MainClickAware', [
             }]);
         function MainClickAware(props) {
             babelHelpers.classCallCheck(this, MainClickAware);
-            babelHelpers.get(Object.getPrototypeOf(MainClickAware.prototype), 'constructor', this).call(this, props);
+            _Component.call(this, props);
             this.onMainClick = this.onMainClick.bind(this);
         }
-        babelHelpers.createClass(MainClickAware, [
-            {
-                key: 'componentDidMount',
-                value: function componentDidMount() {
-                    var main = ReactDOM.findDOMNode(this);
-                    dom.on(main, 'click', this.onMainClick);
-                }
-            },
-            {
-                key: 'componentWillUnmount',
-                value: function componentWillUnmount() {
-                    var main = ReactDOM.findDOMNode(this);
-                    dom.off(main, 'click', this.onMainClick);
-                }
-            },
-            {
-                key: 'onMainClick',
-                value: function onMainClick(e) {
-                    throw new Error('MainClickAware onMainClick need implement');
-                }
-            }
-        ]);
+        MainClickAware.prototype.componentDidMount = function componentDidMount() {
+            var main = ReactDOM.findDOMNode(this);
+            dom.on(main, 'click', this.onMainClick);
+        };
+        MainClickAware.prototype.componentWillUnmount = function componentWillUnmount() {
+            var main = ReactDOM.findDOMNode(this);
+            dom.off(main, 'click', this.onMainClick);
+        };
+        MainClickAware.prototype.onMainClick = function onMainClick(e) {
+            throw new Error('MainClickAware onMainClick need implement');
+        };
         return MainClickAware;
     }(Component);
     MainClickAware.defaultProps = babelHelpers._extends({}, Component.defaultProps);
