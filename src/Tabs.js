@@ -3,25 +3,37 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var Component = require('./Component');
+const React = require('react');
+const cx = require('./common/util/cxBuilder').create('Tabs');
 
-var Tab = require('./tabs/Tab');
-var TabPanel = require('./tabs/Panel');
+const Tab = require('./tabs/Tab');
+const TabPanel = require('./tabs/Panel');
 
-class Tabs extends Component {
+const {PropTypes} = React;
 
-    static displayName = 'Tabs';
+const Tabs = React.createClass({
 
-    constructor(props) {
-        super(props);
+    propTypes: {
+        selectedIndex: PropTypes.number,
+        onChange: PropTypes.func,
+        onBeforeChange: PropTypes.func
+    },
+
+    getDefaultProps() {
+        return {
+            selectedIndex: 0
+        };
+    },
+
+    getInitialState() {
 
         let {selectedIndex} = this.props;
 
-        this.state = {
+        return {
             selectedIndex: selectedIndex
         };
-    }
+
+    },
 
     componentWillReceiveProps(nextProps) {
 
@@ -31,16 +43,16 @@ class Tabs extends Component {
             });
         }
 
-    }
+    },
 
 
     getTabCount() {
         return React.Children.count(this.props.children);
-    }
+    },
 
     getSelected(tab, index) {
         return this.state.selectedIndex === index;
-    }
+    },
 
     handleTabClick(index, e) {
 
@@ -64,7 +76,7 @@ class Tabs extends Component {
             });
         });
 
-    }
+    },
 
     render() {
 
@@ -102,7 +114,7 @@ class Tabs extends Component {
                 tabIndex: index,
                 style: {width: percent},
                 onClick: disabled ? null : this.handleTabClick.bind(this, index),
-                className: this.getPartClassName('item')
+                className: cx().part('item').build()
             });
 
         }, this);
@@ -113,10 +125,10 @@ class Tabs extends Component {
         };
 
         return (
-            <div {...props} className={this.getClassName()}>
+            <div {...props} className={cx(props).build()}>
                 <ul>
                     {tabs}
-                    <li className={this.getPartClassName('inkbar')} style={InkBarStyles}></li>
+                    <li className={cx().part('inkbar').build()} style={InkBarStyles}></li>
                 </ul>
                 {tabContent}
             </div>
@@ -124,17 +136,7 @@ class Tabs extends Component {
 
     }
 
-}
-
-Tabs.propTypes = {
-    selectedIndex: React.PropTypes.number,
-    onChange: React.PropTypes.func,
-    onBeforeChange: React.PropTypes.func
-};
-
-Tabs.defaultProps = {
-    selectedIndex: 0
-};
+});
 
 Tabs.Tab = Tab;
 
