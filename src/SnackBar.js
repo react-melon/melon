@@ -3,34 +3,28 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Button = require('./Button');
+const dom = require('./common/util/dom');
+const cx = require('./common/util/cxBuilder').create('SnackBar');
 
-var Component = require('./Component');
-var Button = require('./Button');
+const SnackBar = React.createClass({
 
-var dom = require('./common/util/dom');
-var PropTypes = React.PropTypes;
+    displayName: 'SnackBar',
 
-class SnackBar extends Component {
-
-    static displayName = 'SnackBar';
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            open: props.open
-        };
-
-        this.onMouseUp = this.onMouseUp.bind(this);
-        this.onShow = this.onShow.bind(this);
-        this.onHide = this.onHide.bind(this);
+    getInitialState() {
 
         this.autoHideTimer = null;
-    }
+
+        return {
+            open: this.props.open
+        };
+
+    },
 
     componentDidMount() {
+
         dom.on(document.body, 'mouseup', this.onMouseUp);
 
         if (this.props.openOnMount) {
@@ -38,7 +32,7 @@ class SnackBar extends Component {
         }
 
         this.locate();
-    }
+    },
 
     componentWillUnmount() {
         dom.off(document.body, 'mouseup', this.onMouseUp);
@@ -46,11 +40,23 @@ class SnackBar extends Component {
         if (this.autoHideTimer) {
             clearTimeout(this.autoHideTimer);
         }
-    }
+    },
 
     componentDidUpdate() {
         this.locate();
-    }
+    },
+
+    componentWillReceiveProps(nextProps) {
+
+        var open = nextProps.open;
+
+        if (open === this.state.open) {
+            return;
+        }
+
+        open ? this.onShow() : this.onHide();
+
+    },
 
     locate() {
         var {
@@ -75,19 +81,7 @@ class SnackBar extends Component {
                     break;
             }
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        var open = nextProps.open;
-
-        if (open === this.state.open) {
-            return;
-        }
-
-        open ? this.onShow() : this.onHide();
-
-    }
+    },
 
     onHide() {
         var onHide = this.props.onHide;
@@ -97,7 +91,7 @@ class SnackBar extends Component {
                 onHide();
             }
         });
-    }
+    },
 
     onShow() {
         var {
@@ -117,7 +111,7 @@ class SnackBar extends Component {
                 }, autoHideDuration);
             }
         });
-    }
+    },
 
     onMouseUp(e) {
 
@@ -135,39 +129,30 @@ class SnackBar extends Component {
             this.onHide();
             return;
         }
-    }
-
-    getStates(props) {
-
-        var states = super.getStates(props);
-        states.open = this.state.open;
-
-        return states;
-    }
-
-    getVariants(props) {
-
-        var variants = super.getVariants(props);
-
-        var direction = props.direction;
-        variants.push('direction-' + direction);
-
-        return variants;
-    }
+    },
 
     render() {
 
         var {
             message,
-            action
+            action,
+            open,
+            direction
         } = this.props;
 
+        const className = cx(this.props)
+            .addStates({open})
+            .addVariants(`direction-${direction}`)
+            .build();
+
         return (
-            <div className={this.getClassName()}>
-                <span className={this.getPartClassName('message')}>{message}</span>
+            <div className={className}>
+                <span className={cx().part('message').build()}>
+                    {message}
+                </span>
                 <Button
                     variants={['snackbar']}
-                    className={this.getPartClassName('action')}
+                    className={cx().part('action').build()}
                     onClick={this.onHide} >
                     {action}
                 </Button>
@@ -176,7 +161,9 @@ class SnackBar extends Component {
 
     }
 
-}
+});
+
+const {PropTypes} = React;
 
 SnackBar.defaultProps = {
     autoHideDuration: 0,
@@ -187,7 +174,7 @@ SnackBar.defaultProps = {
 SnackBar.propTypes = {
     action: PropTypes.string,
     autoHideDuration: PropTypes.number,
-    message: PropTypes.string,
+    message: PropTypes.node.isRequired,
     openOnMount: PropTypes.bool,
     onHide: PropTypes.func,
     onShow: PropTypes.func,
@@ -195,9 +182,7 @@ SnackBar.propTypes = {
 };
 
 
-SnackBar.show = function (message, duration, direction) {
-    duration = duration || 0;
-    direction = direction || 'bl';
+SnackBar.show = function (message, duration = 0, direction = 'bl') {
 
     var doc = document;
     var body = doc.body;
@@ -210,20 +195,31 @@ SnackBar.show = function (message, duration, direction) {
             autoHideDuration={duration}
             message={message}
             direction={direction}
-            onHide={function (e) {
-                setTimeout(function () {
-                    ReactDOM.unmountComponentAtNode(container);
-                    body.removeChild(container);
-                    body = doc = container = snackbar = null;
-                }, 400);
+            onHide={() => {
+
+                // 这里 delay 400 是因为要等动画搞完
+                setTimeout(
+                    () => {
+                        if (container) {
+                            ReactDOM.unmountComponentAtNode(container);
+                            body.removeChild(container);
+                            body = doc = container = snackbar = null;
+                        }
+                    },
+                    400
+                );
+
             }} />
     );
 
-    ReactDOM.render(snackbar, container, function () {
+    ReactDOM.render(snackbar, container, () => {
         snackbar = React.cloneElement(snackbar, {open: true});
-        setTimeout(function () {
-            ReactDOM.render(snackbar, container);
-        }, 10);
+        setTimeout(
+            () => {
+                ReactDOM.render(snackbar, container);
+            },
+            0
+        );
     });
 
     return snackbar;

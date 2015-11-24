@@ -50,21 +50,21 @@ var View = React.createClass({
                     </div>
                     <div className="melon-column melon-column-4">
                         <Title level={5}>Toggle</Title>
-                        <Toggle name="toggle1" value="1" label="On" leftLabel="Off" />
+                        <Toggle name="toggle1" value="haha" trueValue="haha" falseValue="hehe" />
                     </div>
                 </div>
 
                 <Title level={5}>禁用</Title>
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">
-                        <BoxGroup name="boxgroup3" boxModel="checkbox" value='C' disabled>
+                        <BoxGroup name="boxgroup3" boxModel="checkbox" value={['C']} disabled>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />
                             <option name="checkbox1" value="C" label="青年C" />
                         </BoxGroup>
                     </div>
                     <div className="melon-column melon-column-4">
-                        <BoxGroup name="boxgroup3" boxModel="radio" value='C' disabled>
+                        <BoxGroup name="boxgroup3" boxModel="radio" value={['C']} disabled>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />
                             <option name="checkbox1" value="C" label="青年C" />
@@ -81,12 +81,12 @@ var View = React.createClass({
                         <BoxGroup
                             boxModel="checkbox"
                             name="boxgroup4"
-                            rawValue={['B', 'C']}>
+                            value={['B', 'C']}>
                             {BoxGroup.createOptions(datasource)}
                         </BoxGroup>
                     </div>
                     <div className="melon-column melon-column-6">
-                        <BoxGroup name="boxgroup3" boxModel="radio" value='C'>
+                        <BoxGroup name="boxgroup3" boxModel="radio" value={['C']}>
                             {BoxGroup.createOptions(datasource)}
                         </BoxGroup>
                     </div>
@@ -98,7 +98,7 @@ var View = React.createClass({
                         <BoxGroup
                             name="a"
                             boxModel="checkbox"
-                            rawValue={this.state.a}
+                            value={this.state.a}
                             onChange={this.onChange.bind(null, 'a')}>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />
@@ -110,7 +110,7 @@ var View = React.createClass({
                         <BoxGroup
                             name="controlled-radio"
                             boxModel="radio"
-                            rawValue={this.state.b}
+                            value={this.state.b}
                             onChange={this.onChange.bind(null, 'b')}>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />

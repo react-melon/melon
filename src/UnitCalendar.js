@@ -3,81 +3,32 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let React = require('react');
-let InputComponent = require('./InputComponent');
-let BoxGroup = require('./BoxGroup');
-let date = require('./common/util/date');
+const React = require('react');
+const BoxGroup = require('./BoxGroup');
+const date = require('./common/util/date');
+const cx = require('./common/util/cxBuilder').create('UnitCalendar');
 
-class UnitCalendar extends InputComponent {
+let UnitCalendar = React.createClass({
 
-    static displayName = 'UnitCalendar';
+    displayName: 'UnitCalendar',
 
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-    }
+    onChange(e) {
 
-    render() {
+        const nextValue = e.value;
 
-        let {begin, end, unit, ...rest} = this.props;
-        let {onChange} = this;
+        let {continuous, value} = this.props;
 
-        let rawValue = this
-            .getRawValue()
-            .map((fragment) => {
-                return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
-            })
-            .sort();
+        this.props.onChange({
 
-        return (
-            <div className={this.getClassName()}>
-                <BoxGroup
-                    {...rest}
-                    boxModel="checkbox"
-                    onChange={onChange}
-                    rawValue={rawValue}>
-                    {UnitCalendar.getContinuousFragments(begin, end, unit).map((fragment) => {
-                        let begin = this.format(fragment);
-                        let end = UnitCalendar.getNextTime(fragment, unit);
-                        end.setDate(end.getDate() - 1);
-                        end = this.format(end);
-                        return (
-                            <option
-                                key={begin}
-                                value={begin}
-                                label={`${begin} ~ ${end}`} />
-                        );
-                    })}
-                </BoxGroup>
-            </div>
-        );
+            target: this,
 
-    }
-
-    onChange({rawValue}) {
-
-        let current = this.getRawValue();
-        let {continuous} = this.props;
-
-        // 如果是连续的，这里需要算一下，不是连续的就以新值为主
-        rawValue = continuous
-            ? this.calculate(current, rawValue).map(this.parse)
-            : rawValue;
-
-        if (this.isControlled()) {
-            this.props.onChange({
-                target: this,
-                rawValue,
-                value: this.stringifyValue(rawValue)
-            });
-            return;
-        }
-
-        this.setState({
-            rawValue
+            // 如果是连续的，这里需要算一下，不是连续的就以新值为主
+            value: continuous
+                ? this.calculate(value, nextValue).map(this.parse)
+                : value
         });
 
-    }
+    },
 
     calculate(current, next) {
 
@@ -134,15 +85,15 @@ class UnitCalendar extends InputComponent {
 
         return current.slice(0, -1);
 
-    }
+    },
 
     parse(time) {
         return new Date(time);
-    }
+    },
 
     format(time) {
         return date.format(time, 'yyyy-mm-dd');
-    }
+    },
 
     parseValue(value = '') {
         return value
@@ -150,34 +101,70 @@ class UnitCalendar extends InputComponent {
             .map((date) => {
                 return this.parse(date);
             });
-    }
+    },
 
-    stringifyValue(rawValue = []) {
-        return rawValue
+    stringifyValue(value = []) {
+        return value
             .map((term) => {
                 return this.format(term);
             })
             .join(',');
+    },
+
+    render() {
+
+        let {begin, end, unit, value, ...rest} = this.props;
+        let {onChange} = this;
+
+        value = value
+            .map((fragment) => {
+                return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
+            })
+            .sort();
+
+        return (
+            <div className={cx(this.props).build()}>
+                <BoxGroup
+                    {...rest}
+                    boxModel="checkbox"
+                    onChange={onChange}
+                    value={value}>
+                    {UnitCalendar.getContinuousFragments(begin, end, unit).map((fragment) => {
+                        let begin = this.format(fragment);
+                        let end = UnitCalendar.getNextTime(fragment, unit);
+                        end.setDate(end.getDate() - 1);
+                        end = this.format(end);
+                        return (
+                            <option
+                                key={begin}
+                                value={begin}
+                                label={`${begin} ~ ${end}`} />
+                        );
+                    })}
+                </BoxGroup>
+            </div>
+        );
+
     }
 
-}
+});
 
-let {PropTypes} = React;
+UnitCalendar = require('./createInputComponent').create(UnitCalendar);
+
+const {PropTypes} = React;
 
 UnitCalendar.propTypes = {
-    ...InputComponent.propTypes,
     begin: PropTypes.instanceOf(Date),
     end: PropTypes.instanceOf(Date),
     unit: PropTypes.oneOf(['week', 'month', 'year']).isRequired,
-    rawValue: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     continuous: PropTypes.bool.isRequired,
     defaultValue: PropTypes.arrayOf(PropTypes.string)
 };
 
 UnitCalendar.defaultProps = {
-    ...InputComponent.defaultProps,
     continuous: true,
-    rawValue: [],
+    value: [],
     defaultValue: []
 };
 

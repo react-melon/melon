@@ -3,10 +3,9 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let React = require('react');
-let Component = require('./Component');
-let Table = require('./Table');
-let SelectorColumn = require('./table/SelectorColumn');
+const React = require('react');
+const Table = require('./Table');
+const SelectorColumn = require('./table/SelectorColumn');
 
 function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex) {
 
@@ -34,20 +33,15 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
 
 }
 
-class SelectableTable extends Component {
+const SelectableTable = React.createClass({
 
-    static displayName = 'SelectableTable';
+    displayName: 'SelectableTable',
 
-    constructor(props) {
-        super(props);
-        this.isRowSelected = this.isRowSelected.bind(this);
-        this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
-        this.onSelect = this.onSelect.bind(this);
-        this.onSelectAll = this.onSelectAll.bind(this);
-        this.state = {
-            selected: props.selected
+    getInitialState() {
+        return {
+            selected: this.props.selected
         };
-    }
+    },
 
     componentWillReceiveProps(props) {
 
@@ -57,42 +51,28 @@ class SelectableTable extends Component {
             });
         }
 
-    }
-
-    render() {
-
-        let {children, multiple, ...rest} = this.props;
-
-        return (
-            <Table {...rest}>
-                <SelectorColumn
-                    isSelected={this.isRowSelected}
-                    isAllSelected={this.isAllRowsSelected}
-                    multiple={multiple}
-                    onSelect={this.onSelect}
-                    onSelectAll={this.onSelectAll} />
-                {children}
-            </Table>
-        );
-
-    }
+    },
 
     onSelect(rowIndex) {
         this.onRowSelectorClick(
             this.isRowSelected(rowIndex) ? 'unselect' : 'select',
             rowIndex
         );
-    }
+    },
 
     onSelectAll() {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
         );
-    }
+    },
 
     onRowSelectorClick(action, rowIndex) {
 
-        let {onSelect, dataSource, multiple} = this.props;
+        const {
+            onSelect,
+            dataSource,
+            multiple
+        } = this.props;
 
         let selected = this.getSelected();
 
@@ -116,32 +96,48 @@ class SelectableTable extends Component {
             selected: selected
         });
 
-    }
+    },
 
     getSelected() {
-        let {state, props} = this;
-        let {onSelect} = props;
-        let {selected} = onSelect ? props : state;
+        const {state, props} = this;
+        const {onSelect} = props;
+        const {selected} = onSelect ? props : state;
         return selected;
-    }
+    },
 
     isRowSelected(rowIndex) {
-        let selected = this.getSelected();
+        const selected = this.getSelected();
         return selected.indexOf(rowIndex) !== -1;
-    }
+    },
 
     isAllRowsSelected() {
-        let selected = this.getSelected();
+        const selected = this.getSelected();
         return selected.length === this.props.dataSource.length;
+    },
+
+    render() {
+
+        const {children, multiple, ...rest} = this.props;
+
+        return (
+            <Table {...rest}>
+                <SelectorColumn
+                    isSelected={this.isRowSelected}
+                    isAllSelected={this.isAllRowsSelected}
+                    multiple={multiple}
+                    onSelect={this.onSelect}
+                    onSelectAll={this.onSelectAll} />
+                {children}
+            </Table>
+        );
+
     }
 
-}
+});
 
-let {PropTypes} = React;
-
+const {PropTypes} = React;
 
 SelectableTable.propTypes = {
-    ...Component.propTypes,
     ...Table.propTypes,
     multiple: PropTypes.bool.isRequired,
     onSelect: PropTypes.func,
@@ -149,7 +145,6 @@ SelectableTable.propTypes = {
 };
 
 SelectableTable.defaultProps = {
-    ...Component.defaultProps,
     ...Table.defaultProps,
     multiple: true,
     selected: []
