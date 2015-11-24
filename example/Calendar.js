@@ -9,7 +9,7 @@ var Title = require('../src/Title');
 var Calendar = require('../src/Calendar');
 
 var RangeCalendar = require('../src/RangeCalendar');
-// var UnitCalendar = require('../src/UnitCalendar');
+var UnitCalendar = require('../src/UnitCalendar');
 
 var View = React.createClass({
 
@@ -91,7 +91,40 @@ var View = React.createClass({
                         <Calendar begin={new Date(2014, 9, 10)} end={new Date(2015, 9, 10)} readOnly></Calendar>
                     </div>
                 </div>
-
+                <div className="melon-row">
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>日期区间</Title>
+                        <UnitCalendar
+                            size="xxs"
+                            value={this.state.weekRange}
+                            begin={new Date(2015, 10, 2)}
+                            end={new Date(2016, 0, 31)}
+                            unit="week"
+                            onChange={({value}) => {
+                                this.setState({
+                                    weekRange: value
+                                });
+                            }} />
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>日期区间</Title>
+                        <UnitCalendar
+                            size="xxs"
+                            value={this.state.monthRange}
+                            begin={new Date(2014, 10, 1)}
+                            end={new Date(2015, 11, 1)}
+                            unit="month" />
+                    </div>
+                    <div className="melon-column melon-column-4">
+                        <Title level={5}>日期区间</Title>
+                        <UnitCalendar
+                            size="xxs"
+                            value={this.state.yearRange}
+                            begin={new Date(2012, 0, 1)}
+                            end={new Date(2020, 4, 1)}
+                            unit="year" />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -99,40 +132,6 @@ var View = React.createClass({
 });
 
 
-// <div className="melon-row">
-//     <div className="melon-column melon-column-4">
-//         <Title level={5}>日期区间</Title>
-//         <UnitCalendar
-//             size="xxs"
-//             rawValue={this.state.weekRange}
-//             begin={new Date(2015, 10, 2)}
-//             end={new Date(2016, 0, 31)}
-//             unit="week"
-//             onChange={({rawValue, value}) => {
-//                 this.setState({
-//                     weekRange: rawValue
-//                 });
-//                 console.log(value);
-//             }} />
-//     </div>
-//     <div className="melon-column melon-column-4">
-//         <Title level={5}>日期区间</Title>
-//         <UnitCalendar
-//             size="xxs"
-//             rawValue={this.state.monthRange}
-//             begin={new Date(2014, 10, 1)}
-//             end={new Date(2015, 11, 1)}
-//             unit="month" />
-//     </div>
-//     <div className="melon-column melon-column-4">
-//         <Title level={5}>日期区间</Title>
-//         <UnitCalendar
-//             size="xxs"
-//             rawValue={this.state.yearRange}
-//             begin={new Date(2012, 0, 1)}
-//             end={new Date(2020, 4, 1)}
-//             unit="year" />
-//     </div>
-// </div>
+
 
 module.exports = View;

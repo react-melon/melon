@@ -4,9 +4,7 @@
  */
 
 const React = require('react');
-const createCXBuilder = require('../common/util/createClassNameBuilder');
-
-const cxBuilder = createCXBuilder('TextboxInput');
+const cx = require('../common/util/cxBuilder').create('TextBoxInput');
 
 const TextBoxInput = React.createClass({
 
@@ -26,12 +24,10 @@ const TextBoxInput = React.createClass({
             tag,
             {
                 ...rest,
-                className: cxBuilder
-                    .resolve(this.props)
-                    .addState({
+                className: cx(this.props)
+                    .addStates({
                         focus: isFocus
                     })
-                    .addVariant('a', 'b', 'c')
                     .build(),
                 rows: multiline ? rows : null
             }

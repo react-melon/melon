@@ -3,44 +3,64 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('TableRow');
+const TableCell = require('./Cell');
 
-var TableCell = require('./Cell');
+const TableRow = React.createClass({
 
-var Component = require('../Component');
+    displayName: 'TableRow',
 
-class TableRow extends Component {
+    renderCell(columnData, index) {
 
-    static displayName = 'TableRow';
+        const {
+            part,
+            data,
+            height,
+            rowIndex
+        } = this.props;
 
-    constructor(props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-        this.onDoubleClick = this.onDoubleClick.bind(this);
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseEnter = this.onMouseEnter.bind(this);
-        this.onMouseLeave = this.onMouseLeave.bind(this);
-    }
+        const {
+            width,
+            align,
+            dataKey,
+            cellRenderer
+        } = columnData;
+
+        const cellData = part === 'header' || part === 'footer'
+            ? columnData[part]
+            : data[dataKey];
+
+        return (
+            <TableCell
+                part={part}
+                height={height}
+                width={width}
+                align={align}
+                key={dataKey || part}
+                rowIndex={rowIndex}
+                columnIndex={index}
+                columnData={columnData}
+                rowData={data}
+                cellKey={dataKey}
+                cellData={cellData}
+                cellRenderer={cellRenderer} />
+        );
+
+    },
 
     render() {
 
-        let {
-            onClick,
-            onDoubleClick,
-            onMouseDown,
-            onMouseEnter,
-            onMouseLeave,
+        const {
             columns,
-            tableWidth
+            tableWidth,
+            ...rest
         } = this.props;
 
         return (
-            <div className={this.getClassName()}
-                onClick={onClick ? this.onClick : null}
-                onDoubleClick={onDoubleClick ? this.onDoubleClick : null}
-                onMouseDown={onMouseDown ? this.onMouseDown : null}
-                onMouseEnter={onMouseEnter ? this.onMouseEnter : null}
-                onMouseLeave={onMouseLeave ? this.onMouseLeave : null}
+            <div
+                {...rest}
+                className={cx(this.props).build()}
                 style={{width: tableWidth ? tableWidth - 2 : null}}>
                 {columns.map((column, index) => {
                     return this.renderCell(column.props, index);
@@ -49,59 +69,10 @@ class TableRow extends Component {
         );
     }
 
-    renderCell(columnData, index) {
 
-        var props = this.props;
-        var part = props.part;
-        var cellKey = columnData.dataKey;
-        var data = props.data;
+});
 
-        var cellData = part === 'header' || part === 'footer'
-            ? columnData[part]
-            : data[cellKey];
-
-        return (
-            <TableCell
-                part={part}
-                height={props.height}
-                width={columnData.width}
-                align={columnData.align}
-                key={columnData.dataKey || part}
-                rowIndex={props.rowIndex}
-                columnIndex={index}
-                columnData={columnData}
-                rowData={data}
-                cellKey={cellKey}
-                cellData={cellData}
-                cellRenderer={columnData.cellRenderer} />
-        );
-
-    }
-
-    onClick(e) {
-        this.props.onClick(e, this.props.index, this.props.data);
-    }
-
-    onDoubleClick(e) {
-        this.props.onDoubleClick(e, this.props.index, this.props.data);
-    }
-
-    onMouseEnter(e) {
-        this.props.onMouseEnter(e, this.props.index, this.props.data);
-    }
-
-    onMouseLeave(e) {
-        this.props.onMouseLeave(e, this.props.index, this.props.data);
-    }
-
-    onMouseDown(e) {
-        this.props.onMouseDown(e, this.props.index, this.props.data);
-    }
-
-
-}
-
-var PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 TableRow.propTypes = {
 
@@ -120,24 +91,6 @@ TableRow.propTypes = {
      * @type {(Object | array)}
      */
     data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-
-    /**
-     * 单击事件
-     *
-     * @type {function}
-     */
-    onClick: PropTypes.func,
-
-    /**
-     * 双击事件
-     *
-     * @type {function}
-     */
-    onDoubleClick: PropTypes.func,
-
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onMouseDown: PropTypes.func,
 
     /**
      * Height of the row.

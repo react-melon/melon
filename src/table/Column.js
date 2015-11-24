@@ -3,20 +3,19 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var PropTypes = React.PropTypes;
+const React = require('react');
 
-var Component = require('../Component');
+const TableColumn = React.createClass({
 
-class TableColumn extends Component {
-
-    static displayName = 'TableColumn';
+    displayName: 'TableColumn',
 
     render() {
         return null;
     }
 
-}
+});
+
+const {PropTypes} = React;
 
 TableColumn.propTypes = {
 

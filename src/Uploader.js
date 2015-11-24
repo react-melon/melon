@@ -3,118 +3,29 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
+const Button = require('./Button');
+const Icon = require('./Icon');
+const Progress = require('./Progress');
+const Link = require('./Link');
+const cx = require('./common/util/cxBuilder').create('Uploader');
 
-var InputComponent = require('./InputComponent');
-var Button = require('./Button');
-var Icon = require('./Icon');
-var Progress = require('./Progress');
-var Link = require('./Link');
+const Uploader = React.createClass({
 
-class Uploader extends InputComponent {
+    displayName: 'Uploader',
 
-    static displayName = 'Uploader';
+    getInitialState() {
 
-    constructor(props) {
-
-        super(props);
-
-        this.onSelect = this.onSelect.bind(this);
-        this.onFileChange = this.onFileChange.bind(this);
-        this.onClearClick = this.onClearClick.bind(this);
-
-        var state = this.state;
-
-        this.state = {
-            ...state,
+        return {
             isUploading: false,
-            isUploaded: !!state.rawValue
+            isUploaded: !!this.props.value
         };
 
-    }
-
-    render() {
-
-        var props = this.props;
-
-        return (
-            <div className={this.getClassName()}>
-                <input name={props.name} type="hidden" value={this.getValue()} />
-                {this.renderUploadFile()}
-                {this.renderUploadButton()}
-                {this.renderValidateMessage()}
-            </div>
-        );
-
-    }
-
-    renderUploadFile() {
-
-        var {isUploading, isUploaded} = this.state;
-
-        return isUploading || isUploaded
-            ? null
-            : (
-                <input
-                    ref="file"
-                    type="file"
-                    className={this.getPartClassName('file')}
-                    onChange={this.onFileChange}
-                    accept={this.props.accept} />
-            );
-    }
-
-    renderUploadButton() {
-
-        var {isUploading, isUploaded} = this.state;
-
-        if (isUploading) {
-            return (
-                <Progress
-                    size={this.props.size}
-                    mode="indeterminate"
-                    shape="circle" />
-            );
-        }
-
-        if (isUploaded) {
-            return (
-                <div className={this.getPartClassName('uploaded')}>
-                    <Icon
-                        icon="done"
-                        size={this.props.size} />
-                    已上传
-                    <Link
-                        size={this.props.size}
-                        href={this.getValue()}
-                        variants={['button']}
-                        target="_blank">
-                        查看
-                    </Link>
-                    <Button
-                        size={this.props.size}
-                        type="button"
-                        onClick={this.onClearClick} >
-                        重选
-                    </Button>
-                </div>
-            );
-        }
-
-        return (
-            <Button
-                type="button"
-                variants={['raised']}
-                onClick={this.onSelect}>
-                <Icon icon="file-upload" />
-                点击上传
-            </Button>
-        );
-    }
+    },
 
     onSelect() {
         this.refs.file.click();
-    }
+    },
 
     onFileChange(e) {
 
@@ -134,36 +45,33 @@ class Uploader extends InputComponent {
                     this.clearFile();
                 }
             );
-    }
+    },
 
     onClearClick() {
         this.clearFile();
-    }
+    },
 
     setUploading() {
         this.setState({
             isUploading: true
         });
-    }
+    },
 
-    setFile(rawValue) {
+    setFile(value) {
 
         this.setState({
-            rawValue: rawValue,
+            value,
             isUploaded: true,
             isUploading: false
+        }, () => {
+            this.props.onChange({
+                type: 'change',
+                target: this,
+                value: value
+            });
         });
 
-        var e = {
-            type: 'change',
-            target: this,
-            rawValue,
-            value: this.stringifyValue(rawValue)
-        };
-
-        super.onChange(e);
-
-    }
+    },
 
     clearFile() {
 
@@ -171,25 +79,101 @@ class Uploader extends InputComponent {
             rawValue: '',
             isUploaded: false,
             isUploading: false
+        }, () => {
+            this.props.onChange({
+                type: 'change',
+                target: this,
+                value: ''
+            });
         });
 
-        var e = {
-            type: 'change',
-            target: this,
-            rawValue: '',
-            value: ''
-        };
+    },
 
-        super.onChange(e);
+    renderUploadFile() {
+
+        var {isUploading, isUploaded} = this.state;
+
+        return isUploading || isUploaded
+            ? null
+            : (
+                <input
+                    ref="file"
+                    type="file"
+                    className={cx().part('file').build()}
+                    onChange={this.onFileChange}
+                    accept={this.props.accept} />
+            );
+
+    },
+
+    renderUploadButton() {
+
+        const {isUploading, isUploaded, value} = this.state;
+        const {size} = this.props;
+
+        if (isUploading) {
+            return (
+                <Progress
+                    size={size}
+                    mode="indeterminate"
+                    shape="circle" />
+            );
+        }
+
+        if (isUploaded) {
+
+
+            return (
+                <div className={cx().part('uploaded').build()}>
+                    <Icon icon="done" size={size} /> 已上传
+                    <Link
+                        size={size}
+                        href={value}
+                        variants={['button']}
+                        target="_blank">
+                        查看
+                    </Link>
+                    <Button
+                        size={size}
+                        type="button"
+                        onClick={this.onClearClick} >
+                        重选
+                    </Button>
+                </div>
+            );
+        }
+
+        return (
+            <Button
+                type="button"
+                variants={['raised']}
+                onClick={this.onSelect}>
+                <Icon icon="file-upload" />
+                点击上传
+            </Button>
+        );
+    },
+
+    render() {
+
+        const props = this.props;
+        const {value} = props;
+
+        return (
+            <div className={cx(props).build()}>
+                <input name={props.name} type="hidden" value={value} />
+                {this.renderUploadFile()}
+                {this.renderUploadButton()}
+            </div>
+        );
 
     }
 
-}
+});
 
 var PropTypes = React.PropTypes;
 
 Uploader.propTypes = {
-    ...InputComponent.propTypes,
     multiple: PropTypes.bool,
     accept: PropTypes.string,
     files: PropTypes.array,
@@ -197,8 +181,7 @@ Uploader.propTypes = {
 };
 
 Uploader.defaultProps = {
-    ...InputComponent.defaultProps,
     validateEvents: ['change']
 };
 
-module.exports = Uploader;
+module.exports = require('./createInputComponent').create(Uploader);

@@ -6,11 +6,10 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-const createInputComponent = require('./createInputComponent');
 const FloatingLabel = require('./textbox/FloatLabel');
 const TextBoxInput = require('./textbox/Input');
 
-const cxBuilder = require('./common/util/createClassNameBuilder')('Textbox');
+const cx = require('./common/util/cxBuilder').create('TextBox');
 
 let TextBox = React.createClass({
 
@@ -31,7 +30,7 @@ let TextBox = React.createClass({
 
         var {
             onFocus,
-            willValidate,
+            // willValidate,
             validate,
             value
         } = this.props;
@@ -48,9 +47,9 @@ let TextBox = React.createClass({
             isFloating: true
         });
 
-        if (willValidate('focus')) {
-            validate(value);
-        }
+        // if (willValidate('focus')) {
+        //     validate(value);
+        // }
 
     },
 
@@ -59,7 +58,7 @@ let TextBox = React.createClass({
         const {
             onBlur,
             value,
-            willValidate,
+            // willValidate,
             validate
         } = this.props;
 
@@ -75,9 +74,9 @@ let TextBox = React.createClass({
             isFocus: false
         });
 
-        if (willValidate('blur')) {
-            validate(value);
-        }
+        // if (willValidate('blur')) {
+        //     validate(value);
+        // }
 
     },
 
@@ -87,7 +86,7 @@ let TextBox = React.createClass({
 
         const {
             onChange,
-            willValidate,
+            // willValidate,
             validate
         } = this.props;
 
@@ -98,9 +97,9 @@ let TextBox = React.createClass({
             rawValue
         });
 
-        if (willValidate('change')) {
-            validate(rawValue);
-        }
+        // if (willValidate('change')) {
+        //     validate(rawValue);
+        // }
 
     },
 
@@ -167,10 +166,8 @@ let TextBox = React.createClass({
         } = this;
 
         const {
-            renderValidateMessage,
             floatingLabel,
             className,
-            getStateClassName,
             value,
             ...rest
         } = props;
@@ -180,9 +177,8 @@ let TextBox = React.createClass({
             isFloating
         } = this.state;
 
-        const statefulClassName = cxBuilder
-            .resolve(props)
-            .addState({
+        const statefulClassName = cx(props)
+            .addStates({
                 focus: isFocus,
                 floating: isFloating,
                 fulfilled: !!value
@@ -204,7 +200,6 @@ let TextBox = React.createClass({
                             this.input = ReactDOM.findDOMNode(input);
                         }
                     }} />
-                {renderValidateMessage()}
             </div>
         );
 
@@ -237,4 +232,4 @@ TextBox.propTypes = {
 
 };
 
-module.exports = createInputComponent('Textbox', TextBox);
+module.exports = require('./createInputComponent').create(TextBox);

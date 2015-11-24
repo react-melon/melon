@@ -3,26 +3,32 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let React = require('react');
-let WindowResizeAware = require('./dialog/WindowResizeAware');
+const React = require('react');
+const Row = require('./table/Row');
+const {PropTypes, Children} = React;
+const dom = require('./common/util/dom');
+const cx = require('./common/util/cxBuilder').create('Table');
 
-let Row = require('./table/Row');
+const Table = React.createClass({
 
-let {PropTypes, Children} = React;
+    displayName: 'Table',
 
-class Table extends WindowResizeAware {
+    getInitialState() {
 
-    static displayName = 'Table';
-
-    constructor(props) {
-
-        super(props);
-
-        this.state = {
-            columns: this.getColumns(props)
+        return {
+            columns: this.getColumns(this.props)
         };
 
-    }
+    },
+
+    componentDidMount() {
+        this.onWindowResize();
+        dom.on(window, 'resize', this.onWindowResize);
+    },
+
+    componentWillUnmount() {
+        dom.off(window, 'resize', this.onWindowResize);
+    },
 
     componentWillReceiveProps(nextProps) {
 
@@ -30,12 +36,7 @@ class Table extends WindowResizeAware {
             columns: this.getColumns(nextProps)
         });
 
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-        this.onWindowResize();
-    }
+    },
 
     getColumns(props) {
 
@@ -59,7 +60,75 @@ class Table extends WindowResizeAware {
                 []
             );
 
-    }
+    },
+
+    renderHeader(columns, width) {
+        const {props} = this;
+        return (
+            <div className={cx().part('header').build()}>
+                <Row
+                    part='header'
+                    height={props.headerRowHeight}
+                    columns={columns}
+                    tableWidth={width} />
+            </div>
+        );
+    },
+
+    renderBody(columns, width) {
+
+        const {dataSource, noDataContent} = this.props;
+
+        const body = dataSource && dataSource.length
+            ? dataSource.map((rowData, index) => {
+                return this.renderRow(columns, rowData, index, width);
+            })
+            : (
+                <div
+                    className={cx().part('body-empty').build()}
+                    style={{width: width - 2}}>
+                    {noDataContent}
+                </div>
+            );
+
+        return (
+            <div className={cx().part('body').build()}>
+                {body}
+            </div>
+        );
+
+    },
+
+    renderRow(columns, rowData, index, tableWidth) {
+        const {rowHeight, highlight} = this.props;
+        return (
+            <Row
+                height={rowHeight}
+                highlight={highlight}
+                key={index}
+                rowIndex={index}
+                part='body'
+                columns={columns}
+                data={rowData}
+                tableWidth={tableWidth} />
+        );
+    },
+
+    renderFooter(columns) {
+        return null;
+    },
+
+    onWindowResize() {
+
+        const {main} = this;
+
+        if (this.main) {
+            this.setState({
+                width: main.offsetWidth
+            });
+        }
+
+    },
 
     render() {
 
@@ -79,7 +148,11 @@ class Table extends WindowResizeAware {
         }
 
         return (
-            <div className="ui-table" ref="main">
+            <div
+                className={cx(this.props).build()}
+                ref={(main) => {
+                    this.main = main;
+                }}>
                 {this.renderHeader(columns, width)}
                 {this.renderBody(columns, width)}
                 {this.renderFooter(columns, width)}
@@ -88,67 +161,7 @@ class Table extends WindowResizeAware {
 
     }
 
-    renderHeader(columns, width) {
-        var props = this.props;
-        return (
-            <div className="ui-table-header">
-                <Row
-                    part='header'
-                    height={props.headerRowHeight}
-                    columns={columns}
-                    tableWidth={width} />
-            </div>
-        );
-    }
-
-    renderBody(columns, width) {
-
-        let {dataSource, noDataContent} = this.props;
-
-        let body = dataSource && dataSource.length
-            ? dataSource.map((rowData, index) => {
-                return this.renderRow(columns, rowData, index, width);
-            })
-            : (
-                <div
-                    className={this.getPartClassName('body-empty')}
-                    style={{width: width - 2}}>
-                    {noDataContent}
-                </div>
-            );
-
-        return (
-            <div className={this.getPartClassName('body')}>{body}</div>
-        );
-
-    }
-
-    renderRow(columns, rowData, index, tableWidth) {
-        let {rowHeight, highlight} = this.props;
-        return (
-            <Row
-                height={rowHeight}
-                highlight={highlight}
-                key={index}
-                rowIndex={index}
-                part='body'
-                columns={columns}
-                data={rowData}
-                tableWidth={tableWidth} />
-        );
-    }
-
-    renderFooter(columns) {
-        return null;
-    }
-
-    onWindowResize() {
-        this.setState({
-            width: this.refs.main.offsetWidth
-        });
-    }
-
-}
+});
 
 Table.propTypes = {
     rowHeight: PropTypes.number.isRequired,

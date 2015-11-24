@@ -3,19 +3,20 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Icon = require('../Icon');
-var Column = require('./Column');
+const Icon = require('../Icon');
+const Column = require('./Column');
 
-class TableSelectorColumn extends Column {
+const TableSelectorColumn = React.createClass({
 
-    static displayName = 'TableSelectorColumn';
+    displayName: 'TableSelectorColumn',
 
     render() {
         return null;
     }
-}
+
+});
 
 TableSelectorColumn.icons = {
     radio: {
@@ -69,9 +70,12 @@ TableSelectorColumn.onCellClick = function (props) {
 };
 
 
-var PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 TableSelectorColumn.propTypes = {
+
+    ...Column.propTypes,
+
     isSelected: PropTypes.func.isRequired,
     isAllSelected: PropTypes.func.isRequired,
     onSelect: PropTypes.func,
@@ -83,6 +87,7 @@ TableSelectorColumn.propTypes = {
  * 最关键的东西在这里
  */
 TableSelectorColumn.defaultProps = {
+    ...Column.defaultProps,
     width: 66,
     cellRenderer: TableSelectorColumn.cellRenderer,
     headerRenderer: TableSelectorColumn.headerRenderer,
