@@ -4,28 +4,25 @@
  */
 
 const React = require('react');
-
-const createComponent = require('../createComponent');
-const cx = require('../common/util/classname');
+const cx = require('../common/util/cxBuilder').create('TextBoxFloatingLabel');
 
 function TextBoxFloatingLabel(props) {
 
     const {
-        className,
         floating,
         focused,
-        getStateClassName,
         label
     } = props;
 
+    const className = cx(props)
+        .addStates({
+            focus: focused,
+            floating
+        })
+        .build();
+
     return (
-        <label className={cx.createClassName(
-            className,
-            getStateClassName({
-                focus: focused,
-                floating
-            })
-        )}>
+        <label className={className}>
             {label}
         </label>
     );
@@ -40,4 +37,4 @@ TextBoxFloatingLabel.propTypes = {
     floating: PropTypes.bool.isRequired
 };
 
-module.exports = createComponent('TextboxFloatingLabel', TextBoxFloatingLabel);
+module.exports = TextBoxFloatingLabel;

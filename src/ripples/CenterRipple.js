@@ -19,20 +19,22 @@ const CenterRipple = React.createClass({
 
     getInitialState() {
 
-        this.state = {
+        return {
             now: 't' + 0
         };
 
     },
 
-    defaultProps: {
-        opacity: 0.5,
-        scale: 2
+    getDefaultProps() {
+        return {
+            opacity: 0.5,
+            scale: 2
+        };
     },
 
     propTypes: {
-        opacity: PropTypes.number,
-        scale: PropTypes.number,
+        opacity: PropTypes.number.isRequired,
+        scale: PropTypes.number.isRequired,
         flag: PropTypes.bool
     },
 
@@ -68,7 +70,7 @@ const CenterRipple = React.createClass({
         };
 
         const className = cx(this.props).build();
-        const circleClassName = cx().part('circle');
+        const circleClassName = cx().part('circle').build();
 
         return (
             <TransitionMotion

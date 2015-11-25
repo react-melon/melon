@@ -3,25 +3,21 @@
  * @author leon(ludafa@outlook.com)
  */
 
-let React = require('react');
-let Component = require('../Component');
-let {Motion, spring} = require('react-motion');
-let domUtil = require('../common/util/dom');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('SeparatePopup');
+const {Motion, spring} = require('react-motion');
+const domUtil = require('../common/util/dom');
 
-class SelectSeparatePopup extends Component {
+const SelectSeparatePopup = React.createClass({
 
-    static displayName = 'SelectSeparatePopup';
+    displayName: 'SelectSeparatePopup',
 
-    constructor(props) {
-
-        super(props);
-
-        this.onClick = this.onClick.bind(this);
+    getInitialState() {
 
         // 做一个可以随时释放的 debounce 啦
         this.onWindowResize = (() => {
 
-            let handler = this.onWindowResize.bind(this);
+            let handler = this.onWindowResize;
 
             return () => {
                 clearTimeout(this.windowResizeTimer);
@@ -32,8 +28,7 @@ class SelectSeparatePopup extends Component {
 
         this.id = Date.now();
 
-        this.state = {
-            ...this.state,
+        return {
             styles: {
                 top: 0,
                 left: -5000,
@@ -43,11 +38,11 @@ class SelectSeparatePopup extends Component {
             }
         };
 
-    }
+    },
 
     componentDidMount() {
         domUtil.on(document.body, 'click', this.onClick);
-    }
+    },
 
     componentWillReceiveProps(nextProps) {
 
@@ -60,55 +55,12 @@ class SelectSeparatePopup extends Component {
             styles: this.getStyle(open)
         });
 
-    }
+    },
 
     componentWillUnmount() {
         domUtil.off(window, 'resize', this.onWindowResize);
         domUtil.off(document.body, 'click', this.onClick);
-    }
-
-    render() {
-
-        let {children} = this.props;
-        let {styles} = this.state;
-
-        let className = this.getPartClassName('content');
-
-        let {height, opacity} = styles;
-
-        styles = {
-            ...styles,
-            height: spring(height, [120, 15]),
-            opacity: spring(opacity, [120, 15])
-        };
-
-        return (
-            <Motion
-                style={styles}>
-                {(style) => {
-
-                    style = {
-                        ...style,
-                        visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
-                    };
-
-                    return (
-                        <div
-                            ref={(main) => {
-                                this.main = main;
-                            }}
-                            className={this.getClassName()}
-                            style={style}>
-                            <div className={className} >
-                                {children}
-                            </div>
-                        </div>
-                    );
-                }}
-            </Motion>
-        );
-
-    }
+    },
 
     getStyle(open) {
 
@@ -185,7 +137,7 @@ class SelectSeparatePopup extends Component {
             width: Math.max(targetPosition.width, popupPosition.width)
         };
 
-    }
+    },
 
     onClick(e) {
 
@@ -197,21 +149,60 @@ class SelectSeparatePopup extends Component {
             onHide && onHide();
         }
 
-    }
+    },
 
     onWindowResize() {
         this.setState({
             ...this.state,
             styles: this.getStyle(true)
         });
+    },
+
+    render() {
+
+        const {children} = this.props;
+
+        const className = cx(this.props).build();
+        const contentClassName = cx().part('content').build();
+
+        const {styles} = this.state;
+        const {height, opacity} = styles;
+
+        return (
+            <Motion
+                style={{
+                    ...styles,
+                    height: spring(height, [120, 15]),
+                    opacity: spring(opacity, [120, 15])
+                }}>
+                {(style) => {
+
+                    return (
+                        <div
+                            className={className}
+                            style={{
+                                ...style,
+                                visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
+                            }}
+                            ref={(main) => {
+                                this.main = main;
+                            }}>
+                            <div className={contentClassName} >
+                                {children}
+                            </div>
+                        </div>
+                    );
+                }}
+            </Motion>
+        );
+
     }
 
-}
+});
 
-let {PropTypes} = React;
+const {PropTypes} = React;
 
 SelectSeparatePopup.propTypes = {
-    ...Component.propTypes,
     target: PropTypes.object.isRequired,
     onHide: PropTypes.func.isRequired
 };

@@ -34,24 +34,6 @@
         vertical-align middle
         margin-right: -@width
 
-    &separatepopup
-        position: absolute
-        overflow: hidden
-        margin-top: 1px
-        top: 0
-        left: 0
-        text-align: left
-        background-color: $-melon-colors.white
-        box-shadow: melon-get-z-depth('2')
-        border-radius: 2px
-
-        // 为了让不同的select之间不相互干扰
-        z-index: $-melon-z-index.select-popup
-
-        &-content
-            padding: 1em 0
-
-
     &-group
 
         &-title
@@ -86,3 +68,20 @@
 
     &.state-invalid
         border-bottom-color: $-melon-colors.red500
+
+.{$-melon-class-prefix}-separate-popup
+        position: absolute
+        overflow: hidden
+        margin-top: 1px
+        top: 0
+        left: 0
+        text-align: left
+        background-color: $-melon-colors.white
+        box-shadow: melon-get-z-depth('2')
+        border-radius: 2px
+
+        // 为了让不同的select之间不相互干扰
+        z-index: $-melon-z-index.select-popup
+
+        &-content
+            padding: 1em 0

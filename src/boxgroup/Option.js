@@ -3,50 +3,47 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var cx = require('../common/util/classname');
-var Icon = require('../Icon');
-var Component = require('../Component');
-var CenterRipple = require('../ripples/CenterRipple');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('BoxGroupOption');
+const Icon = require('../Icon');
+const CenterRipple = require('../ripples/CenterRipple');
 
-class BoxGroupOption extends Component {
+const BoxGroupOption = React.createClass({
 
-    static displayName = 'BoxGroupOption';
-
-    constructor(props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-    }
+    displayName: 'BoxGroupOption',
 
     onClick() {
         this.refs.ripple && this.refs.ripple.animate();
-    }
+    },
+
+    getIcon(boxModel, isChecked) {
+        var icons = BoxGroupOption.Icons[boxModel];
+        return icons[isChecked ? 'checked' : 'unchecked'];
+    },
 
     render() {
 
-        var props = this.props;
-        var boxModel = props.boxModel;
+        const props = this.props;
 
-        var isChecked = props.checked;
-        var disabled = props.disabled;
+        const {
+            boxModel,
+            checked,
+            disabled
+        } = props;
 
-        var className = cx.create(
-            this.getClassName(),
-            {
-                'state-checked': isChecked
-            }
-        );
+
+        const className = cx(props).addStates({checked}).build();
 
         return (
             <label className={className} onClick={disabled ? null : this.onClick}>
                 <input
                     disabled={disabled}
-                    checked={isChecked}
+                    checked={checked}
                     type={props.boxModel}
                     value={props.value}
                     name={props.name}
                     onChange={props.onChange} />
-                <Icon icon={this.getIcon(boxModel, isChecked)} />
+                <Icon icon={this.getIcon(boxModel, checked)} />
                 {props.label}
                 {disabled ? null : <CenterRipple ref="ripple" />}
             </label>
@@ -54,14 +51,9 @@ class BoxGroupOption extends Component {
 
     }
 
-    getIcon(boxModel, isChecked) {
-        var icons = BoxGroupOption.Icons[boxModel];
-        return icons[isChecked ? 'checked' : 'unchecked'];
-    }
+});
 
-}
-
-var PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 BoxGroupOption.propTypes = {
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,

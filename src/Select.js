@@ -5,38 +5,27 @@
 
 var React = require('react');
 var ReactDOM = require('react-dom');
-var cx = require('./common/util/classname');
+var cx = require('./common/util/cxBuilder').create('Select');
 var Icon = require('./Icon');
 var SeparatePopup = require('./select/SeparatePopup');
 
-var InputComponent = require('./InputComponent');
+let Select = React.createClass({
 
-class Select extends InputComponent {
+    displayName: 'Select',
 
-    static displayName = 'Select';
+    getInitialState() {
 
-    constructor(props) {
-
-        super(props);
-
-        this.state = {
-            ...this.state,
-            open: props.open
+        return {
+            open: this.props.open
         };
 
-        this.onClick = this.onClick.bind(this);
-        this.onClickOption = this.onClickOption.bind(this);
-        this.onPopupHide = this.onPopupHide.bind(this);
-
-    }
+    },
 
     componentDidMount() {
 
-        super.componentDidMount();
-
         let container = this.container = document.createElement('div');
 
-        container.className = this.getPartClassName('popup');
+        container.className = cx().part('popup').build();
 
         document.body.appendChild(container);
 
@@ -47,18 +36,15 @@ class Select extends InputComponent {
                 onHide={this.onPopupHide}>
                 {React.Children.map(
                     this.props.children,
-                    this.renderItem,
-                    this
+                    this.renderItem
                 )}
             </SeparatePopup>,
             container
         );
 
-    }
+    },
 
     componentWillUnmount() {
-
-        super.componentWillUnmount();
 
         let {container} = this;
 
@@ -68,7 +54,7 @@ class Select extends InputComponent {
             this.container = container = null;
         }
 
-    }
+    },
 
     showOptions() {
 
@@ -90,7 +76,7 @@ class Select extends InputComponent {
             );
         });
 
-    }
+    },
 
     hideOptions() {
 
@@ -112,22 +98,7 @@ class Select extends InputComponent {
             );
         });
 
-        super.onBlur({type: 'blur', target: this});
-
-    }
-
-    render() {
-        return (
-            <div
-                onClick={this.onClick}
-                className={this.getClassName()}>
-                {this.renderLabel()}
-                {this.renderHiddenInput()}
-                {this.renderIcon()}
-                {this.renderValidateMessage()}
-            </div>
-        );
-    }
+    },
 
     onClick() {
 
@@ -138,7 +109,7 @@ class Select extends InputComponent {
             this.showOptions();
         }
 
-    }
+    },
 
     onClickOption(e) {
 
@@ -153,47 +124,17 @@ class Select extends InputComponent {
             return;
         }
 
-        // 取值
-        var rawValue = target.getAttribute('data-value');
-
-        // 值未发生变化，收起
-        if (rawValue === this.state.rawValue) {
-            return;
-        }
-
-        // 生成事件
-        e = {
+        this.props.onChange({
             type: 'change',
             target: this,
-            value: this.stringifyValue(rawValue),
-            rawValue
-        };
-
-        super.onChange(e);
-
-        // 被控制的状态，交给控制者处理
-        if (this.isControlled()) {
-            this.props.onChange(e);
-            return;
-        }
-
-        // 展开并更新值
-        this.setState({
-            rawValue
-        }, function () {
-
-            var onChange = this.props.onChange;
-
-            if (onChange) {
-                onChange(e);
-            }
-
+            value: target.getAttribute('data-value')
         });
-    }
+
+    },
 
     onPopupHide(e) {
         this.hideOptions();
-    }
+    },
 
     renderItem(child) {
 
@@ -211,78 +152,80 @@ class Select extends InputComponent {
 
         return null;
 
-    }
+    },
 
     renderOptGroup(group) {
 
-        var props = group.props;
+        const {
+            disabled,
+            children,
+            label
+        } = group.props;
 
-        var disabled = props.disabled;
-
-        var className = cx.create(
-            this.getPartClassName('group'),
-            {
-                disabled: disabled
-            }
-        );
+        var className = cx().part('group').addStates({disabled}).build();
 
         return (
             <div className={className}>
-                <h4 className={this.getPartClassName('group-title')}>{props.label}</h4>
-                <div className={this.getPartClassName('group-list')}>
+                <h4 className={cx().part('group-title').build()}>{label}</h4>
+                <div className={cx().part('group-list').build()}>
                     {React.Children.map(
-                        props.children,
-                        function (child, index) {
+                        children,
+                        (child, index) => {
                             return this.renderOption(child, disabled);
-                        },
-                        this
+                        }
                     )}
                 </div>
             </div>
         );
 
-    }
+    },
 
     renderOption(option, isGroupDisabled) {
 
-        var props = option.props;
-        var value = props.value;
+        const {
+            children,
+            label,
+            disabled,
+            value
+        } = option.props;
 
-        var disabled = isGroupDisabled || props.disabled;
+        const optionDisabled = isGroupDisabled || disabled;
 
-        var clazz = cx.create(
-            this.getPartClassName('option'),
-            this.getStateClasses({
-                selected: this.state.rawValue === value,
-                disabled: disabled
+        const className = cx()
+            .part('option')
+            .addStates({
+                selected: this.props.value === value,
+                disabled: optionDisabled
             })
-        );
+            .build();
 
         return (
-            <div className={clazz}
+            <div className={className}
                 key={value}
                 data-value={value}
                 data-role="option"
-                data-disabled={disabled}
+                data-disabled={optionDisabled}
                 title={name}
                 onClick={this.onClickOption}>
-                {props.label || props.children}
+                {label || children}
             </div>
         );
 
-    }
+    },
 
     renderHiddenInput() {
-        var name = this.props.name;
+
+        const {name, value} = this.props;
+
         return name
             ? (
                 <input
                     name={name}
                     type="hidden"
-                    value={this.state.rawValue} />
+                    value={value} />
             )
             : null;
-    }
+    },
 
     /**
      * 渲染label部件
@@ -292,21 +235,25 @@ class Select extends InputComponent {
      */
     renderLabel() {
 
-        var props = this.props;
+        const {value, children, placeholder} = this.props;
 
-        var option = this.findOption(this.getRawValue(), props.children);
+        const option = this.findOption(value, children);
 
-        var label = option
+        const label = option
             ? (option.props.label || option.props.children)
             : (
-                <span className="ui-select-label-placeholder">
-                    {props.placeholder}
+                <span className={cx().part('label-placeholder').build()}>
+                    {placeholder}
                 </span>
             );
 
-        return <label className="ui-select-label">{label}</label>;
+        return (
+            <label className={cx().part('label').build()}>
+                {label}
+            </label>
+        );
 
-    }
+    },
 
     findOption(value, children) {
 
@@ -331,25 +278,36 @@ class Select extends InputComponent {
         }
 
         return null;
-    }
+    },
 
     renderIcon() {
         return <Icon icon='expand-more' />;
-    }
+    },
 
     isOpen() {
         return this.state.open;
+    },
+
+    render() {
+        return (
+            <div
+                onClick={this.onClick}
+                className={cx(this.props).build()}>
+                {this.renderLabel()}
+                {this.renderHiddenInput()}
+                {this.renderIcon()}
+            </div>
+        );
     }
 
-}
+});
 
 Select.defaultProps = {
-    ...InputComponent.defaultProps,
     validateEvents: ['change'],
     placeholder: '请选择'
 };
 
-var PropTypes = React.PropTypes;
+const {PropTypes} = React;
 
 Select.propTypes = {
     onChange: PropTypes.func,
@@ -362,6 +320,8 @@ Select.propTypes = {
     placeholder: PropTypes.string,
     children: PropTypes.node.isRequired
 };
+
+Select = require('./createInputComponent').create(Select);
 
 Select.createOptions = function (dataSource) {
 
