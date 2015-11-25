@@ -20,9 +20,9 @@ var View = React.createClass({
         return {
             name: 'ludafa',
             email: 'ludafa@outlook.com',
-            sex: 'woman',
-            fruit: ['Mango'],
-            fruits: ['Apple'],
+            sex: '',
+            fruit: [],
+            fruits: [],
             date: '2015-08-11'
         };
     },
@@ -48,8 +48,10 @@ var View = React.createClass({
                                 variants={['fluid']}
                                 name="name"
                                 floatingLabel="姓名"
-                                required
-                                defaultValue={this.state.name} />
+                                rules={{
+                                    required: true
+                                }}
+                                value={this.state.name} />
                         </div>
                     </div>
                     <div className="melon-row">
@@ -58,6 +60,10 @@ var View = React.createClass({
                                 variants={['fluid']}
                                 name="email"
                                 placeholder="邮箱"
+                                rules={{
+                                    pattern: '',
+                                    required: true
+                                }}
                                 defaultValue={this.state.email} />
                         </div>
                     </div>
@@ -67,7 +73,7 @@ var View = React.createClass({
                             name="sex"
                             placeholder="性别"
                             defaultValue={this.state.sex}
-                            required>
+                            rules={{required: true}}>
                             <option value="man">男</option>
                             <option value="woman">女</option>
                         </Select>
@@ -77,15 +83,16 @@ var View = React.createClass({
                             className="melon-column melon-column-6"
                             name="avater"
                             upload={this.upload}
-                            required />
+                            rules={{required: true}} />
                     </div>
                     <div className="melon-row">
                         <div className="melon-column melon-column-6">
-                            <Title level={5}>Radio / 单选框</Title>
+                            <Title level={5}>Radio / 单选框 / 竖向（默认）</Title>
                             <BoxGroup
                                 boxModel="radio"
                                 name="boxgroup2"
-                                defaultRawValue={this.state.fruit}>
+                                value={this.state.fruit}
+                                rules={{required: true}}>
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
                                 <option value="Mango" label="Mango" />
@@ -93,12 +100,12 @@ var View = React.createClass({
                             </BoxGroup>
                         </div>
                         <div className="melon-column melon-column-6">
-                            <Title level={5}>Radio / 单选框</Title>
+                            <Title level={5}>Radio / 单选框 / 横向</Title>
                             <BoxGroup
                                 boxModel="radio"
                                 name="boxgroup2"
                                 variants={['horizontal']}
-                                required={true}>
+                                rules={{required: true}}>
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
                                 <option value="Mango" label="Mango" />
@@ -112,10 +119,12 @@ var View = React.createClass({
                             <BoxGroup
                                 boxModel="checkbox"
                                 name="fruit"
-                                defaultRawValue={this.state.fruits}
+                                value={this.state.fruits}
                                 onInvalid={(e) => {console.log(e)}}
                                 onValid={(e) => {console.log(e)}}
-                                required>
+                                rules={{
+                                    required: true
+                                }}>
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
                                 <option value="Mango" label="Mango" disabled />
@@ -128,10 +137,12 @@ var View = React.createClass({
                                 boxModel="checkbox"
                                 name="fruit"
                                 variants={['horizontal']}
-                                defaultRawValue={this.state.fruits}
+                                value={this.state.fruits}
                                 onInvalid={(e) => {console.log(e)}}
                                 onValid={(e) => {console.log(e)}}
-                                required>
+                                rules={{
+                                    required: true
+                                }}>
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
                                 <option value="Mango" label="Mango" disabled />
@@ -144,7 +155,10 @@ var View = React.createClass({
                             <Title level={5}>Calendar / 普通日历</Title>
                             <Calendar
                                 name="date"
-                                defaultValue={this.state.date}
+                                value={this.state.date}
+                                rules={{
+                                    required: true
+                                }}
                                 begin="2015-08-01"
                                 end="2016-09-30" />
                         </div>
@@ -158,9 +172,10 @@ var View = React.createClass({
                         <Toggle
                             className="melon-column"
                             name="music"
-                            value="music"
-                            required
-                            requiredErrorMessage="请同意协议" />
+                            rules={{
+                                required: true,
+                                requiredErrorMessage: '请同意协议'
+                            }} />
                         <div className="melon-column" style={{lineHeight: '20px'}}>同意相关协议</div>
                     </div>
                     <div className="melon-row">
@@ -178,8 +193,7 @@ var View = React.createClass({
     },
 
     onFieldChange(name, value) {
-        this.setState({[name]: value})
-        console.log(name, value);
+        this.setState({[name]: value});
     },
 
     upload(files) {
@@ -204,9 +218,9 @@ var View = React.createClass({
     },
 
     save(e) {
-        var form = e.target;
+        const {data} = e;
         e.preventDefault();
-        console.log(form.getData());
+        console.log(data);
     }
 
 });

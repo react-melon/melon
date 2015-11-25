@@ -3,11 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var cx = require('./common/util/cxBuilder').create('Select');
-var Icon = require('./Icon');
-var SeparatePopup = require('./select/SeparatePopup');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const cx = require('./common/util/cxBuilder').create('Select');
+const Icon = require('./Icon');
+const SeparatePopup = require('./select/SeparatePopup');
+const Validity = require('./Validity');
 
 let Select = React.createClass({
 
@@ -289,6 +290,9 @@ let Select = React.createClass({
     },
 
     render() {
+
+        const {validity} = this.props;
+
         return (
             <div
                 onClick={this.onClick}
@@ -296,8 +300,10 @@ let Select = React.createClass({
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
+                <Validity validity={validity} />
             </div>
         );
+
     }
 
 });

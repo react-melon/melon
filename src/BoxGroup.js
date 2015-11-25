@@ -7,6 +7,7 @@
 const React = require('react');
 const Option = require('./boxgroup/Option');
 const cx = require('./common/util/cxBuilder').create('BoxGroup');
+const Validity = require('./Validity');
 
 let BoxGroup = React.createClass({
 
@@ -113,11 +114,13 @@ let BoxGroup = React.createClass({
 
     render() {
 
-        var props = this.props;
+        const {props} = this;
+        const {validity} = props;
 
         return (
             <div className={cx(props).build()}>
                 {React.Children.map(props.children, this.renderOption)}
+                <Validity validity={validity} />
             </div>
         );
 

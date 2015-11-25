@@ -7,6 +7,7 @@
 const React = require('react');
 const cx = require('./common/util/cxBuilder').create('Toggle');
 const CenterRipple = require('./ripples/CenterRipple');
+const Validity = require('./Validity');
 
 const Toggle = React.createClass({
 
@@ -59,7 +60,8 @@ const Toggle = React.createClass({
         const {
             name,
             value,
-            trueValue
+            trueValue,
+            validity
         } = props;
 
         const checked = value === trueValue;
@@ -73,6 +75,7 @@ const Toggle = React.createClass({
                     onChange={onChange}
                     checked={checked} />
                 {this.renderBar()}
+                <Validity validity={validity} />
             </label>
         );
 
@@ -82,8 +85,7 @@ const Toggle = React.createClass({
 
 Toggle.defaultProps = {
     trueValue: 'on',
-    falseValue: '',
-    validateEvents: ['change']
+    falseValue: ''
 };
 
 const {PropTypes} = React;

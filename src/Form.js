@@ -4,7 +4,7 @@
  */
 
 const React = require('react');
-const validator = require('./LiteValiditor');
+const validator = require('./Validator');
 
 const {PropTypes} = React;
 

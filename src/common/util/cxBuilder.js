@@ -49,11 +49,16 @@ function resolveVariants(props) {
 }
 
 function resolveStates(props) {
-    const {states, hidden, disabled} = props;
+    const {states, hidden, disabled, validity} = props;
+
+    const isValid = validity ? validity.isValid() : null;
+
     return {
         ...states,
         hidden,
-        disabled
+        disabled,
+        invalid: isValid === false,
+        valid: isValid === true
     };
 }
 

@@ -9,6 +9,7 @@ const Icon = require('./Icon');
 const Progress = require('./Progress');
 const Link = require('./Link');
 const cx = require('./common/util/cxBuilder').create('Uploader');
+const Validity = require('./Validity');
 
 const Uploader = React.createClass({
 
@@ -157,13 +158,14 @@ const Uploader = React.createClass({
     render() {
 
         const props = this.props;
-        const {value} = props;
+        const {value, validity} = props;
 
         return (
             <div className={cx(props).build()}>
                 <input name={props.name} type="hidden" value={value} />
                 {this.renderUploadFile()}
                 {this.renderUploadButton()}
+                <Validity validity={validity} />
             </div>
         );
 

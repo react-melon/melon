@@ -5,36 +5,44 @@
 
 const React = require('react');
 
-const cxBuilder = require('./common/util/cxBuilder').create('Validity');
+const cx = require('./common/util/cxBuilder').create('Validity');
 
-function Validity(props) {
+const Validity = React.createClass({
 
-    const {
-        isValid,
-        message
-    } = props;
+    displayName: 'Validity',
 
-    const statefulClassName = cxBuilder
-        .resolve(props)
-        .addState({
-            valid: isValid,
-            invalid: !isValid
-        })
-        .build();
+    render() {
+        const {
+            validity
+        } = this.props;
 
-    return (
-        <div className={statefulClassName}>
-            {message}
-        </div>
-    );
+        if (!validity) {
+            return null;
+        }
 
-}
+        const isValid = validity.isValid();
+        const message = validity.getMessage();
+
+        const statefulClassName = cx(this.props)
+            .addStates({
+                valid: isValid,
+                invalid: !isValid
+            })
+            .build();
+
+        return (
+            <div className={statefulClassName}>
+                {message}
+            </div>
+        );
+    }
+
+});
 
 const {PropTypes} = React;
 
 Validity.propTypes = {
-    isValid: PropTypes.bool.isRequired,
-    message: PropTypes.string
+    validity: PropTypes.instanceOf(require('./validator/Validity'))
 };
 
 module.exports = Validity;

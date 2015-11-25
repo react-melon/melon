@@ -67,11 +67,10 @@ const InputComponent = React.createClass({
             ? `${this.context.pointer}${name}`
             : null;
 
-        const value = this.props.value;
-        const childValue = children.props.value;
+        const {value, defaultValue} = this.props;
 
         return {
-            value: value != null ? value : childValue
+            value: value != null ? value : defaultValue
         };
 
     },
