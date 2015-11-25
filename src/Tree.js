@@ -3,33 +3,35 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var _     = require('underscore');
-var ReactDOM = require('react-dom');
+const React = require('react');
+const _     = require('underscore');
+const ReactDOM = require('react-dom');
+const cx = require('./common/util/cxBuilder').create('Tree');
 
-var Component = require('./Component');
-var TreeNode = require('./tree/TreeNode');
-var MainClickAware = require('./MainClickAware');
+const TreeNode = require('./tree/TreeNode');
 
-class Tree extends Component {
+const Tree = React.createClass({
 
-    static displayName = 'Tree';
+    displayName: 'Tree',
 
-    constructor(props) {
-        super(props);
-        this.onTreeNodeClick = this.onTreeNodeClick.bind(this);
-    }
+    propTypes: {
+        defaultExpandAll: React.PropTypes.bool,
+        datasource: React.PropTypes.oneOfType([
+            React.PropTypes.array,
+            React.PropTypes.object
+        ])
+    },
 
-    getStates(props) {
+    getDefaultProps() {
 
-        var states = {};
-
-        if (props.selected) {
-            states.selected = true;
-        }
-
-        return states;
-    }
+        return {
+            /**
+             * 默认展开树
+             * @type {Boolean}
+             */
+            defaultExpandAll: false
+        };
+    },
 
     onTreeNodeClick(e) {
 
@@ -44,7 +46,7 @@ class Tree extends Component {
         });
 
         target.className += ' state-selected';
-    }
+    },
 
     renderTreeNode(children, level) {
 
@@ -64,7 +66,7 @@ class Tree extends Component {
             }, this.renderTreeNode(child.props.children, level + 1));
 
         }, this);
-    }
+    },
 
     render() {
 
@@ -72,33 +74,15 @@ class Tree extends Component {
         var children = props.children;
 
         return (
-            <ul {...props} className={this.getClassName()}>
+            <ul {...props} className={cx(props).build()}>
                 {this.renderTreeNode(children, 1)}
             </ul>
         );
 
     }
 
-}
+});
 
-Tree.defaultProps = {
-
-    ...MainClickAware.defaultProps,
-
-    /**
-     * 默认展开树
-     * @type {Boolean}
-     */
-    defaultExpandAll: false
-};
-
-Tree.propTypes = {
-    defaultExpandAll: React.PropTypes.bool,
-    datasource: React.PropTypes.oneOfType([
-        React.PropTypes.array,
-        React.PropTypes.object
-    ])
-};
 
 Tree.TreeNode = TreeNode;
 
