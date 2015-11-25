@@ -14,7 +14,7 @@ Validator.prototype.addRule = function (rule) {
     return this;
 };
 
-Validator.prototype.resolveCheckers = function (config) {
+Validator.prototype.resolveCheckers = function (config = {}) {
 
     const {rules} = this;
 
@@ -43,7 +43,7 @@ Validator.prototype.resolveCheckers = function (config) {
 Validator.prototype.validate = function (value, component) {
 
     return this
-        .resolveCheckers(component.props)
+        .resolveCheckers(component.props.rules)
         .reduce(
             (validity, checker) => {
                 const {check} = checker;
@@ -72,19 +72,20 @@ validator.create = () => {
 };
 
 validator.addRule({
-    name: 'min',
+    name: 'required',
     check: (value, component) => {
-        const {min, minErrorMessage} = component.props;
-        const num = +value;
-        if (value && isNaN(num)) {
-            return {
-                isValid: true
-            };
-        }
+
+        const {requiredErrorMessage} = component.props.rules;
+
+        const isValid = value instanceof Array
+            ? value.length
+            : typeof value === 'string' ? value !== '' : value != null;
+
         return {
-            isValid: num >= min,
-            message: minErrorMessage || `不能小于${min}`
+            isValid: isValid,
+            message: requiredErrorMessage || `请填写此字段`
         };
+
     }
 });
 

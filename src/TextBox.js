@@ -8,6 +8,7 @@ const ReactDOM = require('react-dom');
 
 const FloatingLabel = require('./textbox/FloatLabel');
 const TextBoxInput = require('./textbox/Input');
+const Validity = require('./Validity');
 
 const cx = require('./common/util/cxBuilder').create('TextBox');
 
@@ -30,7 +31,6 @@ let TextBox = React.createClass({
 
         var {
             onFocus,
-            // willValidate,
             validate,
             value
         } = this.props;
@@ -47,9 +47,9 @@ let TextBox = React.createClass({
             isFloating: true
         });
 
-        // if (willValidate('focus')) {
-        //     validate(value);
-        // }
+        if (this.needValidate('focus')) {
+            validate(value);
+        }
 
     },
 
@@ -58,7 +58,6 @@ let TextBox = React.createClass({
         const {
             onBlur,
             value,
-            // willValidate,
             validate
         } = this.props;
 
@@ -74,32 +73,30 @@ let TextBox = React.createClass({
             isFocus: false
         });
 
-        // if (willValidate('blur')) {
-        //     validate(value);
-        // }
+        if (this.needValidate('blur')) {
+            validate(value);
+        }
 
     },
 
     onChange(e) {
 
-        var rawValue = e.target.value;
+        var value = e.target.value;
 
         const {
             onChange,
-            // willValidate,
             validate
         } = this.props;
 
         onChange({
             type: 'change',
             target: this,
-            value: rawValue,
-            rawValue
+            value: value
         });
 
-        // if (willValidate('change')) {
-        //     validate(rawValue);
-        // }
+        if (this.needValidate('change')) {
+            validate(value);
+        }
 
     },
 
@@ -140,6 +137,10 @@ let TextBox = React.createClass({
 
     },
 
+    needValidate(eventName) {
+        return this.props.validateEvents.indexOf(eventName) !== -1;
+    },
+
     renderFloatingLabel(floatingLabel, isFloating, isFocus) {
 
         if (!floatingLabel) {
@@ -169,6 +170,7 @@ let TextBox = React.createClass({
             floatingLabel,
             className,
             value,
+            validity,
             ...rest
         } = props;
 
@@ -200,6 +202,7 @@ let TextBox = React.createClass({
                             this.input = ReactDOM.findDOMNode(input);
                         }
                     }} />
+                <Validity validity={validity} />
             </div>
         );
 
@@ -209,7 +212,8 @@ let TextBox = React.createClass({
 
 TextBox.defaultProps = {
     value: '',
-    defaultValue: ''
+    defaultValue: '',
+    validateEvents: ['change', 'blur']
 };
 
 const {PropTypes} = React;

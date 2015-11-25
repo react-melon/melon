@@ -3,15 +3,17 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
+const _ = require('underscore');
 const React = require('react');
+const {PropTypes} = React;
+
 const cx = require('./common/util/cxBuilder').create('Calendar');
 const Icon = require('./Icon');
 const Confirm = require('./dialog/Confirm');
 const Panel = require('./calendar/Panel');
 
 const DateTime = require('./common/util/date');
-const _ = require('underscore');
-const PropTypes = React.PropTypes;
+const Validity = require('./Validity');
 
 const Calendar = React.createClass({
 
@@ -162,6 +164,7 @@ const Calendar = React.createClass({
             size,
             name,
             dateFormat,
+            validity,
             ...others
         } = props;
 
@@ -193,6 +196,7 @@ const Calendar = React.createClass({
                     )}
                     <Icon icon='expand-more' />
                 </label>
+                <Validity validity={validity} />
                 <Confirm
                     open={open}
                     variants={['calendar']}

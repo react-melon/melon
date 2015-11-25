@@ -3,7 +3,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-function ValidityState(isValid, message) {
+function ValidityState({isValid, message}) {
     this.isValid = isValid;
     this.message = message || '';
 }

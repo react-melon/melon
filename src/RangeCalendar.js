@@ -4,15 +4,16 @@
  * @author leon <ludafa@outlook.com>
  */
 
+const _ = require('underscore');
 const React = require('react');
-const cx = require('./common/util/cxBuilder').create('RangeCalendar');
 const Calendar = require('./Calendar');
 const Icon = require('./Icon');
 const Confirm = require('./dialog/Confirm');
 const Panel = require('./calendar/Panel');
+const Validity = require('./Validity');
 
 const DateTime = require('./common/util/date');
-const _ = require('underscore');
+const cx = require('./common/util/cxBuilder').create('RangeCalendar');
 
 const RangeCalendar = React.createClass({
 
@@ -188,6 +189,7 @@ const RangeCalendar = React.createClass({
             name,
             begin,
             end,
+            validity,
             ...others
         } = props;
 
@@ -212,6 +214,7 @@ const RangeCalendar = React.createClass({
                     {`${value[0]} 至 ${value[1]}`}
                     <Icon icon='expand-more' />
                 </label>
+                <Validity validity={validity} />
                 <Confirm
                     open={open}
                     variants={['calendar']}
