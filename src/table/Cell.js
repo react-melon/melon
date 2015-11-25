@@ -3,31 +3,43 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var PropTypes = React.PropTypes;
-var u = require('underscore');
+const React = require('react');
+const cx = require('../common/util/cxBuilder').create('TableCell');
 
-var RENDERER_PROPS = [
-    'cellData',
-    'cellDataKey',
-    'rowData',
-    'rowIndex',
-    'columnData',
-    'columnIndex',
-    'width',
-    'height',
-    'part'
-];
+// const RENDERER_PROPS = [
+//     'cellData',
+//     'cellDataKey',
+//     'rowData',
+//     'rowIndex',
+//     'columnData',
+//     'columnIndex',
+//     'width',
+//     'height',
+//     'part'
+// ];
 
-var Component = require('../Component');
 
-class TableCell extends Component {
+const TableCell = React.createClass({
 
-    static displayName = 'TableCell';
+    displayName: 'TableCell',
 
     shouldComponentUpdate(nextProps) {
         return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
-    }
+    },
+
+    getCellContent() {
+
+        const {props} = this;
+        const {cellRenderer, cellData} = this.props;
+
+        const content = cellRenderer ? cellRenderer(props) : cellData;
+
+        return (
+            <div className={cx().part('content').build()}>
+                {content}
+            </div>
+        );
+    },
 
     render() {
 
@@ -40,10 +52,10 @@ class TableCell extends Component {
         };
 
         return (
-            <div className={this.getClassName()}>
-                <div style={style} className={this.getPartClassName('wrap1')}>
-                    <div className={this.getPartClassName('wrap2')}>
-                        <div className={this.getPartClassName('wrap3')}>
+            <div className={cx(props).build()}>
+                <div className={cx().part('wrap1').build()} style={style}>
+                    <div className={cx().part('wrap2').build()}>
+                        <div className={cx().part('wrap3').build()}>
                             {this.getCellContent()}
                         </div>
                     </div>
@@ -53,19 +65,9 @@ class TableCell extends Component {
 
     }
 
-    getCellContent() {
+});
 
-        var props = this.props;
-        var renderer = props.cellRenderer;
-
-        var content = renderer
-            ? renderer(u.pick(props, RENDERER_PROPS))
-            : props.cellData;
-
-        return <div className={this.getPartClassName('content')}>{content}</div>;
-    }
-
-}
+const {PropTypes} = React;
 
 TableCell.propTypes = {
 

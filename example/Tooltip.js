@@ -35,21 +35,21 @@ var View = React.createClass({
                 </Tooltip>
                 <Title level={5}>按钮组</Title>
                 <div className="ui-buttongroup">
-                    <Button variants={['icon'] } size="xxl">
-                        <Tooltip content="加粗">
+                    <Tooltip content="加粗">
+                        <Button variants={['icon'] } size="xxl">
                             <Icon icon="format-bold" />
-                        </Tooltip>
-                    </Button>
-                    <Button variants={['icon'] } size="xxl">
-                        <Tooltip content="倾斜">
+                        </Button>
+                    </Tooltip>
+                    <Tooltip content="倾斜">
+                        <Button variants={['icon'] } size="xxl">
                             <Icon icon="format-underlined" />
-                        </Tooltip>
-                    </Button>
-                    <Button variants={['icon']} size="xxl">
-                        <Tooltip content="下划线">
+                        </Button>
+                    </Tooltip>
+                    <Tooltip content="下划线">
+                        <Button variants={['icon']} size="xxl">
                             <Icon icon="format-italic" />
-                        </Tooltip>
-                    </Button>
+                        </Button>
+                    </Tooltip>
                 </div>
             </div>
         );

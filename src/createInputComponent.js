@@ -30,7 +30,10 @@ const InputComponent = React.createClass({
 
     getInitialState() {
 
-        const {value, name, children} = this.props;
+        const {
+            name,
+            children
+        } = this.props;
 
         // 这里 validator 有两种来源 #=-= 略多，提供了丰富的可能性，比如一个表单里混合使用两种校验规则
         // 1. 来自 props 这种最高优先，因为是手动指定的
@@ -64,8 +67,11 @@ const InputComponent = React.createClass({
             ? `${this.context.pointer}${name}`
             : null;
 
+        const value = this.props.value;
+        const childValue = children.props.value;
+
         return {
-            value: value != null ? value : children.props.value
+            value: value != null ? value : childValue
         };
 
     },
@@ -140,12 +146,12 @@ const InputComponent = React.createClass({
      */
     componentWillReceiveProps(nextProps) {
 
-        const {props} = this;
-        const {value, customValidity} = nextProps;
+        const {customValidity} = nextProps;
+        const {value} = nextProps;
 
         if (
-            value !== props.value
-            || customValidity !== props.customValidity
+            value !== this.getValue()
+            || customValidity !== this.props.customValidity
         ) {
             this.setState({
                 value: value,
@@ -181,14 +187,18 @@ const InputComponent = React.createClass({
 
     onChange(e) {
 
-        const {value} = e;
-        const {onChange} = this.props;
+        const {
+            onChange
+        } = this.props;
+
 
         // 这种对应着 controlled 组件逻辑
         if (onChange) {
             onChange(e);
             return;
         }
+
+        const {value} = e;
 
         if (value === this.state.value) {
             return;
@@ -295,7 +305,7 @@ exports.create = function (Component) {
 
             return (
                 <InputComponent {...props}>
-                    <Component>{children}</Component>
+                    <Component {...props}>{children}</Component>
                 </InputComponent>
             );
 
