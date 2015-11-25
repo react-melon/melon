@@ -7,6 +7,10 @@
 </head>
 <body>
 <div id="app"></div>
+<!--[if lt IE 9]>
+<script src="../dep/es5-shim/es5-shim.js"></script>
+<script src="../dep/es5-shim/es5-sham.js"></script>
+<![endif]-->
 <script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-6/esl.js"></script>
 <script>
 require.config({
@@ -16,10 +20,12 @@ require.config({
         'react': '../dep/react/react',
         'react-motion': '../dep/react-motion/build/react-motion',
         'react-dom': '../dep/react/react-dom',
-        'underscore': '../dep/underscore/underscore'
+        'underscore': '../dep/underscore/underscore',
+        'es5-shim': '../dep/es5-shim/es5-shim'
     },
     waitSeconds: 5
 });
+
 require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App, config) {
 
     function dispatch() {
@@ -27,17 +33,17 @@ require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App,
         var hash = window.location.hash;
         var name = hash ? hash.slice(2) : 'Button';
 
-        ReactDOM.render(
-            React.createElement(
-                App,
-                {
-                    components: config.components,
-                    component: name,
-                    Component: null
-                }
-            ),
-            document.getElementById('app')
-        );
+        // ReactDOM.render(
+        //     React.createElement(
+        //         App,
+        //         {
+        //             components: config.components,
+        //             component: name,
+        //             Component: null
+        //         }
+        //     ),
+        //     document.getElementById('app')
+        // );
 
         require([name], function (Component) {
             ReactDOM.render(
