@@ -3,23 +3,13 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var cx = require('../common/util/classname');
-var Icon = require('../Icon');
-var Component = require('../Component');
+const React = require('react');
+const Icon = require('../Icon');
+const cx = require('../common/util/cxBuilder').create('RegionSelector');
 
-class RegionSelector extends Component {
+const RegionSelector = React.createClass({
 
-    static displayName = 'RegionSelector';
-
-    constructor(props) {
-
-        super(props);
-
-        this.type = 'region-selector';
-
-        this.onClick = this.onClick.bind(this);
-    }
+    displayName: 'RegionSelector',
 
     onClick(e) {
         let {
@@ -31,7 +21,12 @@ class RegionSelector extends Component {
             value: !checked,
             target: this
         });
-    }
+    },
+
+    getIcon(isChecked) {
+        let icons = RegionSelector.Icons;
+        return icons[isChecked ? 'checked' : 'unchecked'];
+    },
 
     render() {
 
@@ -45,12 +40,7 @@ class RegionSelector extends Component {
             id
         } = this.props;
 
-        var className = cx.create(
-            this.getClassName(),
-            {
-                'state-checked': checked
-            }
-        );
+        let className = cx(this.props).addStates({checked}).build();
 
         return (
             <label className={className} data-region-id={id} onClick={this.onClick}>
@@ -67,18 +57,13 @@ class RegionSelector extends Component {
 
     }
 
-    getIcon(isChecked) {
-        var icons = RegionSelector.Icons;
-        return icons[isChecked ? 'checked' : 'unchecked'];
-    }
-
-}
+});
 
 RegionSelector.defaultProps = {
     hasInput: false
 };
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
 RegionSelector.propTypes = {
     label: PropTypes.string,

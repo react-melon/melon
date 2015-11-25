@@ -43,8 +43,6 @@ const Dialog = React.createClass({
 
         this.originalHTMLBodySize = {};
 
-        this.marginTop = -150;
-
         return {
             open: this.props.open
         };
@@ -53,10 +51,6 @@ const Dialog = React.createClass({
 
     componentDidMount() {
         this.positionDialog();
-        if (this.state.open) {
-            var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-            dialogWindow.style.marginTop = this.marginTop + 'px';
-        }
     },
 
     componentWillUpdate() {
@@ -77,15 +71,16 @@ const Dialog = React.createClass({
     },
 
     positionDialog() {
-        var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-        this.marginTop = -dialogWindow.offsetHeight / 2;
+        let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
+        let marginTop = -dialogWindow.offsetHeight / 2;
 
-        var windowHeight = dom.getClientHeight();
+        let windowHeight = dom.getClientHeight();
 
-        this.marginTop = dialogWindow.offsetHeight > windowHeight
+        marginTop = dialogWindow.offsetHeight > windowHeight
                         ? (-windowHeight / 2 + 16)
-                        : this.marginTop;
+                        : marginTop;
         dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+        dialogWindow.style.marginTop = marginTop + 'px';
     },
 
     bodyScrolling() {
@@ -138,7 +133,7 @@ const Dialog = React.createClass({
 
     render() {
 
-        let {marginTop, props, state} = this;
+        let {props, state} = this;
 
         const {
             children,
@@ -161,7 +156,7 @@ const Dialog = React.createClass({
 
         return (
             <div {...others} className={cx(props).addStates({open}).build()}>
-                <Motion style={{y: spring(open ? marginTop : -150)}}>
+                <Motion style={{y: spring(open ? 0 : -80)}}>
                     {({y}) =>
                         <DialogWindow
                             top={Math.round(y)}
