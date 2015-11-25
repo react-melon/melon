@@ -3,37 +3,27 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var Component = require('./Component');
-var Bar = require('./scrollview/Bar');
+const React = require('react');
+const Bar = require('./scrollview/Bar');
+const cx = require('./common/util/cxBuilder').create('scrollview');
 
-var _ = require('underscore');
+const _ = require('underscore');
 
-var DIRECTIONS = {
+const DIRECTIONS = {
     vertical: 'deltaY',
     horizontal: 'deltaX'
 };
 
-var SIZES = {
+const SIZES = {
     vertical: 'offsetHeight',
     horizontal: 'offsetWidth'
 };
 
-class ScrollView extends Component {
+const ScrollView = React.createClass({
 
-    static displayName = 'ScrollView';
+    displayName: 'ScrollView',
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            position: {
-                vertical: 0,
-                horizontal: 0
-            }
-        };
-
-        this.onWheel = this.onWheel.bind(this);
+    getInitialState() {
 
         this.thumbSize = {
             vertical: 0,
@@ -41,7 +31,15 @@ class ScrollView extends Component {
         };
 
         this.timer = null;
-    }
+
+        return {
+            position: {
+                vertical: 0,
+                horizontal: 0
+            }
+        };
+
+    },
 
     componentDidMount() {
         this.updateContentSize();
@@ -49,19 +47,11 @@ class ScrollView extends Component {
             vertical: 0,
             horizontal: 0
         }});
-    }
+    },
 
     componentDidUpdate() {
         this.updateContentSize();
-    }
-
-    getVariants(props) {
-
-        let variants = super.getVariants(props);
-        variants = variants.concat(this.getDirections());
-
-        return variants;
-    }
+    },
 
     updateContentSize() {
 
@@ -84,7 +74,7 @@ class ScrollView extends Component {
             let top = Math.round(position[key] * contentSize * (1 - mainSize / contentSize));
             content.style[key === 'vertical' ? 'top' : 'left'] = (-top) + 'px';
         }, this);
-    }
+    },
 
     onAction(direction, e) {
         let {
@@ -99,7 +89,7 @@ class ScrollView extends Component {
                 this.setScrollPercent(pos);
                 break;
         }
-    }
+    },
 
     onWheel(e) {
 
@@ -126,7 +116,7 @@ class ScrollView extends Component {
             e.preventDefault();
         }
 
-    }
+    },
 
     setScrollPercent(percent) {
 
@@ -150,7 +140,7 @@ class ScrollView extends Component {
                 target: this
             });
         });
-    }
+    },
 
     getDirections() {
         let {
@@ -158,34 +148,7 @@ class ScrollView extends Component {
         } = this.props;
 
         return direction === 'both' ? Object.keys(DIRECTIONS) : [direction];
-    }
-
-    render() {
-
-        let props = this.props;
-
-        let {
-            children,
-            others
-        } = props;
-
-        let styles = _.pick(props, 'height', 'width');
-
-        return (
-            <div
-                {...others}
-                className={this.getClassName()}
-                style={styles}
-                onWheel={this.onWheel}
-                ref="main">
-                {this.renderScrollBar()}
-                <div ref="content" className={this.getPartClassName('main')}>
-                    {children}
-                </div>
-            </div>
-        );
-
-    }
+    },
 
     renderScrollBar() {
 
@@ -212,11 +175,38 @@ class ScrollView extends Component {
                     direction={dir} />
             );
         }, this);
+    },
+
+    render() {
+
+        let props = this.props;
+
+        let {
+            children,
+            others
+        } = props;
+
+        let styles = _.pick(props, 'height', 'width');
+
+        return (
+            <div
+                {...others}
+                className={cx(props).addVariants(this.getDirections()).build()}
+                style={styles}
+                onWheel={this.onWheel}
+                ref="main">
+                {this.renderScrollBar()}
+                <div ref="content" className={cx().part('main').build()}>
+                    {children}
+                </div>
+            </div>
+        );
+
     }
 
-}
+});
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
 ScrollView.propTypes = {
     direction: PropTypes.oneOf(['vertical', 'horizontal', 'both']),

@@ -1,5 +1,6 @@
 node_modules
 dep
+coverage
 .edpproj
 lib
 npm-debug.log

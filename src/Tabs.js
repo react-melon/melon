@@ -42,16 +42,6 @@ const Tabs = React.createClass({
                 selectedIndex: nextProps.selectedIndex
             });
         }
-
-    },
-
-
-    getTabCount() {
-        return React.Children.count(this.props.children);
-    },
-
-    getSelected(tab, index) {
-        return this.state.selectedIndex === index;
     },
 
     handleTabClick(index, e) {
@@ -60,22 +50,33 @@ const Tabs = React.createClass({
             return;
         }
 
-        var onBeforeChange = this.props.onBeforeChange;
+        // e.preventDefault();
+
+        let {onBeforeChange, onChange} = this.props;
+
+        e.selectedIndex = index;
 
         if (onBeforeChange) {
-            var cancel = onBeforeChange(index, e);
-            if (cancel === false) {
+
+            onBeforeChange(e);
+
+            if (e.isDefaultPrevented()) {
                 return;
             }
         }
 
         this.setState({selectedIndex: index}, function () {
-            this.props.onChange && this.props.onChange({
-                target: this,
-                selectedIndex: index
-            });
+            onChange && onChange(e);
         });
 
+    },
+
+    getTabCount() {
+        return React.Children.count(this.props.children);
+    },
+
+    getSelected(tab, index) {
+        return this.state.selectedIndex === index;
     },
 
     render() {
@@ -107,15 +108,18 @@ const Tabs = React.createClass({
                 );
             }
 
-            return React.cloneElement(tab, {
+            let options = {
                 key: index,
                 selected: selected,
-                disabled: disabled,
                 tabIndex: index,
-                style: {width: percent},
-                onClick: disabled ? null : this.handleTabClick.bind(this, index),
-                className: cx().part('item').build()
-            });
+                style: {width: percent}
+            };
+
+            if (!disabled) {
+                options.onClick = this.handleTabClick.bind(this, index);
+            }
+
+            return React.cloneElement(tab, options);
 
         }, this);
 

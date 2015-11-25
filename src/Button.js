@@ -14,7 +14,6 @@ function Button(props) {
         label,
         children,
         disabled,
-        getVariantClassName,
         ...others
     } = props;
 

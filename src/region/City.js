@@ -3,25 +3,16 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Component = require('../Component');
-var Selector = require('./Selector');
+const cx = require('../common/util/cxBuilder').create('RegionCity');
+const Selector = require('./Selector');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class RegionCity extends Component {
+const RegionCity = React.createClass({
 
-    static displayName = 'RegionCity';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onSelectorChange = this.onSelectorChange.bind(this);
-
-        this.type = 'region-city';
-    }
+    displayName: 'RegionCity',
 
     onSelectorChange(e) {
         var value = e.value;
@@ -37,7 +28,7 @@ class RegionCity extends Component {
         onChange && onChange({
             data: datasource
         });
-    }
+    },
 
     render() {
 
@@ -46,7 +37,7 @@ class RegionCity extends Component {
         } = this.props;
 
         return (
-            <li className={this.getClassName()}>
+            <li className={cx(this.props).build()}>
                 <Selector
                     label={datasource.text}
                     id={datasource.id}
@@ -56,7 +47,7 @@ class RegionCity extends Component {
         );
     }
 
-}
+});
 
 
 RegionCity.propTypes = {

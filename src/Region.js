@@ -1,109 +1,85 @@
 /**
  * @file melon/Region
- * @author leon(ludafa@outlook.com)
+ * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var InputComponent = require('./InputComponent');
-// var Province = require('./region/Province');
-var Selector = require('./region/Selector');
-var Area = require('./region/Area');
+const cx = require('./common/util/cxBuilder').create('Region');
+const Selector = require('./region/Selector');
+const Area = require('./region/Area');
 
-var helper = require('./region/helper');
-var _ = require('underscore');
+const helper = require('./region/helper');
+const _ = require('underscore');
 
-class Region extends InputComponent {
+const Region = React.createClass({
 
-    static displayName = 'Region';
+    displayName: 'Region',
 
-    constructor(props) {
+    getInitialState() {
 
-        super(props);
-
-        this.state = {
-            ...this.state
+        return {
+            datasource: this.props.datasource
         };
-
-        this.onSelectorChange = this.onSelectorChange.bind(this);
-
-    }
+    },
 
     onChange(rawValue) {
-        // 生成事件
-        let e = {
-            type: 'change',
-            target: this,
-            value: this.stringifyValue(rawValue),
-            rawValue: rawValue
-        };
-
-        super.onChange(e);
 
         let onChange = this.props.onChange;
 
-        if (_.isFunction(onChange)) {
-            onChange(e);
-        }
-    }
+        onChange({
+            type: 'change',
+            target: this,
+            value: this.stringifyValue(rawValue)
+        });
+    },
 
     onAreaChange(index, cIndex, e) {
         var data = e.data;
-        var rawValue = this.state.rawValue;
+        var datasource = this.state.datasource;
 
         helper.isAllSelected(data);
-        rawValue[cIndex].children[index] = data;
-        helper.isAllSelected(rawValue[cIndex]);
+        datasource[cIndex].children[index] = data;
+        helper.isAllSelected(datasource[cIndex]);
 
-        this.setState({rawValue}, function () {
-            this.onChange(rawValue);
+        this.setState({datasource}, function () {
+            this.onChange(datasource);
         });
-    }
+    },
 
     onSelectorChange(index, e) {
         var {
             value
         } = e;
 
-        var rawValue = this.state.rawValue;
+        var datasource = this.state.datasource;
 
-        helper[value ? 'selectAll' : 'cancelAll'](rawValue[index]);
+        helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
 
-        this.setState({rawValue}, function () {
-            this.onChange(rawValue);
+        this.setState({datasource}, function () {
+            this.onChange(datasource);
         });
-    }
+    },
 
     parseValue(value) {
         value = value.split(',');
         return _.map(this.props.datasource, helper.parse.bind(this, value));
-    }
+    },
 
-    stringifyValue(rawValue) {
-        return rawValue ? _.reduce(rawValue, this.format, [], this).join(',') : '';
-    }
+    stringifyValue(datasource) {
+        return datasource ? _.reduce(datasource, this.format, [], this).join(',') : '';
+    },
 
     format(result, child, index) {
         if (child.selected) {
             result.push(child.id);
         }
         return _.reduce(child.children, this.format, result, this);
-    }
-
-    render() {
-
-        var datasource = this.state.rawValue;
-
-        return (
-            <div className={this.getClassName()}>
-                {datasource.map(this.renderCountry, this)}
-            </div>
-        );
-    }
+    },
 
     renderCountry(country, index) {
         return (
-            <div className={this.getPartClassName('country')} key={index}>
+            <div className={cx().part('country').build()} key={index}>
                 <h1>
                     <Selector
                         label={country.text}
@@ -115,7 +91,7 @@ class Region extends InputComponent {
                 {this.renderArea(country.children, index)}
             </div>
         );
-    }
+    },
 
     renderArea(area, cIndex) {
         return _.isArray(area) && area.length > 0
@@ -132,18 +108,28 @@ class Region extends InputComponent {
                     }, this)}
                 </ul>
             ) : null;
+    },
+
+    render() {
+
+        var datasource = this.state.datasource;
+
+        return (
+            <div className={cx(this.props).build()}>
+                {datasource.map(this.renderCountry, this)}
+            </div>
+        );
     }
 
-}
+});
 
 Region.defaultProps = {
-    ...InputComponent.defaultProps,
     defaultValue: '',
     datasource: [],
     validateEvents: ['change']
 };
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
 Region.propTypes = {
     onChange: PropTypes.func,
@@ -151,10 +137,9 @@ Region.propTypes = {
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
     name: PropTypes.string,
-    rawValue: PropTypes.string,
     value: PropTypes.string,
     defaultValue: PropTypes.string,
     datasource: PropTypes.arrayOf(PropTypes.object)
 };
 
-module.exports = Region;
+module.exports = require('./createInputComponent').create(Region);

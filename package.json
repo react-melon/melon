@@ -10,18 +10,26 @@
   },
   "devDependencies": {
     "babel": "^5.8.23",
+    "expect": "^1.12.2",
+    "expect-jsx": "^2.0.1",
+    "isparta": "^3.5.3",
+    "jsdom": "^7.0.2",
     "lodash": "^3.10.1",
     "mime": "^1.3.4",
+    "mocha": "^2.2.5",
+    "mocha-jsdom": "^1.0.0",
     "nib": "^1.1.0",
-    "react": "^0.14.0",
+    "react-addons-test-utils": "^0.14.3",
     "react-remarkable": "^1.1.1",
+    "react-tap-event-plugin": "^0.2.1",
     "react-tools": "^0.13.3",
     "remarkable": "^1.6.0",
     "stylus": "^0.52.0",
     "swig": "^1.4.2"
   },
   "scripts": {
-    "test": "npm test",
+    "test": "./node_modules/mocha/bin/mocha test/components --compilers js:babel/register",
+    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover --report html ./node_modules/.bin/_mocha -- test/components",
     "lint": "fecs src",
     "build:amd": "fecs src && sh tool/build-amd.sh"
   },
@@ -30,8 +38,7 @@
     "url": "git+https://github.com/jinzhubaofu/melon.git"
   },
   "peerDependencies": {
-    "react": ">=0.13",
-    "react-tap-event-plugin": ">=0.1.3"
+    "react": ">=0.13"
   },
   "keywords": [
     "react",
@@ -52,11 +59,9 @@
     "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/1-8-2/esl.js",
     "dependencies": {}
   },
-  "devDepedencies": {
-    "babel": "^5.8.23"
-  },
   "dependencies": {
-    "react": "0.14.0",
+    "react": "0.14.3",
+    "react-dom": "^0.14.3",
     "react-motion": "~0.3.1",
     "underscore": "~1.8.3"
   }
