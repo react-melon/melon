@@ -3,44 +3,27 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
+const React = require('react');
 
-var Component = require('../Component');
+const cx = require('../common/util/cxBuilder').create('ScrollviewBar');
 
-var dom = require('../common/util/dom');
-var _ = require('underscore');
+const dom = require('../common/util/dom');
+const _ = require('underscore');
 
-class ScrollViewBar extends Component {
+const ScrollViewBar = React.createClass({
 
-    static displayName = 'ScrollViewBar';
+    displayName: 'ScrollViewBar',
 
-    constructor(props) {
-        super(props);
-        this.type = 'scrollview-bar';
-
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
-        this.onBarMouseDown = this.onBarMouseDown.bind(this);
+    getInitialState() {
 
         this.removeStateShow = _.throttle.call(this, this.removeStateShow, 100);
-    }
 
-    getVariants(props) {
-
-        let variants = super.getVariants(props);
-        variants.push(props.direction);
-
-        return variants;
-    }
+        return {};
+    },
 
     componentDidMount() {
         this.positionThumb();
-    }
-
-    componentDidUpdate() {
-        this.positionThumb();
-    }
+    },
 
     shouldComponentUpdate(nextProps) {
         if (Math.abs(nextProps.position - this.props.position) < 0.0005) {
@@ -49,11 +32,15 @@ class ScrollViewBar extends Component {
         dom.addClass(this.refs.main, 'state-show');
         this.removeStateShow();
         return true;
-    }
+    },
+
+    componentDidUpdate() {
+        this.positionThumb();
+    },
 
     componentWillUnmount() {
         this.clearTimer();
-    }
+    },
 
     positionThumb() {
 
@@ -73,20 +60,20 @@ class ScrollViewBar extends Component {
         this.barSize = main[isVertical ? 'offsetHeight' : 'offsetWidth'] - thumbSize - 4;
         thumb.style[isVertical ? 'height' : 'width'] = thumbSize + 'px';
         thumb.style[axis] = Math.round(position * this.barSize) + 'px';
-    }
+    },
 
     getMousePosition(e, isVertical) {
         if (isVertical) {
             return e.pageY || e.clientY;
         }
         return e.pageX || e.clientX;
-    }
+    },
 
     clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-    }
+    },
 
     removeStateShow() {
         this.clearTimer();
@@ -94,7 +81,7 @@ class ScrollViewBar extends Component {
         this.timer = setTimeout(function () {
             dom.removeClass(main, 'state-show');
         }, 1800);
-    }
+    },
 
     /**
      * 点击滚动轨道触发
@@ -131,7 +118,7 @@ class ScrollViewBar extends Component {
         me.fireAction('change', pos / barSize);
 
         e.preventDefault();
-    }
+    },
 
     onMouseDown(e) {
         let body = document.body;
@@ -147,7 +134,7 @@ class ScrollViewBar extends Component {
         dom.on(body, 'mouseup', this.onMouseUp);
 
         e.preventDefault();
-    }
+    },
 
     onMouseMove(e) {
 
@@ -160,7 +147,7 @@ class ScrollViewBar extends Component {
 
         let pos = Math.min(this.barSize, Math.max(0, this.thumbStart + moveLength));
         this.fireAction('change', pos / this.barSize);
-    }
+    },
 
     onMouseUp(e) {
         let body = document.body;
@@ -168,7 +155,7 @@ class ScrollViewBar extends Component {
         dom.off(body, 'mousemove', this.onMouseMove);
         dom.off(body, 'mouseup', this.onMouseUp);
         this.thumbStart = this.moveStart = 0;
-    }
+    },
 
     fireAction(action, pos) {
         let e = {
@@ -180,7 +167,7 @@ class ScrollViewBar extends Component {
         let onAction = this.props.onAction;
 
         onAction && onAction(e);
-    }
+    },
 
     render() {
 
@@ -188,18 +175,18 @@ class ScrollViewBar extends Component {
             <div
                 {...this.props}
                 ref="main"
-                className={this.getClassName()}
+                className={cx(this.props).addVariants(this.props.direction).build()}
                 onMouseDown={this.onBarMouseDown}>
                 <div
                     ref="thumb"
-                    className={this.getPartClassName('thumb')}
+                    className={cx().part('thumb').build()}
                     onMouseDown={this.onMouseDown} />
             </div>
         );
 
     }
 
-}
+});
 
 var PropTypes = React.PropTypes;
 

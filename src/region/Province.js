@@ -3,40 +3,24 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Component = require('../Component');
-var Selector = require('./Selector');
+const cx = require('../common/util/cxBuilder').create('RegionProvince');
+const Selector = require('./Selector');
 
-var helper = require('./helper');
+const helper = require('./helper');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class RegionProvince extends Component {
+const RegionProvince = React.createClass({
 
-    static displayName = 'RegionProvince';
+    displayName: 'RegionProvince',
 
-    constructor(props) {
-
-        super(props);
-
-        this.onSelectorChange = this.onSelectorChange.bind(this);
-        this.onMouseEnter = this.onMouseEnter.bind(this);
-        this.onMouseLeave = this.onMouseLeave.bind(this);
-
-        this.state = {
+    getInitialState() {
+        return {
             expand: false
         };
-
-        this.type = 'region-province';
-    }
-
-    getStates(props) {
-        var states = super.getStates(props);
-        states.expand = this.state.expand;
-
-        return states;
-    }
+    },
 
     onSelectorChange(e) {
         var value = e.value;
@@ -52,43 +36,15 @@ class RegionProvince extends Component {
         onChange && onChange({
             data: datasource
         });
-    }
+    },
 
     onMouseEnter(e) {
         this.setState({expand: true});
-    }
+    },
 
     onMouseLeave(e) {
         this.setState({expand: false});
-    }
-
-    render() {
-
-        var {
-            datasource,
-            children
-        } = this.props;
-
-        return (
-            <div className={this.getClassName()}
-                onMouseEnter={children ? this.onMouseEnter : null}
-                onMouseLeave={children ? this.onMouseLeave : null}>
-                <Selector
-                    label={datasource.text}
-                    id={datasource.id}
-                    checked={datasource.selected}
-                    onChange={this.onSelectorChange} />
-                {this.renderSelectedInfo()}
-                {children ? (
-                    <div className={this.getPartClassName('popup')}>
-                        <ul>
-                            {children}
-                        </ul>
-                    </div>
-                ) : null}
-            </div>
-        );
-    }
+    },
 
     renderSelectedInfo() {
         var {
@@ -109,13 +65,41 @@ class RegionProvince extends Component {
 
         return (num === total || num === 0)
             ? null : (
-                <span className={this.getPartClassName('info')}>
+                <span className={cx().part('info').build()}>
                     {'(' + num + '/' + total + ')'}
                 </span>
             );
+    },
+
+    render() {
+
+        var {
+            datasource,
+            children
+        } = this.props;
+
+        return (
+            <div className={cx(this.props).addStates({expand: this.state.expand}).build()}
+                onMouseEnter={children ? this.onMouseEnter : null}
+                onMouseLeave={children ? this.onMouseLeave : null}>
+                <Selector
+                    label={datasource.text}
+                    id={datasource.id}
+                    checked={datasource.selected}
+                    onChange={this.onSelectorChange} />
+                {this.renderSelectedInfo()}
+                {children ? (
+                    <div className={cx().part('popup').build()}>
+                        <ul>
+                            {children}
+                        </ul>
+                    </div>
+                ) : null}
+            </div>
+        );
     }
 
-}
+});
 
 
 RegionProvince.propTypes = {

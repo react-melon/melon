@@ -3,30 +3,21 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Component = require('../Component');
-var Selector = require('./Selector');
-var Province = require('./Province');
-var City = require('./City');
+const cx = require('../common/util/cxBuilder').create('RegionArea');
+const Selector = require('./Selector');
+const Province = require('./Province');
+const City = require('./City');
 
-var helper = require('./helper');
-var _ = require('underscore');
+const helper = require('./helper');
+const _ = require('underscore');
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
-class RegionArea extends Component {
+const RegionArea = React.createClass({
 
-    static displayName = 'RegionArea';
-
-    constructor(props) {
-
-        super(props);
-
-        this.onSelectorChange = this.onSelectorChange.bind(this);
-
-        this.type = 'region-area';
-    }
+    displayName: 'RegionArea',
 
     onSelectorChange(e) {
         var value = e.value;
@@ -40,7 +31,7 @@ class RegionArea extends Component {
         onChange && onChange({
             data: data
         });
-    }
+    },
 
     onProvinceChange(index, e) {
         var data = e.data;
@@ -56,7 +47,7 @@ class RegionArea extends Component {
         onChange && onChange({
             data: datasource
         });
-    }
+    },
 
     onCityChange(pIndex, cIndex, e) {
         var data = e.data;
@@ -73,32 +64,7 @@ class RegionArea extends Component {
         onChange && onChange({
             data: datasource
         });
-    }
-
-    render() {
-
-        var props = this.props;
-
-        var {
-            datasource
-        } = props;
-
-
-        return (
-            <li className={this.getClassName()}>
-                <div className={this.getPartClassName('selector')}>
-                    <Selector
-                        label={datasource.text}
-                        id={datasource.id}
-                        checked={datasource.selected}
-                        onChange={this.onSelectorChange} />
-                </div>
-                <div className={this.getPartClassName('content')}>
-                    {_.map(datasource.children, this.renderProvince, this)}
-                </div>
-            </li>
-        );
-    }
+    },
 
     renderProvince(child, index) {
         return (
@@ -112,7 +78,7 @@ class RegionArea extends Component {
                 }
             </Province>
         );
-    }
+    },
 
     renderCity(pIndex, child, index) {
         return (
@@ -121,9 +87,33 @@ class RegionArea extends Component {
                 datasource={child}
                 onChange={this.onCityChange.bind(this, pIndex, index)} />
         );
+    },
+
+    render() {
+
+        var props = this.props;
+
+        var {
+            datasource
+        } = props;
+
+        return (
+            <li className={cx(props).build()}>
+                <div className={cx().part('selector').build()}>
+                    <Selector
+                        label={datasource.text}
+                        id={datasource.id}
+                        checked={datasource.selected}
+                        onChange={this.onSelectorChange} />
+                </div>
+                <div className={cx().part('content').build()}>
+                    {_.map(datasource.children, this.renderProvince, this)}
+                </div>
+            </li>
+        );
     }
 
-}
+});
 
 
 RegionArea.propTypes = {
