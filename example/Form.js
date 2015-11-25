@@ -92,6 +92,19 @@ var View = React.createClass({
                                 <option value="Pear" label="Pear" disabled />
                             </BoxGroup>
                         </div>
+                        <div className="melon-column melon-column-6">
+                            <Title level={5}>Radio / 单选框</Title>
+                            <BoxGroup
+                                boxModel="radio"
+                                name="boxgroup2"
+                                variants={['horizontal']}
+                                required={true}>
+                                <option value="Apple" label="Apple" />
+                                <option value="Banana" label="Banana" />
+                                <option value="Mango" label="Mango" />
+                                <option value="Pear" label="Pear" disabled />
+                            </BoxGroup>
+                        </div>
                     </div>
                     <div className="melon-row">
                         <div className="melon-column melon-column-6">
@@ -99,6 +112,22 @@ var View = React.createClass({
                             <BoxGroup
                                 boxModel="checkbox"
                                 name="fruit"
+                                defaultRawValue={this.state.fruits}
+                                onInvalid={(e) => {console.log(e)}}
+                                onValid={(e) => {console.log(e)}}
+                                required>
+                                <option value="Apple" label="Apple" />
+                                <option value="Banana" label="Banana" />
+                                <option value="Mango" label="Mango" disabled />
+                                <option value="Pear" label="Pear" disabled />
+                            </BoxGroup>
+                        </div>
+                        <div className="melon-column melon-column-6">
+                            <Title level={5}>CheckBox / 复选框</Title>
+                            <BoxGroup
+                                boxModel="checkbox"
+                                name="fruit"
+                                variants={['horizontal']}
                                 defaultRawValue={this.state.fruits}
                                 onInvalid={(e) => {console.log(e)}}
                                 onValid={(e) => {console.log(e)}}

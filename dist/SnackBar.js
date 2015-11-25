@@ -142,7 +142,7 @@ define('melon/SnackBar', [
     SnackBar.propTypes = {
         action: PropTypes.string,
         autoHideDuration: PropTypes.number,
-        message: PropTypes.string,
+        message: PropTypes.node.isRequired,
         openOnMount: PropTypes.bool,
         onHide: PropTypes.func,
         onShow: PropTypes.func,
@@ -161,9 +161,9 @@ define('melon/SnackBar', [
             'lc'
         ])
     };
-    SnackBar.show = function (message, duration, direction) {
-        duration = duration || 0;
-        direction = direction || 'bl';
+    SnackBar.show = function (message) {
+        var duration = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+        var direction = arguments.length <= 2 || arguments[2] === undefined ? 'bl' : arguments[2];
         var doc = document;
         var body = doc.body;
         var container = doc.createElement('div');
@@ -172,11 +172,13 @@ define('melon/SnackBar', [
             autoHideDuration: duration,
             message: message,
             direction: direction,
-            onHide: function (e) {
+            onHide: function () {
                 setTimeout(function () {
-                    ReactDOM.unmountComponentAtNode(container);
-                    body.removeChild(container);
-                    body = doc = container = snackbar = null;
+                    if (container) {
+                        ReactDOM.unmountComponentAtNode(container);
+                        body.removeChild(container);
+                        body = doc = container = snackbar = null;
+                    }
                 }, 400);
             }
         });
@@ -184,7 +186,7 @@ define('melon/SnackBar', [
             snackbar = React.cloneElement(snackbar, { open: true });
             setTimeout(function () {
                 ReactDOM.render(snackbar, container);
-            }, 10);
+            }, 0);
         });
         return snackbar;
     };

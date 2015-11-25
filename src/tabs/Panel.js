@@ -4,40 +4,19 @@
  */
 
 var React = require('react');
+const cx = require('../common/util/cxBuilder').create('TabsPanel');
 
-var Component = require('../Component');
 
-class TabsPanel extends Component {
+function TabsPanel(props) {
 
-    static displayName = 'TabsPanel';
+    let {active, ...others} = props;
 
-    getStates(props) {
-
-        var states = {};
-
-        if (props.active) {
-            states.active = true;
-        }
-
-        return states;
-    }
-
-    render() {
-
-        var props = this.props;
-
-        return (
-            <div {...props} className={this.getClassName()}>
-                {props.children}
-            </div>
-        );
-
-    }
+    return (
+        <div {...others} className={cx(props).addStates({active}).build()}>
+            {others.children}
+        </div>
+    );
 
 }
-
-TabsPanel.propTypes = {
-    active: React.PropTypes.bool
-};
 
 module.exports = TabsPanel;
