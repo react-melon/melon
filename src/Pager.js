@@ -3,10 +3,11 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
-var _ = require('underscore');
-var Icon = require('./Icon');
-var cx = require('./common/util/cxBuilder').create('Pager');
+const React = require('react');
+const _ = require('underscore');
+const Icon = require('./Icon');
+const cx = require('./common/util/cxBuilder').create('Pager');
+
 
 const Pager = React.createClass({
 
@@ -16,12 +17,6 @@ const Pager = React.createClass({
         return {
             page: this.props.page || 0
         };
-    },
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            page: nextProps.page
-        });
     },
 
     getVariants(props) {
@@ -68,8 +63,8 @@ const Pager = React.createClass({
             return;
         }
 
-        this.setState({page: page}, function () {
-            var onChange = this.props.onChange;
+        this.setState({page: page}, () => {
+            let onChange = this.props.onChange;
 
             _.isFunction(onChange) && onChange({
                 target: this,
@@ -149,6 +144,7 @@ const Pager = React.createClass({
             first,
             padding,
             showCount,
+            useLang,
             lang,
             ...others
         } = props;
@@ -231,7 +227,7 @@ const Pager = React.createClass({
         return (
             <ul
                 {...others}
-                className={cx(props).build()}
+                className={cx(props).addVariants(useLang ? 'lang' : null).build()}
                 onClick={this.onMainClick}>
                 {result}
             </ul>

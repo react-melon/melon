@@ -6,6 +6,7 @@
 const React = require('react');
 const cx = require('../common/util/cxBuilder').create('CalendarSelectorItem');
 
+const ItemMixin = require('./ItemMixin');
 const DateTime = require('../common/util/date');
 
 const PropTypes = React.PropTypes;
@@ -14,21 +15,7 @@ const CalendarSelectorItem = React.createClass({
 
     displayName: 'CalendarSelectorItem',
 
-    shouldComponentUpdate(nextProps, nextState) {
-
-        var {
-            disabled,
-            selected
-        } = this.props;
-
-        if (nextProps.disabled !== disabled
-            || nextProps.selected !== selected) {
-            return true;
-        }
-
-        return false;
-
-    },
+    mixins: [ItemMixin],
 
     render() {
 
@@ -36,7 +23,6 @@ const CalendarSelectorItem = React.createClass({
 
         var {
             date,
-            onClick,
             mode,
             disabled,
             selected,
@@ -56,32 +42,7 @@ const CalendarSelectorItem = React.createClass({
                 </span>
             </li>
         );
-    },
-
-    onClick(e) {
-
-        e.preventDefault();
-
-        var {
-            disabled,
-            onClick,
-            date,
-            mode
-        } = this.props;
-
-        if (disabled) {
-            return;
-        }
-
-        if (onClick) {
-            onClick({
-                target: this,
-                date: date,
-                mode: mode
-            });
-        }
     }
-
 });
 
 

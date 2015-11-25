@@ -28,7 +28,12 @@ const DialogWindow = React.createClass({
         return (
             <div
                 {...others}
-                style={{marginTop: top}}
+                style={{
+                    transform: 'translate(0, ' + top + 'px)',
+                    WebkitTransform: 'translate(0, ' + top + 'px)',
+                    msTransform: 'translate(0, ' + top + 'px)',
+                    MozTransform: 'translate(0, ' + top + 'px)'
+                }}
                 className={cx(this.props).build()}>
                 {title}
                 {children}

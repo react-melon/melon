@@ -5,7 +5,7 @@
 
 var React = require('react');
 
-const cx = require('../common/util/cxBuilder').create('Tab');
+const cx = require('../common/util/cxBuilder').create('TabsItem');
 
 function Tab(props) {
 
