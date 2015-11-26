@@ -2,38 +2,34 @@ define('melon/Table', [
     'require',
     'exports',
     'module',
-    './babelHelpers',
     'react',
-    './dialog/WindowResizeAware',
     './table/Row',
+    './common/util/dom',
+    './common/util/cxBuilder',
     './table/Column'
 ], function (require, exports, module) {
-    var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var WindowResizeAware = require('./dialog/WindowResizeAware');
     var Row = require('./table/Row');
     var PropTypes = React.PropTypes;
     var Children = React.Children;
-    var Table = function (_WindowResizeAware) {
-        babelHelpers.inherits(Table, _WindowResizeAware);
-        babelHelpers.createClass(Table, null, [{
-                key: 'displayName',
-                value: 'Table',
-                enumerable: true
-            }]);
-        function Table(props) {
-            babelHelpers.classCallCheck(this, Table);
-            _WindowResizeAware.call(this, props);
-            this.state = { columns: this.getColumns(props) };
-        }
-        Table.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            this.setState({ columns: this.getColumns(nextProps) });
-        };
-        Table.prototype.componentDidMount = function componentDidMount() {
-            _WindowResizeAware.prototype.componentDidMount.call(this);
+    var dom = require('./common/util/dom');
+    var cx = require('./common/util/cxBuilder').create('Table');
+    var Table = React.createClass({
+        displayName: 'Table',
+        getInitialState: function () {
+            return { columns: this.getColumns(this.props) };
+        },
+        componentDidMount: function () {
             this.onWindowResize();
-        };
-        Table.prototype.getColumns = function getColumns(props) {
+            dom.on(window, 'resize', this.onWindowResize);
+        },
+        componentWillUnmount: function () {
+            dom.off(window, 'resize', this.onWindowResize);
+        },
+        componentWillReceiveProps: function (nextProps) {
+            this.setState({ columns: this.getColumns(nextProps) });
+        },
+        getColumns: function (props) {
             return Children.toArray(props.children).reduce(function (children, child) {
                 if (child != null) {
                     if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
@@ -43,33 +39,17 @@ define('melon/Table', [
                 }
                 return children;
             }, []);
-        };
-        Table.prototype.render = function render() {
-            var _state = this.state;
-            var width = _state.width;
-            var columns = _state.columns;
-            if (width) {
-                width = Math.max(width, columns.reduce(function (width, columns) {
-                    return width + columns.props.width;
-                }, 0));
-            } else {
-                width = '';
-            }
-            return React.createElement('div', {
-                className: 'ui-table',
-                ref: 'main'
-            }, this.renderHeader(columns, width), this.renderBody(columns, width), this.renderFooter(columns, width));
-        };
-        Table.prototype.renderHeader = function renderHeader(columns, width) {
+        },
+        renderHeader: function (columns, width) {
             var props = this.props;
-            return React.createElement('div', { className: 'ui-table-header' }, React.createElement(Row, {
+            return React.createElement('div', { className: cx().part('header').build() }, React.createElement(Row, {
                 part: 'header',
                 height: props.headerRowHeight,
                 columns: columns,
                 tableWidth: width
             }));
-        };
-        Table.prototype.renderBody = function renderBody(columns, width) {
+        },
+        renderBody: function (columns, width) {
             var _this = this;
             var _props = this.props;
             var dataSource = _props.dataSource;
@@ -77,12 +57,12 @@ define('melon/Table', [
             var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
                 return _this.renderRow(columns, rowData, index, width);
             }) : React.createElement('div', {
-                className: this.getPartClassName('body-empty'),
+                className: cx().part('body-empty').build(),
                 style: { width: width - 2 }
             }, noDataContent);
-            return React.createElement('div', { className: this.getPartClassName('body') }, body);
-        };
-        Table.prototype.renderRow = function renderRow(columns, rowData, index, tableWidth) {
+            return React.createElement('div', { className: cx().part('body').build() }, body);
+        },
+        renderRow: function (columns, rowData, index, tableWidth) {
             var _props2 = this.props;
             var rowHeight = _props2.rowHeight;
             var highlight = _props2.highlight;
@@ -96,15 +76,36 @@ define('melon/Table', [
                 data: rowData,
                 tableWidth: tableWidth
             });
-        };
-        Table.prototype.renderFooter = function renderFooter(columns) {
+        },
+        renderFooter: function (columns) {
             return null;
-        };
-        Table.prototype.onWindowResize = function onWindowResize() {
-            this.setState({ width: this.refs.main.offsetWidth });
-        };
-        return Table;
-    }(WindowResizeAware);
+        },
+        onWindowResize: function () {
+            var main = this.main;
+            if (this.main) {
+                this.setState({ width: main.offsetWidth });
+            }
+        },
+        render: function () {
+            var _this2 = this;
+            var _state = this.state;
+            var width = _state.width;
+            var columns = _state.columns;
+            if (width) {
+                width = Math.max(width, columns.reduce(function (width, columns) {
+                    return width + columns.props.width;
+                }, 0));
+            } else {
+                width = '';
+            }
+            return React.createElement('div', {
+                className: cx(this.props).build(),
+                ref: function (main) {
+                    _this2.main = main;
+                }
+            }, this.renderHeader(columns, width), this.renderBody(columns, width), this.renderFooter(columns, width));
+        }
+    });
     Table.propTypes = {
         rowHeight: PropTypes.number.isRequired,
         highlight: PropTypes.bool,

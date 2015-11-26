@@ -17,7 +17,7 @@ define('melon/dialog/DialogWindow', [
             footer: PropTypes.element,
             title: PropTypes.element
         },
-        render: function render() {
+        render: function () {
             var _props = this.props;
             var children = _props.children;
             var top = _props.top;
@@ -30,7 +30,12 @@ define('melon/dialog/DialogWindow', [
                 'footer'
             ]);
             return React.createElement('div', babelHelpers._extends({}, others, {
-                style: { marginTop: top },
+                style: {
+                    transform: 'translate(0, ' + top + 'px)',
+                    WebkitTransform: 'translate(0, ' + top + 'px)',
+                    msTransform: 'translate(0, ' + top + 'px)',
+                    MozTransform: 'translate(0, ' + top + 'px)'
+                },
                 className: cx(this.props).build()
             }), title, children, footer);
         }

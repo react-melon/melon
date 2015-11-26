@@ -16,7 +16,7 @@ define('melon/calendar/Month', [
     var PropTypes = React.PropTypes;
     var CalendarMonth = React.createClass({
         displayName: 'CalendarMonth',
-        onClick: function onClick(e) {
+        onClick: function (e) {
             var onChange = this.props.onChange;
             if (onChange) {
                 onChange({
@@ -25,13 +25,13 @@ define('melon/calendar/Month', [
                 });
             }
         },
-        renderWeekHeader: function renderWeekHeader() {
+        renderWeekHeader: function () {
             var days = this.props.lang.days.split(',');
             return React.createElement('div', { className: cx().part('weekheader').build() }, _.map(days, function (day, index) {
                 return React.createElement('span', { key: index }, day);
             }));
         },
-        renderDates: function renderDates() {
+        renderDates: function () {
             var props = this.props;
             var month = props.month;
             var weekArray = DateTime.getFullWeekArray(month);
@@ -45,13 +45,13 @@ define('melon/calendar/Month', [
             weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month']));
             return React.createElement('ul', null, _.map(weeks, this.renderWeek, this));
         },
-        renderWeek: function renderWeek(week, index) {
+        renderWeek: function (week, index) {
             return React.createElement('li', {
                 key: index,
                 className: cx().part('week').build()
             }, week);
         },
-        renderDay: function renderDay(array, variants) {
+        renderDay: function (array, variants) {
             var props = this.props;
             var date = props.date;
             var minDate = props.minDate;
@@ -69,7 +69,7 @@ define('melon/calendar/Month', [
                 });
             }, this);
         },
-        render: function render() {
+        render: function () {
             return React.createElement('div', { className: cx(this.props).build() }, this.renderWeekHeader(), this.renderDates());
         }
     });

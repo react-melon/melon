@@ -11,22 +11,12 @@ define('melon/table/SelectorColumn', [
     var React = require('react');
     var Icon = require('../Icon');
     var Column = require('./Column');
-    var TableSelectorColumn = function (_Column) {
-        babelHelpers.inherits(TableSelectorColumn, _Column);
-        function TableSelectorColumn() {
-            babelHelpers.classCallCheck(this, TableSelectorColumn);
-            _Column.apply(this, arguments);
-        }
-        TableSelectorColumn.prototype.render = function render() {
+    var TableSelectorColumn = React.createClass({
+        displayName: 'TableSelectorColumn',
+        render: function () {
             return null;
-        };
-        babelHelpers.createClass(TableSelectorColumn, null, [{
-                key: 'displayName',
-                value: 'TableSelectorColumn',
-                enumerable: true
-            }]);
-        return TableSelectorColumn;
-    }(Column);
+        }
+    });
     TableSelectorColumn.icons = {
         radio: {
             checked: 'radio-button-checked',
@@ -67,14 +57,14 @@ define('melon/table/SelectorColumn', [
         }
     };
     var PropTypes = React.PropTypes;
-    TableSelectorColumn.propTypes = {
+    TableSelectorColumn.propTypes = babelHelpers._extends({}, Column.propTypes, {
         isSelected: PropTypes.func.isRequired,
         isAllSelected: PropTypes.func.isRequired,
         onSelect: PropTypes.func,
         onSelectAll: PropTypes.func,
         name: PropTypes.string
-    };
-    TableSelectorColumn.defaultProps = {
+    });
+    TableSelectorColumn.defaultProps = babelHelpers._extends({}, Column.defaultProps, {
         width: 66,
         cellRenderer: TableSelectorColumn.cellRenderer,
         headerRenderer: TableSelectorColumn.headerRenderer,
@@ -82,7 +72,7 @@ define('melon/table/SelectorColumn', [
         align: 'center',
         dataKey: '',
         multiple: false
-    };
+    });
     TableSelectorColumn._TABLE_COMPONENT_ = 'COLUMN';
     module.exports = TableSelectorColumn;
 });

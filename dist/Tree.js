@@ -6,37 +6,28 @@ define('melon/Tree', [
     'react',
     'underscore',
     'react-dom',
-    './Component',
-    './tree/TreeNode',
-    './MainClickAware'
+    './common/util/cxBuilder',
+    './tree/TreeNode'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var _ = require('underscore');
     var ReactDOM = require('react-dom');
-    var Component = require('./Component');
+    var cx = require('./common/util/cxBuilder').create('Tree');
     var TreeNode = require('./tree/TreeNode');
-    var MainClickAware = require('./MainClickAware');
-    var Tree = function (_Component) {
-        babelHelpers.inherits(Tree, _Component);
-        babelHelpers.createClass(Tree, null, [{
-                key: 'displayName',
-                value: 'Tree',
-                enumerable: true
-            }]);
-        function Tree(props) {
-            babelHelpers.classCallCheck(this, Tree);
-            _Component.call(this, props);
-            this.onTreeNodeClick = this.onTreeNodeClick.bind(this);
-        }
-        Tree.prototype.getStates = function getStates(props) {
-            var states = {};
-            if (props.selected) {
-                states.selected = true;
-            }
-            return states;
-        };
-        Tree.prototype.onTreeNodeClick = function onTreeNodeClick(e) {
+    var Tree = React.createClass({
+        displayName: 'Tree',
+        propTypes: {
+            defaultExpandAll: React.PropTypes.bool,
+            datasource: React.PropTypes.oneOfType([
+                React.PropTypes.array,
+                React.PropTypes.object
+            ])
+        },
+        getDefaultProps: function () {
+            return { defaultExpandAll: false };
+        },
+        onTreeNodeClick: function (e) {
             var target = e.currentTarget;
             var main = ReactDOM.findDOMNode(this);
             e.stopPropagation();
@@ -45,8 +36,8 @@ define('melon/Tree', [
                 ele.className = _.without(className, 'state-selected').join(' ');
             });
             target.className += ' state-selected';
-        };
-        Tree.prototype.renderTreeNode = function renderTreeNode(children, level) {
+        },
+        renderTreeNode: function (children, level) {
             if (!children) {
                 return;
             }
@@ -59,22 +50,13 @@ define('melon/Tree', [
                     expand: expand
                 }, this.renderTreeNode(child.props.children, level + 1));
             }, this);
-        };
-        Tree.prototype.render = function render() {
+        },
+        render: function () {
             var props = this.props;
             var children = props.children;
-            return React.createElement('ul', babelHelpers._extends({}, props, { className: this.getClassName() }), this.renderTreeNode(children, 1));
-        };
-        return Tree;
-    }(Component);
-    Tree.defaultProps = babelHelpers._extends({}, MainClickAware.defaultProps, { defaultExpandAll: false });
-    Tree.propTypes = {
-        defaultExpandAll: React.PropTypes.bool,
-        datasource: React.PropTypes.oneOfType([
-            React.PropTypes.array,
-            React.PropTypes.object
-        ])
-    };
+            return React.createElement('ul', babelHelpers._extends({}, props, { className: cx(props).build() }), this.renderTreeNode(children, 1));
+        }
+    });
     Tree.TreeNode = TreeNode;
     Tree.createTreeNodes = function (datasource, level) {
         level = level || 1;

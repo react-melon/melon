@@ -2,53 +2,47 @@ define('melon/SnackBar', [
     'require',
     'exports',
     'module',
-    './babelHelpers',
     'react',
     'react-dom',
-    './Component',
     './Button',
-    './common/util/dom'
+    './common/util/dom',
+    './common/util/cxBuilder'
 ], function (require, exports, module) {
-    var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var ReactDOM = require('react-dom');
-    var Component = require('./Component');
     var Button = require('./Button');
     var dom = require('./common/util/dom');
-    var PropTypes = React.PropTypes;
-    var SnackBar = function (_Component) {
-        babelHelpers.inherits(SnackBar, _Component);
-        babelHelpers.createClass(SnackBar, null, [{
-                key: 'displayName',
-                value: 'SnackBar',
-                enumerable: true
-            }]);
-        function SnackBar(props) {
-            babelHelpers.classCallCheck(this, SnackBar);
-            _Component.call(this, props);
-            this.state = { open: props.open };
-            this.onMouseUp = this.onMouseUp.bind(this);
-            this.onShow = this.onShow.bind(this);
-            this.onHide = this.onHide.bind(this);
+    var cx = require('./common/util/cxBuilder').create('SnackBar');
+    var SnackBar = React.createClass({
+        displayName: 'SnackBar',
+        getInitialState: function () {
             this.autoHideTimer = null;
-        }
-        SnackBar.prototype.componentDidMount = function componentDidMount() {
+            return { open: this.props.open };
+        },
+        componentDidMount: function () {
             dom.on(document.body, 'mouseup', this.onMouseUp);
             if (this.props.openOnMount) {
                 this.onShow();
             }
             this.locate();
-        };
-        SnackBar.prototype.componentWillUnmount = function componentWillUnmount() {
+        },
+        componentWillUnmount: function () {
             dom.off(document.body, 'mouseup', this.onMouseUp);
             if (this.autoHideTimer) {
                 clearTimeout(this.autoHideTimer);
             }
-        };
-        SnackBar.prototype.componentDidUpdate = function componentDidUpdate() {
+        },
+        componentDidUpdate: function () {
             this.locate();
-        };
-        SnackBar.prototype.locate = function locate() {
+        },
+        componentWillReceiveProps: function (nextProps) {
+            var open = nextProps.open;
+            if (open === this.state.open) {
+                return;
+            }
+            open ? this.onShow() : this.onHide();
+        },
+        locate: function () {
             var _props = this.props;
             var open = _props.open;
             var direction = _props.direction;
@@ -67,23 +61,16 @@ define('melon/SnackBar', [
                     break;
                 }
             }
-        };
-        SnackBar.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var open = nextProps.open;
-            if (open === this.state.open) {
-                return;
-            }
-            open ? this.onShow() : this.onHide();
-        };
-        SnackBar.prototype.onHide = function onHide() {
+        },
+        onHide: function () {
             var onHide = this.props.onHide;
             this.setState({ open: false }, function () {
                 if (onHide) {
                     onHide();
                 }
             });
-        };
-        SnackBar.prototype.onShow = function onShow() {
+        },
+        onShow: function () {
             var _props2 = this.props;
             var onShow = _props2.onShow;
             var autoHideDuration = _props2.autoHideDuration;
@@ -98,8 +85,8 @@ define('melon/SnackBar', [
                     }, autoHideDuration);
                 }
             });
-        };
-        SnackBar.prototype.onMouseUp = function onMouseUp(e) {
+        },
+        onMouseUp: function (e) {
             if (!this.state.open) {
                 return;
             }
@@ -110,30 +97,22 @@ define('melon/SnackBar', [
                 this.onHide();
                 return;
             }
-        };
-        SnackBar.prototype.getStates = function getStates(props) {
-            var states = _Component.prototype.getStates.call(this, props);
-            states.open = this.state.open;
-            return states;
-        };
-        SnackBar.prototype.getVariants = function getVariants(props) {
-            var variants = _Component.prototype.getVariants.call(this, props);
-            var direction = props.direction;
-            variants.push('direction-' + direction);
-            return variants;
-        };
-        SnackBar.prototype.render = function render() {
+        },
+        render: function () {
             var _props3 = this.props;
             var message = _props3.message;
             var action = _props3.action;
-            return React.createElement('div', { className: this.getClassName() }, React.createElement('span', { className: this.getPartClassName('message') }, message), React.createElement(Button, {
+            var open = _props3.open;
+            var direction = _props3.direction;
+            var className = cx(this.props).addStates({ open: open }).addVariants('direction-' + direction).build();
+            return React.createElement('div', { className: className }, React.createElement('span', { className: cx().part('message').build() }, message), React.createElement(Button, {
                 variants: ['snackbar'],
-                className: this.getPartClassName('action'),
+                className: cx().part('action').build(),
                 onClick: this.onHide
             }, action));
-        };
-        return SnackBar;
-    }(Component);
+        }
+    });
+    var PropTypes = React.PropTypes;
     SnackBar.defaultProps = {
         autoHideDuration: 0,
         action: '\u5173\u95ED',

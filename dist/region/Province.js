@@ -2,68 +2,35 @@ define('melon/region/Province', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
     'react',
-    '../Component',
+    '../common/util/cxBuilder',
     './Selector',
     './helper'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Component = require('../Component');
+    var cx = require('../common/util/cxBuilder').create('RegionProvince');
     var Selector = require('./Selector');
     var helper = require('./helper');
     var PropTypes = React.PropTypes;
-    var RegionProvince = function (_Component) {
-        babelHelpers.inherits(RegionProvince, _Component);
-        babelHelpers.createClass(RegionProvince, null, [{
-                key: 'displayName',
-                value: 'RegionProvince',
-                enumerable: true
-            }]);
-        function RegionProvince(props) {
-            babelHelpers.classCallCheck(this, RegionProvince);
-            _Component.call(this, props);
-            this.onSelectorChange = this.onSelectorChange.bind(this);
-            this.onMouseEnter = this.onMouseEnter.bind(this);
-            this.onMouseLeave = this.onMouseLeave.bind(this);
-            this.state = { expand: false };
-            this.type = 'region-province';
-        }
-        RegionProvince.prototype.getStates = function getStates(props) {
-            var states = _Component.prototype.getStates.call(this, props);
-            states.expand = this.state.expand;
-            return states;
-        };
-        RegionProvince.prototype.onSelectorChange = function onSelectorChange(e) {
+    var RegionProvince = React.createClass({
+        displayName: 'RegionProvince',
+        getInitialState: function () {
+            return { expand: false };
+        },
+        onSelectorChange: function (e) {
             var value = e.value;
             var datasource = this.props.datasource;
             helper[value ? 'selectAll' : 'cancelAll'](datasource);
             var onChange = this.props.onChange;
             onChange && onChange({ data: datasource });
-        };
-        RegionProvince.prototype.onMouseEnter = function onMouseEnter(e) {
+        },
+        onMouseEnter: function (e) {
             this.setState({ expand: true });
-        };
-        RegionProvince.prototype.onMouseLeave = function onMouseLeave(e) {
+        },
+        onMouseLeave: function (e) {
             this.setState({ expand: false });
-        };
-        RegionProvince.prototype.render = function render() {
-            var _props = this.props;
-            var datasource = _props.datasource;
-            var children = _props.children;
-            return React.createElement('div', {
-                className: this.getClassName(),
-                onMouseEnter: children ? this.onMouseEnter : null,
-                onMouseLeave: children ? this.onMouseLeave : null
-            }, React.createElement(Selector, {
-                label: datasource.text,
-                id: datasource.id,
-                checked: datasource.selected,
-                onChange: this.onSelectorChange
-            }), this.renderSelectedInfo(), children ? React.createElement('div', { className: this.getPartClassName('popup') }, React.createElement('ul', null, children)) : null);
-        };
-        RegionProvince.prototype.renderSelectedInfo = function renderSelectedInfo() {
+        },
+        renderSelectedInfo: function () {
             var datasource = this.props.datasource;
             var total = datasource.children && datasource.children.length;
             if (!total) {
@@ -75,10 +42,24 @@ define('melon/region/Province', [
                 }
                 return result;
             }, 0);
-            return num === total || num === 0 ? null : React.createElement('span', { className: this.getPartClassName('info') }, '(' + num + '/' + total + ')');
-        };
-        return RegionProvince;
-    }(Component);
+            return num === total || num === 0 ? null : React.createElement('span', { className: cx().part('info').build() }, '(' + num + '/' + total + ')');
+        },
+        render: function () {
+            var _props = this.props;
+            var datasource = _props.datasource;
+            var children = _props.children;
+            return React.createElement('div', {
+                className: cx(this.props).addStates({ expand: this.state.expand }).build(),
+                onMouseEnter: children ? this.onMouseEnter : null,
+                onMouseLeave: children ? this.onMouseLeave : null
+            }, React.createElement(Selector, {
+                label: datasource.text,
+                id: datasource.id,
+                checked: datasource.selected,
+                onChange: this.onSelectorChange
+            }), this.renderSelectedInfo(), children ? React.createElement('div', { className: cx().part('popup').build() }, React.createElement('ul', null, children)) : null);
+        }
+    });
     RegionProvince.propTypes = {
         onChange: PropTypes.func,
         disabled: PropTypes.bool,

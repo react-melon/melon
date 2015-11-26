@@ -16,18 +16,18 @@ define('melon/dialog/Alert', [
     var Alert = React.createClass({
         displayName: 'Alert',
         propTypes: babelHelpers._extends({}, Dialog.propTypes, { buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string) }),
-        getDefaultProps: function getDefaultProps() {
+        getDefaultProps: function () {
             return babelHelpers._extends({}, Dialog.defaultProps, {
                 maskClickClose: false,
                 title: null,
                 buttonVariants: ['primary']
             });
         },
-        onAlertSubmit: function onAlertSubmit() {
+        onAlertSubmit: function () {
             var onHide = this.props.onHide;
             onHide();
         },
-        renderAction: function renderAction() {
+        renderAction: function () {
             var _props = this.props;
             var buttonVariants = _props.buttonVariants;
             var size = _props.size;
@@ -40,7 +40,7 @@ define('melon/dialog/Alert', [
                 variants: buttonVariants
             }));
         },
-        render: function render() {
+        render: function () {
             var _props2 = this.props;
             var variants = _props2.variants;
             var rest = babelHelpers.objectWithoutProperties(_props2, ['variants']);

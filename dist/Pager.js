@@ -9,27 +9,17 @@ define('melon/Pager', [
     './common/util/cxBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
-    var _obj;
     var React = require('react');
     var _ = require('underscore');
     var Icon = require('./Icon');
     var cx = require('./common/util/cxBuilder').create('Pager');
-    var Pager = React.createClass(_obj = {
+    var Pager = React.createClass({
         displayName: 'Pager',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             return { page: this.props.page || 0 };
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-            this.setState({ page: nextProps.page });
-        },
-        getVariants: function getVariants(props) {
-            var variants = babelHelpers.get(Object.getPrototypeOf(_obj), 'getVariants', this).call(this, props) || [];
-            if (props.useLang) {
-                variants.push('lang');
-            }
-            return variants;
-        },
-        onMainClick: function onMainClick(e) {
+        onMainClick: function (e) {
+            var _this = this;
             var currentTarget = e.currentTarget;
             var target = e.target;
             e.preventDefault();
@@ -52,17 +42,17 @@ define('melon/Pager', [
                 return;
             }
             this.setState({ page: page }, function () {
-                var onChange = this.props.onChange;
+                var onChange = _this.props.onChange;
                 _.isFunction(onChange) && onChange({
-                    target: this,
+                    target: _this,
                     page: page
                 });
             });
         },
-        range: function range(start, stop, paddingLeft, paddingRight) {
+        range: function (start, stop, paddingLeft, paddingRight) {
             return start + paddingLeft < stop - paddingRight ? _.range(start, start + paddingLeft).concat(-start - paddingLeft).concat(_.range(stop - paddingRight, stop)) : _.range(start, stop);
         },
-        renderItem: function renderItem(conf) {
+        renderItem: function (conf) {
             var page = conf.page;
             var part = conf.part;
             var states = conf.states;
@@ -83,20 +73,22 @@ define('melon/Pager', [
                 'data-page': page
             }, React.createElement('a', { href: '#' }, pageText));
         },
-        render: function render() {
-            var _this = this;
+        render: function () {
+            var _this2 = this;
             var props = this.props;
             var state = this.state;
             var total = props.total;
             var first = props.first;
             var padding = props.padding;
             var showCount = props.showCount;
+            var useLang = props.useLang;
             var lang = props.lang;
             var others = babelHelpers.objectWithoutProperties(props, [
                 'total',
                 'first',
                 'padding',
                 'showCount',
+                'useLang',
                 'lang'
             ]);
             var page = state.page;
@@ -146,10 +138,10 @@ define('melon/Pager', [
                         part: part
                     };
                 }
-                return _this.renderItem(conf);
+                return _this2.renderItem(conf);
             });
             return React.createElement('ul', babelHelpers._extends({}, others, {
-                className: cx(props).build(),
+                className: cx(props).addVariants(useLang ? 'lang' : null).build(),
                 onClick: this.onMainClick
             }), result);
         }

@@ -31,14 +31,14 @@
     "test": "./node_modules/mocha/bin/mocha test/components --compilers js:babel/register",
     "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover --report html ./node_modules/.bin/_mocha -- test/components",
     "lint": "fecs src",
-    "build:amd": "fecs src && sh tool/build-amd.sh"
+    "build:amd": "sh tool/build-amd.sh"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jinzhubaofu/melon.git"
   },
   "peerDependencies": {
-    "react": ">=0.13"
+    "react": ">=0.14"
   },
   "keywords": [
     "react",

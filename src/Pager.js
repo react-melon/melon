@@ -19,17 +19,6 @@ const Pager = React.createClass({
         };
     },
 
-    getVariants(props) {
-
-        var variants = super.getVariants(props) || [];
-
-        if (props.useLang) {
-            variants.push('lang');
-        }
-
-        return variants;
-    },
-
     onMainClick(e) {
 
         const {currentTarget} = e;

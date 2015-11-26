@@ -41,14 +41,6 @@ const TreeNode = React.createClass({
 
     },
 
-    getVariants(props) {
-
-        var variants = super.getVariants(props);
-        variants.push('level' + props.level);
-
-        return variants;
-    },
-
     shouldComponentUpdate(nextProps, nextState) {
         return nextState.expand !== this.state.expand;
     },

@@ -3,40 +3,42 @@ define('melon/RangeCalendar', [
     'exports',
     'module',
     './babelHelpers',
+    'underscore',
     'react',
-    './common/util/cxBuilder',
     './Calendar',
     './Icon',
     './dialog/Confirm',
     './calendar/Panel',
+    './Validity',
     './common/util/date',
-    'underscore',
+    './common/util/cxBuilder',
     './createInputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
+    var _ = require('underscore');
     var React = require('react');
-    var cx = require('./common/util/cxBuilder').create('RangeCalendar');
     var Calendar = require('./Calendar');
     var Icon = require('./Icon');
     var Confirm = require('./dialog/Confirm');
     var Panel = require('./calendar/Panel');
+    var Validity = require('./Validity');
     var DateTime = require('./common/util/date');
-    var _ = require('underscore');
+    var cx = require('./common/util/cxBuilder').create('RangeCalendar');
     var RangeCalendar = React.createClass({
         displayName: 'RangeCalendar',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             return {
                 open: false,
                 date: this.getNormalizeValue(this.props)
             };
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             var value = nextProps.value;
             if (value !== this.props.value) {
                 this.setState({ date: this.getNormalizeValue(nextProps) });
             }
         },
-        getNormalizeValue: function getNormalizeValue(props) {
+        getNormalizeValue: function (props) {
             var begin = props.begin;
             var end = props.end;
             var value = props.value;
@@ -50,13 +52,13 @@ define('melon/RangeCalendar', [
             ];
             return value;
         },
-        getValue: function getValue() {
+        getValue: function () {
             var _this = this;
             return this.getNormalizeValue(this.props).map(function (date) {
                 return _this.formatDate(date);
             });
         },
-        onLabelClick: function onLabelClick() {
+        onLabelClick: function () {
             var _props = this.props;
             var disabled = _props.disabled;
             var readOnly = _props.readOnly;
@@ -65,10 +67,10 @@ define('melon/RangeCalendar', [
             }
             this.setState({ open: true });
         },
-        onCancel: function onCancel() {
+        onCancel: function () {
             this.setState({ open: false });
         },
-        onDateChange: function onDateChange(index, e) {
+        onDateChange: function (index, e) {
             var value = e.value;
             var date = [].concat(this.state.date);
             date[index] = value;
@@ -77,7 +79,7 @@ define('melon/RangeCalendar', [
                 month: date
             });
         },
-        onConfirm: function onConfirm() {
+        onConfirm: function () {
             var _this2 = this;
             var date = this.state.date;
             var _props2 = this.props;
@@ -93,20 +95,20 @@ define('melon/RangeCalendar', [
                 }
             });
         },
-        formatDate: function formatDate(date) {
+        formatDate: function (date) {
             var _props3 = this.props;
             var dateFormat = _props3.dateFormat;
             var lang = _props3.lang;
             return DateTime.format(date, dateFormat.toLowerCase(), lang);
         },
-        parseDate: function parseDate(date) {
+        parseDate: function (date) {
             if (!_.isString(date)) {
                 return date;
             }
             var format = this.props.dateFormat.toLowerCase();
             return DateTime.parse(date, format);
         },
-        render: function render() {
+        render: function () {
             var props = this.props;
             var lang = props.lang;
             var disabled = props.disabled;
@@ -115,6 +117,7 @@ define('melon/RangeCalendar', [
             var name = props.name;
             var begin = props.begin;
             var end = props.end;
+            var validity = props.validity;
             var others = babelHelpers.objectWithoutProperties(props, [
                 'lang',
                 'disabled',
@@ -122,7 +125,8 @@ define('melon/RangeCalendar', [
                 'dateFormat',
                 'name',
                 'begin',
-                'end'
+                'end',
+                'validity'
             ]);
             var value = this.getValue();
             var _state = this.state;
@@ -136,7 +140,7 @@ define('melon/RangeCalendar', [
                 type: 'hidden',
                 value: value.join(','),
                 disabled: disabled
-            }), React.createElement('label', { onClick: this.onLabelClick }, value[0] + ' \u81F3 ' + value[1], React.createElement(Icon, { icon: 'expand-more' })), React.createElement(Confirm, {
+            }), React.createElement('label', { onClick: this.onLabelClick }, value[0] + ' \u81F3 ' + value[1], React.createElement(Icon, { icon: 'expand-more' })), React.createElement(Validity, { validity: validity }), React.createElement(Confirm, {
                 open: open,
                 variants: ['calendar'],
                 onConfirm: this.onConfirm,

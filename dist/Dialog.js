@@ -37,28 +37,23 @@ define('melon/Dialog', [
                 PropTypes.element
             ])
         },
-        getDefaultProps: function getDefaultProps() {
+        getDefaultProps: function () {
             return {
                 maskClickClose: true,
                 open: false
             };
         },
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             this.originalHTMLBodySize = {};
-            this.marginTop = -150;
             return { open: this.props.open };
         },
-        componentDidMount: function componentDidMount() {
-            this.positionDialog();
-            if (this.state.open) {
-                var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-                dialogWindow.style.marginTop = this.marginTop + 'px';
-            }
-        },
-        componentWillUpdate: function componentWillUpdate() {
+        componentDidMount: function () {
             this.positionDialog();
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillUpdate: function () {
+            this.positionDialog();
+        },
+        componentWillReceiveProps: function (nextProps) {
             var open = nextProps.open;
             if (open === this.state.open) {
                 return;
@@ -66,52 +61,52 @@ define('melon/Dialog', [
             var onEvent = open ? this.onShow : this.onHide;
             this.setState({ open: open }, onEvent);
         },
-        positionDialog: function positionDialog() {
+        positionDialog: function () {
             var dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-            this.marginTop = -dialogWindow.offsetHeight / 2;
+            var marginTop = -dialogWindow.offsetHeight / 2;
             var windowHeight = dom.getClientHeight();
-            this.marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : this.marginTop;
+            marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : marginTop;
             dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+            dialogWindow.style.marginTop = marginTop + 'px';
         },
-        bodyScrolling: function bodyScrolling() {
+        bodyScrolling: function () {
             var show = this.state.open;
             windowScrollHelper[show ? 'stop' : 'restore']();
         },
-        handleMaskClick: function handleMaskClick(e) {
+        handleMaskClick: function (e) {
             if (this.props.maskClickClose) {
                 this.setState({ open: false }, this.onHide);
             } else {
                 e.stopPropagation();
             }
         },
-        onShow: function onShow() {
+        onShow: function () {
             this.bodyScrolling();
             var onShow = this.props.onShow;
             if (onShow) {
                 onShow();
             }
         },
-        onHide: function onHide() {
+        onHide: function () {
             this.bodyScrolling();
             var onHide = this.props.onHide;
             if (onHide) {
                 onHide();
             }
         },
-        renderTitle: function renderTitle() {
+        renderTitle: function () {
             var title = this.props.title;
             return title ? React.createElement('h1', { className: cx().part('title').build() }, title) : null;
         },
-        renderAction: function renderAction() {
+        renderAction: function () {
             var actions = this.props.actions;
             return actions ? React.createElement('div', {
                 ref: 'dialogActions',
                 className: cx().part('actions').build()
             }, actions) : null;
         },
-        render: function render() {
+        render: function () {
             var _this = this;
-            var marginTop = this.marginTop;
             var props = this.props;
             var state = this.state;
             var children = props.children;
@@ -121,7 +116,7 @@ define('melon/Dialog', [
             var body = React.createElement('div', { className: cx().part('body').build() }, children);
             var footer = this.renderAction();
             var windowPartClassName = cx().part('window').build();
-            return React.createElement('div', babelHelpers._extends({}, others, { className: cx(props).addStates({ open: open }).build() }), React.createElement(Motion, { style: { y: spring(open ? marginTop : -150) } }, function (_ref) {
+            return React.createElement('div', babelHelpers._extends({}, others, { className: cx(props).addStates({ open: open }).build() }), React.createElement(Motion, { style: { y: spring(open ? 0 : -80) } }, function (_ref) {
                 var y = _ref.y;
                 return React.createElement(DialogWindow, {
                     top: Math.round(y),

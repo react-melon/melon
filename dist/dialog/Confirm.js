@@ -15,14 +15,14 @@ define('melon/dialog/Confirm', [
     var cx = require('../common/util/cxBuilder').create('Confirm');
     var Confirm = React.createClass({
         displayName: 'Confirm',
-        onConfirmSubmit: function onConfirmSubmit(confirm) {
+        onConfirmSubmit: function (confirm) {
             var _props = this.props;
             var onConfirm = _props.onConfirm;
             var onCancel = _props.onCancel;
             var callback = confirm ? onConfirm : onCancel;
             callback && callback();
         },
-        renderAction: function renderAction() {
+        renderAction: function () {
             var _props2 = this.props;
             var buttonVariants = _props2.buttonVariants;
             var size = _props2.size;
@@ -42,7 +42,7 @@ define('melon/dialog/Confirm', [
                 variants: buttonVariants
             }));
         },
-        render: function render() {
+        render: function () {
             var _props3 = this.props;
             var _props3$variants = _props3.variants;
             var variants = _props3$variants === undefined ? [] : _props3$variants;

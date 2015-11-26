@@ -2,61 +2,38 @@ define('melon/table/Cell', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
     'react',
-    'underscore',
-    '../Component'
+    '../common/util/cxBuilder'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var PropTypes = React.PropTypes;
-    var u = require('underscore');
-    var RENDERER_PROPS = [
-        'cellData',
-        'cellDataKey',
-        'rowData',
-        'rowIndex',
-        'columnData',
-        'columnIndex',
-        'width',
-        'height',
-        'part'
-    ];
-    var Component = require('../Component');
-    var TableCell = function (_Component) {
-        babelHelpers.inherits(TableCell, _Component);
-        function TableCell() {
-            babelHelpers.classCallCheck(this, TableCell);
-            _Component.apply(this, arguments);
-        }
-        TableCell.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+    var cx = require('../common/util/cxBuilder').create('TableCell');
+    var TableCell = React.createClass({
+        displayName: 'TableCell',
+        shouldComponentUpdate: function (nextProps) {
             return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
-        };
-        TableCell.prototype.render = function render() {
+        },
+        getCellContent: function () {
+            var props = this.props;
+            var _props = this.props;
+            var cellRenderer = _props.cellRenderer;
+            var cellData = _props.cellData;
+            var content = cellRenderer ? cellRenderer(props) : cellData;
+            return React.createElement('div', { className: cx().part('content').build() }, content);
+        },
+        render: function () {
             var props = this.props;
             var style = {
                 textAlign: props.align,
                 width: props.width,
                 height: props.height
             };
-            return React.createElement('div', { className: this.getClassName() }, React.createElement('div', {
-                style: style,
-                className: this.getPartClassName('wrap1')
-            }, React.createElement('div', { className: this.getPartClassName('wrap2') }, React.createElement('div', { className: this.getPartClassName('wrap3') }, this.getCellContent()))));
-        };
-        TableCell.prototype.getCellContent = function getCellContent() {
-            var props = this.props;
-            var renderer = props.cellRenderer;
-            var content = renderer ? renderer(u.pick(props, RENDERER_PROPS)) : props.cellData;
-            return React.createElement('div', { className: this.getPartClassName('content') }, content);
-        };
-        babelHelpers.createClass(TableCell, null, [{
-                key: 'displayName',
-                value: 'TableCell',
-                enumerable: true
-            }]);
-        return TableCell;
-    }(Component);
+            return React.createElement('div', { className: cx(props).build() }, React.createElement('div', {
+                className: cx().part('wrap1').build(),
+                style: style
+            }, React.createElement('div', { className: cx().part('wrap2').build() }, React.createElement('div', { className: cx().part('wrap3').build() }, this.getCellContent()))));
+        }
+    });
+    var PropTypes = React.PropTypes;
     TableCell.propTypes = {
         part: PropTypes.oneOf([
             'header',

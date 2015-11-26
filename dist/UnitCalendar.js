@@ -4,74 +4,29 @@ define('melon/UnitCalendar', [
     'module',
     './babelHelpers',
     'react',
-    './InputComponent',
     './BoxGroup',
-    './common/util/date'
+    './common/util/date',
+    './common/util/cxBuilder',
+    './createInputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var InputComponent = require('./InputComponent');
     var BoxGroup = require('./BoxGroup');
     var date = require('./common/util/date');
-    var UnitCalendar = function (_InputComponent) {
-        babelHelpers.inherits(UnitCalendar, _InputComponent);
-        babelHelpers.createClass(UnitCalendar, null, [{
-                key: 'displayName',
-                value: 'UnitCalendar',
-                enumerable: true
-            }]);
-        function UnitCalendar(props) {
-            babelHelpers.classCallCheck(this, UnitCalendar);
-            _InputComponent.call(this, props);
-            this.onChange = this.onChange.bind(this);
-        }
-        UnitCalendar.prototype.render = function render() {
-            var _this = this;
+    var cx = require('./common/util/cxBuilder').create('UnitCalendar');
+    var UnitCalendar = React.createClass({
+        displayName: 'UnitCalendar',
+        onChange: function (e) {
+            var nextValue = e.value;
             var _props = this.props;
-            var begin = _props.begin;
-            var end = _props.end;
-            var unit = _props.unit;
-            var rest = babelHelpers.objectWithoutProperties(_props, [
-                'begin',
-                'end',
-                'unit'
-            ]);
-            var onChange = this.onChange;
-            var rawValue = this.getRawValue().map(function (fragment) {
-                return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
-            }).sort();
-            return React.createElement('div', { className: this.getClassName() }, React.createElement(BoxGroup, babelHelpers._extends({}, rest, {
-                boxModel: 'checkbox',
-                onChange: onChange,
-                rawValue: rawValue
-            }), UnitCalendar.getContinuousFragments(begin, end, unit).map(function (fragment) {
-                var begin = _this.format(fragment);
-                var end = UnitCalendar.getNextTime(fragment, unit);
-                end.setDate(end.getDate() - 1);
-                end = _this.format(end);
-                return React.createElement('option', {
-                    key: begin,
-                    value: begin,
-                    label: begin + ' ~ ' + end
-                });
-            })));
-        };
-        UnitCalendar.prototype.onChange = function onChange(_ref) {
-            var rawValue = _ref.rawValue;
-            var current = this.getRawValue();
-            var continuous = this.props.continuous;
-            rawValue = continuous ? this.calculate(current, rawValue).map(this.parse) : rawValue;
-            if (this.isControlled()) {
-                this.props.onChange({
-                    target: this,
-                    rawValue: rawValue,
-                    value: this.stringifyValue(rawValue)
-                });
-                return;
-            }
-            this.setState({ rawValue: rawValue });
-        };
-        UnitCalendar.prototype.calculate = function calculate(current, next) {
+            var continuous = _props.continuous;
+            var value = _props.value;
+            this.props.onChange({
+                target: this,
+                value: continuous ? this.calculate(value, nextValue).map(this.parse) : value
+            });
+        },
+        calculate: function (current, next) {
             current = current.map(this.format).sort();
             next = next.sort();
             var cLength = current.length;
@@ -103,31 +58,64 @@ define('melon/UnitCalendar', [
                 }
             }
             return current.slice(0, -1);
-        };
-        UnitCalendar.prototype.parse = function parse(time) {
+        },
+        parse: function (time) {
             return new Date(time);
-        };
-        UnitCalendar.prototype.format = function format(time) {
+        },
+        format: function (time) {
             return date.format(time, 'yyyy-mm-dd');
-        };
-        UnitCalendar.prototype.parseValue = function parseValue() {
-            var _this2 = this;
+        },
+        parseValue: function () {
+            var _this = this;
             var value = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
             return value.split(',').map(function (date) {
-                return _this2.parse(date);
+                return _this.parse(date);
             });
-        };
-        UnitCalendar.prototype.stringifyValue = function stringifyValue() {
-            var _this3 = this;
-            var rawValue = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-            return rawValue.map(function (term) {
-                return _this3.format(term);
+        },
+        stringifyValue: function () {
+            var _this2 = this;
+            var value = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+            return value.map(function (term) {
+                return _this2.format(term);
             }).join(',');
-        };
-        return UnitCalendar;
-    }(InputComponent);
+        },
+        render: function () {
+            var _this3 = this;
+            var _props2 = this.props;
+            var begin = _props2.begin;
+            var end = _props2.end;
+            var unit = _props2.unit;
+            var value = _props2.value;
+            var rest = babelHelpers.objectWithoutProperties(_props2, [
+                'begin',
+                'end',
+                'unit',
+                'value'
+            ]);
+            var onChange = this.onChange;
+            value = value.map(function (fragment) {
+                return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
+            }).sort();
+            return React.createElement('div', { className: cx(this.props).build() }, React.createElement(BoxGroup, babelHelpers._extends({}, rest, {
+                boxModel: 'checkbox',
+                onChange: onChange,
+                value: value
+            }), UnitCalendar.getContinuousFragments(begin, end, unit).map(function (fragment) {
+                var begin = _this3.format(fragment);
+                var end = UnitCalendar.getNextTime(fragment, unit);
+                end.setDate(end.getDate() - 1);
+                end = _this3.format(end);
+                return React.createElement('option', {
+                    key: begin,
+                    value: begin,
+                    label: begin + ' ~ ' + end
+                });
+            })));
+        }
+    });
+    UnitCalendar = require('./createInputComponent').create(UnitCalendar);
     var PropTypes = React.PropTypes;
-    UnitCalendar.propTypes = babelHelpers._extends({}, InputComponent.propTypes, {
+    UnitCalendar.propTypes = {
         begin: PropTypes.instanceOf(Date),
         end: PropTypes.instanceOf(Date),
         unit: PropTypes.oneOf([
@@ -135,15 +123,15 @@ define('melon/UnitCalendar', [
             'month',
             'year'
         ]).isRequired,
-        rawValue: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+        value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
         continuous: PropTypes.bool.isRequired,
         defaultValue: PropTypes.arrayOf(PropTypes.string)
-    });
-    UnitCalendar.defaultProps = babelHelpers._extends({}, InputComponent.defaultProps, {
+    };
+    UnitCalendar.defaultProps = {
         continuous: true,
-        rawValue: [],
+        value: [],
         defaultValue: []
-    });
+    };
     UnitCalendar.normalize = function (time, unit) {
         time = new Date(time);
         if (unit === 'week') {

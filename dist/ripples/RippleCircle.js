@@ -29,12 +29,13 @@ define('melon/ripples/RippleCircle', [
                 'opacity',
                 'scale'
             ]);
-            style = babelHelpers._extends({}, style, {
-                opacity: opacity,
-                transform: 'scale(' + scale + ')',
-                WebkitTransform: 'scale(' + scale + ')'
-            });
-            return React.createElement('div', babelHelpers._extends({}, other, { style: style }));
+            return React.createElement('div', babelHelpers._extends({}, other, {
+                style: babelHelpers._extends({}, style, {
+                    opacity: opacity,
+                    transform: 'scale(' + scale + ')',
+                    WebkitTransform: 'scale(' + scale + ')'
+                })
+            }));
         };
         babelHelpers.createClass(RippleCircle, null, [{
                 key: 'displayName',

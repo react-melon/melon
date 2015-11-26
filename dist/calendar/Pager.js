@@ -16,7 +16,7 @@ define('melon/calendar/Pager', [
     var PropTypes = React.PropTypes;
     var CalendarPager = React.createClass({
         displayName: 'CalendarPager',
-        render: function render() {
+        render: function () {
             var _props = this.props;
             var maxDate = _props.maxDate;
             var minDate = _props.minDate;
@@ -39,7 +39,7 @@ define('melon/calendar/Pager', [
                 onClick: nextState.disabled ? null : this.onClick
             }), y + ' \u5E74 ' + m + ' \u6708');
         },
-        onClick: function onClick(e) {
+        onClick: function (e) {
             var target = e.currentTarget;
             var month = this.props.month;
             var action = target.getAttribute('data-action');
