@@ -3,7 +3,9 @@ define('melon/validator/ValidityState', [
     'exports',
     'module'
 ], function (require, exports, module) {
-    function ValidityState(isValid, message) {
+    function ValidityState(_ref) {
+        var isValid = _ref.isValid;
+        var message = _ref.message;
         this.isValid = isValid;
         this.message = message || '';
     }

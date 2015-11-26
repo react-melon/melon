@@ -4,13 +4,11 @@ define('melon/SelectableTable', [
     'module',
     './babelHelpers',
     'react',
-    './Component',
     './Table',
     './table/SelectorColumn'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var Component = require('./Component');
     var Table = require('./Table');
     var SelectorColumn = require('./table/SelectorColumn');
     function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex) {
@@ -30,54 +28,27 @@ define('melon/SelectableTable', [
         });
         return selected;
     }
-    var SelectableTable = function (_Component) {
-        babelHelpers.inherits(SelectableTable, _Component);
-        babelHelpers.createClass(SelectableTable, null, [{
-                key: 'displayName',
-                value: 'SelectableTable',
-                enumerable: true
-            }]);
-        function SelectableTable(props) {
-            babelHelpers.classCallCheck(this, SelectableTable);
-            _Component.call(this, props);
-            this.isRowSelected = this.isRowSelected.bind(this);
-            this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
-            this.onSelect = this.onSelect.bind(this);
-            this.onSelectAll = this.onSelectAll.bind(this);
-            this.state = { selected: props.selected };
-        }
-        SelectableTable.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+    var SelectableTable = React.createClass({
+        displayName: 'SelectableTable',
+        getInitialState: function () {
+            return { selected: this.props.selected };
+        },
+        componentWillReceiveProps: function (props) {
             if (!this.props.onSelect) {
                 this.setState({ selected: props.selected });
             }
-        };
-        SelectableTable.prototype.render = function render() {
-            var _props = this.props;
-            var children = _props.children;
-            var multiple = _props.multiple;
-            var rest = babelHelpers.objectWithoutProperties(_props, [
-                'children',
-                'multiple'
-            ]);
-            return React.createElement(Table, rest, React.createElement(SelectorColumn, {
-                isSelected: this.isRowSelected,
-                isAllSelected: this.isAllRowsSelected,
-                multiple: multiple,
-                onSelect: this.onSelect,
-                onSelectAll: this.onSelectAll
-            }), children);
-        };
-        SelectableTable.prototype.onSelect = function onSelect(rowIndex) {
+        },
+        onSelect: function (rowIndex) {
             this.onRowSelectorClick(this.isRowSelected(rowIndex) ? 'unselect' : 'select', rowIndex);
-        };
-        SelectableTable.prototype.onSelectAll = function onSelectAll() {
+        },
+        onSelectAll: function () {
             this.onRowSelectorClick(this.isAllRowsSelected() ? 'unselectAll' : 'selectAll');
-        };
-        SelectableTable.prototype.onRowSelectorClick = function onRowSelectorClick(action, rowIndex) {
-            var _props2 = this.props;
-            var onSelect = _props2.onSelect;
-            var dataSource = _props2.dataSource;
-            var multiple = _props2.multiple;
+        },
+        onRowSelectorClick: function (action, rowIndex) {
+            var _props = this.props;
+            var onSelect = _props.onSelect;
+            var dataSource = _props.dataSource;
+            var multiple = _props.multiple;
             var selected = this.getSelected();
             selected = getNextSelectedRowData(multiple, dataSource, selected, action, rowIndex);
             if (onSelect) {
@@ -88,32 +59,47 @@ define('melon/SelectableTable', [
                 return;
             }
             this.setState({ selected: selected });
-        };
-        SelectableTable.prototype.getSelected = function getSelected() {
+        },
+        getSelected: function () {
             var state = this.state;
             var props = this.props;
             var onSelect = props.onSelect;
             var _ref = onSelect ? props : state;
             var selected = _ref.selected;
             return selected;
-        };
-        SelectableTable.prototype.isRowSelected = function isRowSelected(rowIndex) {
+        },
+        isRowSelected: function (rowIndex) {
             var selected = this.getSelected();
             return selected.indexOf(rowIndex) !== -1;
-        };
-        SelectableTable.prototype.isAllRowsSelected = function isAllRowsSelected() {
+        },
+        isAllRowsSelected: function () {
             var selected = this.getSelected();
             return selected.length === this.props.dataSource.length;
-        };
-        return SelectableTable;
-    }(Component);
+        },
+        render: function () {
+            var _props2 = this.props;
+            var children = _props2.children;
+            var multiple = _props2.multiple;
+            var rest = babelHelpers.objectWithoutProperties(_props2, [
+                'children',
+                'multiple'
+            ]);
+            return React.createElement(Table, rest, React.createElement(SelectorColumn, {
+                isSelected: this.isRowSelected,
+                isAllSelected: this.isAllRowsSelected,
+                multiple: multiple,
+                onSelect: this.onSelect,
+                onSelectAll: this.onSelectAll
+            }), children);
+        }
+    });
     var PropTypes = React.PropTypes;
-    SelectableTable.propTypes = babelHelpers._extends({}, Component.propTypes, Table.propTypes, {
+    SelectableTable.propTypes = babelHelpers._extends({}, Table.propTypes, {
         multiple: PropTypes.bool.isRequired,
         onSelect: PropTypes.func,
         selected: PropTypes.arrayOf(PropTypes.number).isRequired
     });
-    SelectableTable.defaultProps = babelHelpers._extends({}, Component.defaultProps, Table.defaultProps, {
+    SelectableTable.defaultProps = babelHelpers._extends({}, Table.defaultProps, {
         multiple: true,
         selected: []
     });

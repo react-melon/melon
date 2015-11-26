@@ -20,23 +20,23 @@ define('melon/calendar/Panel', [
     var DateTime = require('../common/util/date');
     var CalendarPanel = React.createClass({
         displayName: 'CaneldarPanel',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             return {
                 selectorType: 'main',
                 month: this.props.date
             };
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             var date = nextProps.date;
             if (this.props.date !== date) {
                 this.setState({ date: date });
             }
         },
-        onHeaderClick: function onHeaderClick(e) {
+        onHeaderClick: function (e) {
             var selectorType = this.state.selectorType;
             this.setState({ selectorType: selectorType === 'main' ? 'year' : 'main' });
         },
-        onSelectorChange: function onSelectorChange(e) {
+        onSelectorChange: function (e) {
             var mode = e.mode;
             var date = e.date;
             var _props = this.props;
@@ -54,14 +54,14 @@ define('melon/calendar/Panel', [
                 selectorType: mode
             });
         },
-        onPagerChange: function onPagerChange(e) {
+        onPagerChange: function (e) {
             var month = e.month;
             this.setState({ month: month });
         },
-        onDateChange: function onDateChange(e) {
+        onDateChange: function (e) {
             this.props.onChange({ value: e.date });
         },
-        render: function render() {
+        render: function () {
             var _props2 = this.props;
             var date = _props2.date;
             var lang = _props2.lang;

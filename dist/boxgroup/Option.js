@@ -2,58 +2,43 @@ define('melon/boxgroup/Option', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
     'react',
-    '../common/util/classname',
+    '../common/util/cxBuilder',
     '../Icon',
-    '../Component',
     '../ripples/CenterRipple'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var cx = require('../common/util/classname');
+    var cx = require('../common/util/cxBuilder').create('BoxGroupOption');
     var Icon = require('../Icon');
-    var Component = require('../Component');
     var CenterRipple = require('../ripples/CenterRipple');
-    var BoxGroupOption = function (_Component) {
-        babelHelpers.inherits(BoxGroupOption, _Component);
-        babelHelpers.createClass(BoxGroupOption, null, [{
-                key: 'displayName',
-                value: 'BoxGroupOption',
-                enumerable: true
-            }]);
-        function BoxGroupOption(props) {
-            babelHelpers.classCallCheck(this, BoxGroupOption);
-            _Component.call(this, props);
-            this.onClick = this.onClick.bind(this);
-        }
-        BoxGroupOption.prototype.onClick = function onClick() {
+    var BoxGroupOption = React.createClass({
+        displayName: 'BoxGroupOption',
+        onClick: function () {
             this.refs.ripple && this.refs.ripple.animate();
-        };
-        BoxGroupOption.prototype.render = function render() {
+        },
+        getIcon: function (boxModel, isChecked) {
+            var icons = BoxGroupOption.Icons[boxModel];
+            return icons[isChecked ? 'checked' : 'unchecked'];
+        },
+        render: function () {
             var props = this.props;
             var boxModel = props.boxModel;
-            var isChecked = props.checked;
+            var checked = props.checked;
             var disabled = props.disabled;
-            var className = cx.create(this.getClassName(), { 'state-checked': isChecked });
+            var className = cx(props).addStates({ checked: checked }).build();
             return React.createElement('label', {
                 className: className,
                 onClick: disabled ? null : this.onClick
             }, React.createElement('input', {
                 disabled: disabled,
-                checked: isChecked,
+                checked: checked,
                 type: props.boxModel,
                 value: props.value,
                 name: props.name,
                 onChange: props.onChange
-            }), React.createElement(Icon, { icon: this.getIcon(boxModel, isChecked) }), props.label, disabled ? null : React.createElement(CenterRipple, { ref: 'ripple' }));
-        };
-        BoxGroupOption.prototype.getIcon = function getIcon(boxModel, isChecked) {
-            var icons = BoxGroupOption.Icons[boxModel];
-            return icons[isChecked ? 'checked' : 'unchecked'];
-        };
-        return BoxGroupOption;
-    }(Component);
+            }), React.createElement(Icon, { icon: this.getIcon(boxModel, checked) }), props.label, disabled ? null : React.createElement(CenterRipple, { ref: 'ripple' }));
+        }
+    });
     var PropTypes = React.PropTypes;
     BoxGroupOption.propTypes = {
         boxModel: PropTypes.oneOf([

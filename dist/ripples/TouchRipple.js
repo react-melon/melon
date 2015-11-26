@@ -21,7 +21,7 @@ define('melon/ripples/TouchRipple', [
     var dom = require('../common/util/dom');
     var TouchRipple = React.createClass({
         displayName: 'TouchRipple',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             return {
                 now: 't' + 0,
                 center: [
@@ -30,7 +30,7 @@ define('melon/ripples/TouchRipple', [
                 ]
             };
         },
-        onMouseDown: function onMouseDown(_ref) {
+        onMouseDown: function (_ref) {
             var pageX = _ref.pageX;
             var pageY = _ref.pageY;
             var _position = this.position;
@@ -44,15 +44,21 @@ define('melon/ripples/TouchRipple', [
                 now: 't' + Date.now()
             });
         },
-        componentDidMount: function componentDidMount() {
+        componentDidMount: function () {
+            this.updatePosition();
+        },
+        componentDidUpdate: function () {
+            this.updatePosition();
+        },
+        componentWillUnmount: function () {
+            this.position = this.radius = null;
+        },
+        updatePosition: function () {
             var main = ReactDOM.findDOMNode(this);
             this.position = dom.getPosition(main);
             this.radius = Math.max(this.position.width, this.position.height) / 2;
         },
-        componentWillUnmount: function componentWillUnmount() {
-            this.position = null;
-        },
-        willLeave: function willLeave(key, valOfKey) {
+        willLeave: function (key, valOfKey) {
             return babelHelpers._extends({}, valOfKey, {
                 opacity: spring(0, [
                     60,
@@ -64,7 +70,7 @@ define('melon/ripples/TouchRipple', [
                 ])
             });
         },
-        render: function render() {
+        render: function () {
             var _styles, _this = this;
             var _state = this.state;
             var _state$center = _state.center;

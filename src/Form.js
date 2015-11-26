@@ -61,9 +61,15 @@ let Form = React.createClass({
     },
 
     removeField(field) {
-        this.fields = this.fields.filter((f) => {
-            return f !== field;
-        });
+
+        const {fields} = this;
+
+        if (fields) {
+            this.fields = this.fields.filter((f) => {
+                return f !== field;
+            });
+        }
+
     },
 
     isValidFormField(field) {

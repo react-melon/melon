@@ -4,32 +4,18 @@ define('melon/Progress', [
     'module',
     './babelHelpers',
     'react',
-    './Component'
+    './common/util/cxBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var Component = require('./Component');
-    var Progress = function (_Component) {
-        babelHelpers.inherits(Progress, _Component);
-        babelHelpers.createClass(Progress, null, [{
-                key: 'displayName',
-                value: 'Progress',
-                enumerable: true
-            }]);
-        function Progress(props) {
-            babelHelpers.classCallCheck(this, Progress);
-            _Component.call(this, props);
+    var cx = require('./common/util/cxBuilder').create('Progress');
+    var Progress = React.createClass({
+        displayName: 'Progress',
+        getInitialState: function () {
             this.timers = {};
-        }
-        Progress.prototype.getVariants = function getVariants(props) {
-            var variants = _Component.prototype.getVariants.call(this, props) || [];
-            var shape = props.shape;
-            var mode = props.mode;
-            variants.push(shape);
-            variants.push(mode);
-            return variants;
-        };
-        Progress.prototype.barUpdate = function barUpdate(step, barName, stepValues) {
+            return {};
+        },
+        barUpdate: function (step, barName, stepValues) {
             step = step || 0;
             step %= 4;
             var element = this.refs[barName];
@@ -50,8 +36,8 @@ define('melon/Progress', [
                 break;
             }
             this.timers[barName] = setTimeout(this.barUpdate.bind(this, step + 1, barName, stepValues), 420);
-        };
-        Progress.prototype.scalePath = function scalePath(path, step) {
+        },
+        scalePath: function (path, step) {
             step = step || 0;
             step %= 3;
             this.timers.path = setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
@@ -70,8 +56,8 @@ define('melon/Progress', [
             path.style.strokeDasharray = '89, 200';
             path.style.strokeDashoffset = -124;
             path.style.transitionDuration = '850ms';
-        };
-        Progress.prototype.rotateWrapper = function rotateWrapper(wrapper) {
+        },
+        rotateWrapper: function (wrapper) {
             this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
             wrapper.style.transitionDuration = '0ms';
             wrapper.style.transform = 'rotate(0deg)';
@@ -80,8 +66,8 @@ define('melon/Progress', [
                 wrapper.style.transform = 'rotate(1800deg)';
                 wrapper.style.transitionTimingFunction = 'linear';
             }, 50);
-        };
-        Progress.prototype.componentDidMount = function componentDidMount() {
+        },
+        componentDidMount: function () {
             var _this = this;
             if (this.isDeterminate()) {
                 return;
@@ -114,16 +100,16 @@ define('melon/Progress', [
                     ]
                 ]);
             }, 850);
-        };
-        Progress.prototype.componentWillUnmount = function componentWillUnmount() {
+        },
+        componentWillUnmount: function () {
             var _this2 = this;
             Object.keys(this.timers).forEach(function (name) {
                 clearTimeout(_this2.timers[name]);
                 _this2.timers[name] = null;
             });
             this.timers = {};
-        };
-        Progress.prototype.getRelativeValue = function getRelativeValue() {
+        },
+        getRelativeValue: function () {
             var value = this.props.value;
             var min = this.props.min;
             var max = this.props.max;
@@ -131,11 +117,11 @@ define('melon/Progress', [
             var rangeValue = max - min;
             var relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
             return relValue * 100;
-        };
-        Progress.prototype.isDeterminate = function isDeterminate() {
+        },
+        isDeterminate: function () {
             return this.props.mode.toLowerCase() === 'determinate';
-        };
-        Progress.prototype.renderLinear = function renderLinear() {
+        },
+        renderLinear: function () {
             var children;
             var style;
             if (this.isDeterminate()) {
@@ -144,25 +130,25 @@ define('melon/Progress', [
                 children = [
                     React.createElement('div', {
                         ref: 'bar1',
-                        className: this.getPartClassName('bar1'),
+                        className: cx().part('bar1').build(),
                         key: 'bar1'
                     }),
                     React.createElement('div', {
                         ref: 'bar2',
-                        className: this.getPartClassName('bar2'),
+                        className: cx().part('bar2').build(),
                         key: 'bar2'
                     })
                 ];
             }
             return React.createElement('div', {
-                className: this.getPartClassName('bar'),
+                className: cx().part('bar').build(),
                 style: style
             }, children);
-        };
-        Progress.prototype.getZoom = function getZoom() {
+        },
+        getZoom: function () {
             return Progress.SIZES[this.props.size] || 1;
-        };
-        Progress.prototype.renderCircle = function renderCircle() {
+        },
+        renderCircle: function () {
             var zoom = this.getZoom();
             var r = 14 * zoom;
             var strokeWidth = 2 * zoom;
@@ -174,27 +160,27 @@ define('melon/Progress', [
             }
             return React.createElement('div', {
                 ref: 'wrapper',
-                className: this.getPartClassName('wapper')
-            }, React.createElement('svg', { className: this.getPartClassName('svg') }, React.createElement('circle', {
+                className: cx().part('wapper').build()
+            }, React.createElement('svg', { className: cx().part('svg').build() }, React.createElement('circle', {
                 ref: 'path',
                 cx: c,
                 cy: c,
                 r: r,
-                className: this.getPartClassName('path'),
+                className: cx().part('path').build(),
                 style: pathStyle,
                 fill: 'none',
                 strokeWidth: strokeWidth,
                 strokeMiterlimit: '10'
             })));
-        };
-        Progress.prototype.render = function render() {
+        },
+        render: function () {
             var props = this.props;
-            var shape = props.shape.toLowerCase();
-            var isCircle = shape === 'circle';
-            return React.createElement('div', babelHelpers._extends({}, props, { className: this.getClassName() }), isCircle ? this.renderCircle() : this.renderLinear());
-        };
-        return Progress;
-    }(Component);
+            var shape = props.shape;
+            var mode = props.mode;
+            var className = cx(props).addVariants(shape, mode).build();
+            return React.createElement('div', babelHelpers._extends({}, props, { className: className }), shape === 'circle' ? this.renderCircle() : this.renderLinear());
+        }
+    });
     Progress.SIZES = {
         xxs: 0.75,
         xs: 0.875,

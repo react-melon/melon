@@ -3,29 +3,24 @@ define('melon/textbox/FloatLabel', [
     'exports',
     'module',
     'react',
-    '../createComponent',
-    '../common/util/classname'
+    '../common/util/cxBuilder'
 ], function (require, exports, module) {
     var React = require('react');
-    var createComponent = require('../createComponent');
-    var cx = require('../common/util/classname');
+    var cx = require('../common/util/cxBuilder').create('TextBoxFloatingLabel');
     function TextBoxFloatingLabel(props) {
-        var className = props.className;
         var floating = props.floating;
         var focused = props.focused;
-        var getStateClassName = props.getStateClassName;
         var label = props.label;
-        return React.createElement('label', {
-            className: cx.createClassName(className, getStateClassName({
-                focus: focused,
-                floating: floating
-            }))
-        }, label);
+        var className = cx(props).addStates({
+            focus: focused,
+            floating: floating
+        }).build();
+        return React.createElement('label', { className: className }, label);
     }
     var PropTypes = React.PropTypes;
     TextBoxFloatingLabel.propTypes = {
         label: PropTypes.string.isRequired,
         floating: PropTypes.bool.isRequired
     };
-    module.exports = createComponent('TextboxFloatingLabel', TextBoxFloatingLabel);
+    module.exports = TextBoxFloatingLabel;
 });

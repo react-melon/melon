@@ -2,13 +2,13 @@
 @require './Ripple.styl'
 @require './Icon.styl'
 
-.{$-melon-class-prefix}-boxgroup
+.{$-melon-class-prefix}-box-group
 
     position: relative
     display: inline-block
     width: $-melon-boxgroup.width
 
-    &option
+    &-option
         display: block
         line-height: 2em
         color: $-melon-boxgroup-option.color
@@ -45,7 +45,7 @@
             color: $-melon-boxgroup-option-icon-disabled.color
             cursor: not-allowed
 
-    &.state-invalid &option .ui-icon
+    &.state-invalid &-option .ui-icon
         color: $-melon-boxgroup-option-icon-invalid.color
 
     &.variant-horizontal
@@ -53,7 +53,7 @@
         margin-left: -1em
         width: auto
 
-        .{$-melon-class-prefix}-boxgroupoption
+        .{$-melon-class-prefix}-box-group-option
             display: inline-block
             margin-left: 1em
 

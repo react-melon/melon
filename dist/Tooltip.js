@@ -5,53 +5,54 @@ define('melon/Tooltip', [
     './babelHelpers',
     'react',
     'react-dom',
-    './Component',
-    './common/util/dom'
+    './common/util/dom',
+    './common/util/cxBuilder'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var ReactDOM = require('react-dom');
-    var Component = require('./Component');
     var dom = require('./common/util/dom');
-    var Tooltip = function (_Component) {
-        babelHelpers.inherits(Tooltip, _Component);
-        babelHelpers.createClass(Tooltip, null, [{
-                key: 'displayName',
-                value: 'Tooltip',
-                enumerable: true
-            }]);
-        function Tooltip(props) {
-            babelHelpers.classCallCheck(this, Tooltip);
-            _Component.call(this, props);
-            this.onClick = this.onClick.bind(this);
-            this.onMouseEnter = this.onMouseEnter.bind(this);
-            this.onMouseLeave = this.onMouseLeave.bind(this);
-            this.state = babelHelpers._extends({}, this.state, { isShown: false });
-        }
-        Tooltip.prototype.render = function render() {
-            var props = this.props;
-            var mode = props.mode;
-            var onClick = mode === 'click' ? this.onClick : null;
-            var onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
-            var onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
-            return React.createElement('div', babelHelpers._extends({}, props, {
-                ref: 'main',
-                className: this.getClassName(),
-                onClick: onClick,
-                onMouseEnter: onMouseEnter,
-                onMouseLeave: onMouseLeave
-            }), props.children);
-        };
-        Tooltip.prototype.renderPopup = function renderPopup(target, content) {
-            var styles = this.getPosition();
-            content = React.createElement('div', {
-                className: this.getPartClassName('popup'),
-                style: styles
-            }, content);
-            ReactDOM.render(content, target);
-        };
-        Tooltip.prototype.getPosition = function getPosition() {
-            if (!this.isShown()) {
+    var cx = require('./common/util/cxBuilder').create('Tooltip');
+    var Tooltip = React.createClass({
+        displayName: 'Tooltip',
+        getInitialState: function () {
+            return { isShown: false };
+        },
+        componentDidMount: function () {
+            var popup = this.popup = Tooltip.createPopup();
+            this.renderPopup(popup, this.props.content);
+        },
+        componentWillUnmount: function () {
+            Tooltip.destroyPopup(this.popup);
+            this.popup = null;
+        },
+        componentDidUpdate: function () {
+            this.renderPopup(this.popup, this.props.content);
+        },
+        onClick: function (e) {
+            this.toggle();
+        },
+        onMouseEnter: function (e) {
+            this.show();
+        },
+        onMouseLeave: function (e) {
+            this.hide();
+        },
+        isShown: function () {
+            return this.state.isShown;
+        },
+        toggle: function () {
+            this.isShown() ? this.hide() : this.show();
+        },
+        show: function () {
+            this.setState({ isShown: true });
+        },
+        hide: function () {
+            this.setState({ isShown: false });
+        },
+        getPosition: function () {
+            var main = this.main;
+            if (!this.isShown() || !main) {
                 return {
                     left: -10000,
                     top: 0,
@@ -65,7 +66,7 @@ define('melon/Tooltip', [
             var offsetX = props.offsetX;
             var offsetY = props.offsetY;
             var popup = this.popup.childNodes[0];
-            var position = dom.getPosition(this.refs.main);
+            var position = dom.getPosition(main);
             var offsetWidth = popup.offsetWidth;
             var offsetHeight = popup.offsetHeight;
             var styles = { opacity: 1 };
@@ -88,47 +89,35 @@ define('melon/Tooltip', [
                 break;
             }
             return styles;
-        };
-        Tooltip.prototype.componentDidMount = function componentDidMount() {
-            var popup = this.popup = Tooltip.createPopup();
-            this.renderPopup(popup, this.props.content);
-        };
-        Tooltip.prototype.componentWillUnmount = function componentWillUnmount() {
-            Tooltip.destroyPopup(this.popup);
-            this.popup = null;
-        };
-        Tooltip.prototype.componentDidUpdate = function componentDidUpdate() {
-            this.renderPopup(this.popup, this.props.content);
-        };
-        Tooltip.prototype.getStates = function getStates(props) {
-            var states = _Component.prototype.getStates.call(this, props);
+        },
+        renderPopup: function (target, content) {
+            ReactDOM.render(React.createElement('div', {
+                className: cx().part('popup').build(),
+                style: this.getPosition()
+            }, content), target);
+        },
+        render: function () {
+            var _this = this;
+            var props = this.props;
+            var mode = props.mode;
+            var children = props.children;
             var direction = props.direction;
-            states[direction] = true;
-            return states;
-        };
-        Tooltip.prototype.onClick = function onClick(e) {
-            this.toggle();
-        };
-        Tooltip.prototype.onMouseEnter = function onMouseEnter(e) {
-            this.show();
-        };
-        Tooltip.prototype.onMouseLeave = function onMouseLeave(e) {
-            this.hide();
-        };
-        Tooltip.prototype.isShown = function isShown() {
-            return this.state.isShown;
-        };
-        Tooltip.prototype.toggle = function toggle() {
-            this.isShown() ? this.hide() : this.show();
-        };
-        Tooltip.prototype.show = function show() {
-            this.setState({ isShown: true });
-        };
-        Tooltip.prototype.hide = function hide() {
-            this.setState({ isShown: false });
-        };
-        return Tooltip;
-    }(Component);
+            var onClick = mode === 'click' ? this.onClick : null;
+            var onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
+            var onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
+            return React.createElement('div', babelHelpers._extends({}, props, {
+                ref: function (main) {
+                    if (main) {
+                        _this.main = main;
+                    }
+                },
+                className: cx(props).addStates({ direction: direction }).build(),
+                onClick: onClick,
+                onMouseEnter: onMouseEnter,
+                onMouseLeave: onMouseLeave
+            }), children);
+        }
+    });
     var PropTypes = React.PropTypes;
     Tooltip.propTypes = {
         arrow: PropTypes.bool.isRequired,
@@ -143,18 +132,18 @@ define('melon/Tooltip', [
             'click'
         ])
     };
-    Tooltip.defaultProps = babelHelpers._extends({}, Component.defaultProps, {
+    Tooltip.defaultProps = {
         arrow: true,
         direction: 'bottom',
         mode: 'over',
         offsetX: 14,
         offsetY: 14
-    });
+    };
     var container;
     Tooltip.createPopup = function () {
         if (!container) {
             container = document.createElement('div');
-            container.className = 'ui-tooltip-container';
+            container.className = cx().part('container').build();
             document.body.appendChild(container);
         }
         var popup = document.createElement('div');

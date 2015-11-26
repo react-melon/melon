@@ -12,7 +12,8 @@ define('melon/Validator', [
         this.rules.push(rule);
         return this;
     };
-    Validator.prototype.resolveCheckers = function (config) {
+    Validator.prototype.resolveCheckers = function () {
+        var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
         var rules = this.rules;
         return rules.reduce(function (activeCheckers, checker) {
             var name = checker.name;
@@ -28,7 +29,7 @@ define('melon/Validator', [
         }, []);
     };
     Validator.prototype.validate = function (value, component) {
-        return this.resolveCheckers(component.props).reduce(function (validity, checker) {
+        return this.resolveCheckers(component.props.rules).reduce(function (validity, checker) {
             var check = checker.check;
             var state = check(value, component);
             validity.addState(state);
@@ -48,18 +49,13 @@ define('melon/Validator', [
         return new Validator();
     };
     validator.addRule({
-        name: 'min',
-        check: function check(value, component) {
-            var _component$props = component.props;
-            var min = _component$props.min;
-            var minErrorMessage = _component$props.minErrorMessage;
-            var num = +value;
-            if (value && isNaN(num)) {
-                return { isValid: true };
-            }
+        name: 'required',
+        check: function (value, component) {
+            var requiredErrorMessage = component.props.rules.requiredErrorMessage;
+            var isValid = value instanceof Array ? value.length : typeof value === 'string' ? value !== '' : value != null;
             return {
-                isValid: num >= min,
-                message: minErrorMessage || '\u4E0D\u80FD\u5C0F\u4E8E' + min
+                isValid: isValid,
+                message: requiredErrorMessage || '\u8BF7\u586B\u5199\u6B64\u5B57\u6BB5'
             };
         }
     });

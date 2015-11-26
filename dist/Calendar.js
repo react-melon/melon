@@ -3,65 +3,67 @@ define('melon/Calendar', [
     'exports',
     'module',
     './babelHelpers',
+    'underscore',
     'react',
     './common/util/cxBuilder',
     './Icon',
     './dialog/Confirm',
     './calendar/Panel',
     './common/util/date',
-    'underscore',
+    './Validity',
     './createInputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
+    var _ = require('underscore');
     var React = require('react');
+    var PropTypes = React.PropTypes;
     var cx = require('./common/util/cxBuilder').create('Calendar');
     var Icon = require('./Icon');
     var Confirm = require('./dialog/Confirm');
     var Panel = require('./calendar/Panel');
     var DateTime = require('./common/util/date');
-    var _ = require('underscore');
-    var PropTypes = React.PropTypes;
+    var Validity = require('./Validity');
     var Calendar = React.createClass({
         displayName: 'Calendar',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             return {
                 date: this.parseDate(this.props.value),
                 open: false
             };
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             var value = nextProps.value;
             if (value !== this.props.value) {
                 this.setState({ date: this.parseDate(value) });
             }
         },
-        parseValue: function parseValue(value) {
+        parseValue: function (value) {
             return this.parseDate(value);
         },
-        stringifyValue: function stringifyValue(rawValue) {
+        stringifyValue: function (rawValue) {
             if (!_.isDate(rawValue)) {
                 return rawValue;
             }
             var format = this.props.dateFormat.toLowerCase();
             return DateTime.format(rawValue, format, this.props.lang);
         },
-        parseDate: function parseDate(date) {
+        parseDate: function (date) {
             if (!_.isString(date)) {
                 return date;
             }
             var format = this.props.dateFormat.toLowerCase();
             return DateTime.parse(date, format);
         },
-        getValue: function getValue() {
+        getValue: function () {
             return this.stringifyValue(this.props.value);
         },
-        onLabelClick: function onLabelClick() {
+        onLabelClick: function () {
             if (this.props.disabled || this.props.readOnly) {
                 return;
             }
             this.setState({ open: true });
         },
-        onConfirm: function onConfirm() {
+        onConfirm: function () {
             var _this = this;
             var _state = this.state;
             var value = _state.value;
@@ -78,10 +80,10 @@ define('melon/Calendar', [
                 });
             });
         },
-        onCancel: function onCancel() {
+        onCancel: function () {
             this.setState({ open: false });
         },
-        onDateChange: function onDateChange(e) {
+        onDateChange: function (e) {
             var _this2 = this;
             var value = e.value;
             var autoConfirm = this.props.autoConfirm;
@@ -91,7 +93,7 @@ define('melon/Calendar', [
                 }
             });
         },
-        render: function render() {
+        render: function () {
             var state = this.state;
             var props = this.props;
             var lang = props.lang;
@@ -100,13 +102,15 @@ define('melon/Calendar', [
             var size = props.size;
             var name = props.name;
             var dateFormat = props.dateFormat;
+            var validity = props.validity;
             var others = babelHelpers.objectWithoutProperties(props, [
                 'lang',
                 'value',
                 'disabled',
                 'size',
                 'name',
-                'dateFormat'
+                'dateFormat',
+                'validity'
             ]);
             var begin = props.begin;
             var end = props.end;
@@ -121,7 +125,7 @@ define('melon/Calendar', [
                 value: value,
                 disabled: disabled,
                 size: size
-            }), React.createElement('label', { onClick: this.onLabelClick }, DateTime.format(this.parseDate(value), dateFormat.toLowerCase(), lang), React.createElement(Icon, { icon: 'expand-more' })), React.createElement(Confirm, {
+            }), React.createElement('label', { onClick: this.onLabelClick }, DateTime.format(this.parseDate(value), dateFormat.toLowerCase(), lang), React.createElement(Icon, { icon: 'expand-more' })), React.createElement(Validity, { validity: validity }), React.createElement(Confirm, {
                 open: open,
                 variants: ['calendar'],
                 onConfirm: this.onConfirm,

@@ -2,30 +2,16 @@ define('melon/table/Column', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
-    'react',
-    '../Component'
+    'react'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var PropTypes = React.PropTypes;
-    var Component = require('../Component');
-    var TableColumn = function (_Component) {
-        babelHelpers.inherits(TableColumn, _Component);
-        function TableColumn() {
-            babelHelpers.classCallCheck(this, TableColumn);
-            _Component.apply(this, arguments);
-        }
-        TableColumn.prototype.render = function render() {
+    var TableColumn = React.createClass({
+        displayName: 'TableColumn',
+        render: function () {
             return null;
-        };
-        babelHelpers.createClass(TableColumn, null, [{
-                key: 'displayName',
-                value: 'TableColumn',
-                enumerable: true
-            }]);
-        return TableColumn;
-    }(Component);
+        }
+    });
+    var PropTypes = React.PropTypes;
     TableColumn.propTypes = {
         align: PropTypes.oneOf([
             'left',

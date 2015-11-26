@@ -5,45 +5,24 @@ define('melon/calendar/Day', [
     '../babelHelpers',
     'react',
     '../common/util/cxBuilder',
-    '../common/util/date'
+    '../common/util/date',
+    './ItemMixin'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var cx = require('../common/util/cxBuilder').create('CalendarDay');
     var DateTime = require('../common/util/date');
+    var ItemMixin = require('./ItemMixin');
     var PropTypes = React.PropTypes;
     var CalendarDay = React.createClass({
         displayName: 'CalendarDay',
-        shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+        mixins: [ItemMixin],
+        render: function () {
             var _props = this.props;
-            var disabled = _props.disabled;
+            var date = _props.date;
             var selected = _props.selected;
-            return nextProps.disabled !== disabled || nextProps.selected !== selected;
-        },
-        onClick: function onClick(e) {
-            e.preventDefault();
-            var _props2 = this.props;
-            var disabled = _props2.disabled;
-            var onClick = _props2.onClick;
-            var date = _props2.date;
-            if (disabled) {
-                return;
-            }
-            if (onClick) {
-                onClick({
-                    target: this,
-                    date: date
-                });
-            }
-        },
-        render: function render() {
-            var _props3 = this.props;
-            var date = _props3.date;
-            var onClick = _props3.onClick;
-            var selected = _props3.selected;
-            var others = babelHelpers.objectWithoutProperties(_props3, [
+            var others = babelHelpers.objectWithoutProperties(_props, [
                 'date',
-                'onClick',
                 'selected'
             ]);
             var className = cx(this.props).addVariants(DateTime.isEqualDate(date, new Date()) ? 'today' : null).addStates({ selected: selected }).build();

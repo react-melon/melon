@@ -16,13 +16,11 @@ define('melon/Button', [
         var label = props.label;
         var children = props.children;
         var disabled = props.disabled;
-        var getVariantClassName = props.getVariantClassName;
         var others = babelHelpers.objectWithoutProperties(props, [
             'hasRipple',
             'label',
             'children',
-            'disabled',
-            'getVariantClassName'
+            'disabled'
         ]);
         var className = cx(props).addVariants({ ripple: hasRipple && !disabled }).build();
         return React.createElement('button', babelHelpers._extends({}, others, {

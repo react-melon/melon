@@ -34,9 +34,13 @@ define('melon/common/util/cxBuilder', [
         var states = props.states;
         var hidden = props.hidden;
         var disabled = props.disabled;
+        var validity = props.validity;
+        var isValid = validity ? validity.isValid() : null;
         return babelHelpers._extends({}, states, {
             hidden: hidden,
-            disabled: disabled
+            disabled: disabled,
+            invalid: isValid === false,
+            valid: isValid === true
         });
     }
     exports.create = function (type) {

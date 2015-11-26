@@ -10,7 +10,38 @@
 
     &.variant-button
 
-        {$-melon-button}
+        display: inline-block
+        box-sizing: border-box
+        position: relative
+
+        padding: 0 1em
+        height: 2em
+
+        font-size: $-melon-medium-font-size
+        line-height: 2em
+        text-transform: uppercase
+
+        text-align: center
+
+        outline: 0
+        vertical-align: middle
+
+
+        border-radius: 2px
+        border: none
+
+        cursor: pointer
+        user-select: none
+
+        transition: all .3s
+
+        // Gets rid of tap active state
+        -webkit-tap-highlight-color: transparent
+
+        &:disabled
+            cursor: not-allowed
+            color: rgba(#000, .26) !important
+            background-color: $-melon-colors.white !important
 
         melon-button-swatch($-melon-button-default)
 

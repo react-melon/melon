@@ -20,13 +20,13 @@ define('melon/calendar/Selector', [
     var PropTypes = React.PropTypes;
     var CalendarSelector = React.createClass({
         displayName: 'CalendarSelector',
-        componentDidMount: function componentDidMount() {
+        componentDidMount: function () {
             this.refs.item && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
         },
-        componentDidUpdate: function componentDidUpdate() {
+        componentDidUpdate: function () {
             this.refs.item && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
         },
-        render: function render() {
+        render: function () {
             var _props = this.props;
             var minDate = _props.minDate;
             var maxDate = _props.maxDate;
@@ -75,7 +75,7 @@ define('melon/calendar/Selector', [
             }
             return React.createElement('ul', babelHelpers._extends({}, rest, { className: cx(this.props).build() }), children);
         },
-        onClick: function onClick(e) {
+        onClick: function (e) {
             var onChange = this.props.onChange;
             if (onChange) {
                 onChange({
@@ -85,7 +85,7 @@ define('melon/calendar/Selector', [
                 });
             }
         },
-        isMonthView: function isMonthView() {
+        isMonthView: function () {
             var _props2 = this.props;
             var minDate = _props2.minDate;
             var maxDate = _props2.maxDate;

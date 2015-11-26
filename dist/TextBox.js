@@ -5,31 +5,31 @@ define('melon/TextBox', [
     './babelHelpers',
     'react',
     'react-dom',
-    './createInputComponent',
     './textbox/FloatLabel',
     './textbox/Input',
-    './common/util/createClassNameBuilder'
+    './Validity',
+    './common/util/cxBuilder',
+    './createInputComponent'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
     var ReactDOM = require('react-dom');
-    var createInputComponent = require('./createInputComponent');
     var FloatingLabel = require('./textbox/FloatLabel');
     var TextBoxInput = require('./textbox/Input');
-    var cxBuilder = require('./common/util/createClassNameBuilder')('Textbox');
+    var Validity = require('./Validity');
+    var cx = require('./common/util/cxBuilder').create('TextBox');
     var TextBox = React.createClass({
         displayName: 'TextBox',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             var value = this.props.value;
             return {
                 isFloating: !!value,
                 isFocus: false
             };
         },
-        onFocus: function onFocus(e) {
+        onFocus: function (e) {
             var _props = this.props;
             var onFocus = _props.onFocus;
-            var willValidate = _props.willValidate;
             var validate = _props.validate;
             var value = _props.value;
             if (onFocus) {
@@ -42,15 +42,14 @@ define('melon/TextBox', [
                 isFocus: true,
                 isFloating: true
             });
-            if (willValidate('focus')) {
+            if (this.needValidate('focus')) {
                 validate(value);
             }
         },
-        onBlur: function onBlur(e) {
+        onBlur: function (e) {
             var _props2 = this.props;
             var onBlur = _props2.onBlur;
             var value = _props2.value;
-            var willValidate = _props2.willValidate;
             var validate = _props2.validate;
             if (onBlur) {
                 onBlur({
@@ -62,27 +61,25 @@ define('melon/TextBox', [
                 isFloating: !!value,
                 isFocus: false
             });
-            if (willValidate('blur')) {
+            if (this.needValidate('blur')) {
                 validate(value);
             }
         },
-        onChange: function onChange(e) {
-            var rawValue = e.target.value;
+        onChange: function (e) {
+            var value = e.target.value;
             var _props3 = this.props;
             var onChange = _props3.onChange;
-            var willValidate = _props3.willValidate;
             var validate = _props3.validate;
             onChange({
                 type: 'change',
                 target: this,
-                value: rawValue,
-                rawValue: rawValue
+                value: value
             });
-            if (willValidate('change')) {
-                validate(rawValue);
+            if (this.needValidate('change')) {
+                validate(value);
             }
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             var value = nextProps.value;
             if (nextProps.multiline && this.props.value !== value) {
                 this.syncTextareaHeight();
@@ -95,14 +92,17 @@ define('melon/TextBox', [
                 this.setState({ isFloating: nextIsFloating });
             }
         },
-        syncTextareaHeight: function syncTextareaHeight() {
+        syncTextareaHeight: function () {
             var input = this.input;
             if (input) {
                 input.style.height = 'auto';
                 input.style.height = input.scrollHeight + 'px';
             }
         },
-        renderFloatingLabel: function renderFloatingLabel(floatingLabel, isFloating, isFocus) {
+        needValidate: function (eventName) {
+            return this.props.validateEvents.indexOf(eventName) !== -1;
+        },
+        renderFloatingLabel: function (floatingLabel, isFloating, isFocus) {
             if (!floatingLabel) {
                 return null;
             }
@@ -112,28 +112,26 @@ define('melon/TextBox', [
                 label: floatingLabel
             });
         },
-        render: function render() {
+        render: function () {
             var _this = this;
             var onFocus = this.onFocus;
             var onBlur = this.onBlur;
             var onChange = this.onChange;
             var props = this.props;
-            var renderValidateMessage = props.renderValidateMessage;
             var floatingLabel = props.floatingLabel;
             var className = props.className;
-            var getStateClassName = props.getStateClassName;
             var value = props.value;
+            var validity = props.validity;
             var rest = babelHelpers.objectWithoutProperties(props, [
-                'renderValidateMessage',
                 'floatingLabel',
                 'className',
-                'getStateClassName',
-                'value'
+                'value',
+                'validity'
             ]);
             var _state2 = this.state;
             var isFocus = _state2.isFocus;
             var isFloating = _state2.isFloating;
-            var statefulClassName = cxBuilder.resolve(props).addState({
+            var statefulClassName = cx(props).addStates({
                 focus: isFocus,
                 floating: isFloating,
                 fulfilled: !!value
@@ -149,12 +147,16 @@ define('melon/TextBox', [
                         _this.input = ReactDOM.findDOMNode(input);
                     }
                 }
-            })), renderValidateMessage());
+            })), React.createElement(Validity, { validity: validity }));
         }
     });
     TextBox.defaultProps = {
         value: '',
-        defaultValue: ''
+        defaultValue: '',
+        validateEvents: [
+            'change',
+            'blur'
+        ]
     };
     var PropTypes = React.PropTypes;
     TextBox.propTypes = {
@@ -171,5 +173,5 @@ define('melon/TextBox', [
         onFocus: PropTypes.func,
         onBlur: PropTypes.func
     };
-    module.exports = createInputComponent('Textbox', TextBox);
+    module.exports = require('./createInputComponent').create(TextBox);
 });

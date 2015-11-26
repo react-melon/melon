@@ -4,14 +4,14 @@ define('melon/ScrollView', [
     'module',
     './babelHelpers',
     'react',
-    './Component',
     './scrollview/Bar',
+    './common/util/cxBuilder',
     'underscore'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     var React = require('react');
-    var Component = require('./Component');
     var Bar = require('./scrollview/Bar');
+    var cx = require('./common/util/cxBuilder').create('scrollview');
     var _ = require('underscore');
     var DIRECTIONS = {
         vertical: 'deltaY',
@@ -21,30 +21,22 @@ define('melon/ScrollView', [
         vertical: 'offsetHeight',
         horizontal: 'offsetWidth'
     };
-    var ScrollView = function (_Component) {
-        babelHelpers.inherits(ScrollView, _Component);
-        babelHelpers.createClass(ScrollView, null, [{
-                key: 'displayName',
-                value: 'ScrollView',
-                enumerable: true
-            }]);
-        function ScrollView(props) {
-            babelHelpers.classCallCheck(this, ScrollView);
-            _Component.call(this, props);
-            this.state = {
-                position: {
-                    vertical: 0,
-                    horizontal: 0
-                }
-            };
-            this.onWheel = this.onWheel.bind(this);
+    var ScrollView = React.createClass({
+        displayName: 'ScrollView',
+        getInitialState: function () {
             this.thumbSize = {
                 vertical: 0,
                 horizontal: 0
             };
             this.timer = null;
-        }
-        ScrollView.prototype.componentDidMount = function componentDidMount() {
+            return {
+                position: {
+                    vertical: 0,
+                    horizontal: 0
+                }
+            };
+        },
+        componentDidMount: function () {
             this.updateContentSize();
             this.setState({
                 position: {
@@ -52,16 +44,11 @@ define('melon/ScrollView', [
                     horizontal: 0
                 }
             });
-        };
-        ScrollView.prototype.componentDidUpdate = function componentDidUpdate() {
+        },
+        componentDidUpdate: function () {
             this.updateContentSize();
-        };
-        ScrollView.prototype.getVariants = function getVariants(props) {
-            var variants = _Component.prototype.getVariants.call(this, props);
-            variants = variants.concat(this.getDirections());
-            return variants;
-        };
-        ScrollView.prototype.updateContentSize = function updateContentSize() {
+        },
+        updateContentSize: function () {
             var _refs = this.refs;
             var main = _refs.main;
             var content = _refs.content;
@@ -73,8 +60,8 @@ define('melon/ScrollView', [
                 var top = Math.round(position[key] * contentSize * (1 - mainSize / contentSize));
                 content.style[key === 'vertical' ? 'top' : 'left'] = -top + 'px';
             }, this);
-        };
-        ScrollView.prototype.onAction = function onAction(direction, e) {
+        },
+        onAction: function (direction, e) {
             var action = e.action;
             var position = e.position;
             switch (action) {
@@ -84,8 +71,8 @@ define('melon/ScrollView', [
                 this.setScrollPercent(pos);
                 break;
             }
-        };
-        ScrollView.prototype.onWheel = function onWheel(e) {
+        },
+        onWheel: function (e) {
             var directions = this.getDirections();
             var wheelSpeed = this.props.wheelSpeed;
             var current = this.state.position;
@@ -101,8 +88,8 @@ define('melon/ScrollView', [
             if (directions.length === 2) {
                 e.preventDefault();
             }
-        };
-        ScrollView.prototype.setScrollPercent = function setScrollPercent(percent) {
+        },
+        setScrollPercent: function (percent) {
             var position = this.state.position;
             _.each(Object.keys(percent), function (key) {
                 var pos = percent[key];
@@ -120,27 +107,12 @@ define('melon/ScrollView', [
                     target: this
                 });
             });
-        };
-        ScrollView.prototype.getDirections = function getDirections() {
+        },
+        getDirections: function () {
             var direction = this.props.direction;
             return direction === 'both' ? Object.keys(DIRECTIONS) : [direction];
-        };
-        ScrollView.prototype.render = function render() {
-            var props = this.props;
-            var children = props.children;
-            var others = props.others;
-            var styles = _.pick(props, 'height', 'width');
-            return React.createElement('div', babelHelpers._extends({}, others, {
-                className: this.getClassName(),
-                style: styles,
-                onWheel: this.onWheel,
-                ref: 'main'
-            }), this.renderScrollBar(), React.createElement('div', {
-                ref: 'content',
-                className: this.getPartClassName('main')
-            }, children));
-        };
-        ScrollView.prototype.renderScrollBar = function renderScrollBar() {
+        },
+        renderScrollBar: function () {
             var directions = this.getDirections();
             var position = this.state.position;
             return directions.map(function (dir, index) {
@@ -156,9 +128,23 @@ define('melon/ScrollView', [
                     direction: dir
                 });
             }, this);
-        };
-        return ScrollView;
-    }(Component);
+        },
+        render: function () {
+            var props = this.props;
+            var children = props.children;
+            var others = props.others;
+            var styles = _.pick(props, 'height', 'width');
+            return React.createElement('div', babelHelpers._extends({}, others, {
+                className: cx(props).addVariants(this.getDirections()).build(),
+                style: styles,
+                onWheel: this.onWheel,
+                ref: 'main'
+            }), this.renderScrollBar(), React.createElement('div', {
+                ref: 'content',
+                className: cx().part('main').build()
+            }, children));
+        }
+    });
     var PropTypes = React.PropTypes;
     ScrollView.propTypes = {
         direction: PropTypes.oneOf([

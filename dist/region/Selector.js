@@ -2,31 +2,16 @@ define('melon/region/Selector', [
     'require',
     'exports',
     'module',
-    '../babelHelpers',
     'react',
-    '../common/util/classname',
     '../Icon',
-    '../Component'
+    '../common/util/cxBuilder'
 ], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var cx = require('../common/util/classname');
     var Icon = require('../Icon');
-    var Component = require('../Component');
-    var RegionSelector = function (_Component) {
-        babelHelpers.inherits(RegionSelector, _Component);
-        babelHelpers.createClass(RegionSelector, null, [{
-                key: 'displayName',
-                value: 'RegionSelector',
-                enumerable: true
-            }]);
-        function RegionSelector(props) {
-            babelHelpers.classCallCheck(this, RegionSelector);
-            _Component.call(this, props);
-            this.type = 'region-selector';
-            this.onClick = this.onClick.bind(this);
-        }
-        RegionSelector.prototype.onClick = function onClick(e) {
+    var cx = require('../common/util/cxBuilder').create('RegionSelector');
+    var RegionSelector = React.createClass({
+        displayName: 'RegionSelector',
+        onClick: function (e) {
             var _props = this.props;
             var onChange = _props.onChange;
             var checked = _props.checked;
@@ -34,8 +19,12 @@ define('melon/region/Selector', [
                 value: !checked,
                 target: this
             });
-        };
-        RegionSelector.prototype.render = function render() {
+        },
+        getIcon: function (isChecked) {
+            var icons = RegionSelector.Icons;
+            return icons[isChecked ? 'checked' : 'unchecked'];
+        },
+        render: function () {
             var _props2 = this.props;
             var checked = _props2.checked;
             var disabled = _props2.disabled;
@@ -44,7 +33,7 @@ define('melon/region/Selector', [
             var name = _props2.name;
             var label = _props2.label;
             var id = _props2.id;
-            var className = cx.create(this.getClassName(), { 'state-checked': checked });
+            var className = cx(this.props).addStates({ checked: checked }).build();
             return React.createElement('label', {
                 className: className,
                 'data-region-id': id,
@@ -56,13 +45,8 @@ define('melon/region/Selector', [
                 value: value,
                 name: name
             }) : null, React.createElement(Icon, { icon: this.getIcon(checked) }), label);
-        };
-        RegionSelector.prototype.getIcon = function getIcon(isChecked) {
-            var icons = RegionSelector.Icons;
-            return icons[isChecked ? 'checked' : 'unchecked'];
-        };
-        return RegionSelector;
-    }(Component);
+        }
+    });
     RegionSelector.defaultProps = { hasInput: false };
     var PropTypes = React.PropTypes;
     RegionSelector.propTypes = {

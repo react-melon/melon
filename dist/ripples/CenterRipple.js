@@ -18,27 +18,29 @@ define('melon/ripples/CenterRipple', [
     var TransitionMotion = _require.TransitionMotion;
     var CenterRipple = React.createClass({
         displayName: 'CenterRipple',
-        getInitialState: function getInitialState() {
-            this.state = { now: 't' + 0 };
+        getInitialState: function () {
+            return { now: 't' + 0 };
         },
-        defaultProps: {
-            opacity: 0.5,
-            scale: 2
+        getDefaultProps: function () {
+            return {
+                opacity: 0.5,
+                scale: 2
+            };
         },
         propTypes: {
-            opacity: PropTypes.number,
-            scale: PropTypes.number,
+            opacity: PropTypes.number.isRequired,
+            scale: PropTypes.number.isRequired,
             flag: PropTypes.bool
         },
-        animate: function animate() {
+        animate: function () {
             this.setState({ now: 't' + Date.now() });
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             if (nextProps.flag === !this.props.flag) {
                 this.animate();
             }
         },
-        willLeave: function willLeave(key, valOfKey) {
+        willLeave: function (key, valOfKey) {
             return babelHelpers._extends({}, valOfKey, {
                 opacity: spring(0, [
                     60,
@@ -50,7 +52,7 @@ define('melon/ripples/CenterRipple', [
                 ])
             });
         },
-        render: function render() {
+        render: function () {
             var _styles, _this = this;
             var now = this.state.now;
             var styles = (_styles = {}, _styles[now] = {
@@ -58,7 +60,7 @@ define('melon/ripples/CenterRipple', [
                 scale: spring(0)
             }, _styles);
             var className = cx(this.props).build();
-            var circleClassName = cx().part('circle');
+            var circleClassName = cx().part('circle').build();
             return React.createElement(TransitionMotion, {
                 willLeave: this.willLeave,
                 styles: styles

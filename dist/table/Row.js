@@ -4,89 +4,58 @@ define('melon/table/Row', [
     'module',
     '../babelHelpers',
     'react',
-    './Cell',
-    '../Component'
+    '../common/util/cxBuilder',
+    './Cell'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
+    var cx = require('../common/util/cxBuilder').create('TableRow');
     var TableCell = require('./Cell');
-    var Component = require('../Component');
-    var TableRow = function (_Component) {
-        babelHelpers.inherits(TableRow, _Component);
-        babelHelpers.createClass(TableRow, null, [{
-                key: 'displayName',
-                value: 'TableRow',
-                enumerable: true
-            }]);
-        function TableRow(props) {
-            babelHelpers.classCallCheck(this, TableRow);
-            _Component.call(this, props);
-            this.onClick = this.onClick.bind(this);
-            this.onDoubleClick = this.onDoubleClick.bind(this);
-            this.onMouseDown = this.onMouseDown.bind(this);
-            this.onMouseEnter = this.onMouseEnter.bind(this);
-            this.onMouseLeave = this.onMouseLeave.bind(this);
-        }
-        TableRow.prototype.render = function render() {
-            var _this = this;
+    var TableRow = React.createClass({
+        displayName: 'TableRow',
+        renderCell: function (columnData, index) {
             var _props = this.props;
-            var onClick = _props.onClick;
-            var onDoubleClick = _props.onDoubleClick;
-            var onMouseDown = _props.onMouseDown;
-            var onMouseEnter = _props.onMouseEnter;
-            var onMouseLeave = _props.onMouseLeave;
-            var columns = _props.columns;
-            var tableWidth = _props.tableWidth;
-            return React.createElement('div', {
-                className: this.getClassName(),
-                onClick: onClick ? this.onClick : null,
-                onDoubleClick: onDoubleClick ? this.onDoubleClick : null,
-                onMouseDown: onMouseDown ? this.onMouseDown : null,
-                onMouseEnter: onMouseEnter ? this.onMouseEnter : null,
-                onMouseLeave: onMouseLeave ? this.onMouseLeave : null,
-                style: { width: tableWidth ? tableWidth - 2 : null }
-            }, columns.map(function (column, index) {
-                return _this.renderCell(column.props, index);
-            }));
-        };
-        TableRow.prototype.renderCell = function renderCell(columnData, index) {
-            var props = this.props;
-            var part = props.part;
-            var cellKey = columnData.dataKey;
-            var data = props.data;
-            var cellData = part === 'header' || part === 'footer' ? columnData[part] : data[cellKey];
+            var part = _props.part;
+            var data = _props.data;
+            var height = _props.height;
+            var rowIndex = _props.rowIndex;
+            var width = columnData.width;
+            var align = columnData.align;
+            var dataKey = columnData.dataKey;
+            var cellRenderer = columnData.cellRenderer;
+            var cellData = part === 'header' || part === 'footer' ? columnData[part] : data[dataKey];
             return React.createElement(TableCell, {
                 part: part,
-                height: props.height,
-                width: columnData.width,
-                align: columnData.align,
-                key: columnData.dataKey || part,
-                rowIndex: props.rowIndex,
+                height: height,
+                width: width,
+                align: align,
+                key: dataKey || part,
+                rowIndex: rowIndex,
                 columnIndex: index,
                 columnData: columnData,
                 rowData: data,
-                cellKey: cellKey,
+                cellKey: dataKey,
                 cellData: cellData,
-                cellRenderer: columnData.cellRenderer
+                cellRenderer: cellRenderer
             });
-        };
-        TableRow.prototype.onClick = function onClick(e) {
-            this.props.onClick(e, this.props.index, this.props.data);
-        };
-        TableRow.prototype.onDoubleClick = function onDoubleClick(e) {
-            this.props.onDoubleClick(e, this.props.index, this.props.data);
-        };
-        TableRow.prototype.onMouseEnter = function onMouseEnter(e) {
-            this.props.onMouseEnter(e, this.props.index, this.props.data);
-        };
-        TableRow.prototype.onMouseLeave = function onMouseLeave(e) {
-            this.props.onMouseLeave(e, this.props.index, this.props.data);
-        };
-        TableRow.prototype.onMouseDown = function onMouseDown(e) {
-            this.props.onMouseDown(e, this.props.index, this.props.data);
-        };
-        return TableRow;
-    }(Component);
+        },
+        render: function () {
+            var _this = this;
+            var _props2 = this.props;
+            var columns = _props2.columns;
+            var tableWidth = _props2.tableWidth;
+            var rest = babelHelpers.objectWithoutProperties(_props2, [
+                'columns',
+                'tableWidth'
+            ]);
+            return React.createElement('div', babelHelpers._extends({}, rest, {
+                className: cx(this.props).build(),
+                style: { width: tableWidth ? tableWidth - 2 : null }
+            }), columns.map(function (column, index) {
+                return _this.renderCell(column.props, index);
+            }));
+        }
+    });
     var PropTypes = React.PropTypes;
     TableRow.propTypes = {
         index: PropTypes.number,
@@ -99,11 +68,6 @@ define('melon/table/Row', [
             PropTypes.object,
             PropTypes.array
         ]),
-        onClick: PropTypes.func,
-        onDoubleClick: PropTypes.func,
-        onMouseEnter: PropTypes.func,
-        onMouseLeave: PropTypes.func,
-        onMouseDown: PropTypes.func,
         height: PropTypes.number.isRequired
     };
     module.exports = TableRow;

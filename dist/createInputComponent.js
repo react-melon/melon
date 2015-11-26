@@ -20,18 +20,20 @@ define('melon/createInputComponent', [
             onChange: PropTypes.func,
             validator: PropTypes.shape({ validate: PropTypes.func.isRequired })
         },
-        getDefaultProps: function getDefaultProps() {
+        getDefaultProps: function () {
             return { defaultValue: '' };
         },
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             var _props = this.props;
-            var value = _props.value;
             var name = _props.name;
             var children = _props.children;
             this.validator = this.props.validator || this.context.validator || defaultValidator;
             var pointer = this.context.pointer;
             this.pointer = name != null && pointer ? '' + this.context.pointer + name : null;
-            return { value: value != null ? value : children.props.value };
+            var _props2 = this.props;
+            var value = _props2.value;
+            var defaultValue = _props2.defaultValue;
+            return { value: value != null ? value : defaultValue };
         },
         contextTypes: {
             pointer: PropTypes.string,
@@ -40,48 +42,47 @@ define('melon/createInputComponent', [
             detachForm: PropTypes.func
         },
         childContextTypes: { pointer: PropTypes.string },
-        getChildContext: function getChildContext() {
+        getChildContext: function () {
             var pointer = this.pointer;
             return { pointer: pointer ? pointer + '/' : null };
         },
-        componentDidMount: function componentDidMount() {
+        componentDidMount: function () {
             var attachForm = this.context.attachForm;
             if (attachForm) {
                 attachForm(this);
             }
         },
-        componentWillUnmount: function componentWillUnmount() {
+        componentWillUnmount: function () {
             var detachForm = this.context.detachForm;
             if (detachForm) {
                 detachForm(this);
             }
         },
-        componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-            var props = this.props;
-            var value = nextProps.value;
+        componentWillReceiveProps: function (nextProps) {
             var customValidity = nextProps.customValidity;
-            if (value !== props.value || customValidity !== props.customValidity) {
+            var value = nextProps.value;
+            if (value !== this.getValue() || customValidity !== this.props.customValidity) {
                 this.setState({
                     value: value,
                     validity: customValidity ? this.validator.createCustomValidity(customValidity) : this.checkValidity(value)
                 });
             }
         },
-        validate: function validate(value) {
+        validate: function (value) {
             var validity = this.checkValidity(value);
             this.setState({ validity: validity });
             return validity;
         },
-        checkValidity: function checkValidity(value) {
+        checkValidity: function (value) {
             return this.validator.validate(value, this);
         },
-        onChange: function onChange(e) {
-            var value = e.value;
+        onChange: function (e) {
             var onChange = this.props.onChange;
             if (onChange) {
                 onChange(e);
                 return;
             }
+            var value = e.value;
             if (value === this.state.value) {
                 return;
             }
@@ -91,7 +92,7 @@ define('melon/createInputComponent', [
                 validity: customValidity ? this.validator.createCustomValidity(customValidity) : this.checkValidity(value)
             });
         },
-        getValue: function getValue() {
+        getValue: function () {
             var child = this.child;
             if (child) {
                 if (typeof child.getValue === 'function') {
@@ -103,7 +104,7 @@ define('melon/createInputComponent', [
             }
             return this.state.value;
         },
-        render: function render() {
+        render: function () {
             var _this = this;
             var props = this.props;
             var onChange = this.onChange;
@@ -124,7 +125,7 @@ define('melon/createInputComponent', [
                 validate: validate,
                 value: value,
                 onChange: onChange,
-                ref: function ref(child) {
+                ref: function (child) {
                     if (child) {
                         _this.child = child;
                     }
@@ -139,10 +140,10 @@ define('melon/createInputComponent', [
     exports.create = function (Component) {
         var InputComponentWrapper = React.createClass({
             displayName: Component.displayName + 'InputWrapper',
-            render: function render() {
+            render: function () {
                 var props = this.props;
                 var children = props.children;
-                return React.createElement(InputComponent, props, React.createElement(Component, null, children));
+                return React.createElement(InputComponent, props, React.createElement(Component, props, children));
             }
         });
         InputComponentWrapper.defaultProps = Component.defaultProps;

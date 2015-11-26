@@ -4,49 +4,56 @@ define('melon/tree/TreeNode', [
     'module',
     '../babelHelpers',
     'react',
-    '../common/util/classname',
-    '../Icon',
-    '../Component'
+    '../common/util/cxBuilder',
+    '../Icon'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var cx = require('../common/util/classname');
+    var cx = require('../common/util/cxBuilder').create('TreeNode');
     var Icon = require('../Icon');
-    var Component = require('../Component');
-    var TreeNode = function (_Component) {
-        babelHelpers.inherits(TreeNode, _Component);
-        babelHelpers.createClass(TreeNode, null, [{
-                key: 'displayName',
-                value: 'TreeNode',
-                enumerable: true
-            }]);
-        function TreeNode(props) {
-            babelHelpers.classCallCheck(this, TreeNode);
-            _Component.call(this, props);
-            this.state = { expand: props.expand || false };
-            this.handleOnClick = this.handleOnClick.bind(this);
-        }
-        TreeNode.prototype.getVariants = function getVariants(props) {
-            var variants = _Component.prototype.getVariants.call(this, props);
-            variants.push('level' + props.level);
-            return variants;
-        };
-        TreeNode.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+    var PropTypes = React.PropTypes;
+    var TreeNode = React.createClass({
+        displayName: 'TreeNode',
+        propTypes: {
+            label: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.element
+            ]),
+            expandIcon: PropTypes.string,
+            unexpandIcon: PropTypes.string,
+            expand: PropTypes.bool,
+            selected: PropTypes.bool,
+            level: PropTypes.number
+        },
+        getDefaultProps: function () {
+            return {
+                label: '',
+                expand: false,
+                selected: false
+            };
+        },
+        getInitialState: function () {
+            var props = this.props;
+            return { expand: props.expand || false };
+        },
+        shouldComponentUpdate: function (nextProps, nextState) {
+            return nextState.expand !== this.state.expand;
+        },
+        componentWillReceiveProps: function (props) {
             if (props.expand === this.props.expand) {
                 return;
             }
             this.setState({ expand: props.expand });
-        };
-        TreeNode.prototype.handleOnClick = function handleOnClick(e) {
+        },
+        handleOnClick: function (e) {
             var state = this.state;
             var expand = state.expand;
             this.setState({ expand: !expand });
-        };
-        TreeNode.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
-            return nextState.expand !== this.state.expand;
-        };
-        TreeNode.prototype.render = function render() {
+        },
+        render: function () {
             var props = this.props;
+            var label = props.label;
+            var others = babelHelpers.objectWithoutProperties(props, ['label']);
             var expand = this.state.expand;
             var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
             var children = props.children;
@@ -70,10 +77,10 @@ define('melon/tree/TreeNode', [
                         key: 'label',
                         'data-role': 'tree-node-label',
                         style: labelStyle,
-                        className: cx.create(this.getPartClassName('label'), cx.createVariantClass(['parent']), cx.createStateClass({ expand: expand }))
-                    }, props.label),
+                        className: cx().part('label').addVariants('parent').addStates({ expand: expand }).build()
+                    }, label),
                     React.createElement('ul', {
-                        className: cx.create(this.getPartClassName('root'), cx.createStateClass({ expand: expand })),
+                        className: cx().part('root').addStates({ expand: expand }).build(),
                         key: 'root',
                         ref: 'list'
                     }, children)
@@ -84,35 +91,18 @@ define('melon/tree/TreeNode', [
                     key: 'label',
                     'data-role': 'tree-node-label',
                     style: labelStyle,
-                    className: this.getPartClassName('label')
-                }, props.label);
+                    className: cx().part('label').build()
+                }, label);
             }
-            return React.createElement('li', babelHelpers._extends({}, props, {
+            return React.createElement('li', babelHelpers._extends({}, others, {
                 'data-role': 'tree-node',
-                className: this.getClassName()
+                className: cx(props).addVariants('level' + props.level).build()
             }), children);
-        };
-        return TreeNode;
-    }(Component);
+        }
+    });
     TreeNode.ICON = [
         'chevron-right',
         'expand-more'
     ];
-    TreeNode.defaultProps = {
-        label: '',
-        expand: false,
-        selected: false
-    };
-    TreeNode.propTypes = {
-        label: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.element
-        ]),
-        expandIcon: React.PropTypes.string,
-        unexpandIcon: React.PropTypes.string,
-        expand: React.PropTypes.bool,
-        selected: React.PropTypes.bool,
-        level: React.PropTypes.number
-    };
     module.exports = TreeNode;
 });

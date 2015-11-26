@@ -12,7 +12,7 @@ define('melon/Mask', [
     var PropTypes = React.PropTypes;
     var Mask = React.createClass({
         displayName: 'Mask',
-        getInitialState: function getInitialState() {
+        getInitialState: function () {
             this.originalBodyOverflow = '';
             return {};
         },
@@ -20,13 +20,13 @@ define('melon/Mask', [
             autoLockScrolling: PropTypes.bool,
             show: PropTypes.bool
         },
-        getDefaultProps: function getDefaultProps() {
+        getDefaultProps: function () {
             return { autoLockScrolling: true };
         },
-        componentDidMount: function componentDidMount() {
+        componentDidMount: function () {
             this.originalBodyOverflow = document.getElementsByTagName('body')[0].style.oveflow;
         },
-        componentDidUpdate: function componentDidUpdate() {
+        componentDidUpdate: function () {
             var _props = this.props;
             var autoLockScrolling = _props.autoLockScrolling;
             var show = _props.show;
@@ -35,18 +35,18 @@ define('melon/Mask', [
             }
             show ? this.preventScrolling() : this.allowScrolling();
         },
-        componentWillUnmount: function componentWillUnmount() {
+        componentWillUnmount: function () {
             this.allowScrolling();
         },
-        preventScrolling: function preventScrolling() {
+        preventScrolling: function () {
             var body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
         },
-        allowScrolling: function allowScrolling() {
+        allowScrolling: function () {
             var body = document.getElementsByTagName('body')[0];
             body.style.overflow = this.originalBodyOverflow || '';
         },
-        render: function render() {
+        render: function () {
             var props = this.props;
             var show = props.show;
             return React.createElement('div', babelHelpers._extends({}, props, { className: cx(props).addStates({ show: show }).build() }));

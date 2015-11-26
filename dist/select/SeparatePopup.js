@@ -4,38 +4,30 @@ define('melon/select/SeparatePopup', [
     'module',
     '../babelHelpers',
     'react',
-    '../Component',
+    '../common/util/cxBuilder',
     'react-motion',
     '../common/util/dom'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
-    var Component = require('../Component');
+    var cx = require('../common/util/cxBuilder').create('SeparatePopup');
     var _require = require('react-motion');
     var Motion = _require.Motion;
     var spring = _require.spring;
     var domUtil = require('../common/util/dom');
-    var SelectSeparatePopup = function (_Component) {
-        babelHelpers.inherits(SelectSeparatePopup, _Component);
-        babelHelpers.createClass(SelectSeparatePopup, null, [{
-                key: 'displayName',
-                value: 'SelectSeparatePopup',
-                enumerable: true
-            }]);
-        function SelectSeparatePopup(props) {
+    var SelectSeparatePopup = React.createClass({
+        displayName: 'SelectSeparatePopup',
+        getInitialState: function () {
             var _this = this;
-            babelHelpers.classCallCheck(this, SelectSeparatePopup);
-            _Component.call(this, props);
-            this.onClick = this.onClick.bind(this);
             this.onWindowResize = function () {
-                var handler = _this.onWindowResize.bind(_this);
+                var handler = _this.onWindowResize;
                 return function () {
                     clearTimeout(_this.windowResizeTimer);
                     _this.windowResizeTimer = setTimeout(handler, 500);
                 };
             }();
             this.id = Date.now();
-            this.state = babelHelpers._extends({}, this.state, {
+            return {
                 styles: {
                     top: 0,
                     left: -5000,
@@ -43,50 +35,21 @@ define('melon/select/SeparatePopup', [
                     opacity: 0,
                     width: 0
                 }
-            });
-        }
-        SelectSeparatePopup.prototype.componentDidMount = function componentDidMount() {
+            };
+        },
+        componentDidMount: function () {
             domUtil.on(document.body, 'click', this.onClick);
-        };
-        SelectSeparatePopup.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+        },
+        componentWillReceiveProps: function (nextProps) {
             var open = nextProps.open;
             domUtil[open ? 'on' : 'off'](window, 'resize', this.onWindowResize);
             this.setState(babelHelpers._extends({}, this.state, { styles: this.getStyle(open) }));
-        };
-        SelectSeparatePopup.prototype.componentWillUnmount = function componentWillUnmount() {
+        },
+        componentWillUnmount: function () {
             domUtil.off(window, 'resize', this.onWindowResize);
             domUtil.off(document.body, 'click', this.onClick);
-        };
-        SelectSeparatePopup.prototype.render = function render() {
-            var _this2 = this;
-            var children = this.props.children;
-            var styles = this.state.styles;
-            var className = this.getPartClassName('content');
-            var _styles = styles;
-            var height = _styles.height;
-            var opacity = _styles.opacity;
-            styles = babelHelpers._extends({}, styles, {
-                height: spring(height, [
-                    120,
-                    15
-                ]),
-                opacity: spring(opacity, [
-                    120,
-                    15
-                ])
-            });
-            return React.createElement(Motion, { style: styles }, function (style) {
-                style = babelHelpers._extends({}, style, { visibility: style.opacity < 0.1 ? 'hidden' : 'visible' });
-                return React.createElement('div', {
-                    ref: function (main) {
-                        _this2.main = main;
-                    },
-                    className: _this2.getClassName(),
-                    style: style
-                }, React.createElement('div', { className: className }, children));
-            });
-        };
-        SelectSeparatePopup.prototype.getStyle = function getStyle(open) {
+        },
+        getStyle: function (open) {
             if (!open) {
                 return babelHelpers._extends({}, this.state.styles, {
                     height: 0,
@@ -136,8 +99,8 @@ define('melon/select/SeparatePopup', [
                 height: popupPosition.height,
                 width: Math.max(targetPosition.width, popupPosition.width)
             };
-        };
-        SelectSeparatePopup.prototype.onClick = function onClick(e) {
+        },
+        onClick: function (e) {
             var target = e.target;
             var main = this.main;
             var _props = this.props;
@@ -146,16 +109,44 @@ define('melon/select/SeparatePopup', [
             if (open && main !== target && !domUtil.contains(main, target)) {
                 onHide && onHide();
             }
-        };
-        SelectSeparatePopup.prototype.onWindowResize = function onWindowResize() {
+        },
+        onWindowResize: function () {
             this.setState(babelHelpers._extends({}, this.state, { styles: this.getStyle(true) }));
-        };
-        return SelectSeparatePopup;
-    }(Component);
+        },
+        render: function () {
+            var _this2 = this;
+            var children = this.props.children;
+            var className = cx(this.props).build();
+            var contentClassName = cx().part('content').build();
+            var styles = this.state.styles;
+            var height = styles.height;
+            var opacity = styles.opacity;
+            return React.createElement(Motion, {
+                style: babelHelpers._extends({}, styles, {
+                    height: spring(height, [
+                        120,
+                        15
+                    ]),
+                    opacity: spring(opacity, [
+                        120,
+                        15
+                    ])
+                })
+            }, function (style) {
+                return React.createElement('div', {
+                    className: className,
+                    style: babelHelpers._extends({}, style, { visibility: style.opacity < 0.1 ? 'hidden' : 'visible' }),
+                    ref: function (main) {
+                        _this2.main = main;
+                    }
+                }, React.createElement('div', { className: contentClassName }, children));
+            });
+        }
+    });
     var PropTypes = React.PropTypes;
-    SelectSeparatePopup.propTypes = babelHelpers._extends({}, Component.propTypes, {
+    SelectSeparatePopup.propTypes = {
         target: PropTypes.object.isRequired,
         onHide: PropTypes.func.isRequired
-    });
+    };
     module.exports = SelectSeparatePopup;
 });
