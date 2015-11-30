@@ -34,8 +34,10 @@ class RippleCircle extends React.Component {
                 style={{
                     ...style,
                     opacity,
-                    transform: `scale(${scale})`,
-                    WebkitTransform: `scale(${scale})`
+                    WebkitTransform: `scale(${scale})`,
+                    MozTransform: `scale(${scale})`,
+                    msTransform: `scale(${scale})`,
+                    transform: `scale(${scale})`
                 }} />
         );
 

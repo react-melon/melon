@@ -6,7 +6,6 @@
 const React = require('react');
 const Dialog = require('../Dialog');
 const Button = require('../Button');
-const cx = require('../common/util/cxBuilder').create('Alert');
 
 const Alert = React.createClass({
 
@@ -14,6 +13,7 @@ const Alert = React.createClass({
 
     propTypes: {
         ...Dialog.propTypes,
+        onConfirm: React.PropTypes.func,
         buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
     },
 
@@ -26,9 +26,9 @@ const Alert = React.createClass({
         };
     },
 
-    onAlertSubmit() {
-        const {onHide} = this.props;
-        onHide();
+    onConfirm() {
+        const {onConfirm} = this.props;
+        onConfirm && onConfirm();
     },
 
     renderAction() {
@@ -39,15 +39,13 @@ const Alert = React.createClass({
         } = this.props;
 
         return (
-            <div className={cx().part('actions').build()} >
-                <Button
-                    label="确定"
-                    key="submit"
-                    size={size}
-                    type="button"
-                    onClick={this.onAlertSubmit}
-                    variants={buttonVariants} />
-            </div>
+            <Button
+                label="确定"
+                key="submit"
+                size={size}
+                type="button"
+                onClick={this.onConfirm}
+                variants={buttonVariants} />
         );
     },
 
@@ -61,6 +59,7 @@ const Alert = React.createClass({
         return (
             <Dialog
                 {...rest}
+                ref="dialog"
                 actions={this.renderAction()}
                 variants={[...(variants || []), 'alert']} />
         );

@@ -72,7 +72,7 @@ var View = React.createClass({
                 <div className="row">
                     <Title level={4}>Alert</Title>
                     <Button variants={['raised', 'primary']} onClick={this.dialog5Show}>弹出窗口</Button>
-                    <Alert open={this.state.dialog5}  onHide={this.dialog5Hide} >This is Content.</Alert>
+                    <Alert open={this.state.dialog5}  onConfirm={this.dialog5Hide} >This is Content.</Alert>
                 </div>
 
                 <div className="row">

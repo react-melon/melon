@@ -17,10 +17,12 @@ const Tab = Tabs.Tab;
 
 expect.extend(expectJSX);
 
+/* globals before, after */
 
 describe('Tabs component', function () {
 
     let renderer;
+    let container;
 
     jsdom();
 
@@ -92,11 +94,11 @@ describe('Tabs component', function () {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
-    it('Tabs 功能', function (done) {
+    it('Tabs functions', function (done) {
 
         let firstClick = true;
 
-        const TabsExample = React.createClass({
+        const TestComponent = React.createClass({
 
             getInitialState() {
                 return {
@@ -155,10 +157,10 @@ describe('Tabs component', function () {
             }
         });
 
-        let container = document.createElement('div');
+        container = document.createElement('div');
         document.body.appendChild(container);
 
-        ReactDOM.render(<TabsExample />, container);
+        ReactDOM.render(<TestComponent />, container);
 
     });
 
