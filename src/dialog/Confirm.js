@@ -6,7 +6,6 @@
 const React = require('react');
 const Dialog = require('../Dialog');
 const Button = require('../Button');
-const cx = require('../common/util/cxBuilder').create('Confirm');
 
 const Confirm = React.createClass({
 
@@ -19,7 +18,6 @@ const Confirm = React.createClass({
         const callback = confirm ? onConfirm : onCancel;
 
         callback && callback();
-
     },
 
     renderAction() {
@@ -29,24 +27,22 @@ const Confirm = React.createClass({
             size
         } = this.props;
 
-        return (
-            <div className={cx().part('actions').build()}>
-                <Button
-                    label="取消"
-                    key="cancel"
-                    size={size}
-                    type="button"
-                    onClick={this.onConfirmSubmit.bind(this, false)}
-                    variants={buttonVariants} />
-                <Button
-                    label="确定"
-                    key="submit"
-                    type="button"
-                    size={size}
-                    onClick={this.onConfirmSubmit.bind(this, true)}
-                    variants={buttonVariants} />
-            </div>
-        );
+        return [
+            <Button
+                label="取消"
+                key="cancel"
+                size={size}
+                type="button"
+                onClick={this.onConfirmSubmit.bind(this, false)}
+                variants={[...buttonVariants, 'cancel']} />,
+            <Button
+                label="确定"
+                key="submit"
+                type="button"
+                size={size}
+                onClick={this.onConfirmSubmit.bind(this, true)}
+                variants={[...buttonVariants, 'confirm']} />
+        ];
     },
 
     render() {
@@ -72,6 +68,7 @@ const {PropTypes} = React;
 Confirm.propTypes = {
     ...Dialog.propTypes,
     onConfirm: PropTypes.func,
+    onCancel: PropTypes.func,
     buttonVariants: PropTypes.arrayOf(PropTypes.string)
 };
 
