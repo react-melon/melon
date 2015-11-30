@@ -10,6 +10,7 @@ module.exports = {
         'Button',
         'Calendar',
         'Dialog',
+        'Drawer',
         'Form',
         'Grid',
         'Icon',

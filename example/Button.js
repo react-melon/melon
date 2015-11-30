@@ -126,6 +126,32 @@ var View = React.createClass({
                     </div>
                 </div>
 
+                <Title level={5}>Icon 按钮</Title>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-12">
+                        <Button>
+                            <Icon icon="file-upload" />
+                        </Button>
+                        <Button>
+                            <Icon icon="file-download" />
+                        </Button>
+                    </div>
+                </div>
+
+                <Title level={5}>Floating 按钮</Title>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-12">
+                        <Button variants={['floating', 'success']}>
+                            <Icon icon="add" />
+                        </Button>
+                        <Button variants={['floating', 'primary']}>
+                            <Icon icon="edit" />
+                        </Button>
+                    </div>
+                </div>
+
                 <Title level={5}>带 Icon 的按钮</Title>
 
                 <div className="melon-row">

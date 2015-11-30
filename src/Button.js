@@ -17,15 +17,22 @@ function Button(props) {
         ...others
     } = props;
 
-    const className = cx(props).addVariants({ripple: hasRipple && !disabled}).build();
+    const className = cx(props)
+        .addVariants({
+            icon: React.Children.count(children) === 1
+                && typeof children === 'object'
+                && children.type.displayName === 'Icon',
+            ripple: hasRipple && !disabled
+        })
+        .build();
 
     return (
         <button
             {...others}
             disabled={disabled}
             className={className}>
-            {hasRipple ? <TouchRipple /> : null}
             {label || children}
+            {hasRipple ? <TouchRipple /> : null}
         </button>
     );
 

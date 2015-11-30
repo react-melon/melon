@@ -24,4 +24,6 @@ Icon.propTypes = {
     icon: React.PropTypes.string.isRequired
 };
 
+Icon.displayName = 'Icon';
+
 module.exports = Icon;
