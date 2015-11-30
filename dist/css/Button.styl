@@ -59,7 +59,8 @@ melon-button-swatch($swatches, $revert = false)
     for $color-theme, $value in $-melon-button-color-themes
         &.variant-{$color-theme}
             melon-button-swatch($value)
-            &.variant-raised
+            &.variant-raised,
+            &.variant-floating
                 melon-button-swatch($value, true)
 
     &.variant-raised
@@ -68,20 +69,32 @@ melon-button-swatch($swatches, $revert = false)
             color: rgba(#000, .26) !important
             background-color: $-melon-colors.grey200 !important
 
-    .{$-melon-class-prefix}-icon
+    &.variant-floating
+        {$-melon-button-floating}
+        {$-melon-button-raised}
+        &:disabled
+            color: rgba(#000, .26) !important
+            background-color: $-melon-colors.grey200 !important
+
+        >.{$-melon-class-prefix}-touch-ripple
+            border-radius: 50%
+
+    >.{$-melon-class-prefix}-icon:first-child
+
         display: inline-block
+        width: 2em
+        height: 2em
         font-size: 1em
         line-height: 2em
         vertical-align: top
-
-        & + span
-            display: inline-block
-            margin-left: 0.5em
-            vertical-align: top
+        margin-left: -1em
 
     &.variant-icon
         padding: 0
         min-width: 2em
+
+        >.{$-melon-class-prefix}-icon
+            margin-left: 0
 
     &.variant-ripple
         position: relative
