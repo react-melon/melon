@@ -206,7 +206,7 @@ let Select = React.createClass({
                 data-value={value}
                 data-role="option"
                 data-disabled={optionDisabled}
-                title={name}
+                title={label || children}
                 onClick={this.onClickOption}>
                 {label || children}
             </div>
@@ -310,7 +310,8 @@ let Select = React.createClass({
 
 Select.defaultProps = {
     validateEvents: ['change'],
-    placeholder: '请选择'
+    placeholder: '请选择',
+    open: false
 };
 
 const {PropTypes} = React;
