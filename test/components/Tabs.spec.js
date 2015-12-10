@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
-import jsdom from 'mocha-jsdom';
 import TestUtils from 'react-addons-test-utils';
 
 import Tabs from '../../src/Tabs';
@@ -24,14 +23,18 @@ describe('Tabs component', function () {
     let renderer;
     let container;
 
-    jsdom();
-
     beforeEach(function () {
         renderer = TestUtils.createRenderer();
     });
 
     afterEach(function () {
         renderer = null;
+    });
+
+    after(function () {
+        ReactDOM.unmountComponentAtNode(container);
+        document.body.removeChild(container);
+        container = null;
     });
 
     it('Tab', function () {

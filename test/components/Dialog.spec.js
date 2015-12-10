@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
-import jsdom from 'mocha-jsdom';
 import TestUtils from 'react-addons-test-utils';
 
 import DialogWindow from '../../src/dialog/DialogWindow';
@@ -78,8 +77,6 @@ describe('Dialog Component', function () {
 });
 
 describe('Dialog functions', function () {
-
-    jsdom();
 
     let container;
 
@@ -188,6 +185,9 @@ describe('Dialog functions', function () {
                 expect(alert.className).toInclude('state-open');
                 let button = document.querySelector('button');
                 TestUtils.Simulate.click(button);
+
+                let mask = document.querySelector('.ui-mask');
+                TestUtils.Simulate.click(mask);
             },
 
             onConfirm() {
