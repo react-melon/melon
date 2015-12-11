@@ -50,8 +50,6 @@ const Tabs = React.createClass({
             return;
         }
 
-        // e.preventDefault();
-
         let {onBeforeChange, onChange} = this.props;
 
         e.selectedIndex = index;

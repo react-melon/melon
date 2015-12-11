@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
-import jsdom from 'mocha-jsdom';
 import TestUtils from 'react-addons-test-utils';
 
 import Tabs from '../../src/Tabs';
@@ -17,12 +16,12 @@ const Tab = Tabs.Tab;
 
 expect.extend(expectJSX);
 
+/* globals before, after */
 
 describe('Tabs component', function () {
 
     let renderer;
-
-    jsdom();
+    let container;
 
     beforeEach(function () {
         renderer = TestUtils.createRenderer();
@@ -30,6 +29,12 @@ describe('Tabs component', function () {
 
     afterEach(function () {
         renderer = null;
+    });
+
+    after(function () {
+        ReactDOM.unmountComponentAtNode(container);
+        document.body.removeChild(container);
+        container = null;
     });
 
     it('Tab', function () {
@@ -92,11 +97,11 @@ describe('Tabs component', function () {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
-    it('Tabs 功能', function (done) {
+    it('Tabs functions', function (done) {
 
         let firstClick = true;
 
-        const TabsExample = React.createClass({
+        const TestComponent = React.createClass({
 
             getInitialState() {
                 return {
@@ -155,10 +160,10 @@ describe('Tabs component', function () {
             }
         });
 
-        let container = document.createElement('div');
+        container = document.createElement('div');
         document.body.appendChild(container);
 
-        ReactDOM.render(<TabsExample />, container);
+        ReactDOM.render(<TestComponent />, container);
 
     });
 
