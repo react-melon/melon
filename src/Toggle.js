@@ -85,7 +85,8 @@ const Toggle = React.createClass({
 
 Toggle.defaultProps = {
     trueValue: 'on',
-    falseValue: ''
+    falseValue: '',
+    defaultValue: ''
 };
 
 const {PropTypes} = React;
