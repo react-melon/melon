@@ -24,7 +24,11 @@ function Title(props) {
 }
 
 Title.propsTypes = {
-    level: React.PropTypes.number.isRequired
+    level: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired
+};
+
+Title.defaultProps = {
+    level: 1
 };
 
 module.exports = Title;

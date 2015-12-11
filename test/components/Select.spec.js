@@ -3,9 +3,12 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
 import expect from 'expect';
-// import expectJSX from 'expect-jsx';
+
+import then from '../then';
 
 // import SeparatePopup from '../../src/select/SeparatePopup';
 // import createInputComponent from '../../src/createInputComponent';
@@ -16,11 +19,8 @@ describe('Select', function () {
 
     const Form = require('../../src/Form');
     const Select = require('../../src/Select');
-    const React = require('react');
-    const ReactDOM = require('react-dom');
-    const TestUtils = require('react-addons-test-utils');
 
-    var datasource = [
+    const datasource = [
         {value: '1', name: 'Never'},
         {value: '2', name: 'Every Night'},
         {value: '3', name: 'Weeknights'},
@@ -39,19 +39,12 @@ describe('Select', function () {
         container = null;
     });
 
-
     it('Select', done => {
 
         let select;
         let element;
 
         const TestComponent = React.createClass({
-
-            getInitialState() {
-                return {
-                    a: '1'
-                };
-            },
 
             componentDidMount() {
                 select = this.refs.form.fields[0].child;
@@ -62,27 +55,33 @@ describe('Select', function () {
 
                 TestUtils.Simulate.click(element);
 
-                setTimeout(() => {
+                then(() => {
                     expect(select.isOpen()).toBe(true);
                     TestUtils.Simulate.click(element);
-                    select.onClickOption({
-                        target: document.querySelectorAll('.ui-select-option')[2]
-                    });
-                    this.onClickOption();
-                }, 0);
-            },
+                })
+                .then(() => {
+                    expect(select.isOpen()).toBe(false);
+                    const option = document.querySelectorAll('.ui-select-option')[2];
+                    TestUtils.Simulate.click(option);
+                })
+                .then(() => {
+                    expect(select.isOpen()).toBe(false);
+                    expect(select.props.value).toBe('3');
 
-            onClickOption() {
-                expect(select.isOpen()).toBe(false);
-                expect(select.props.value).toBe('3');
-                done();
+                    const option = document.querySelectorAll('.ui-select-option')[4];
+                    TestUtils.Simulate.click(option);
+                })
+                .then(() => {
+                    expect(select.props.value).toBe('3');
+                    done();
+                });
             },
 
             render() {
 
                 return (
                     <Form ref="form">
-                        <Select name="a" defaultValue={this.state.a}>
+                        <Select name="a" defaultValue="1">
                             <optgroup label="1">
                                 {Select.createOptions(datasource)}
                             </optgroup>
