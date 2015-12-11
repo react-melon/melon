@@ -48,8 +48,8 @@ describe('Button component', function () {
 
         let expectedElement = (
             <button className="ui-button variant-ripple" disabled={false}>
-                <TouchRipple />
                 Hello
+                <TouchRipple />
             </button>
         );
 

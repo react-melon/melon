@@ -10,9 +10,15 @@ const cx = require('../common/util/cxBuilder').create('DialogWindow');
 const DialogWindow = React.createClass({
 
     propTypes: {
-        top: PropTypes.number,
+        top: PropTypes.number.isRequired,
         footer: PropTypes.element,
         title: PropTypes.element
+    },
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.top !== this.props.top
+            || nextProps.footer !== this.props.footer
+            || nextProps.title !== this.props.title;
     },
 
     render() {

@@ -76,6 +76,7 @@ exports.exclude = [
     'tool',
     'doc',
     'test',
+    'coverage',
     'module.conf',
     'node_modules',
     'dep/packages.manifest',
