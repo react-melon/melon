@@ -14,13 +14,12 @@ import Dialog from '../../src/Dialog';
 import Alert from '../../src/dialog/Alert';
 import Confirm from '../../src/dialog/Confirm';
 import Mask from '../../src/Mask';
-import {Motion, spring} from 'react-motion';
 
 expect.extend(expectJSX);
 
 /* globals before, after */
 
-describe('Dialog Component', function () {
+describe('Dialog', function () {
 
     let renderer;
 
@@ -54,21 +53,6 @@ describe('Dialog Component', function () {
                 <div />
                 Hello
                 <div />
-            </div>
-        );
-        expect(actualElement).toEqualJSX(expectedElement);
-    });
-
-    it('Dialog', function () {
-        renderer.render(<Dialog />);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <div maskClickClose={true} open={false} className="ui-dialog">
-                <Motion style={{y: spring(-80)}} />
-                <Mask
-                    autoLockScrolling={false}
-                    show={false}
-                    onClick={function noRefCheck() {}} />
             </div>
         );
         expect(actualElement).toEqualJSX(expectedElement);

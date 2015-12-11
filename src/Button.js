@@ -39,11 +39,13 @@ function Button(props) {
 }
 
 Button.defaultProps = {
-    hasRipple: true
+    hasRipple: true,
+    disabled: false
 };
 
 Button.propTypes = {
-    hasRipple: React.PropTypes.bool
+    hasRipple: React.PropTypes.bool,
+    disabled: React.PropTypes.bool
 };
 
 module.exports = Button;

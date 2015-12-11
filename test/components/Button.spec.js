@@ -9,11 +9,12 @@ import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
 import Button from '../../src/Button';
+import Icon from '../../src/Icon';
 import TouchRipple from '../../src/ripples/TouchRipple';
 
 expect.extend(expectJSX);
 
-describe('Button component', function () {
+describe('Button', function () {
 
     let renderer;
 
@@ -56,12 +57,22 @@ describe('Button component', function () {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
-    it('onClick', () => {
-        let hasClicked = false;
-        let click = () => hasClicked = true;
-        renderer.render(<Button name="John" onClick={click} />);
-        renderer.getRenderOutput().props.onClick();
-        expect(hasClicked).toBe(true);
+    it('icon button', () => {
+        renderer.render(
+            <Button hasRipple={false}>
+                <Icon icon={'haha'} />
+            </Button>
+        );
+
+        let actualElement = renderer.getRenderOutput();
+
+        let expectedElement = (
+            <button className="ui-button variant-icon" disabled={false}>
+                <Icon icon={'haha'} />
+            </button>
+        );
+
+        expect(actualElement).toEqualJSX(expectedElement);
     });
 
 });

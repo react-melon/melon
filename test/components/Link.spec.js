@@ -12,7 +12,7 @@ import Link from '../../src/Link';
 
 expect.extend(expectJSX);
 
-describe('Link component', function () {
+describe('Link', function () {
 
     let renderer;
 

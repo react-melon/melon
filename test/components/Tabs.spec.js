@@ -18,7 +18,7 @@ expect.extend(expectJSX);
 
 /* globals before, after */
 
-describe('Tabs component', function () {
+describe('Tabs', function () {
 
     let renderer;
     let container;
