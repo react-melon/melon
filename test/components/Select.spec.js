@@ -10,8 +10,6 @@ import expect from 'expect';
 // import SeparatePopup from '../../src/select/SeparatePopup';
 // import createInputComponent from '../../src/createInputComponent';
 
-// require('react/lib/ExecutionEnvironment').canUseDOM = true;
-
 describe('Select', function () {
 
     let container;
@@ -66,6 +64,7 @@ describe('Select', function () {
 
                 setTimeout(() => {
                     expect(select.isOpen()).toBe(true);
+                    TestUtils.Simulate.click(element);
                     select.onClickOption({
                         target: document.querySelectorAll('.ui-select-option')[2]
                     });

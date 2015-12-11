@@ -228,7 +228,7 @@ Calendar.LANG = {
 };
 
 Calendar.defaultProps = {
-    value: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
     dateFormat: 'yyyy-MM-dd',
     lang: Calendar.LANG,
     validateEvents: ['change']
