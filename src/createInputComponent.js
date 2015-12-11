@@ -145,8 +145,8 @@ const InputComponent = React.createClass({
      */
     componentWillReceiveProps(nextProps) {
 
-        const {customValidity} = nextProps;
-        const {value} = nextProps;
+        const {customValidity, defaultValue} = nextProps;
+        const {value = defaultValue} = nextProps;
 
         if (
             value !== this.getValue()
