@@ -1,5 +1,5 @@
 /**
- * @file Link单测
+ * @file Title单测
  * @author cxtom(cxtom2010@gmail.com)
  */
 
@@ -8,11 +8,11 @@ import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
-import Link from '../../src/Link';
+import Title from '../../src/Title';
 
 expect.extend(expectJSX);
 
-describe('Link component', function () {
+describe('Title', function () {
 
     let renderer;
 
@@ -24,11 +24,20 @@ describe('Link component', function () {
         renderer = null;
     });
 
-    it('work', function () {
-        renderer.render(<Link>link</Link>);
+    it('work h1', function () {
+        renderer.render(<Title>title1</Title>);
         let actualElement = renderer.getRenderOutput();
         let expectedElement = (
-            <a className="ui-link">link</a>
+            <h1 className="ui-title">title1</h1>
+        );
+        expect(actualElement).toEqualJSX(expectedElement);
+    });
+
+    it('work h2', function () {
+        renderer.render(<Title level={2}>title1</Title>);
+        let actualElement = renderer.getRenderOutput();
+        let expectedElement = (
+            <h2 className="ui-title">title1</h2>
         );
         expect(actualElement).toEqualJSX(expectedElement);
     });
