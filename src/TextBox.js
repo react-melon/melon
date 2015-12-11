@@ -211,7 +211,6 @@ let TextBox = React.createClass({
 });
 
 TextBox.defaultProps = {
-    value: '',
     defaultValue: '',
     validateEvents: ['change', 'blur']
 };
