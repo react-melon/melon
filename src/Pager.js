@@ -135,6 +135,7 @@ const Pager = React.createClass({
             showCount,
             useLang,
             lang,
+            showAlways,
             ...others
         } = props;
 
