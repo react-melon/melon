@@ -60,9 +60,10 @@ const SnackBar = React.createClass({
 
     locate() {
         var {
-            open,
             direction
         } = this.props;
+
+        const {open} = this.state;
 
         var main = ReactDOM.findDOMNode(this);
 
@@ -133,12 +134,13 @@ const SnackBar = React.createClass({
 
     render() {
 
-        var {
+        let {
             message,
             action,
-            open,
             direction
         } = this.props;
+
+        let {open} = this.state;
 
         const className = cx(this.props)
             .addStates({open})
