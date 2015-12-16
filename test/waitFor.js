@@ -5,14 +5,11 @@
 
 let waitsInProgress = [];
 
-/* eslint-disable no-console */
-
 const waitFor = (test, message, done, timeLeft) => {
     timeLeft = timeLeft === undefined ? 100 : timeLeft;
     waitsInProgress.push(setTimeout(() => {
         if (timeLeft <= 0) {
-            console.log(message);
-            done();
+            throw new Error(message);
         }
         else if (test()) {
             done();
