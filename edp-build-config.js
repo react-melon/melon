@@ -48,6 +48,16 @@ exports.getProcessors = function () {
         }]
     });
 
+    var relativePath = new StringReplace({
+        files: ['index.html'],
+        replacements: [{
+            from: /\"asset\//gi,
+            to: function ($all, $1) {
+                return '\"./asset/';
+            }
+        }]
+    });
+
     var pathMapperProcessor = new PathMapper();
     var addCopyright = new AddCopyright();
 
@@ -140,7 +150,8 @@ exports.getProcessors = function () {
             addCopyright,
             renamer,
             clean,
-            pathMapperProcessor
+            pathMapperProcessor,
+            relativePath
         ]
     };
 };
