@@ -15,7 +15,6 @@ import Page from './common/component/Page';
 import Nav from './common/component/Nav';
 
 require('es6-promise').polyfill();
-require('fetch');
 
 function init() {
 

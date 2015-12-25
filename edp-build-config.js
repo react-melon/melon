@@ -89,7 +89,7 @@ exports.getProcessors = function () {
             'src/**',
             'dep/**',
             '!src/common/img/**',
-            '!src/common/font/**',
+            '!dep/melon/dist/font/**',
             '!index.html',
             '!src/main.js',
             '!src/bundle/**/*.js',
