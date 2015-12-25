@@ -1,0 +1,33 @@
+@require 'nib'
+
+global-reset()
+
+@require 'melon/dist/css/colors.styl'
+@require 'melon/dist/css/mixin.styl'
+@require 'melon/dist/css/theme/default/**'
+@require 'melon/dist/css/**'
+
+@require './common/css/**';
+
+html, body
+    min-width: 1024px
+    height: 100%
+    background-color: $-melon-colors.grey50
+    font-size: 16px
+    font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+    color: $-melon-colors.darkBlack
+
+a
+    text-decoration: none
+    color: $-melon-colors.red700
+
+
+#nav
+    height: 48px
+
+#main
+    padding: 64px 0 0 0
+
+@require './home/css/**'
+
+melon-generate-grid()

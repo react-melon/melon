@@ -1,0 +1,27 @@
+{
+  "name": "melon-site",
+  "version": "0.0.1",
+  "authors": [
+    "chenxiao07 <chenxiao07@baidu.com>"
+  ],
+  "description": "melon site",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dep",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ei": "~1.2.9",
+    "es6-promise": "~3.0.2",
+    "fetch": "~0.10.1",
+    "fetch-jsonp": "https://github.com/camsong/fetch-jsonp.git#master",
+    "numen": "~0.0.7",
+    "react": "~0.14.3",
+    "melon": "~0.1.3"
+  }
+}

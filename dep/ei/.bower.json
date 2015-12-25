@@ -1,0 +1,46 @@
+{
+  "name": "ei",
+  "version": "1.2.9",
+  "authors": [
+    "ludafa@outlook.com"
+  ],
+  "description": "ei",
+  "main": "lib/main.js",
+  "keywords": [
+    "ei"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".bowerrc",
+    "tool",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dep",
+    "test",
+    "tests",
+    "output",
+    "coverage",
+    "lib",
+    "src",
+    "test",
+    ".coeralls.yml",
+    ".travis.yml",
+    "edp-build-config.js",
+    "module.conf",
+    "example"
+  ],
+  "dependencies": {
+    "react": "^0.14.3"
+  },
+  "homepage": "https://github.com/jinzhubaofu/ei",
+  "_release": "1.2.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.2.9",
+    "commit": "ee2c721d4e5d3ee09b266ffcd01318de682a7bdc"
+  },
+  "_source": "git://github.com/jinzhubaofu/ei.git",
+  "_target": "~1.2.9",
+  "_originalSource": "ei"
+}

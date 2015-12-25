@@ -1,0 +1,26 @@
+{
+  "name": "numen",
+  "version": "0.0.7",
+  "description": "history api manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:amd": "sh tool/build-amd.sh"
+  },
+  "edp": {
+    "wwwroot": "/",
+    "depDir": "dep",
+    "srcDir": "src",
+    "loaderAutoConfig": "js,htm,html,tpl,vm,phtml",
+    "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/1-8-2/esl.js",
+    "dependencies": {}
+  },
+  "dependencies": {},
+  "author": "lupengyu@baidu.com",
+  "repository": "empty",
+  "license": "BSD",
+  "readme": "README",
+  "devDependencies": {
+    "babel": "^5.8.23"
+  }
+}

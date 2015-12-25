@@ -1,0 +1,88 @@
+/**
+ * @file config edp-webserver
+ * @author EFE
+ */
+
+/* globals home, redirect, content, empty, autocss, file, less, stylus, header, proxyNoneExists, proxy */
+
+exports.port = 8878;
+exports.directoryIndexes = true;
+exports.documentRoot = __dirname;
+
+var babel = require('babel');
+var path = require('path');
+
+var nib = require('nib');
+
+exports.getLocations = function () {
+    return [
+        {
+            location: '/empty',
+            handler: empty()
+        },
+        {
+            location: /\.styl($|\?)/,
+            handler: [
+                file(),
+                stylus({
+                    'use': nib(),
+                    'resolve url': true,
+                    'paths': [path.join(__dirname, 'dep')]
+                })
+            ]
+        },
+        {
+            location: function (context) {
+                return /^\/(src).*?\.js($|\?)/.test(context.url);
+            },
+            handler: [
+                file(),
+                function (context) {
+                    try {
+                        context.content = babel
+                            .transform(context.content, {
+                                optional: ['es7.classProperties'],
+                                loose: 'all'
+                            })
+                            .code;
+                    }
+                    catch (e) {
+                        console.error(e.stack);
+                        context.status = 500;
+                    }
+                },
+                function (context) {
+                    context.content = ''
+                        + 'define(function (require, exports, module) {\n\n'
+                        +     context.content
+                        + '\n\n});';
+                }
+            ]
+        },
+        {
+            location: /\.(ttf|woff|eot|svg)($|\?)/,
+            handler: [
+                header({
+                    'Access-Control-Allow-Origin': '*'
+                }),
+                file()
+            ]
+        },
+        {
+            location: /^.*$/,
+            handler: [
+                file(),
+                proxyNoneExists()
+            ]
+        }
+    ];
+};
+
+exports.stylus = require('stylus');
+
+/* eslint-disable guard-for-in */
+exports.injectResource = function (res) {
+    for (var key in res) {
+        global[key] = res[key];
+    }
+};

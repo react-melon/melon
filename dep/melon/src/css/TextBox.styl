@@ -1,0 +1,116 @@
+@import "./base.styl"
+@import "nib"
+
+.{$-melon-class-prefix}-text-box
+
+    position: relative
+    display: inline-block
+    min-width: 5em
+    padding: 1em 0 0.5em
+    vertical-align: middle
+    border-bottom: 1px solid $-melon-colors.grey300
+    transition border-color 1s
+    box-sizing: border-box
+
+    &.variant-fluid &-input
+        width: 100%
+
+    &.state-focus
+        border-bottom-color: $-melon-colors.blue500
+
+    &.state-invalid
+        border-bottom-color: $-melon-colors.red500
+
+    &.state-disabled
+        border-bottom-style: dotted
+        .{$-melon-class-prefix}-textbox-input
+            color: rgba($-melon-colors.black, 0.3)
+            cursor not-allowed
+
+    &-input
+        display: block
+        position: relative
+        box-sizing border-box
+        padding: 0
+        height: 100%
+        line-height: 1.5em
+        z-index: 3
+        width: 100%
+
+        resize: none
+        overflow: hidden
+
+        font-size: inherit
+        font-family: $-melon-font-family
+        color: rgba($-melon-colors.black, 0.87)
+
+        background-color transparent
+        border: none
+        outline: none
+
+        transition height 1s
+
+        &[readonly]
+            color: rgba($-melon-colors.black, 0.4)
+            &:focus
+                border-bottom-color: $-melon-colors.grey300
+
+        &::-webkit-input-placeholder
+            color: $-melon-colors.grey500
+
+        &:-moz-placeholder
+            color: $-melon-colors.grey500
+
+        &::-moz-placeholder
+            color: $-melon-colors.grey500
+
+        &:-ms-input-placeholder
+            color: $-melon-colors.grey500
+
+    &-floating-label
+        position: absolute
+        box-sizing: border-box
+        left: 0
+        top: 16px
+        width: 100%
+        line-height: 24px
+        font-size: $-melon-small-font-size
+        color: $-melon-colors.grey500
+        transform-origin: left top 0px
+        white-space: nowrap
+        transition: all .5s
+
+        &.{$-melon-state-prefix}-floating
+            transform: scale(0.8) translateY(-24px)
+
+        &.{$-melon-state-prefix}-focus
+            color: $-melon-colors.blue500
+
+    &-prefix,
+    &-suffix
+        box-sizing: border-box
+        display: inline-block
+        padding: 16px 0 8px
+        height: 48px
+        line-height: 24px
+        font-size: $-melon-medium-font-size
+        color: $-melon-colors.grey600
+        vertical-align: middle
+
+    &-prefix
+        margin-right: 0.5em
+
+    &-suffix
+        margin-left: 0.5em
+
+    &-validate-message
+        position: absolute
+        left: 0
+        top: 100%
+        width: 100%
+        font-size: 14px
+        line-height: 24px
+
+    &.state-invalid &-validate-message
+        color: $-melon-colors.red500
+

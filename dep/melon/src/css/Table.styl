@@ -1,0 +1,87 @@
+@require './base.styl'
+@require './Icon.styl'
+
+.{$-melon-class-prefix}-table
+    box-sizing: border-box
+    width: 100%
+    border-radius: 2px
+    border: 1px solid $-melon-colors.grey400
+    overflow: auto
+
+    &-row
+        display: inline-block
+        white-space: nowrap
+        border-top: 1px solid $-melon-colors.grey400
+
+        &.state-selected
+            .{$-melon-variant-prefix}-table-selector
+                color: $-melon-colors.blue500
+
+    &-header &-row
+        height: 56px
+        border-top: 0
+        td
+            font-size: $-melon-xx-small-font-size
+
+    &-header &-cell &-cell-content,
+    &-footer &-cell &-cell-content
+        white-space: nowrap
+        text-overflow: ellipsis
+        overflow: hidden
+
+    &-header &-row,
+    &-footer &-row
+        color: rgba($-melon-colors.black, .54)
+
+    &-body &-row
+
+        &.state-selected
+            background-color: $-melon-colors.grey100
+
+        &:hover
+            background-color: $-melon-colors.grey200
+
+    &-body-empty
+
+        height: 10em
+        text-align: center
+        color: $-melon-colors.grey400
+        border-top: 1px solid $-melon-colors.grey400
+
+        &:before
+            content: ''
+            display: inline-block
+            width: 0;
+            height: 100%;
+            vertical-align: middle
+
+    &-cell
+        display: inline-block
+        vertical-align: top
+        font-size: $-melon-x-small-font-size
+        color: rgba($-melon-colors.black, .87)
+        white-space: normal
+
+        &-wrap1
+            display: table
+            table-layout: fixed
+
+        &-wrap2
+            display: table-row
+
+        &-wrap3
+            display: table-cell
+            vertical-align: middle
+
+        &-content
+            padding: 8px
+
+    .{$-melon-variant-prefix}-table-selector
+        width: 24px
+        font-size: 24px
+        color: $-melon-colors.grey700
+        cursor: pointer
+        transition: color .5s
+
+        &.state-selected
+            color: $-melon-colors.teal500

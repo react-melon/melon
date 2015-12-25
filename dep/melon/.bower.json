@@ -1,0 +1,44 @@
+{
+  "name": "melon",
+  "version": "0.1.3",
+  "homepage": "https://github.com/jinzhubaofu/melon",
+  "authors": [
+    "ludafa@outlook.com"
+  ],
+  "description": "react ui components",
+  "main": "src/main",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "react",
+    "ui"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dep",
+    "test",
+    "tests",
+    "lib",
+    "doc",
+    "example"
+  ],
+  "dependencies": {
+    "react": "0.14.0",
+    "react-motion": "~0.3.1",
+    "underscore": "~1.8.3"
+  },
+  "_release": "0.1.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.3",
+    "commit": "efb5fcf947fe56eaed59bb1be460fd2d54fc3df4"
+  },
+  "_source": "git://github.com/jinzhubaofu/melon.git",
+  "_target": "~0.1.3",
+  "_originalSource": "melon",
+  "_direct": true
+}

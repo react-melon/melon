@@ -1,0 +1,28 @@
+@import './base.styl'
+
+.{$-melon-class-prefix}-tooltip
+
+    display: inline-block
+
+    &-container
+        position: absolute
+        top: 0
+        left: 0
+
+        > div
+            position: absolute
+            top: 0
+            left: 0
+
+    &-popup
+        position: absolute
+        box-sizing: border-box
+        padding: 0 0.5em
+        font-size: $-melon-x-small-font-size
+        line-height: 1.6em
+        color: $-melon-colors.white
+        background-color: rgba($-melon-colors.grey700, .9)
+        z-index: 11
+        border-radius: 2px
+        transition: opacity .3s
+        white-space: nowrap

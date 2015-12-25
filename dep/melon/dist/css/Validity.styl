@@ -1,0 +1,15 @@
+@require 'nib'
+@require './base.styl'
+
+.{$-melon-class-prefix}-validity
+    position: absolute
+    display: none
+    top: 100%
+    left: 0
+    font-size: $-melon-xx-small-font-size
+    line-height: 2em
+    white-space: nowrap
+
+    &.{$-melon-state-prefix}-invalid
+        display: block
+        color: $-melon-colors.red500

@@ -1,0 +1,110 @@
+@require '../../colors.styl'
+
+$-melon-button-default = {
+    color: $-melon-colors.grey800
+    color-hover: $-melon-colors.grey800
+    color-active: $-melon-colors.grey800
+    background-color: $-melon-colors.transparent
+    background-color-hover: rgba(#999, .2)
+    background-color-active: rgba(#999, .4)
+    color-ripple: $-melon-colors.darkBlack
+}
+
+$-melon-button-primary = {
+    color: $-melon-colors.pinkA200
+    color-hover: $-melon-colors.pinkA200
+    color-active: $-melon-colors.pinkA200
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.pinkA200
+    background-color-active: $-melon-colors.pinkA200
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.pinkA200
+}
+
+$-melon-button-secondery = {
+    color: $-melon-colors.cyan500
+    color-hover: $-melon-colors.cyan500
+    color-active: $-melon-colors.cyan500
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.cyan500
+    background-color-active: $-melon-colors.cyan500
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.cyan500
+}
+
+$-melon-button-danger = {
+    color: $-melon-colors.red600
+    color-hover: $-melon-colors.red600
+    color-active: $-melon-colors.red600
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.red600
+    background-color-active: $-melon-colors.red600
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.red600
+}
+
+$-melon-button-success = {
+    color: $-melon-colors.green500
+    color-hover: $-melon-colors.green500
+    color-active: $-melon-colors.green500
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.green500
+    background-color-active: $-melon-colors.green500
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.green500
+}
+
+$-melon-button-info = {
+    color: $-melon-colors.blue500
+    color-hover: $-melon-colors.blue500
+    color-active: $-melon-colors.blue500
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.blue500
+    background-color-active: $-melon-colors.blue500
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.blue500
+}
+
+$-melon-button-warning = {
+    color: $-melon-colors.orange500
+    color-hover: $-melon-colors.orange500
+    color-active: $-melon-colors.orange500
+    color-disabled: $-melon-colors.grey900
+    background-color: $-melon-colors.transparent
+    background-color-hover: $-melon-colors.orange500
+    background-color-active: $-melon-colors.orange500
+    backgorund-color-disabled: $-melon-colors.grey200
+    color-ripple: $-melon-colors.orange500
+}
+
+$-melon-button-color-themes = {
+    primary: $-melon-button-primary,
+    secondery: $-melon-button-secondery,
+    danger: $-melon-button-danger,
+    success: $-melon-button-success,
+    info: $-melon-button-info,
+    warning: $-melon-button-warning
+}
+
+$-melon-button-raised = {
+
+    box-shadow: melon-get-z-depth('1')
+
+    '&:active': {
+        box-shadow: melon-get-z-depth('2')
+    }
+
+    '&:disabled': {
+        box-shadow: none
+    }
+
+}
+
+$-melon-button-floating = {
+    border-radius: 50%
+}
