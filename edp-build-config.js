@@ -87,6 +87,9 @@ exports.getProcessors = function () {
     var clean = new OutputCleaner({
         files: [
             'src/**',
+            'dep/**',
+            '!src/common/img/**',
+            '!src/common/font/**',
             '!index.html',
             '!src/main.js',
             '!src/bundle/**/*.js',
