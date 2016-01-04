@@ -31,8 +31,7 @@ const InputComponent = React.createClass({
     getInitialState() {
 
         const {
-            name,
-            children
+            name
         } = this.props;
 
         // 这里 validator 有两种来源 #=-= 略多，提供了丰富的可能性，比如一个表单里混合使用两种校验规则
@@ -290,6 +289,7 @@ exports.isValidInputElement = (element) => {
     return React.isValidElement(element) && element.props.type === InputComponent;
 };
 
+exports.InputComponent = InputComponent;
 
 exports.create = function (Component) {
 
