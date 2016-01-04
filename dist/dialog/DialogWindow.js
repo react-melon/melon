@@ -13,9 +13,12 @@ define('melon/dialog/DialogWindow', [
     var DialogWindow = React.createClass({
         displayName: 'DialogWindow',
         propTypes: {
-            top: PropTypes.number,
+            top: PropTypes.number.isRequired,
             footer: PropTypes.element,
             title: PropTypes.element
+        },
+        shouldComponentUpdate: function (nextProps) {
+            return nextProps.top !== this.props.top || nextProps.footer !== this.props.footer || nextProps.title !== this.props.title;
         },
         render: function () {
             var _props = this.props;

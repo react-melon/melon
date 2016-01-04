@@ -5,14 +5,12 @@ define('melon/dialog/Confirm', [
     '../babelHelpers',
     'react',
     '../Dialog',
-    '../Button',
-    '../common/util/cxBuilder'
+    '../Button'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var Dialog = require('../Dialog');
     var Button = require('../Button');
-    var cx = require('../common/util/cxBuilder').create('Confirm');
     var Confirm = React.createClass({
         displayName: 'Confirm',
         onConfirmSubmit: function (confirm) {
@@ -26,21 +24,24 @@ define('melon/dialog/Confirm', [
             var _props2 = this.props;
             var buttonVariants = _props2.buttonVariants;
             var size = _props2.size;
-            return React.createElement('div', { className: cx().part('actions').build() }, React.createElement(Button, {
-                label: '\u53D6\u6D88',
-                key: 'cancel',
-                size: size,
-                type: 'button',
-                onClick: this.onConfirmSubmit.bind(this, false),
-                variants: buttonVariants
-            }), React.createElement(Button, {
-                label: '\u786E\u5B9A',
-                key: 'submit',
-                type: 'button',
-                size: size,
-                onClick: this.onConfirmSubmit.bind(this, true),
-                variants: buttonVariants
-            }));
+            return [
+                React.createElement(Button, {
+                    label: '\u53D6\u6D88',
+                    key: 'cancel',
+                    size: size,
+                    type: 'button',
+                    onClick: this.onConfirmSubmit.bind(this, false),
+                    variants: [].concat(buttonVariants, ['cancel'])
+                }),
+                React.createElement(Button, {
+                    label: '\u786E\u5B9A',
+                    key: 'submit',
+                    type: 'button',
+                    size: size,
+                    onClick: this.onConfirmSubmit.bind(this, true),
+                    variants: [].concat(buttonVariants, ['confirm'])
+                })
+            ];
         },
         render: function () {
             var _props3 = this.props;
@@ -56,6 +57,7 @@ define('melon/dialog/Confirm', [
     var PropTypes = React.PropTypes;
     Confirm.propTypes = babelHelpers._extends({}, Dialog.propTypes, {
         onConfirm: PropTypes.func,
+        onCancel: PropTypes.func,
         buttonVariants: PropTypes.arrayOf(PropTypes.string)
     });
     Confirm.defaultProps = babelHelpers._extends({}, Dialog.defaultProps, {

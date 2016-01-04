@@ -149,7 +149,7 @@ define('melon/Calendar', [
         days: '\u65E5,\u4E00,\u4E8C,\u4E09,\u56DB,\u4E94,\u516D'
     };
     Calendar.defaultProps = {
-        value: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+        defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
         dateFormat: 'yyyy-MM-dd',
         lang: Calendar.LANG,
         validateEvents: ['change']

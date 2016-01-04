@@ -3,9 +3,10 @@ define('melon/common/util/classname', [
     'exports',
     'module'
 ], function (require, exports, module) {
+    var toString = Object.prototype.toString;
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
     function classnames() {
         var classes = [];
-        var toString = Object.prototype.toString;
         for (var i = 0, len = arguments.length; i < len; i++) {
             var arg = arguments[i];
             if (!arg) {
@@ -21,7 +22,7 @@ define('melon/common/util/classname', [
                 break;
             case 'Object':
                 for (var key in arg) {
-                    if (arg.hasOwnProperty(key) && arg[key]) {
+                    if (hasOwnProperty.call(arg, key) && arg[key]) {
                         classes.push(key);
                     }
                 }
@@ -32,6 +33,6 @@ define('melon/common/util/classname', [
     }
     exports.createClasses = classnames;
     exports.createClassName = function () {
-        return classnames.apply(null, arguments).join(' ');
+        return classnames.apply(undefined, arguments).join(' ');
     };
 });

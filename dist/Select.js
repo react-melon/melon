@@ -122,7 +122,7 @@ define('melon/Select', [
                 'data-value': value,
                 'data-role': 'option',
                 'data-disabled': optionDisabled,
-                title: name,
+                title: label || children,
                 onClick: this.onClickOption
             }, label || children);
         },
@@ -181,7 +181,8 @@ define('melon/Select', [
     });
     Select.defaultProps = {
         validateEvents: ['change'],
-        placeholder: '\u8BF7\u9009\u62E9'
+        placeholder: '\u8BF7\u9009\u62E9',
+        open: false
     };
     var PropTypes = React.PropTypes;
     Select.propTypes = {

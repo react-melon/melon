@@ -7,18 +7,20 @@ define('melon/ripples/TouchRipple', [
     'react-dom',
     '../common/util/cxBuilder',
     './RippleCircle',
-    'react-motion',
-    '../common/util/dom'
+    'underscore',
+    '../common/util/dom',
+    'react-motion'
 ], function (require, exports, module) {
     var babelHelpers = require('../babelHelpers');
     var React = require('react');
     var ReactDOM = require('react-dom');
     var cx = require('../common/util/cxBuilder').create('TouchRipple');
     var RippleCircle = require('./RippleCircle');
+    var _ = require('underscore');
+    var dom = require('../common/util/dom');
     var _require = require('react-motion');
     var spring = _require.spring;
     var TransitionMotion = _require.TransitionMotion;
-    var dom = require('../common/util/dom');
     var TouchRipple = React.createClass({
         displayName: 'TouchRipple',
         getInitialState: function () {
@@ -41,7 +43,7 @@ define('melon/ripples/TouchRipple', [
                     pageX - left - this.radius,
                     pageY - top - this.radius
                 ],
-                now: 't' + Date.now()
+                now: 't' + _.now()
             });
         },
         componentDidMount: function () {

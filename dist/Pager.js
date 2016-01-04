@@ -83,13 +83,15 @@ define('melon/Pager', [
             var showCount = props.showCount;
             var useLang = props.useLang;
             var lang = props.lang;
+            var showAlways = props.showAlways;
             var others = babelHelpers.objectWithoutProperties(props, [
                 'total',
                 'first',
                 'padding',
                 'showCount',
                 'useLang',
-                'lang'
+                'lang',
+                'showAlways'
             ]);
             var page = state.page;
             showCount = showCount > total ? total : showCount;

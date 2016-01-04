@@ -31,7 +31,13 @@ define('melon/Button', [
             className: className
         }), label || children, hasRipple ? React.createElement(TouchRipple, null) : null);
     }
-    Button.defaultProps = { hasRipple: true };
-    Button.propTypes = { hasRipple: React.PropTypes.bool };
+    Button.defaultProps = {
+        hasRipple: true,
+        disabled: false
+    };
+    Button.propTypes = {
+        hasRipple: React.PropTypes.bool,
+        disabled: React.PropTypes.bool
+    };
     module.exports = Button;
 });
