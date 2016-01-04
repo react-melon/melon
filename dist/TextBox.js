@@ -151,7 +151,6 @@ define('melon/TextBox', [
         }
     });
     TextBox.defaultProps = {
-        value: '',
         defaultValue: '',
         validateEvents: [
             'change',

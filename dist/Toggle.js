@@ -59,7 +59,8 @@ define('melon/Toggle', [
     });
     Toggle.defaultProps = {
         trueValue: 'on',
-        falseValue: ''
+        falseValue: '',
+        defaultValue: ''
     };
     var PropTypes = React.PropTypes;
     Toggle.propTypes = {

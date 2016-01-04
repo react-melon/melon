@@ -24,15 +24,13 @@ define('melon/createInputComponent', [
             return { defaultValue: '' };
         },
         getInitialState: function () {
-            var _props = this.props;
-            var name = _props.name;
-            var children = _props.children;
+            var name = this.props.name;
             this.validator = this.props.validator || this.context.validator || defaultValidator;
             var pointer = this.context.pointer;
             this.pointer = name != null && pointer ? '' + this.context.pointer + name : null;
-            var _props2 = this.props;
-            var value = _props2.value;
-            var defaultValue = _props2.defaultValue;
+            var _props = this.props;
+            var value = _props.value;
+            var defaultValue = _props.defaultValue;
             return { value: value != null ? value : defaultValue };
         },
         contextTypes: {
@@ -60,7 +58,9 @@ define('melon/createInputComponent', [
         },
         componentWillReceiveProps: function (nextProps) {
             var customValidity = nextProps.customValidity;
-            var value = nextProps.value;
+            var defaultValue = nextProps.defaultValue;
+            var _nextProps$value = nextProps.value;
+            var value = _nextProps$value === undefined ? defaultValue : _nextProps$value;
             if (value !== this.getValue() || customValidity !== this.props.customValidity) {
                 this.setState({
                     value: value,
@@ -137,6 +137,7 @@ define('melon/createInputComponent', [
     exports.isValidInputElement = function (element) {
         return React.isValidElement(element) && element.props.type === InputComponent;
     };
+    exports.InputComponent = InputComponent;
     exports.create = function (Component) {
         var InputComponentWrapper = React.createClass({
             displayName: Component.displayName + 'InputWrapper',

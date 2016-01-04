@@ -32,8 +32,10 @@ define('melon/ripples/RippleCircle', [
             return React.createElement('div', babelHelpers._extends({}, other, {
                 style: babelHelpers._extends({}, style, {
                     opacity: opacity,
-                    transform: 'scale(' + scale + ')',
-                    WebkitTransform: 'scale(' + scale + ')'
+                    WebkitTransform: 'scale(' + scale + ')',
+                    MozTransform: 'scale(' + scale + ')',
+                    msTransform: 'scale(' + scale + ')',
+                    transform: 'scale(' + scale + ')'
                 })
             }));
         };

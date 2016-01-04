@@ -25,6 +25,7 @@ module.exports = {
         'TextBox',
         'Tree',
         'Tooltip',
-        'Uploader'
+        'Uploader',
+        'Zippy'
     ]
 };

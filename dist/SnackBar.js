@@ -43,9 +43,8 @@ define('melon/SnackBar', [
             open ? this.onShow() : this.onHide();
         },
         locate: function () {
-            var _props = this.props;
-            var open = _props.open;
-            var direction = _props.direction;
+            var direction = this.props.direction;
+            var open = this.state.open;
             var main = ReactDOM.findDOMNode(this);
             if (open) {
                 switch (direction) {
@@ -71,9 +70,9 @@ define('melon/SnackBar', [
             });
         },
         onShow: function () {
-            var _props2 = this.props;
-            var onShow = _props2.onShow;
-            var autoHideDuration = _props2.autoHideDuration;
+            var _props = this.props;
+            var onShow = _props.onShow;
+            var autoHideDuration = _props.autoHideDuration;
             this.setState({ open: true }, function () {
                 if (onShow) {
                     onShow();
@@ -99,11 +98,11 @@ define('melon/SnackBar', [
             }
         },
         render: function () {
-            var _props3 = this.props;
-            var message = _props3.message;
-            var action = _props3.action;
-            var open = _props3.open;
-            var direction = _props3.direction;
+            var _props2 = this.props;
+            var message = _props2.message;
+            var action = _props2.action;
+            var direction = _props2.direction;
+            var open = this.state.open;
             var className = cx(this.props).addStates({ open: open }).addVariants('direction-' + direction).build();
             return React.createElement('div', { className: className }, React.createElement('span', { className: cx().part('message').build() }, message), React.createElement(Button, {
                 variants: ['snackbar'],
