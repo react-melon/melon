@@ -10,8 +10,18 @@
     right: 0
     z-index: 4
 
+    &.variant-components
+        box-shadow: melon-get-z-depth('1')
+        background-color: $-melon-colors.indigo500
+
     > .ui-button
         position: absolute
         top: 10px
         left: 20px
         color: $-melon-colors.darkWhite
+
+    > .ui-title
+        color: $-melon-colors.darkWhite
+        padding-left: 80px
+        line-height: 64px
+        margin: 0

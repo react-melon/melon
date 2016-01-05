@@ -22,7 +22,7 @@
     "fetch-jsonp": "https://github.com/camsong/fetch-jsonp.git#master",
     "numen": "~0.0.7",
     "react": "~0.14.3",
-    "melon": "~0.1.3",
+    "melon": "#master",
     "highlight": "~9.0.0"
   }
 }

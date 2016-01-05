@@ -1,5 +1,7 @@
 @require 'nib'
 
+@require '../dep/highlight/styles/solarized-dark.css';
+
 global-reset()
 
 @require 'melon/dist/css/colors.styl'
@@ -11,7 +13,6 @@ global-reset()
 
 html, body
     min-width: 1024px
-    height: 100%
     background-color: $-melon-colors.grey50
     font-size: 16px
     font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', Arial;
@@ -21,7 +22,6 @@ a
     text-decoration: none
     color: $-melon-colors.red700
 
-
 #nav
     height: 48px
 
@@ -29,5 +29,6 @@ a
     padding: 64px 0 0 0
 
 @require './home/css/**'
+@require './components/css/**'
 
 melon-generate-grid()

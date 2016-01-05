@@ -58,11 +58,17 @@ class Nav extends React.Component {
 
     render() {
 
+        const conf = this.getCurrentPathConf();
+
+        const {pathname} = this.props.location;
+
+        const variant = pathname.split('/')[1];
+
         return (
-            <aside className={cx(this.props).build()}>
+            <aside className={cx(this.props).addVariants(variant).build()}>
                 {this.renderButton()}
-                {this.renderTitle()}
-                {this.renderMenu()}
+                {this.renderTitle(conf)}
+                {this.renderMenu(conf)}
             </aside>
         );
     }
@@ -75,22 +81,18 @@ class Nav extends React.Component {
         );
     }
 
-    renderTitle() {
-
-        const conf = this.getCurrentPathConf();
+    renderTitle(conf) {
 
         if (!conf.title) {
             return null;
         }
 
         return (
-            <Title level={1}>Melon - {conf.title}</Title>
+            <Title level={2}>Melon - {conf.title}</Title>
         );
     }
 
-    renderMenu() {
-
-        const conf = this.getCurrentPathConf();
+    renderMenu(conf) {
 
         return (
             <DrawerNav

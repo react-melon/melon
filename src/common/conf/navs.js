@@ -13,8 +13,11 @@ module.exports = [{
 }, {
     text: 'Components',
     children: [{
-        text: 'Button',
-        pathname: '/component/button'
+        text: 'Tabs',
+        pathname: '/components',
+        query: {
+            name: 'Tabs'
+        }
     }]
 }];
 

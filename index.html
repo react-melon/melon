@@ -5,8 +5,7 @@
     <title>Melon</title>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="./src/main.styl">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-png">
 </head>
 <body>
 <div id="main"></div>
@@ -18,14 +17,14 @@ require.config({
     baseUrl: './src',
     paths: {
         'react': '../dep/react/react-with-addons',
+        'react-motion': '../dep/react-motion/build/react-motion',
         'react-dom': '../dep/react/react-dom',
         'es6-promise': '../dep/es6-promise/promise',
         'numen': '../dep/numen/dist',
         'melon': '../dep/melon/dist',
         'fetch': '../dep/fetch/fetch',
         'underscore': '../dep/underscore/underscore',
-        'hljs': '../dep/highlight/highlight.pack',
-        'react-motion': '../dep/react-motion/build/react-motion'
+        'hljs': '../dep/highlight/highlight.pack'
     },
     packages: [{
         name: 'ei',

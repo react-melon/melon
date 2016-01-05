@@ -9,6 +9,8 @@ import Progress from 'melon/Progress';
 import ReactDOM from 'react-dom';
 import {events} from 'ei';
 
+const cx = require('melon/common/util/cxBuilder').create('Page');
+
 class Page extends React.Component {
 
     static displayName = 'Page';
@@ -37,15 +39,18 @@ class Page extends React.Component {
             }
             catch (e) {
                 content = this.renderErrorMessage('啊哦，出现了一些奇怪的问题，请稍候再试');
-                console.error(e);
             }
         }
         else {
             content = this.renderLoading();
         }
 
+        const {pathname} = this.props.request;
+
+        const variant = pathname.split('/')[1];
+
         return (
-            <div className="ui-page">
+            <div className={cx(this.props).addVariants(variant).build()}>
                 {content}
             </div>
         );
@@ -184,6 +189,7 @@ class Page extends React.Component {
 
             })
             .catch(function (error) {
+                console.dir(error);
                 me.setState({
                     error: error,
                     ready: false,

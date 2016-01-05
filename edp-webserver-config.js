@@ -27,8 +27,25 @@ exports.getLocations = function () {
                 stylus({
                     'use': nib(),
                     'resolve url': true,
-                    'paths': [path.join(__dirname, 'dep')]
+                    'paths': [path.join(__dirname, 'dep')],
+                    'include css': true
                 })
+            ]
+        },
+        {
+            location: /\.txt.js($|\?)/,
+            handler: [
+                function (context) {
+                    context.request.pathname = context.request.pathname.replace(/\.js/, '');
+                },
+                file(),
+                function (context) {
+                    var content = context.content;
+                    context.content = ''
+                        + 'define(function (require, exports, module) {\n\n'
+                        +     'module.exports="' + escape(content) + '";'
+                        + '\n\n});';
+                }
             ]
         },
         {
