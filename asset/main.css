@@ -1,3 +1,14 @@
+.hljs{display:block;overflow-x:auto;padding:.5em;background:#002b36;color:#839496}
+.hljs-comment,.hljs-quote{color:#586e75}
+.hljs-addition,.hljs-keyword,.hljs-selector-tag{color:#859900}
+.hljs-doctag,.hljs-literal,.hljs-meta .hljs-meta-string,.hljs-number,.hljs-regexp,.hljs-string{color:#2aa198}
+.hljs-name,.hljs-section,.hljs-selector-class,.hljs-selector-id,.hljs-title{color:#268bd2}
+.hljs-attr,.hljs-attribute,.hljs-class .hljs-title,.hljs-template-variable,.hljs-type,.hljs-variable{color:#b58900}
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-meta .hljs-keyword,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-subst,.hljs-symbol{color:#cb4b16}
+.hljs-built_in,.hljs-deletion{color:#dc322f}
+.hljs-formula{background:#073642}
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}
 a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,div,dl,dt,em,fieldset,form,h1,h2,h3,h4,h5,h6,html,iframe,img,ins,kbd,label,legend,li,object,ol,p,pre,q,s,samp,small,span,strike,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,ul,var{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-family:inherit;font-size:100%;vertical-align:baseline}
 body{line-height:1;color:#000;background:#fff}
 ol,ul{list-style:none}
@@ -1277,7 +1288,7 @@ a img{border:none}
 .variant-fluid{display:block!important;width:100%!important}
 .ui-tabs{display:block;margin:0;padding:0;font-size:16px}
 .ui-tabs ul{position:relative;width:100%;background-color:#009688;white-space:nowrap;list-style:none}
-.ui-tabs-item{display:inline-block;cursor:pointer;padding:.48em 0;height:2em;line-height:2em;text-align:center;color:rgba(255,255,255,.87)}
+.ui-tabs-item{display:inline-block;cursor:pointer;padding:.48em 0;height:2em;line-height:2em;text-align:center;color:rgba(255,255,255,.87);overflow:hidden}
 .ui-tabs-item.state-selected{color:#fff;background-color:#009688}
 .ui-tabs-item.state-disabled{cursor:not-allowed;color:rgba(255,255,255,.54)}
 .ui-tabs-panel{display:none}
@@ -1369,12 +1380,16 @@ h6.ui-title{font-size:12px}
 .ui-validity.state-invalid{display:block;color:#f44336}
 .ui-drawer-nav .ui-drawer-window .ui-title{margin:0;padding:20px 30px;height:50px;line-height:50px;text-align:right;color:#757575;background-image:url(common/img/melon-logo.ffb5dd37.png);-webkit-background-size:auto 60%;-moz-background-size:auto 60%;background-size:auto 60%;background-position:15px center;background-repeat:no-repeat;border-bottom:1px solid rgba(0,0,0,.12)}
 .ui-nav{display:block;background-color:#00897b;height:64px;width:100%;position:fixed;top:0;left:0;right:0;z-index:4}
+.ui-nav.variant-components{-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);background-color:#3f51b5}
 .ui-nav>.ui-button{position:absolute;top:10px;left:20px;color:rgba(255,255,255,.87)}
+.ui-nav>.ui-title{color:rgba(255,255,255,.87);padding-left:80px;line-height:64px;margin:0}
+.ui-nav{background-color:#00897b}
+.ui-nav.variant-components{-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);background-color:#3f51b5}
 .ui-zippy-nav{color:#333}
 .ui-zippy-nav .ui-button{width:100%;-webkit-border-radius:0;border-radius:0;text-align:left;text-transform:none;height:3.5em;line-height:3.5}
 .ui-zippy-nav .ui-link{height:2em;line-height:2;padding-left:30px;width:270px}
 .ui-zippy-nav .ui-link.state-active{color:#2196f3}
-body,html{min-width:1024px;height:100%;background-color:#fafafa;font-size:16px;font-family:'Helvetica Neue','Hiragino Sans GB','Microsoft YaHei',Arial;color:rgba(0,0,0,.87)}
+body,html{min-width:1024px;background-color:#fafafa;font-size:16px;font-family:Roboto,'Helvetica Neue','Hiragino Sans GB','Microsoft YaHei',Arial;color:rgba(0,0,0,.87)}
 a{text-decoration:none;color:#d32f2f}
 #nav{height:48px}
 #main{padding:64px 0 0 0}
@@ -1391,6 +1406,20 @@ a{text-decoration:none;color:#d32f2f}
 .ui-homeview-github p{color:rgba(0,0,0,.87);font-size:18px;line-height:1.5em}
 .ui-homeview-github .ui-button{margin-top:50px}
 .ui-homeview-footer{padding:72px 24px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;text-align:center;background-color:#212121;color:rgba(255,255,255,.87)}
+.ui-props-table>.ui-title{margin-top:40px}
+.ui-props-table .ui-table-header .ui-table-cell{color:#888}
+.ui-props-table .ui-table-body .ui-table-cell:first-child{color:#283593}
+.ui-props-table .ui-table-body .ui-table-cell:nth-child(2){color:#ad1457}
+.ui-props-table .ui-table-cell:first-child .ui-table-cell-content{padding-left:16px}
+.ui-component-view{margin:0 auto;max-width:1144px;padding-top:80px;padding-left:60px;padding-right:60px;padding-bottom:80px}
+.ui-component-view>.ui-title{color:#3f51b5;margin-bottom:30px}
+.ui-component-view .ui-tool-bar{background-color:#3f51b5;border-top-left-radius:2px;border-top-right-radius:2px;position:relative}
+.ui-component-view .ui-tool-bar .ui-title{color:#fff;margin:0;line-height:64px;font-weight:300}
+.ui-component-view .ui-tool-bar>.ui-button:last-child{position:absolute;top:8px;right:25px;color:#fff}
+.ui-example-card{padding-bottom:1em}
+-main{margin:1em;margin-bottom:0;border:1px solid #f0f0f0}
+.variant-Tabs .ui-tabs-panel{min-height:200px;padding:1em;line-height:1.5em}
+.variant-Tabs .ui-tabs-panel .ui-title{color:#000}
 .melon-row{margin-left:-1.923076923076923%!important;zoom:1}
 .melon-row:after,.melon-row:before{content:"";display:table}
 .melon-row:after{clear:both}
