@@ -4,7 +4,7 @@
  */
 
 /* globals LessCompiler, CssCompressor, JsCompressor, PathMapper, AddCopyright, ModuleCompiler, TplMerge */
-/* globals StylusCompiler, BabelProcessor, AmdWrapper, OutputCleaner, MD5Renamer, StringReplace */
+/* globals StylusCompiler, BabelProcessor, AmdWrapper, OutputCleaner, MD5Renamer, StringReplace, RawWrapper */
 
 require('babel/register');
 
@@ -69,12 +69,13 @@ exports.getProcessors = function () {
                 style.use(nib());
                 style.define('url', stylus.resolver());
                 style.include(path.join(__dirname, 'dep'));
+                style.include('css', true);
             }
         }
     });
 
     var babel = new BabelProcessor({
-        files: ['src/**/*.js'],
+        files: ['src/**/*.js', '!*.txt.js'],
         compileOptions: {
             stage: 0,
             modules: 'common',
@@ -91,7 +92,7 @@ exports.getProcessors = function () {
     });
 
     var amdWrapper = new AmdWrapper({
-        files: ['src/**/*.js']
+        files: ['src/**/*.js', '!*.txt']
     });
 
     var clean = new OutputCleaner({
@@ -106,6 +107,8 @@ exports.getProcessors = function () {
             '!src/main.styl'
         ]
     });
+
+    var rawWrapper = new RawWrapper();
 
     var renamer = new MD5Renamer({
         files: [
@@ -144,6 +147,7 @@ exports.getProcessors = function () {
             stylusProcessor,
             cssProcessor,
             babel,
+            rawWrapper,
             amdWrapper,
             moduleProcessor,
             jsProcessor,
@@ -195,6 +199,7 @@ exports.injectProcessor = function (processors) {
     for (var key in processors) {
         global[key] = processors[key];
     }
-    global.BabelProcessor = require('./tools/BabelProcessor.js');
-    global.AmdWrapper = require('./tools/AmdWrapper.js');
+    global.BabelProcessor = require('./tools/BabelProcessor');
+    global.AmdWrapper = require('./tools/AmdWrapper');
+    global.RawWrapper = require('./tools/RawWrapper');
 };

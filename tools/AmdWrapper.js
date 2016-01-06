@@ -3,6 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
+/* globals AbstractProcessor */
+
 var util = require('util');
 
 

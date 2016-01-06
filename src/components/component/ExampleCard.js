@@ -34,11 +34,13 @@ const ExampleCard = React.createClass({
 
     onClick() {
 
-        this.setState(({expand}) => {
-            return {
-                expand: !expand
-            };
-        });
+        this.setState(
+            ({expand}) => {
+                return {
+                    expand: !expand
+                };
+            }
+        );
     },
 
     render() {
