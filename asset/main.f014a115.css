@@ -1379,6 +1379,26 @@ h6.ui-title{font-size:12px}
 .ui-validity{position:absolute;display:none;top:100%;left:0;font-size:12px;line-height:2em;white-space:nowrap}
 .ui-validity.state-invalid{display:block;color:#f44336}
 .ui-drawer-nav .ui-drawer-window .ui-title{margin:0;padding:20px 30px;height:50px;line-height:50px;text-align:right;color:#757575;background-image:url(common/img/melon-logo.ffb5dd37.png);-webkit-background-size:auto 60%;-moz-background-size:auto 60%;background-size:auto 60%;background-position:15px center;background-repeat:no-repeat;border-bottom:1px solid rgba(0,0,0,.12)}
+.ui-loading{position:fixed;top:0;bottom:0;left:0;right:0;background-color:#ffc107;padding-top:200px;width:100%;z-index:100}
+.ui-loading .ball{background-color:#d24858;width:30px;height:30px;-webkit-border-radius:100%;border-radius:100%;float:left}
+.ui-loading h1{text-align:center;font-family:Century,serif;color:#493831;font-size:50px;margin-bottom:30px}
+.ui-loading .ball-anim{-webkit-animation:loading 2.5s;-moz-animation:loading 2.5s;-o-animation:loading 2.5s;-ms-animation:loading 2.5s;animation:loading 2.5s;-webkit-animation-iteration-count:infinite;-moz-animation-iteration-count:infinite;-o-animation-iteration-count:infinite;-ms-animation-iteration-count:infinite;animation-iteration-count:infinite}
+@-moz-keyframes loading{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:30%}
+50%{opacity:1;-ms-filter:none;filter:none;background-color:#ea8676;margin-left:50%}
+100%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:70%}
+}
+@-webkit-keyframes loading{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:30%}
+50%{opacity:1;-ms-filter:none;filter:none;background-color:#ea8676;margin-left:50%}
+100%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:70%}
+}
+@-o-keyframes loading{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:30%}
+50%{opacity:1;-ms-filter:none;filter:none;background-color:#ea8676;margin-left:50%}
+100%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:70%}
+}
+@keyframes loading{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:30%}
+50%{opacity:1;-ms-filter:none;filter:none;background-color:#ea8676;margin-left:50%}
+100%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);margin-left:70%}
+}
 .ui-nav{display:block;background-color:#00897b;height:64px;width:100%;position:fixed;top:0;left:0;right:0;z-index:4}
 .ui-nav.variant-components{-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);box-shadow:0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);background-color:#3f51b5}
 .ui-nav>.ui-button{position:absolute;top:10px;left:20px;color:rgba(255,255,255,.87)}
