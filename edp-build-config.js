@@ -28,7 +28,7 @@ exports.getProcessors = function () {
     });
 
     var moduleProcessor = new ModuleCompiler({
-        files: ['src/**/*.js']
+        files: ['src/**/*.js', '*.txt']
     });
 
     var jsProcessor = new JsCompressor({
@@ -118,6 +118,9 @@ exports.getProcessors = function () {
         ],
         resolve: function (file, url) {
             if (url.indexOf('/dep/') !== -1) {
+                return false;
+            }
+            if (url.indexOf('favicon.png') !== -1) {
                 return false;
             }
             // 以feRoot开头的本地资源，我们把它映射到本地资源

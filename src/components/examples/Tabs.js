@@ -7,6 +7,8 @@ import React from 'react';
 import Tabs from 'melon/Tabs';
 import Title from 'melon/Title';
 
+require('./components/code/Tabs.txt');
+
 const TabsExample = React.createClass({
 
     render() {

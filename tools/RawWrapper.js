@@ -34,10 +34,11 @@ RawWrapper.DEFAULT_OPTIONS = {
  */
 RawWrapper.prototype.process = function (file, processContext, callback) {
 
-    var data = 'return "' + escape(file.data) + '";';
+    var data = 'define(function (require, exports, module) {module.exports = "' + escape(file.data) + '";});';
 
     file.setData(data);
     file.outputPath = file.outputPath.replace(file.extname, file.extname + '.js');
+    file.extname = 'js';
     processContext.addFileLink(file.path, file.outputPath);
 
     // fs.writeFileSync(file.outputPath, data);

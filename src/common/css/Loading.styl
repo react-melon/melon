@@ -1,0 +1,43 @@
+
+
+.ui-loading
+    position: fixed
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background-color: $-melon-colors.amber500
+    padding-top: 200px
+    width: 100%
+    z-index: 100
+
+
+    .ball
+        background-color: #D24858
+        width: 30px
+        height: 30px
+        border-radius: 100%
+        float: left
+
+    h1
+        text-align: center
+        font-family: "Century", serif
+        color: #493831
+        font-size: 50px
+        margin-bottom: 30px
+
+    .ball-anim
+        animation: loading 2.5s
+        animation-iteration-count: infinite
+
+@keyframes loading
+    0%
+        opacity: 0
+        margin-left: 30%
+    50%
+        opacity: 1
+        background-color: #EA8676
+        margin-left: 50%
+    100%
+        opacity: 0
+        margin-left: 70%

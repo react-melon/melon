@@ -69,8 +69,9 @@ class Page extends React.Component {
 
     renderLoading() {
         return (
-            <div className={'ui-page-loading'}>
-                <span>loading...</span>
+            <div className="ui-loading">
+                <h1>Your page is loading.</h1>
+                <div className="ball ball-anim"></div>
             </div>
         );
     }
