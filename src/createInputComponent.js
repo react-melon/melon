@@ -300,11 +300,11 @@ exports.create = function (Component) {
         render() {
 
             const {props} = this;
-            const {children} = props;
+            const {children, ...rest} = props;
 
             return (
-                <InputComponent {...props}>
-                    <Component {...props}>{children}</Component>
+                <InputComponent {...rest}>
+                    <Component {...rest}>{children}</Component>
                 </InputComponent>
             );
 

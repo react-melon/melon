@@ -41,7 +41,7 @@ const Zippy = React.createClass({
         return {
             ...style,
             [horizontal ? 'overflowX' : 'overflowY']: 'hidden',
-            [horizontal ? 'width' : 'height']: Math.round(value)
+            [horizontal ? 'width' : 'height']: Math.floor(value)
         };
 
     },
@@ -60,7 +60,7 @@ const Zippy = React.createClass({
         const className = cx(props).addStates({expand}).build();
 
         return (
-            <Motion style={{value: spring(expand ? size : 0, [60, 15])}}>
+            <Motion style={{value: spring(expand ? size : 0)}}>
                 {({value}) =>
                     <div {...others} className={className} style={this.getStyle(value)}>
                         {children}

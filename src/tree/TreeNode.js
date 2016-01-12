@@ -55,6 +55,7 @@ const TreeNode = React.createClass({
     },
 
     handleOnClick(e) {
+
         var state = this.state;
 
         var expand = state.expand;
