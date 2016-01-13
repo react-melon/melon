@@ -23,6 +23,6 @@ define('melon/calendar/Header', [
         return React.createElement('div', babelHelpers._extends({}, rest, { className: cx(props).build() }), React.createElement('p', { className: cx().part('year').build() }, year), React.createElement('p', { className: cx().part('week').build() }, week), React.createElement('p', { className: cx().part('date').build() }, fullDate));
     }
     CalendarHeader.displayName = 'CalendarHeader';
-    CalendarHeader.propTypes = { date: PropTypes.object.isRequired };
+    CalendarHeader.propTypes = { date: PropTypes.instanceOf(Date).isRequired };
     module.exports = CalendarHeader;
 });

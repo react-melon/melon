@@ -54,9 +54,9 @@ define('melon/calendar/Pager', [
         }
     });
     CalendarPager.propTypes = {
-        month: PropTypes.object.isRequired,
-        maxDate: PropTypes.object,
-        minDate: PropTypes.object,
+        month: PropTypes.instanceOf(Date).isRequired,
+        maxDate: PropTypes.instanceOf(Date),
+        minDate: PropTypes.instanceOf(Date),
         onChange: PropTypes.func
     };
     module.exports = CalendarPager;
