@@ -77,9 +77,9 @@ const CalendarPager = React.createClass({
 
 
 CalendarPager.propTypes = {
-    month: PropTypes.object.isRequired,
-    maxDate: PropTypes.object,
-    minDate: PropTypes.object,
+    month: PropTypes.instanceOf(Date).isRequired,
+    maxDate: PropTypes.instanceOf(Date),
+    minDate: PropTypes.instanceOf(Date),
     onChange: PropTypes.func
 };
 

@@ -38,7 +38,7 @@ function CalendarHeader(props) {
 CalendarHeader.displayName = 'CalendarHeader';
 
 CalendarHeader.propTypes = {
-    date: PropTypes.object.isRequired
+    date: PropTypes.instanceOf(Date).isRequired
 };
 
 module.exports = CalendarHeader;
