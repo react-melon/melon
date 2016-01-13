@@ -144,7 +144,8 @@ define('melon/createInputComponent', [
             render: function () {
                 var props = this.props;
                 var children = props.children;
-                return React.createElement(InputComponent, props, React.createElement(Component, props, children));
+                var rest = babelHelpers.objectWithoutProperties(props, ['children']);
+                return React.createElement(InputComponent, rest, React.createElement(Component, rest, children));
             }
         });
         InputComponentWrapper.defaultProps = Component.defaultProps;

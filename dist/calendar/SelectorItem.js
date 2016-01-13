@@ -38,7 +38,7 @@ define('melon/calendar/SelectorItem', [
         }
     });
     CalendarSelectorItem.propTypes = {
-        date: PropTypes.object.isRequired,
+        date: PropTypes.instanceOf(Date).isRequired,
         onClick: PropTypes.func,
         disabled: PropTypes.bool,
         selected: PropTypes.bool,

@@ -32,7 +32,7 @@ define('melon/Zippy', [
             var _props = this.props;
             var horizontal = _props.horizontal;
             var style = _props.style;
-            return babelHelpers._extends({}, style, (_babelHelpers$_extends = {}, _babelHelpers$_extends[horizontal ? 'overflowX' : 'overflowY'] = 'hidden', _babelHelpers$_extends[horizontal ? 'width' : 'height'] = Math.round(value), _babelHelpers$_extends));
+            return babelHelpers._extends({}, style, (_babelHelpers$_extends = {}, _babelHelpers$_extends[horizontal ? 'overflowX' : 'overflowY'] = 'hidden', _babelHelpers$_extends[horizontal ? 'width' : 'height'] = Math.floor(value), _babelHelpers$_extends));
         },
         render: function () {
             var _this = this;
@@ -46,14 +46,7 @@ define('melon/Zippy', [
                 'children'
             ]);
             var className = cx(props).addStates({ expand: expand }).build();
-            return React.createElement(Motion, {
-                style: {
-                    value: spring(expand ? size : 0, [
-                        60,
-                        15
-                    ])
-                }
-            }, function (_ref) {
+            return React.createElement(Motion, { style: { value: spring(expand ? size : 0) } }, function (_ref) {
                 var value = _ref.value;
                 return React.createElement('div', babelHelpers._extends({}, others, {
                     className: className,

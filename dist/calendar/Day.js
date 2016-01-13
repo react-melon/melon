@@ -34,7 +34,7 @@ define('melon/calendar/Day', [
         }
     });
     CalendarDay.propTypes = {
-        date: PropTypes.object.isRequired,
+        date: PropTypes.instanceOf(Date).isRequired,
         onClick: PropTypes.func,
         disabled: PropTypes.bool,
         selected: PropTypes.bool
