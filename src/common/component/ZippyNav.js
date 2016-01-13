@@ -32,7 +32,13 @@ class ZippyNav extends React.Component {
 
         const {props, state} = this;
 
-        const {current, nav, onActive, ...others} = props;
+        const {
+            current,
+            nav,
+            onActive,
+            ...others
+        } = props;
+
         const {expand} = state;
 
         const listHeight = nav.children.length * 32;
@@ -56,7 +62,7 @@ class ZippyNav extends React.Component {
                                 {_.map(nav.children, (item, index) =>
                                     <Link
                                         size={'xs'}
-                                        states={{active: current.pathname === item.pathname}}
+                                        states={{active: current.text === item.text}}
                                         key={index}
                                         onClick={() => onActive()}
                                         href={locator.createHref(item.pathname, item.query)}>

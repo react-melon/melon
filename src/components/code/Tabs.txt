@@ -7,11 +7,6 @@ const TabsExample = React.createClass({
 
     render() {
 
-        const {
-            brief,
-            ...rest
-        } = this.props;
-
         return (
             <Tabs selectedIndex={1}>
                 <Tabs.Tab label="Tab A" id="Tab1">
@@ -39,3 +34,5 @@ const TabsExample = React.createClass({
     }
 
 });
+
+export default TabsExample;

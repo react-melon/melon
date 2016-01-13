@@ -33,21 +33,29 @@ class Nav extends React.Component {
 
     getCurrentPathConf() {
 
-        const {pathname} = this.props.location;
+        const {
+            query,
+            pathname
+        } = this.props.location;
 
         let activeItem;
 
+        const getItem = function (i, result, item) {
+
+            if ((!query && pathname === item.pathname)
+                || (query && query.name === item.text)) {
+                item.title = item.title == null ? navs[i].text + ' - ' + item.text : item.title;
+                return item;
+            }
+
+            return result;
+        };
+
         for (let i = navs.length - 1; i >= 0; i--) {
-            let items = navs[i].children;
 
-            activeItem = _.reduce(items, (result, item) => {
-                if (pathname === item.pathname) {
-                    item.title = item.title == null ? navs[i].text + ' - ' + item.text : item.title;
-                    return item;
-                }
+            const items = navs[i].children;
 
-                return result;
-            }, false);
+            activeItem = _.reduce(items, getItem.bind(this, i), false);
 
             if (activeItem) {
                 return activeItem;

@@ -65,7 +65,7 @@ const ExampleCard = React.createClass({
                         {code}
                     </Code>
                 </Zippy>
-                <div className={cx().part('main').addVariants(name).build()}>
+                <div className={cx().part('main').addVariants(name.toLowerCase()).build()}>
                     {exampleComponent}
                 </div>
             </Card>

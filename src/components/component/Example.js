@@ -22,8 +22,8 @@ const Example = React.createClass({
         } = this.props;
 
         return (
-            <div className="melon-row">
-                <div className="melon-column melon-column-3">
+            <div className="ui-example melon-row">
+                <div className="melon-column melon-column-3 ui-example-brief">
                     {brief}
                 </div>
                 <div className="melon-column melon-column-9">

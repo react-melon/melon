@@ -3,19 +3,25 @@
  * @author leon<lupengyu@baidu.com>
  */
 
+import ei from 'ei';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import {events} from 'ei';
 
 import locator from './locator';
 import routes from './routes';
 
-import App from './common/component/App';
-import Page from './common/component/Page';
+import createAppComponent from 'ei/util/createAppComponent';
+import Page from 'ei/component/Page';
 import Nav from './common/component/Nav';
 
+import ES6Promise from 'es6-promise';
+
+const AppComponent = createAppComponent(ei.App);
 
 function init() {
+
+    ES6Promise.polyfill();
 
     let main = document.getElementById('main');
 
@@ -23,10 +29,30 @@ function init() {
         .on((location) => {
 
             ReactDOM.render(
-                <App routes={routes}>
-                    <Nav location={location} />
-                    <Page request={location} main={true} />
-                </App>,
+                <AppComponent routes={routes}>
+                    <div className="ui-app">
+                        <Nav location={location} />
+                        <Page
+                            request={location}
+                            renderErrorMessage={error => {
+
+                                const {status, statusInfo} = error;
+                                return (
+                                    <div className={'ui-page-error-message'}>
+                                        <h3>{status}</h3>
+                                        <p>{statusInfo}</p>
+                                    </div>
+                                );
+
+                            }}
+                            renderLoadingMessage={() =>
+                                <div className="ui-loading">
+                                    <h1>Your page is loading.</h1>
+                                    <div className="ball ball-anim"></div>
+                                </div>
+                            } />
+                    </div>
+                </AppComponent>,
                 main
             );
 

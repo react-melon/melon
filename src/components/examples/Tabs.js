@@ -13,11 +13,6 @@ const TabsExample = React.createClass({
 
     render() {
 
-        const {
-            brief,
-            ...rest
-        } = this.props;
-
         return (
             <Tabs selectedIndex={1}>
                 <Tabs.Tab label="Tab A" id="Tab1">

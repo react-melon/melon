@@ -3,6 +3,8 @@
  * @author leon<lupengyu@baidu.com>
  */
 
+/* eslint-disable no-console */
+
 var pageUidIndex = 0;
 
 function logger(pageId, state, action, next) {

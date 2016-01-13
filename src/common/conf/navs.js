@@ -1,6 +1,6 @@
 /**
  * @file navs
- * @author leon<lupengyu@baidu.com>
+ * @author cxtom<cxtom2010@gmail.com>
  */
 
 module.exports = [{
@@ -13,6 +13,18 @@ module.exports = [{
 }, {
     text: 'Components',
     children: [{
+        text: 'Pager',
+        pathname: '/components',
+        query: {
+            name: 'Pager'
+        }
+    }, {
+        text: 'Progress',
+        pathname: '/components',
+        query: {
+            name: 'Progress'
+        }
+    }, {
         text: 'Tabs',
         pathname: '/components',
         query: {
