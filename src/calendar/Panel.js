@@ -20,7 +20,8 @@ const CalendarPanel = React.createClass({
     getInitialState() {
         return {
             selectorType: 'main',
-            month: this.props.date
+            month: this.props.date,
+            date: this.props.date
         };
     },
 
@@ -30,7 +31,8 @@ const CalendarPanel = React.createClass({
 
         if (this.props.date !== date) {
             this.setState({
-                date: date
+                date,
+                month: date
             });
         }
 
@@ -140,7 +142,12 @@ const CalendarPanel = React.createClass({
 CalendarPanel.propTypes = {
     date: PropTypes.instanceOf(Date).isRequired,
     begin: PropTypes.instanceOf(Date),
-    end: PropTypes.instanceOf(Date)
+    end: PropTypes.instanceOf(Date),
+    lang: PropTypes.shape({
+        week: PropTypes.string,
+        days: PropTypes.string,
+        title: PropTypes.string
+    }).isRequired
 };
 
 module.exports = CalendarPanel;

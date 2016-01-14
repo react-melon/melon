@@ -19,9 +19,9 @@ document.documentElement.clientLeft = 0;
 // patch
 window.HTMLElement.prototype.offsetWidth = 100;
 window.HTMLElement.prototype.offsetHeight = 100;
+window.HTMLElement.prototype.scrollIntoView = () => {};
 
-// take all properties of the window object and also attach it to the
-// mocha global object
+
 propagateToGlobal(window);
 
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
