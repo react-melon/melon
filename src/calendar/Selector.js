@@ -139,9 +139,9 @@ const CalendarSelector = React.createClass({
 CalendarSelector.MAX_RANGE = 10;
 
 CalendarSelector.propTypes = {
-    date: PropTypes.object.isRequired,
-    maxDate: PropTypes.object,
-    minDate: PropTypes.object,
+    date: PropTypes.instanceOf(Date).isRequired,
+    maxDate: PropTypes.instanceOf(Date),
+    minDate: PropTypes.instanceOf(Date),
     onChange: PropTypes.func,
     mode: PropTypes.oneOf(['month', 'year'])
 };

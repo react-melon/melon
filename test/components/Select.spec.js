@@ -10,14 +10,12 @@ import expect from 'expect';
 
 import then from '../then';
 
-// import SeparatePopup from '../../src/select/SeparatePopup';
-// import createInputComponent from '../../src/createInputComponent';
+import {InputComponent} from '../../src/createInputComponent';
 
 describe('Select', function () {
 
-    let container;
+    let component;
 
-    const Form = require('../../src/Form');
     const Select = require('../../src/Select');
 
     const datasource = [
@@ -28,71 +26,52 @@ describe('Select', function () {
         {value: '5', name: 'Weekly', disabled: true}
     ];
 
-    beforeEach(() => {
-        container = document.createElement('div');
-        document.body.appendChild(container);
-    });
-
-    afterEach(function () {
-        ReactDOM.unmountComponentAtNode(container);
-        document.body.removeChild(container);
-        container = null;
-    });
-
     it('Select', done => {
 
-        let select;
-        let element;
+        component = TestUtils.renderIntoDocument(
+            <Select name="a" defaultValue="6">
+                <optgroup label="1">
+                    {Select.createOptions(datasource)}
+                </optgroup>
+                <option label="others" value="6" />
+            </Select>
+        );
+        expect(TestUtils.isCompositeComponent(component)).toBe(true);
 
-        const TestComponent = React.createClass({
+        const select = TestUtils.findRenderedComponentWithType(component, InputComponent);
+        expect(TestUtils.isCompositeComponent(select)).toBe(true);
+        const child = select.child;
+        expect(TestUtils.isCompositeComponent(child)).toBe(true);
 
-            componentDidMount() {
-                select = this.refs.form.fields[0].child;
-                element = document.querySelector('.ui-select');
+        let options = document.querySelectorAll('.ui-select-option');
+        expect(options.length).toBe(6);
 
-                expect(select.props.value).toBe('1');
-                expect(select.isOpen()).toBe(false);
+        expect(child.props.value).toBe('6');
+        expect(child.isOpen()).toBe(false);
 
-                TestUtils.Simulate.click(element);
+        TestUtils.Simulate.click(ReactDOM.findDOMNode(child));
 
-                then(() => {
-                    expect(select.isOpen()).toBe(true);
-                    TestUtils.Simulate.click(element);
-                })
-                .then(() => {
-                    expect(select.isOpen()).toBe(false);
-                    const option = document.querySelectorAll('.ui-select-option')[2];
-                    TestUtils.Simulate.click(option);
-                })
-                .then(() => {
-                    expect(select.isOpen()).toBe(false);
-                    expect(select.props.value).toBe('3');
+        then(() => {
+            expect(child.isOpen()).toBe(true);
+            TestUtils.Simulate.click(ReactDOM.findDOMNode(child));
+        })
+        .then(() => {
+            expect(child.isOpen()).toBe(false);
+            const option = options[2];
+            TestUtils.Simulate.click(option);
+        })
+        .then(() => {
+            expect(child.isOpen()).toBe(false);
+            expect(child.props.value).toBe('3');
 
-                    const option = document.querySelectorAll('.ui-select-option')[4];
-                    TestUtils.Simulate.click(option);
-                })
-                .then(() => {
-                    expect(select.props.value).toBe('3');
-                    done();
-                });
-            },
-
-            render() {
-
-                return (
-                    <Form ref="form">
-                        <Select name="a" defaultValue="1">
-                            <optgroup label="1">
-                                {Select.createOptions(datasource)}
-                            </optgroup>
-                            <option label="others" value="0" />
-                        </Select>
-                    </Form>
-                );
-            }
+            const option = options[4];
+            TestUtils.Simulate.click(option);
+        })
+        .then(() => {
+            expect(child.props.value).toBe('3');
+            child.componentWillUnmount();
+            done();
         });
-
-        ReactDOM.render(<TestComponent />, container);
     });
 
 });

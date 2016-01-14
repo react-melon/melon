@@ -119,10 +119,10 @@ const CalendarMonth = React.createClass({
 });
 
 CalendarMonth.propTypes = {
-    date: PropTypes.object.isRequired,
-    month: PropTypes.object.isRequired,
-    maxDate: PropTypes.object,
-    minDate: PropTypes.object,
+    date: PropTypes.instanceOf(Date).isRequired,
+    month: PropTypes.instanceOf(Date).isRequired,
+    maxDate: PropTypes.instanceOf(Date),
+    minDate: PropTypes.instanceOf(Date),
     onChange: PropTypes.func,
     lang: PropTypes.shape({
         week: PropTypes.string,

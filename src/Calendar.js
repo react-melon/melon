@@ -15,7 +15,7 @@ const Panel = require('./calendar/Panel');
 const DateTime = require('./common/util/date');
 const Validity = require('./Validity');
 
-const Calendar = React.createClass({
+let Calendar = React.createClass({
 
     displayName: 'Calendar',
 
@@ -217,6 +217,8 @@ const Calendar = React.createClass({
     }
 });
 
+Calendar = require('./createInputComponent').create(Calendar);
+
 Calendar.LANG = {
 
     // 对于 '周' 的称呼
@@ -261,4 +263,4 @@ Calendar.propTypes = {
 
 };
 
-module.exports = require('./createInputComponent').create(Calendar);
+module.exports = Calendar;
