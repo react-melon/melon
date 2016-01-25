@@ -1,5 +1,5 @@
 /**
- * @file waitFor from http://brandonokert.com/2015/08/04/TestingInReact/
+ * @file then from http://brandonokert.com/2015/08/04/TestingInReact/
  * @author cxtom(cxtom2010@gmail.com)
  */
 

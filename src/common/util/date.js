@@ -188,7 +188,7 @@ module.exports = {
      */
     parse: function (value, format) {
 
-        format = format.split(/[^yMdW]+/i);
+        format = format.split(/[^ymdw]+/i);
         value  = value.split(/\D+/);
 
         var map = {};
