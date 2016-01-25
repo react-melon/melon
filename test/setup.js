@@ -9,7 +9,6 @@ const html = '<!doctype html><html><head><meta charset="UTF-8"></head><body></bo
 
 global.document = jsdom(html);
 global.window = document.defaultView;
-global.navigator = window.navigator;
 
 document.documentElement.clientWidth = window.innerWidth;
 document.documentElement.clientHeight = window.innerHeight;

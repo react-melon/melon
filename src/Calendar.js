@@ -69,7 +69,7 @@ let Calendar = React.createClass({
             return rawValue;
         }
 
-        let format = this.props.dateFormat.toLowerCase();
+        const format = this.props.dateFormat.toLowerCase();
 
         return DateTime.format(rawValue, format, this.props.lang);
 
@@ -81,7 +81,7 @@ let Calendar = React.createClass({
             return date;
         }
 
-        let format = this.props.dateFormat.toLowerCase();
+        const format = this.props.dateFormat.toLowerCase();
 
         return DateTime.parse(date, format);
     },
@@ -112,9 +112,12 @@ let Calendar = React.createClass({
      */
     onConfirm() {
 
-        const {value, date} = this.state;
+        const {date} = this.state;
+        const {value} = this.props;
 
-        if (DateTime.isEqualDate(date, value)) {
+        const rawValue = this.parseDate(value);
+
+        if (DateTime.isEqualDate(date, rawValue)) {
             this.setState({open: false});
             return;
         }
@@ -217,9 +220,7 @@ let Calendar = React.createClass({
     }
 });
 
-Calendar = require('./createInputComponent').create(Calendar);
-
-Calendar.LANG = {
+const LANG = {
 
     // 对于 '周' 的称呼
     week: '周',
@@ -230,9 +231,9 @@ Calendar.LANG = {
 };
 
 Calendar.defaultProps = {
-    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', LANG),
     dateFormat: 'yyyy-MM-dd',
-    lang: Calendar.LANG,
+    lang: LANG,
     validateEvents: ['change']
 };
 
@@ -262,5 +263,9 @@ Calendar.propTypes = {
     })
 
 };
+
+Calendar = require('./createInputComponent').create(Calendar);
+
+Calendar.LANG = LANG;
 
 module.exports = Calendar;

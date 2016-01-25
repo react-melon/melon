@@ -85,7 +85,7 @@ describe('Dialog', function () {
 
                 componentDidMount() {
                     this.setState({show: true}, () => {
-                        var body = document.getElementsByTagName('body')[0];
+                        const body = document.getElementsByTagName('body')[0];
                         expect(body.style.overflow).toBe('hidden');
                         done();
                     });
