@@ -31,7 +31,7 @@ const ComponentsPage = ei.Page.extend({
             .toReducer()
     },
 
-    getInitialState: function (request) {
+    getInitialState(request) {
 
         const {query} = request;
         const {name} = query;

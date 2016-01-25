@@ -13,6 +13,12 @@ module.exports = [{
 }, {
     text: 'Components',
     children: [{
+        text: 'Drawer',
+        pathname: '/components',
+        query: {
+            name: 'Drawer'
+        }
+    }, {
         text: 'Pager',
         pathname: '/components',
         query: {
@@ -23,6 +29,12 @@ module.exports = [{
         pathname: '/components',
         query: {
             name: 'Progress'
+        }
+    }, {
+        text: 'SnackBar',
+        pathname: '/components',
+        query: {
+            name: 'SnackBar'
         }
     }, {
         text: 'Tabs',

@@ -24,7 +24,7 @@ class ZippyNav extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            expand: props.expand || false
+            expand: props.expand || true
         };
     }
 
