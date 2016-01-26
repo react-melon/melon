@@ -6,6 +6,7 @@
 /* eslint-disable max-len */
 
 module.exports = {
+
     Button: [{
         title: '按钮',
         brief: 'material风格的按钮，带有 waves 动画，有 Flat、Raised、Floating 三种样式，有 default、primary、secondery、success、info、warning、danger 七种状态，支持图标按钮',
@@ -19,6 +20,7 @@ module.exports = {
         brief: '支持设定按钮的大小，支持默认, xxs, xs, s, m, l, xl, xxl, xxxl，支持禁用的样式',
         name: 'ButtonSize'
     }],
+
     Calendar: [{
         title: '日历',
         brief: 'material风格的日历组件。支持设定日期选择区间，支持只读和禁用。',
@@ -28,11 +30,13 @@ module.exports = {
         brief: '支持日期区间的选择，包括日区间、周区间、月区间、年区间',
         name: 'RangeCalendar'
     }],
+
     Drawer: [{
         title: '创建Drawer',
         brief: '可配置位置、大小',
         name: 'Drawer'
     }],
+
     Pager: [{
         title: '普通的Pager',
         brief: '分页组件，默认为图标的翻页样式',
@@ -42,6 +46,7 @@ module.exports = {
         brief: '用文字作为翻页按钮，文字内容可以配置',
         name: 'Pager2'
     }],
+
     Progress: [{
         title: '默认形状',
         brief: '进度条组件，默认是条形的，有两种模式 —— determinate 和 indeterminate，indeterminate 模式表示不间断的进度动画',
@@ -51,11 +56,13 @@ module.exports = {
         brief: '圆形的进度条，也有 determinate 和 indeterminate 两种模式，可以通过 size 来设置显示大小',
         name: 'ProgressCircle'
     }],
+
     ScrollView: [{
         title: '普通',
         brief: '可以同时支持两个方向的滚动',
         name: 'ScrollView'
     }],
+
     SnackBar: [{
         title: '提示框',
         brief: '提示框组件，可以设定显示的位置，可以设定显示以后自动消失',
@@ -65,11 +72,13 @@ module.exports = {
         brief: '可以通过 SnackBar.show 接口动态创建',
         name: 'SnackBarActive'
     }],
+
     Tabs: [{
         title: '普通的Tabs',
         brief: '这是一个Tab切换组件',
         name: 'Tabs'
     }],
+
     TextBox: [{
         title: '普通的输入框',
         brief: '文本输入框组件，支持只读和禁用状态',

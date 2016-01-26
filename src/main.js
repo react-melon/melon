@@ -19,14 +19,14 @@ import ES6Promise from 'es6-promise';
 
 const AppComponent = createAppComponent(ei.App);
 
-function init() {
+ES6Promise.polyfill();
 
-    ES6Promise.polyfill();
+function init() {
 
     let main = document.getElementById('main');
 
     locator
-        .on((location) => {
+        .on(location => {
 
             ReactDOM.render(
                 <AppComponent routes={routes}>
@@ -58,7 +58,6 @@ function init() {
 
         })
         .start();
-
 
 }
 
