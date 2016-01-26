@@ -27,6 +27,11 @@ module.exports = {
         brief: '圆形的进度条，也有 determinate 和 indeterminate 两种模式，可以通过 size 来设置显示大小',
         name: 'ProgressCircle'
     }],
+    ScrollView: [{
+        title: '普通',
+        brief: '可以同时支持两个方向的滚动',
+        name: 'ScrollView'
+    }],
     SnackBar: [{
         title: '提示框',
         brief: '提示框组件，可以设定显示的位置，可以设定显示以后自动消失',
@@ -40,5 +45,26 @@ module.exports = {
         title: '普通的Tabs',
         brief: '这是一个Tab切换组件',
         name: 'Tabs'
+    }],
+    TextBox: [{
+        title: '普通的输入框',
+        brief: '文本输入框组件，支持只读和禁用状态',
+        name: 'TextBox'
+    }, {
+        title: '浮动提示',
+        brief: '带有浮动提示功能',
+        name: 'TextBoxFloatingLabel'
+    }, {
+        title: '多行输入',
+        brief: '支持多行输入',
+        name: 'TextBoxMultiline'
+    }, {
+        title: '前缀和后缀',
+        brief: '带有前缀和后缀的样式',
+        name: 'TextBoxFix'
+    }, {
+        title: '被控制的输入框',
+        brief: '被控制的输入框的值不会随着用户输入而变化。它只会响应value值的变化。当value和onChange同时被设定时，TextBox就会进入被控制的状态。即value不是undefined或null，onChange是一个函数',
+        name: 'TextBoxControlled'
     }]
 };

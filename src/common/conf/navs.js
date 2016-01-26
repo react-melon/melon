@@ -31,6 +31,12 @@ module.exports = [{
             name: 'Progress'
         }
     }, {
+        text: 'ScrollView',
+        pathname: '/components',
+        query: {
+            name: 'ScrollView'
+        }
+    }, {
         text: 'SnackBar',
         pathname: '/components',
         query: {
@@ -41,6 +47,12 @@ module.exports = [{
         pathname: '/components',
         query: {
             name: 'Tabs'
+        }
+    }, {
+        text: 'TextBox',
+        pathname: '/components',
+        query: {
+            name: 'TextBox'
         }
     }]
 }];
