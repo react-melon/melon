@@ -1427,12 +1427,13 @@ a{text-decoration:none;color:#d32f2f}
 .ui-homeview-github .ui-button{margin-top:50px}
 .ui-homeview-footer{padding:72px 24px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;text-align:center;background-color:#212121;color:rgba(255,255,255,.87)}
 .ui-example-card{padding-bottom:1em}
--main{margin:1em;margin-bottom:0;border:1px solid #f0f0f0}
-.variant-tabs .ui-tabs-panel{min-height:200px;padding:1em;line-height:1.5em}
-.variant-tabs .ui-tabs-panel .ui-title{color:#000}
-.variant-pager1,.variant-pager2{padding:30px 50px}
-.variant-pager1 p,.variant-pager2 p{margin-top:30px}
-.variant-progresscircle,.variant-progresslinear{padding:30px 50px}
+.ui-example-card-main{padding:30px 50px}
+.ui-example-card .variant-tabs{padding:0}
+.ui-example-card .variant-tabs .ui-tabs-panel{min-height:200px;padding:1em;line-height:1.5em}
+.ui-example-card .variant-tabs .ui-tabs-panel .ui-title{color:#000}
+.ui-example-card .variant-pager1 p,.ui-example-card .variant-pager2 p{margin-top:30px}
+.ui-example-card .melon-row{margin-bottom:20px}
+.ui-example-card .melon-row:last-child{margin-bottom:0}
 .ui-props-table>.ui-title{margin-top:40px}
 .ui-props-table .ui-table-header .ui-table-cell{color:#888}
 .ui-props-table .ui-table-body .ui-table-cell:first-child{color:#283593}
