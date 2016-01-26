@@ -56,30 +56,35 @@ const TreeNode = React.createClass({
 
     handleOnClick(e) {
 
-        var state = this.state;
+        const state = this.state;
 
-        var expand = state.expand;
+        const expand = state.expand;
 
         this.setState({expand: !expand});
     },
 
     render() {
 
-        var props = this.props;
-        var {label, ...others} = props;
-        var expand = this.state.expand;
+        const props = this.props;
+        const {
+            label,
+            children,
+            expandIcon,
+            unexpandIcon,
+            ...others
+        } = props;
+        const expand = this.state.expand;
 
-        var icon = expand
-            ? (props.expandIcon || TreeNode.ICON[1])
-            : (props.unexpandIcon || TreeNode.ICON[0]);
+        const icon = expand
+            ? (expandIcon || TreeNode.ICON[1])
+            : (unexpandIcon || TreeNode.ICON[0]);
 
-        var children = props.children;
-
-        var iconStyle;
-        var labelStyle;
+        let iconStyle;
+        let labelStyle;
+        let content;
 
         if (props.level) {
-            var level = props.level - 0;
+            const level = props.level - 0;
             labelStyle = {
                 paddingLeft: level * 1.2 + 0.4 + 'em'
             };
@@ -90,7 +95,7 @@ const TreeNode = React.createClass({
 
         // 是否还有子节点
         if (React.Children.count(children) > 0) {
-            children = [
+            content = [
                 <Icon
                     key="icon"
                     icon={icon}
@@ -113,7 +118,7 @@ const TreeNode = React.createClass({
             ];
         }
         else {
-            children = (
+            content = (
                 <span
                     onClick={this.handleOnClick}
                     key="label"
@@ -130,7 +135,7 @@ const TreeNode = React.createClass({
                 {...others}
                 data-role="tree-node"
                 className={cx(props).addVariants('level' + props.level).build()}>
-                {children}
+                {content}
             </li>
         );
 

@@ -18,20 +18,20 @@ const CalendarPager = React.createClass({
 
     render() {
 
-        var {
+        const {
             maxDate,
             minDate,
             month
         } = this.props;
 
-        var m = month.getMonth() + 1;
-        var y = month.getFullYear();
+        const m = month.getMonth() + 1;
+        const y = month.getFullYear();
 
-        var beforeState = {
+        const beforeState = {
             disabled: _.isDate(minDate) && DateTime.isBeforeMonth(DateTime.addMonths(month, -1), minDate)
         };
 
-        var nextState = {
+        const nextState = {
             disabled: _.isDate(maxDate) && DateTime.isAfterMonth(DateTime.addMonths(month, 1), maxDate)
         };
 
@@ -56,13 +56,13 @@ const CalendarPager = React.createClass({
 
     onClick(e) {
 
-        var target = e.currentTarget;
-        var month = this.props.month;
+        const target = e.currentTarget;
+        const month = this.props.month;
 
-        var action = target.getAttribute('data-action');
-        var newMonth = DateTime.addMonths(month, action === 'next' ? 1 : -1);
+        const action = target.getAttribute('data-action');
+        const newMonth = DateTime.addMonths(month, action === 'next' ? 1 : -1);
 
-        var onChange = this.props.onChange;
+        const onChange = this.props.onChange;
 
         if (onChange) {
             onChange({

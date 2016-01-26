@@ -43,9 +43,9 @@ const TableCell = React.createClass({
 
     render() {
 
-        var props = this.props;
+        const props = this.props;
 
-        var style = {
+        const style = {
             textAlign: props.align,
             width: props.width,
             height: props.height

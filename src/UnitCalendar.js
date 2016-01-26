@@ -74,7 +74,7 @@ let UnitCalendar = React.createClass({
         }
 
         // cut
-        for (var i = 0; i < nLength; ++i) {
+        for (let i = 0; i < nLength; ++i) {
             if (current[i] < next[i]) {
                 if (i === 0) {
                     return current.slice(1);
@@ -98,14 +98,14 @@ let UnitCalendar = React.createClass({
     parseValue(value = '') {
         return value
             .split(',')
-            .map((date) => {
+            .map(date => {
                 return this.parse(date);
             });
     },
 
     stringifyValue(value = []) {
         return value
-            .map((term) => {
+            .map(term => {
                 return this.format(term);
             })
             .join(',');
@@ -117,7 +117,7 @@ let UnitCalendar = React.createClass({
         let {onChange} = this;
 
         value = value
-            .map((fragment) => {
+            .map(fragment => {
                 return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
             })
             .sort();
@@ -129,7 +129,7 @@ let UnitCalendar = React.createClass({
                     boxModel="checkbox"
                     onChange={onChange}
                     value={value}>
-                    {UnitCalendar.getContinuousFragments(begin, end, unit).map((fragment) => {
+                    {UnitCalendar.getContinuousFragments(begin, end, unit).map(fragment => {
                         let begin = this.format(fragment);
                         let end = UnitCalendar.getNextTime(fragment, unit);
                         end.setDate(end.getDate() - 1);
@@ -164,7 +164,6 @@ UnitCalendar.propTypes = {
 
 UnitCalendar.defaultProps = {
     continuous: true,
-    value: [],
     defaultValue: []
 };
 

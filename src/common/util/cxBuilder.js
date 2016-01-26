@@ -20,7 +20,7 @@ function addPrefix(prefix) {
         return cx
             .createClasses
             .apply(null, arguments)
-            .map((className) => {
+            .map(className => {
                 return `${prefix}-${className}`;
             })
             .join(' ');
@@ -62,7 +62,7 @@ function resolveStates(props) {
     };
 }
 
-exports.create = (type) => {
+exports.create = type => {
 
     const displayName = pascalize(type);
     const hyphenatedClassName = hyphenate(displayName);
@@ -120,7 +120,7 @@ exports.create = (type) => {
         }
 
         function removeVariants(variant) {
-            variants = variants.filter((term) => {
+            variants = variants.filter(term => {
                 return term !== variant;
             });
             return builder;

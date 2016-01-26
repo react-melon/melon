@@ -35,13 +35,13 @@ const Tree = React.createClass({
 
     onTreeNodeClick(e) {
 
-        var target = e.currentTarget;
-        var main = ReactDOM.findDOMNode(this);
+        const target = e.currentTarget;
+        const main = ReactDOM.findDOMNode(this);
 
         e.stopPropagation();
 
         _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
-            var className = ele.className.split(' ');
+            const className = ele.className.split(' ');
             ele.className = _.without(className, 'state-selected').join(' ');
         });
 
@@ -54,15 +54,15 @@ const Tree = React.createClass({
             return;
         }
 
-        var expand = this.props.defaultExpandAll;
+        const expand = this.props.defaultExpandAll;
 
         return React.Children.map(children, function (child, index) {
 
             return React.cloneElement(child, {
                 onClick: this.onTreeNodeClick,
                 key: index,
-                level: level,
-                expand: expand
+                level,
+                expand
             }, this.renderTreeNode(child.props.children, level + 1));
 
         }, this);
@@ -70,8 +70,8 @@ const Tree = React.createClass({
 
     render() {
 
-        var props = this.props;
-        var children = props.children;
+        const props = this.props;
+        const children = props.children;
 
         return (
             <ul {...props} className={cx(props).build()}>

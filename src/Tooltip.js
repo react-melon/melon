@@ -19,7 +19,7 @@ const Tooltip = React.createClass({
     },
 
     componentDidMount() {
-        var popup = this.popup = Tooltip.createPopup();
+        const popup = this.popup = Tooltip.createPopup();
         this.renderPopup(popup, this.props.content);
     },
 
@@ -143,7 +143,7 @@ const Tooltip = React.createClass({
 
         return (
             <div {...props}
-                ref={(main) => {
+                ref={main => {
                     if (main) {
                         this.main = main;
                     }
@@ -175,7 +175,7 @@ Tooltip.defaultProps = {
     offsetY: 14
 };
 
-var container;
+let container;
 
 Tooltip.createPopup = function () {
 
@@ -185,7 +185,7 @@ Tooltip.createPopup = function () {
         document.body.appendChild(container);
     }
 
-    var popup = document.createElement('div');
+    let popup = document.createElement('div');
 
     container.appendChild(popup);
 

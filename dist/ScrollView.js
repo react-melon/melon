@@ -132,7 +132,7 @@ define('melon/ScrollView', [
         render: function () {
             var props = this.props;
             var children = props.children;
-            var others = props.others;
+            var others = babelHelpers.objectWithoutProperties(props, ['children']);
             var styles = _.pick(props, 'height', 'width');
             return React.createElement('div', babelHelpers._extends({}, others, {
                 className: cx(props).addVariants(this.getDirections()).build(),

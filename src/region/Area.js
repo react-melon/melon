@@ -19,24 +19,23 @@ const RegionArea = React.createClass({
 
     displayName: 'RegionArea',
 
-    onSelectorChange(e) {
-        var value = e.value;
+    onSelectorChange({value}) {
 
-        var data = this.props.datasource;
+        let data = this.props.datasource;
 
         helper[value ? 'selectAll' : 'cancelAll'](data);
 
         let onChange = this.props.onChange;
 
         onChange && onChange({
-            data: data
+            data
         });
     },
 
     onProvinceChange(index, e) {
-        var data = e.data;
+        const data = e.data;
 
-        var datasource = this.props.datasource;
+        let datasource = this.props.datasource;
 
         datasource.children[index] = data;
 
@@ -50,11 +49,11 @@ const RegionArea = React.createClass({
     },
 
     onCityChange(pIndex, cIndex, e) {
-        var data = e.data;
+        const data = e.data;
 
-        var datasource = this.props.datasource;
+        let datasource = this.props.datasource;
 
-        var p = datasource.children[pIndex];
+        let p = datasource.children[pIndex];
         p.children[cIndex] = data;
 
         helper.isAllSelected(p);
@@ -91,9 +90,9 @@ const RegionArea = React.createClass({
 
     render() {
 
-        var props = this.props;
+        const props = this.props;
 
-        var {
+        const {
             datasource
         } = props;
 

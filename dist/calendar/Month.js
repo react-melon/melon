@@ -51,7 +51,7 @@ define('melon/calendar/Month', [
                 className: cx().part('week').build()
             }, week);
         },
-        renderDay: function (array, variants) {
+        renderDay: function (array, constiants) {
             var props = this.props;
             var date = props.date;
             var minDate = props.minDate;
@@ -62,7 +62,7 @@ define('melon/calendar/Month', [
                 return React.createElement(Day, {
                     key: day,
                     date: day,
-                    variants: variants,
+                    constiants: constiants,
                     disabled: disabled,
                     selected: selected,
                     onClick: this.onClick
@@ -74,10 +74,10 @@ define('melon/calendar/Month', [
         }
     });
     CalendarMonth.propTypes = {
-        date: PropTypes.object.isRequired,
-        month: PropTypes.object.isRequired,
-        maxDate: PropTypes.object,
-        minDate: PropTypes.object,
+        date: PropTypes.instanceOf(Date).isRequired,
+        month: PropTypes.instanceOf(Date).isRequired,
+        maxDate: PropTypes.instanceOf(Date),
+        minDate: PropTypes.instanceOf(Date),
         onChange: PropTypes.func,
         lang: PropTypes.shape({
             week: PropTypes.string,

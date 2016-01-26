@@ -17,11 +17,12 @@ define('melon/region/Province', [
         getInitialState: function () {
             return { expand: false };
         },
-        onSelectorChange: function (e) {
-            var value = e.value;
-            var datasource = this.props.datasource;
+        onSelectorChange: function (_ref) {
+            var value = _ref.value;
+            var _props = this.props;
+            var datasource = _props.datasource;
+            var onChange = _props.onChange;
             helper[value ? 'selectAll' : 'cancelAll'](datasource);
-            var onChange = this.props.onChange;
             onChange && onChange({ data: datasource });
         },
         onMouseEnter: function (e) {
@@ -45,9 +46,9 @@ define('melon/region/Province', [
             return num === total || num === 0 ? null : React.createElement('span', { className: cx().part('info').build() }, '(' + num + '/' + total + ')');
         },
         render: function () {
-            var _props = this.props;
-            var datasource = _props.datasource;
-            var children = _props.children;
+            var _props2 = this.props;
+            var datasource = _props2.datasource;
+            var children = _props2.children;
             return React.createElement('div', {
                 className: cx(this.props).addStates({ expand: this.state.expand }).build(),
                 onMouseEnter: children ? this.onMouseEnter : null,

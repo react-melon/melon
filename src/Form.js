@@ -24,7 +24,7 @@ let Form = React.createClass({
 
     getDefaultProps() {
         return {
-            validator: validator
+            validator
         };
     },
 
@@ -65,7 +65,7 @@ let Form = React.createClass({
         const {fields} = this;
 
         if (fields) {
-            this.fields = this.fields.filter((f) => {
+            this.fields = this.fields.filter(f => {
                 return f !== field;
             });
         }
@@ -123,7 +123,7 @@ let Form = React.createClass({
                     isValid: formValidity.isValid && validity.isValid(),
                     errors: [
                         ...formValidity.errors,
-                        ...validity.states.filter((state) => !state.isValid)
+                        ...validity.states.filter(state => !state.isValid)
                     ]
                 };
 

@@ -87,13 +87,13 @@ const SelectableTable = React.createClass({
         if (onSelect) {
             onSelect({
                 target: this,
-                selected: selected
+                selected
             });
             return;
         }
 
         this.setState({
-            selected: selected
+            selected
         });
 
     },

@@ -19,9 +19,9 @@ const CalendarSelectorItem = React.createClass({
 
     render() {
 
-        var props = this.props;
+        const props = this.props;
 
-        var {
+        const {
             date,
             mode,
             disabled,

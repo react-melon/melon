@@ -35,8 +35,8 @@ const Region = React.createClass({
     },
 
     onAreaChange(index, cIndex, e) {
-        var data = e.data;
-        var datasource = this.state.datasource;
+        let data = e.data;
+        let datasource = this.state.datasource;
 
         helper.isAllSelected(data);
         datasource[cIndex].children[index] = data;
@@ -48,11 +48,11 @@ const Region = React.createClass({
     },
 
     onSelectorChange(index, e) {
-        var {
+        let {
             value
         } = e;
 
-        var datasource = this.state.datasource;
+        let datasource = this.state.datasource;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
 
@@ -101,7 +101,7 @@ const Region = React.createClass({
                         return (
                             <Area
                                 key={index}
-                                variants={index % 2 ? ['even'] : []}
+                                letiants={index % 2 ? ['even'] : []}
                                 datasource={a}
                                 onChange={this.onAreaChange.bind(this, index, cIndex)} />
                         );
@@ -112,7 +112,7 @@ const Region = React.createClass({
 
     render() {
 
-        var datasource = this.state.datasource;
+        let datasource = this.state.datasource;
 
         return (
             <div className={cx(this.props).build()}>

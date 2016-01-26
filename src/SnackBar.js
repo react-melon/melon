@@ -48,7 +48,7 @@ const SnackBar = React.createClass({
 
     componentWillReceiveProps(nextProps) {
 
-        var open = nextProps.open;
+        const open = nextProps.open;
 
         if (open === this.state.open) {
             return;
@@ -59,13 +59,13 @@ const SnackBar = React.createClass({
     },
 
     locate() {
-        var {
+        const {
             direction
         } = this.props;
 
         const {open} = this.state;
 
-        var main = ReactDOM.findDOMNode(this);
+        const main = ReactDOM.findDOMNode(this);
 
         if (open) {
 
@@ -85,17 +85,26 @@ const SnackBar = React.createClass({
     },
 
     onHide() {
-        var onHide = this.props.onHide;
+        const {
+            onHide,
+            autoHideDuration
+        } = this.props;
+
+        const autoHideTimer = this.autoHideTimer;
 
         this.setState({open: false}, function () {
             if (onHide) {
                 onHide();
             }
+
+            if (autoHideDuration > 0 && autoHideTimer) {
+                clearTimeout(autoHideTimer);
+            }
         });
     },
 
     onShow() {
-        var {
+        const {
             onShow,
             autoHideDuration
         } = this.props;
@@ -106,7 +115,7 @@ const SnackBar = React.createClass({
             }
 
             if (autoHideDuration > 0) {
-                var onHide = this.onHide;
+                const onHide = this.onHide;
                 this.autoHideTimer = setTimeout(function () {
                     onHide();
                 }, autoHideDuration);
@@ -121,9 +130,9 @@ const SnackBar = React.createClass({
         }
 
         e = e || window.event;
-        var target = e.target || e.srcElement;
+        const target = e.target || e.srcElement;
 
-        var main = ReactDOM.findDOMNode(this);
+        const main = ReactDOM.findDOMNode(this);
 
         // 点击不在 snackBar 内部
         if (main !== target && !dom.contains(main, target)) {
@@ -186,13 +195,13 @@ SnackBar.propTypes = {
 
 SnackBar.show = function (message, duration = 0, direction = 'bl') {
 
-    var doc = document;
-    var body = doc.body;
-    var container = doc.createElement('div');
+    let doc = document;
+    let body = doc.body;
+    let container = doc.createElement('div');
 
     body.appendChild(container);
 
-    var snackbar = (
+    let snackbar = (
         <SnackBar
             autoHideDuration={duration}
             message={message}

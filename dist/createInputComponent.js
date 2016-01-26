@@ -135,7 +135,7 @@ define('melon/createInputComponent', [
         }
     });
     exports.isValidInputElement = function (element) {
-        return React.isValidElement(element) && element.props.type === InputComponent;
+        return React.isValidElement(element) && element.type === InputComponent;
     };
     exports.InputComponent = InputComponent;
     exports.create = function (Component) {

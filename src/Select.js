@@ -119,7 +119,7 @@ let Select = React.createClass({
         this.hideOptions();
 
         // 如果选项是禁用状态的，收起
-        var disabled = target.getAttribute('data-disabled');
+        const disabled = target.getAttribute('data-disabled');
 
         if (disabled) {
             return;
@@ -163,7 +163,7 @@ let Select = React.createClass({
             label
         } = group.props;
 
-        var className = cx().part('group').addStates({disabled}).build();
+        const className = cx().part('group').addStates({disabled}).build();
 
         return (
             <div className={className}>
@@ -264,10 +264,10 @@ let Select = React.createClass({
             return null;
         }
 
-        for (var i = 0, len = children.length; i < len; ++i) {
-            var child = children[i];
+        for (let i = 0, len = children.length; i < len; ++i) {
+            let child = children[i];
             if (child.type === 'optgroup') {
-                var option = this.findOption(value, child.props.children);
+                const option = this.findOption(value, child.props.children);
                 if (option) {
                     return option;
                 }

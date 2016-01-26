@@ -17,7 +17,7 @@ const BoxGroupOption = React.createClass({
     },
 
     getIcon(boxModel, isChecked) {
-        var icons = BoxGroupOption.Icons[boxModel];
+        const icons = BoxGroupOption.Icons[boxModel];
         return icons[isChecked ? 'checked' : 'unchecked'];
     },
 

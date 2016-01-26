@@ -11,7 +11,7 @@ class RippleCircle extends React.Component {
 
     shouldComponentUpdate(nextProps) {
 
-        let {
+        const {
             opacity,
             scale
         } = this.props;
@@ -21,7 +21,7 @@ class RippleCircle extends React.Component {
 
     render() {
 
-        let {
+        const {
             style,
             opacity,
             scale,

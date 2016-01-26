@@ -133,10 +133,10 @@ const ScrollView = React.createClass({
             position[key] = pos;
         });
 
-        this.setState({position: position}, function () {
+        this.setState({position}, function () {
             let onScroll = this.props.onScroll;
             onScroll && onScroll({
-                position: position,
+                position,
                 target: this
             });
         });
@@ -179,14 +179,14 @@ const ScrollView = React.createClass({
 
     render() {
 
-        let props = this.props;
+        const props = this.props;
 
-        let {
+        const {
             children,
-            others
+            ...others
         } = props;
 
-        let styles = _.pick(props, 'height', 'width');
+        const styles = _.pick(props, 'height', 'width');
 
         return (
             <div

@@ -70,7 +70,7 @@ const CalendarPanel = React.createClass({
         }
 
         this.setState({
-            date: date,
+            date,
             month: date,
             selectorType: mode
         });
@@ -82,7 +82,7 @@ const CalendarPanel = React.createClass({
         let month = e.month;
 
         this.setState({
-            month: month
+            month
         });
 
     },

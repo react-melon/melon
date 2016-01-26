@@ -22,14 +22,15 @@ define('melon/Button', [
             'children',
             'disabled'
         ]);
+        var useRipple = hasRipple && !disabled;
         var className = cx(props).addVariants({
             icon: React.Children.count(children) === 1 && typeof children === 'object' && children.type.displayName === 'Icon',
-            ripple: hasRipple && !disabled
+            ripple: useRipple
         }).build();
         return React.createElement('button', babelHelpers._extends({}, others, {
             disabled: disabled,
             className: className
-        }), label || children, hasRipple ? React.createElement(TouchRipple, null) : null);
+        }), label || children, useRipple ? React.createElement(TouchRipple, null) : null);
     }
     Button.defaultProps = {
         hasRipple: true,

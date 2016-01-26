@@ -22,16 +22,14 @@ const RegionProvince = React.createClass({
         };
     },
 
-    onSelectorChange(e) {
-        var value = e.value;
+    onSelectorChange({value}) {
 
-        var {
-            datasource
+        let {
+            datasource,
+            onChange
         } = this.props;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource);
-
-        let onChange = this.props.onChange;
 
         onChange && onChange({
             data: datasource
@@ -47,16 +45,16 @@ const RegionProvince = React.createClass({
     },
 
     renderSelectedInfo() {
-        var {
+        let {
             datasource
         } = this.props;
 
-        var total = datasource.children && datasource.children.length;
+        const total = datasource.children && datasource.children.length;
         if (!total) {
             return;
         }
 
-        var num = datasource.children.reduce(function (result, child, index) {
+        const num = datasource.children.reduce(function (result, child, index) {
             if (child.selected) {
                 result++;
             }
@@ -73,7 +71,7 @@ const RegionProvince = React.createClass({
 
     render() {
 
-        var {
+        const {
             datasource,
             children
         } = this.props;

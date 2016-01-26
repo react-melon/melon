@@ -71,7 +71,7 @@ const RangeCalendar = React.createClass({
     getValue() {
         return this
             .getNormalizeValue(this.props)
-            .map((date) => {
+            .map(date => {
                 return this.formatDate(date);
             });
     },
@@ -116,7 +116,7 @@ const RangeCalendar = React.createClass({
         date[index] = value;
 
         this.setState({
-            date: date,
+            date,
             month: date
         });
 
@@ -246,7 +246,7 @@ const RangeCalendar = React.createClass({
 
 RangeCalendar.defaultProps = {
     ...Calendar.defaultProps,
-    value: [
+    defaultValue: [
         DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
         DateTime.format(DateTime.addMonths(new Date(), 1), 'yyyy-mm-dd', Calendar.LANG)
     ]
@@ -257,7 +257,6 @@ const {PropTypes} = React;
 RangeCalendar.propTypes = {
     ...Calendar.propTypes,
     value: PropTypes.arrayOf(PropTypes.string),
-    autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
     begin: PropTypes.oneOfType([
         PropTypes.object,

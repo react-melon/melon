@@ -21,7 +21,7 @@ module.exports = {
 
         e.preventDefault();
 
-        var {
+        const {
             disabled,
             onClick,
             date,
@@ -36,7 +36,7 @@ module.exports = {
 
             let e = {
                 target: this,
-                date: date
+                date
             };
 
             if (mode) {

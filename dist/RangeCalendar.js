@@ -166,7 +166,7 @@ define('melon/RangeCalendar', [
         }
     });
     RangeCalendar.defaultProps = babelHelpers._extends({}, Calendar.defaultProps, {
-        value: [
+        defaultValue: [
             DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
             DateTime.format(DateTime.addMonths(new Date(), 1), 'yyyy-mm-dd', Calendar.LANG)
         ]
@@ -174,7 +174,6 @@ define('melon/RangeCalendar', [
     var PropTypes = React.PropTypes;
     RangeCalendar.propTypes = babelHelpers._extends({}, Calendar.propTypes, {
         value: PropTypes.arrayOf(PropTypes.string),
-        autoOk: PropTypes.bool,
         dateFormat: PropTypes.string,
         begin: PropTypes.oneOfType([
             PropTypes.object,
