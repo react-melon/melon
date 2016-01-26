@@ -101,7 +101,7 @@ const Region = React.createClass({
                         return (
                             <Area
                                 key={index}
-                                letiants={index % 2 ? ['even'] : []}
+                                variants={index % 2 ? ['even'] : []}
                                 datasource={a}
                                 onChange={this.onAreaChange.bind(this, index, cIndex)} />
                         );
