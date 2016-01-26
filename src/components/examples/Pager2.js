@@ -17,32 +17,24 @@ const PagerExample2 = React.createClass({
     },
 
     onChange(e) {
-
         const {page} = e;
-
         this.setState({page});
-
     },
 
     render() {
 
         return (
-
             <div>
-
                 <Pager
                     total={10}
                     page={this.state.page}
                     first={1}
                     useLang
                     onChange={this.onChange} />
-
                 <p>
                     当前页码为{this.state.page}
                 </p>
-
             </div>
-
         );
     }
 

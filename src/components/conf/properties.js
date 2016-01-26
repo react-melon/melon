@@ -20,5 +20,6 @@ module.exports = {
     ...scrollview,
     ...textbox,
 
-    ...require('./properties/calendar')
+    ...require('./properties/calendar'),
+    ...require('./properties/button')
 };

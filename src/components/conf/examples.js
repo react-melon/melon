@@ -6,6 +6,19 @@
 /* eslint-disable max-len */
 
 module.exports = {
+    Button: [{
+        title: '按钮',
+        brief: 'material风格的按钮，带有 waves 动画，有 Flat、Raised、Floating 三种样式，有 default、primary、secondery、success、info、warning、danger 七种状态，支持图标按钮',
+        name: 'Button'
+    }, {
+        title: '按钮组',
+        brief: '支持类 ui-buttongroup，将多个 button 组织起来',
+        name: 'ButtonGroup'
+    }, {
+        title: '按钮大小',
+        brief: '支持设定按钮的大小，支持默认, xxs, xs, s, m, l, xl, xxl, xxxl，支持禁用的样式',
+        name: 'ButtonSize'
+    }],
     Calendar: [{
         title: '日历',
         brief: 'material风格的日历组件。支持设定日期选择区间，支持只读和禁用。',

@@ -13,6 +13,12 @@ module.exports = [{
 }, {
     text: 'Components',
     children: [{
+        text: 'Button',
+        pathname: '/components',
+        query: {
+            name: 'Button'
+        }
+    }, {
         text: 'Calendar',
         pathname: '/components',
         query: {

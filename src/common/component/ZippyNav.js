@@ -41,7 +41,7 @@ class ZippyNav extends React.Component {
 
         const {expand} = state;
 
-        const listHeight = nav.children.length * 32;
+        const listHeight = nav.children.length * 35;
 
         return (
             <div {...others} className={cx(props).build()}>

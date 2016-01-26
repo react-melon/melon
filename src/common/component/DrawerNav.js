@@ -6,8 +6,11 @@
 import React from 'react';
 import Drawer from 'melon/Drawer';
 import Title from 'melon/Title';
+import Link from 'melon/Link';
 
 import ZippyNav from './ZippyNav';
+
+import {createHref} from '../../locator';
 
 const cx = require('melon/common/util/cxBuilder').create('DrawerNav');
 const _ = require('underscore');
@@ -46,7 +49,13 @@ class DrawerNav extends React.Component {
 
         return (
             <Drawer {...props} className={cx(props).build()}>
-                <Title level={2}>Melon</Title>
+                <Link
+                    href={createHref('/')}
+                    onClick={() => {
+                        this.props.onHide();
+                    }}>
+                    <Title level={2}>Melon</Title>
+                </Link>
                 {this.renderNavs()}
             </Drawer>
         );
