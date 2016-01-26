@@ -18,5 +18,7 @@ module.exports = {
     ...snackbar,
     ...drawer,
     ...scrollview,
-    ...textbox
+    ...textbox,
+
+    ...require('./properties/calendar')
 };

@@ -153,7 +153,7 @@ exports.getProcessors = function () {
             rawWrapper,
             amdWrapper,
             moduleProcessor,
-            jsProcessor,
+            // jsProcessor,
             addCopyright,
             renamer,
             clean,

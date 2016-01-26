@@ -3,7 +3,18 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
+/* eslint-disable max-len */
+
 module.exports = {
+    Calendar: [{
+        title: '日历',
+        brief: 'material风格的日历组件。支持设定日期选择区间，支持只读和禁用。',
+        name: 'Calendar'
+    }, {
+        title: '日期期间选择',
+        brief: '支持日期区间的选择，包括日区间、周区间、月区间、年区间',
+        name: 'RangeCalendar'
+    }],
     Drawer: [{
         title: '创建Drawer',
         brief: '可配置位置、大小',

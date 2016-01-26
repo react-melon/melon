@@ -7,7 +7,7 @@
 import React from 'react';
 import TextBox from 'melon/TextBox';
 
-require('../code/TextBoxMultiLine.txt');
+require('../code/TextBoxMultiline.txt');
 
 function View(props) {
 

@@ -8,6 +8,8 @@ const Button = require('melon/Button');
 const Drawer = require('melon/Drawer');
 const Select = require('melon/Select');
 
+require('../code/Drawer.txt');
+
 const View = React.createClass({
 
     getInitialState() {
