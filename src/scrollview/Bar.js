@@ -159,7 +159,7 @@ const ScrollViewBar = React.createClass({
 
     fireAction(action, pos) {
         let e = {
-            action: action,
+            action,
             position: pos,
             target: this
         };
@@ -188,7 +188,7 @@ const ScrollViewBar = React.createClass({
 
 });
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
 ScrollViewBar.propTypes = {
     direction: PropTypes.oneOf(['vertical', 'horizontal']).isRequired,

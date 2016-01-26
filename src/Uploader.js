@@ -39,10 +39,10 @@ const Uploader = React.createClass({
                 files: e.target.files
             })
             .then(
-                (result) => {
+                result => {
                     this.setFile(result);
                 },
-                (error) => {
+                error => {
                     this.clearFile();
                 }
             );
@@ -68,7 +68,7 @@ const Uploader = React.createClass({
             this.props.onChange({
                 type: 'change',
                 target: this,
-                value: value
+                value
             });
         });
 
@@ -92,7 +92,7 @@ const Uploader = React.createClass({
 
     renderUploadFile() {
 
-        var {isUploading, isUploaded} = this.state;
+        const {isUploading, isUploaded} = this.state;
 
         return isUploading || isUploaded
             ? null
@@ -173,7 +173,7 @@ const Uploader = React.createClass({
 
 });
 
-var PropTypes = React.PropTypes;
+const PropTypes = React.PropTypes;
 
 Uploader.propTypes = {
     multiple: PropTypes.bool,

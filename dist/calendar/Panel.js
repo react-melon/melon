@@ -23,13 +23,17 @@ define('melon/calendar/Panel', [
         getInitialState: function () {
             return {
                 selectorType: 'main',
-                month: this.props.date
+                month: this.props.date,
+                date: this.props.date
             };
         },
         componentWillReceiveProps: function (nextProps) {
             var date = nextProps.date;
             if (this.props.date !== date) {
-                this.setState({ date: date });
+                this.setState({
+                    date: date,
+                    month: date
+                });
             }
         },
         onHeaderClick: function (e) {
@@ -98,7 +102,12 @@ define('melon/calendar/Panel', [
     CalendarPanel.propTypes = {
         date: PropTypes.instanceOf(Date).isRequired,
         begin: PropTypes.instanceOf(Date),
-        end: PropTypes.instanceOf(Date)
+        end: PropTypes.instanceOf(Date),
+        lang: PropTypes.shape({
+            week: PropTypes.string,
+            days: PropTypes.string,
+            title: PropTypes.string
+        }).isRequired
     };
     module.exports = CalendarPanel;
 });

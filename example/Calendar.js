@@ -3,21 +3,21 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+const React = require('react');
 
-var Title = require('../src/Title');
-var Calendar = require('../src/Calendar');
+const Title = require('../src/Title');
+const Calendar = require('../src/Calendar');
 
-var RangeCalendar = require('../src/RangeCalendar');
-var UnitCalendar = require('../src/UnitCalendar');
+const RangeCalendar = require('../src/RangeCalendar');
+const UnitCalendar = require('../src/UnitCalendar');
 
-var View = React.createClass({
+const View = React.createClass({
 
-    getInitialState: function () {
+    getInitialState() {
         return {
             weekRange: [],
             value: '2015-08-07',
-            monthRange: [],
+            monthRange: []
             // yearRange: UnitCalendar
             //     .getContinuousFragments(
             //         new Date(2012, 1, 1),
@@ -27,12 +27,11 @@ var View = React.createClass({
         };
     },
 
-    onChange: function (e) {
+    onChange(e) {
         this.setState({value: e.value});
     },
 
-
-    render: function () {
+    render() {
 
         return (
             <div>
@@ -73,7 +72,7 @@ var View = React.createClass({
                     <div className="melon-column melon-column-4">
                         <Title level={5}>被控制的控件</Title>
                         <Calendar
-                            autoOk
+                            autoConfirm
                             value={this.state.value}
                             onChange={this.onChange} size="xs" />
                     </div>

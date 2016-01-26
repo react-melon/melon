@@ -46,12 +46,12 @@ const Mask = React.createClass({
     },
 
     preventScrolling() {
-        var body = document.getElementsByTagName('body')[0];
+        let body = document.getElementsByTagName('body')[0];
         body.style.overflow = 'hidden';
     },
 
     allowScrolling() {
-        var body = document.getElementsByTagName('body')[0];
+        let body = document.getElementsByTagName('body')[0];
         body.style.overflow = this.originalBodyOverflow || '';
     },
 

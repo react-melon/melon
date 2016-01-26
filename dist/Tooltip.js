@@ -139,7 +139,7 @@ define('melon/Tooltip', [
         offsetX: 14,
         offsetY: 14
     };
-    var container;
+    var container = undefined;
     Tooltip.createPopup = function () {
         if (!container) {
             container = document.createElement('div');

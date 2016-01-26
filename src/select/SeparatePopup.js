@@ -175,7 +175,7 @@ const SelectSeparatePopup = React.createClass({
                     height: spring(height, [120, 15]),
                     opacity: spring(opacity, [120, 15])
                 }}>
-                {(style) => {
+                {style => {
 
                     return (
                         <div
@@ -184,7 +184,7 @@ const SelectSeparatePopup = React.createClass({
                                 ...style,
                                 visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
                             }}
-                            ref={(main) => {
+                            ref={main => {
                                 this.main = main;
                             }}>
                             <div className={contentClassName} >

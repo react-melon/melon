@@ -12,8 +12,8 @@ define('melon/region/City', [
     var PropTypes = React.PropTypes;
     var RegionCity = React.createClass({
         displayName: 'RegionCity',
-        onSelectorChange: function (e) {
-            var value = e.value;
+        onSelectorChange: function (_ref) {
+            var value = _ref.value;
             var datasource = this.props.datasource;
             var onChange = this.props.onChange;
             datasource.selected = value;

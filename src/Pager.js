@@ -34,7 +34,7 @@ const Pager = React.createClass({
             e.cancelBubble = true;
         }
 
-        var role = target.getAttribute('data-role');
+        let role = target.getAttribute('data-role');
 
         while (role !== 'pager-item' && target !== currentTarget) {
             target = target.parentNode;
@@ -45,19 +45,19 @@ const Pager = React.createClass({
             return;
         }
 
-        var page = +target.getAttribute('data-page') + this.props.first;
+        let page = +target.getAttribute('data-page') + this.props.first;
         target = null;
 
         if (this.state.page === page) {
             return;
         }
 
-        this.setState({page: page}, () => {
+        this.setState({page}, () => {
             let onChange = this.props.onChange;
 
             _.isFunction(onChange) && onChange({
                 target: this,
-                page: page
+                page
             });
         });
 
@@ -182,7 +182,7 @@ const Pager = React.createClass({
         }]
         .concat(left)
         .concat({
-            page: page,
+            page,
             states: {
                 current: true
             },
@@ -197,16 +197,16 @@ const Pager = React.createClass({
             },
             part: 'next'
         })
-        .map((conf) => {
+        .map(conf => {
 
             if (typeof conf === 'number') {
-                var part = conf >= 0 ? '' : 'ellipsis';
+                let part = conf >= 0 ? '' : 'ellipsis';
                 conf = {
                     page: Math.abs(conf),
                     states: {
                         ellipsis: !!part
                     },
-                    part: part
+                    part
                 };
             }
 

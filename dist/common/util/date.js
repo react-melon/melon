@@ -101,7 +101,7 @@ define('melon/common/util/date', [
             return weekArray;
         },
         parse: function (value, format) {
-            format = format.split(/[^yMdW]+/i);
+            format = format.split(/[^ymdw]+/i);
             value = value.split(/\D+/);
             var map = {};
             for (var i = 0, l = format.length; i < l; i++) {

@@ -17,7 +17,7 @@ const CalendarMonth = React.createClass({
     displayName: 'CalendarMonth',
 
     onClick(e) {
-        var onChange = this.props.onChange;
+        const onChange = this.props.onChange;
         if (onChange) {
             onChange({
                 target: this,
@@ -27,7 +27,7 @@ const CalendarMonth = React.createClass({
     },
 
     renderWeekHeader() {
-        var days = this.props.lang.days.split(',');
+        const days = this.props.lang.days.split(',');
 
         return (
             <div className={cx().part('weekheader').build()}>
@@ -39,13 +39,13 @@ const CalendarMonth = React.createClass({
     },
 
     renderDates() {
-        var props = this.props;
-        var month = props.month;
+        const props = this.props;
+        const month = props.month;
 
-        var weekArray = DateTime.getFullWeekArray(month);
+        const weekArray = DateTime.getFullWeekArray(month);
 
-        var weeks = [];
-        var len = weekArray.length;
+        let weeks = [];
+        const len = weekArray.length;
 
         weeks.push(
             this.renderDay(weekArray[0], ['pre-month'])
@@ -54,7 +54,7 @@ const CalendarMonth = React.createClass({
             this.renderDay(weekArray[1], [])
         );
 
-        for (var i = 2; i < len - 1; i++) {
+        for (let i = 2; i < len - 1; i++) {
             weeks.push(
                 this.renderDay(weekArray[i], [])
             );
@@ -80,25 +80,25 @@ const CalendarMonth = React.createClass({
         );
     },
 
-    renderDay(array, variants) {
+    renderDay(array, constiants) {
 
-        var props = this.props;
+        const props = this.props;
 
-        var date = props.date;
-        var minDate = props.minDate;
-        var maxDate = props.maxDate;
+        const date = props.date;
+        const minDate = props.minDate;
+        const maxDate = props.maxDate;
 
         return _.map(array, function (day, index) {
 
-            var selected = DateTime.isEqualDate(day, date);
-            var disabled = (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
+            const selected = DateTime.isEqualDate(day, date);
+            const disabled = (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
                             || (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate));
 
             return (
                 <Day
                     key={day}
                     date={day}
-                    variants={variants}
+                    constiants={constiants}
                     disabled={disabled}
                     selected={selected}
                     onClick={this.onClick} />

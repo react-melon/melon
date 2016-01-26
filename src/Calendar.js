@@ -233,8 +233,7 @@ const LANG = {
 Calendar.defaultProps = {
     defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', LANG),
     dateFormat: 'yyyy-MM-dd',
-    lang: LANG,
-    validateEvents: ['change']
+    lang: LANG
 };
 
 Calendar.propTypes = {

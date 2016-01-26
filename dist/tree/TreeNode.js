@@ -53,19 +53,27 @@ define('melon/tree/TreeNode', [
         render: function () {
             var props = this.props;
             var label = props.label;
-            var others = babelHelpers.objectWithoutProperties(props, ['label']);
-            var expand = this.state.expand;
-            var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
             var children = props.children;
-            var iconStyle;
-            var labelStyle;
+            var expandIcon = props.expandIcon;
+            var unexpandIcon = props.unexpandIcon;
+            var others = babelHelpers.objectWithoutProperties(props, [
+                'label',
+                'children',
+                'expandIcon',
+                'unexpandIcon'
+            ]);
+            var expand = this.state.expand;
+            var icon = expand ? expandIcon || TreeNode.ICON[1] : unexpandIcon || TreeNode.ICON[0];
+            var iconStyle = undefined;
+            var labelStyle = undefined;
+            var content = undefined;
             if (props.level) {
                 var level = props.level - 0;
                 labelStyle = { paddingLeft: level * 1.2 + 0.4 + 'em' };
                 iconStyle = { left: 0.25 + (level - 1) * 1.2 + 'em' };
             }
             if (React.Children.count(children) > 0) {
-                children = [
+                content = [
                     React.createElement(Icon, {
                         key: 'icon',
                         icon: icon,
@@ -86,7 +94,7 @@ define('melon/tree/TreeNode', [
                     }, children)
                 ];
             } else {
-                children = React.createElement('span', {
+                content = React.createElement('span', {
                     onClick: this.handleOnClick,
                     key: 'label',
                     'data-role': 'tree-node-label',
@@ -97,7 +105,7 @@ define('melon/tree/TreeNode', [
             return React.createElement('li', babelHelpers._extends({}, others, {
                 'data-role': 'tree-node',
                 className: cx(props).addVariants('level' + props.level).build()
-            }), children);
+            }), content);
         }
     });
     TreeNode.ICON = [

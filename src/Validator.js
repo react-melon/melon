@@ -27,7 +27,7 @@ Validator.prototype.resolveCheckers = function (config = {}) {
                 if (name in config) {
                     activeCheckers.push({
                         name,
-                        check: check,
+                        check,
                         value: config[name]
                     });
                 }
@@ -82,7 +82,7 @@ validator.addRule({
             : typeof value === 'string' ? value !== '' : value != null;
 
         return {
-            isValid: isValid,
+            isValid,
             message: requiredErrorMessage || `请填写此字段`
         };
 

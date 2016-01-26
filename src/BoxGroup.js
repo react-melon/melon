@@ -29,8 +29,8 @@ let BoxGroup = React.createClass({
         // 要过滤掉被禁用的项
         return value.reduce(
             (result, value) => {
-                for (var i = children.length - 1; i >= 0; --i) {
-                    var child = children[i];
+                for (let i = children.length - 1; i >= 0; --i) {
+                    let child = children[i];
                     if (child
                         && child.type === 'option'
                         && child.props.value === value
@@ -64,7 +64,7 @@ let BoxGroup = React.createClass({
         // 计算 checkbox 的值
         else {
 
-            var index = value.indexOf(optionValue);
+            const index = value.indexOf(optionValue);
 
             if (index === -1) {
                 nextValue = [...value, optionValue];
@@ -85,7 +85,7 @@ let BoxGroup = React.createClass({
 
     renderOption(option) {
 
-        var optionProps = option.props;
+        const optionProps = option.props;
 
         if (option.type !== 'option') {
             return option;

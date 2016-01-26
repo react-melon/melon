@@ -30,26 +30,26 @@ const CalendarSelector = React.createClass({
 
     render() {
 
-        var {
+        const {
             minDate,
             maxDate,
             date,
             ...rest
         } = this.props;
 
-        var children = [];
+        let children = [];
 
-        var y = date.getFullYear();
-        var m = date.getMonth();
-        var d = date.getDate();
+        const y = date.getFullYear();
+        const m = date.getMonth();
+        const d = date.getDate();
 
         if (this.isMonthView()) {
             children = _.range(12).map(function (month, index) {
 
-                var newDate = new Date(y, month, d);
-                var disabled = (_.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
+                const newDate = new Date(y, month, d);
+                const disabled = (_.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
                                 || (_.isDate(maxDate) && DateTime.isAfterMonth(newDate, maxDate));
-                var selected = month === m;
+                const selected = month === m;
 
                 return (
                     <Item
@@ -64,7 +64,7 @@ const CalendarSelector = React.createClass({
             }, this);
         }
         else {
-            var range = CalendarSelector.MAX_RANGE;
+            const range = CalendarSelector.MAX_RANGE;
             _.range(y - range, y + range).forEach(function (year, index) {
 
                 if ((_.isDate(minDate) && year < minDate.getFullYear())
@@ -73,8 +73,8 @@ const CalendarSelector = React.createClass({
                     return;
                 }
 
-                var newDate = new Date(year, m, d);
-                var selected = year === y;
+                const newDate = new Date(year, m, d);
+                const selected = year === y;
 
                 children.push(
                     <Item
@@ -98,7 +98,7 @@ const CalendarSelector = React.createClass({
 
     onClick(e) {
 
-        var onChange = this.props.onChange;
+        const onChange = this.props.onChange;
 
         if (onChange) {
             onChange({
@@ -117,13 +117,13 @@ const CalendarSelector = React.createClass({
      */
     isMonthView() {
 
-        var {
+        const {
             minDate,
             maxDate,
             mode
         } = this.props;
 
-        var onlyOneYear = false;
+        let onlyOneYear = false;
 
         // 如果范围中只有一年，则跳过yearview，直接显示month view
         if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {

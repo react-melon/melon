@@ -21,7 +21,7 @@ const Progress = React.createClass({
         step = step || 0;
         step %= 4;
 
-        var element = this.refs[barName];
+        let element = this.refs[barName];
 
         switch (step) {
             case 0:
@@ -98,7 +98,7 @@ const Progress = React.createClass({
             return;
         }
 
-        var isCircle = this.props.shape.toLowerCase() === 'circle';
+        const isCircle = this.props.shape.toLowerCase() === 'circle';
 
         if (isCircle) {
             this.scalePath(this.refs.path);
@@ -124,7 +124,7 @@ const Progress = React.createClass({
 
     componentWillUnmount() {
 
-        Object.keys(this.timers).forEach((name) => {
+        Object.keys(this.timers).forEach(name => {
             clearTimeout(this.timers[name]);
             this.timers[name] = null;
         });
@@ -134,13 +134,13 @@ const Progress = React.createClass({
     },
 
     getRelativeValue() {
-        var value = this.props.value;
-        var min = this.props.min;
-        var max = this.props.max;
+        const value = this.props.value;
+        const min = this.props.min;
+        const max = this.props.max;
 
-        var clampedValue = Math.min(Math.max(min, value), max);
-        var rangeValue = max - min;
-        var relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
+        const clampedValue = Math.min(Math.max(min, value), max);
+        const rangeValue = max - min;
+        const relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
         return relValue * 100;
     },
 
@@ -150,8 +150,8 @@ const Progress = React.createClass({
 
     renderLinear() {
 
-        var children;
-        var style;
+        let children;
+        let style;
 
         if (this.isDeterminate()) {
             style = {

@@ -89,7 +89,7 @@ const Drawer = React.createClass({
                         ...style,
                         opacity: open ? 1 : 0,
                         visibility: open ? 'visible' : 'hidden',
-                        transition: transition,
+                        transition,
                         WebkitTransition: transition,
                         MozTransition: transition,
                         msTransition: transition

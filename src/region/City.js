@@ -14,10 +14,9 @@ const RegionCity = React.createClass({
 
     displayName: 'RegionCity',
 
-    onSelectorChange(e) {
-        var value = e.value;
+    onSelectorChange({value}) {
 
-        var {
+        const {
             datasource
         } = this.props;
 
@@ -32,7 +31,7 @@ const RegionCity = React.createClass({
 
     render() {
 
-        var {
+        const {
             datasource
         } = this.props;
 

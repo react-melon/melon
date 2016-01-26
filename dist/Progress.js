@@ -122,8 +122,8 @@ define('melon/Progress', [
             return this.props.mode.toLowerCase() === 'determinate';
         },
         renderLinear: function () {
-            var children;
-            var style;
+            var children = undefined;
+            var style = undefined;
             if (this.isDeterminate()) {
                 style = { width: this.getRelativeValue() + '%' };
             } else {

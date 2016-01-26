@@ -5,7 +5,7 @@
 
 module.exports = function (source) {
     return source
-        .replace(/[A-Z]/g, ($0) => {
+        .replace(/[A-Z]/g, $0 => {
             return `-${$0}`;
         })
         .slice(1)

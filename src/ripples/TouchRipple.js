@@ -84,11 +84,11 @@ const TouchRipple = React.createClass({
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
-                {(circles) =>
+                {circles =>
                     <div
                         onMouseDown={this.onMouseDown}
                         className={cx(this.props).build()}>
-                        {Object.keys(circles).map((key) => {
+                        {Object.keys(circles).map(key => {
                             let {opacity, scale} = circles[key];
                             opacity = Math.round(opacity * 100) / 100;
                             scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;

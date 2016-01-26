@@ -29,7 +29,7 @@ let TextBox = React.createClass({
 
     onFocus(e) {
 
-        var {
+        const {
             onFocus,
             validate,
             value
@@ -81,7 +81,7 @@ let TextBox = React.createClass({
 
     onChange(e) {
 
-        var value = e.target.value;
+        const value = e.target.value;
 
         const {
             onChange,
@@ -91,7 +91,7 @@ let TextBox = React.createClass({
         onChange({
             type: 'change',
             target: this,
-            value: value
+            value
         });
 
         if (this.needValidate('change')) {
@@ -197,7 +197,7 @@ let TextBox = React.createClass({
                     onChange={onChange}
                     isFocus={isFocus}
                     value={value}
-                    ref={(input) => {
+                    ref={input => {
                         if (input) {
                             this.input = ReactDOM.findDOMNode(input);
                         }

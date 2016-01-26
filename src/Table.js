@@ -150,7 +150,7 @@ const Table = React.createClass({
         return (
             <div
                 className={cx(this.props).build()}
-                ref={(main) => {
+                ref={main => {
                     this.main = main;
                 }}>
                 {this.renderHeader(columns, width)}

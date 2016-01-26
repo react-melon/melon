@@ -129,7 +129,6 @@ define('melon/UnitCalendar', [
     };
     UnitCalendar.defaultProps = {
         continuous: true,
-        value: [],
         defaultValue: []
     };
     UnitCalendar.normalize = function (time, unit) {

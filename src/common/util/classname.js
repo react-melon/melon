@@ -30,7 +30,7 @@ function classnames() {
                 break;
 
             case 'Object':
-                for (var key in arg) {
+                for (let key in arg) {
                     if (hasOwnProperty.call(arg, key) && arg[key]) {
                         classes.push(key);
                     }

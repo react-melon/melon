@@ -3,7 +3,7 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-var React = require('react');
+const React = require('react');
 const cx = require('../common/util/cxBuilder').create('TabsPanel');
 
 function TabsPanel(props) {

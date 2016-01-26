@@ -65,10 +65,10 @@ define('melon/Calendar', [
         },
         onConfirm: function () {
             var _this = this;
-            var _state = this.state;
-            var value = _state.value;
-            var date = _state.date;
-            if (DateTime.isEqualDate(date, value)) {
+            var date = this.state.date;
+            var value = this.props.value;
+            var rawValue = this.parseDate(value);
+            if (DateTime.isEqualDate(date, rawValue)) {
                 this.setState({ open: false });
                 return;
             }
@@ -144,15 +144,14 @@ define('melon/Calendar', [
             })));
         }
     });
-    Calendar.LANG = {
+    var LANG = {
         week: '\u5468',
         days: '\u65E5,\u4E00,\u4E8C,\u4E09,\u56DB,\u4E94,\u516D'
     };
     Calendar.defaultProps = {
-        defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+        defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', LANG),
         dateFormat: 'yyyy-MM-dd',
-        lang: Calendar.LANG,
-        validateEvents: ['change']
+        lang: LANG
     };
     Calendar.propTypes = {
         value: PropTypes.string,
@@ -172,5 +171,7 @@ define('melon/Calendar', [
             days: PropTypes.string
         })
     };
-    module.exports = require('./createInputComponent').create(Calendar);
+    Calendar = require('./createInputComponent').create(Calendar);
+    Calendar.LANG = LANG;
+    module.exports = Calendar;
 });

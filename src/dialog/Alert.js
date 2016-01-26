@@ -17,7 +17,7 @@ const Alert = React.createClass({
         buttonVariants: React.PropTypes.arrayOf(React.PropTypes.string)
     },
 
-    getDefaultProps: function () {
+    getDefaultProps() {
         return {
             ...Dialog.defaultProps,
             maskClickClose: false,

@@ -32,7 +32,7 @@ const Dialog = React.createClass({
         ])
     },
 
-    getDefaultProps: function () {
+    getDefaultProps() {
         return {
             maskClickClose: true,
             open: false
@@ -59,14 +59,14 @@ const Dialog = React.createClass({
 
     componentWillReceiveProps(nextProps) {
 
-        var open = nextProps.open;
+        const open = nextProps.open;
 
         if (open === this.state.open) {
             return;
         }
 
-        var onEvent = open ? this.onShow : this.onHide;
-        this.setState({open: open}, onEvent);
+        const onEvent = open ? this.onShow : this.onHide;
+        this.setState({open}, onEvent);
 
     },
 
@@ -74,7 +74,7 @@ const Dialog = React.createClass({
         let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
         let marginTop = -dialogWindow.offsetHeight / 2;
 
-        let windowHeight = dom.getClientHeight();
+        const windowHeight = dom.getClientHeight();
 
         marginTop = dialogWindow.offsetHeight > windowHeight
                         ? (-windowHeight / 2 + 16)
@@ -84,7 +84,7 @@ const Dialog = React.createClass({
     },
 
     bodyScrolling() {
-        var show = this.state.open;
+        const show = this.state.open;
         windowScrollHelper[show ? 'stop' : 'restore']();
     },
 
@@ -114,14 +114,14 @@ const Dialog = React.createClass({
     },
 
     renderTitle() {
-        var title = this.props.title;
+        const title = this.props.title;
         return title
             ? <h1 className={cx().part('title').build()}>{title}</h1>
             : null;
     },
 
     renderAction() {
-        var actions = this.props.actions;
+        const actions = this.props.actions;
         return actions
             ? (
                 <div ref="dialogActions" className={cx().part('actions').build()}>
@@ -160,7 +160,7 @@ const Dialog = React.createClass({
                     {({y}) =>
                         <DialogWindow
                             top={Math.round(y)}
-                            ref={(c) => {
+                            ref={c => {
                                 this.dialogWindow = c;
                             }}
                             title={title}

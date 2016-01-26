@@ -20,8 +20,8 @@ define('melon/region/Area', [
     var PropTypes = React.PropTypes;
     var RegionArea = React.createClass({
         displayName: 'RegionArea',
-        onSelectorChange: function (e) {
-            var value = e.value;
+        onSelectorChange: function (_ref) {
+            var value = _ref.value;
             var data = this.props.datasource;
             helper[value ? 'selectAll' : 'cancelAll'](data);
             var onChange = this.props.onChange;

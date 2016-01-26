@@ -62,26 +62,35 @@ define('melon/SnackBar', [
             }
         },
         onHide: function () {
-            var onHide = this.props.onHide;
+            var _props = this.props;
+            var onHide = _props.onHide;
+            var autoHideDuration = _props.autoHideDuration;
+            var autoHideTimer = this.autoHideTimer;
             this.setState({ open: false }, function () {
                 if (onHide) {
                     onHide();
                 }
+                if (autoHideDuration > 0 && autoHideTimer) {
+                    clearTimeout(autoHideTimer);
+                }
             });
         },
         onShow: function () {
-            var _props = this.props;
-            var onShow = _props.onShow;
-            var autoHideDuration = _props.autoHideDuration;
+            var _props2 = this.props;
+            var onShow = _props2.onShow;
+            var autoHideDuration = _props2.autoHideDuration;
             this.setState({ open: true }, function () {
+                var _this = this;
                 if (onShow) {
                     onShow();
                 }
                 if (autoHideDuration > 0) {
-                    var onHide = this.onHide;
-                    this.autoHideTimer = setTimeout(function () {
-                        onHide();
-                    }, autoHideDuration);
+                    (function () {
+                        var onHide = _this.onHide;
+                        _this.autoHideTimer = setTimeout(function () {
+                            onHide();
+                        }, autoHideDuration);
+                    }());
                 }
             });
         },
@@ -98,10 +107,10 @@ define('melon/SnackBar', [
             }
         },
         render: function () {
-            var _props2 = this.props;
-            var message = _props2.message;
-            var action = _props2.action;
-            var direction = _props2.direction;
+            var _props3 = this.props;
+            var message = _props3.message;
+            var action = _props3.action;
+            var direction = _props3.direction;
             var open = this.state.open;
             var className = cx(this.props).addStates({ open: open }).addVariants('direction-' + direction).build();
             return React.createElement('div', { className: className }, React.createElement('span', { className: cx().part('message').build() }, message), React.createElement(Button, {
