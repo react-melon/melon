@@ -958,6 +958,218 @@ define('components/examples/Calendar', [
     module.exports = View;
 });
 
+define('components/code/ButtonSize.txt', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = '%0Aimport%20React%20from%20%27react%27%3B%0Aimport%20Button%20from%20%27melon/Button%27%3B%0A%0Afunction%20View%28props%29%20%7B%0A%0A%20%20%20%20return%20%28%0A%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-12%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22xxs%22%3Exxs%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22xs%22%3Exs%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22s%22%3Es%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22m%22%3Em%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22l%22%3El%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22xl%22%3Exl%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22xxl%22%3Exxl%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20size%3D%22xxxl%22%3Exxxl%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%29%3B%0A%7D%0A%0Amodule.exports%20%3D%20View%3B%0A';
+});
+
+define('components/examples/ButtonSize', [
+    'require',
+    'exports',
+    'module',
+    '../../babelHelpers',
+    'react',
+    'melon/Button',
+    'melon/Title',
+    '../code/ButtonSize.txt'
+], function (require, exports, module) {
+    var babelHelpers = require('../../babelHelpers');
+    var _react = require('react');
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+    var _melonButton = require('melon/Button');
+    var _melonButton2 = babelHelpers.interopRequireDefault(_melonButton);
+    var _melonTitle = require('melon/Title');
+    var _melonTitle2 = babelHelpers.interopRequireDefault(_melonTitle);
+    require('../code/ButtonSize.txt');
+    function View(props) {
+        return _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-12' }, _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'xxs'
+        }, 'xxs'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'xs'
+        }, 'xs'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 's'
+        }, 's'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'm'
+        }, 'm'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'l'
+        }, 'l'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'xl'
+        }, 'xl'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'xxl'
+        }, 'xxl'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'primary'
+            ],
+            size: 'xxxl'
+        }, 'xxxl')), _react2['default'].createElement('div', { className: 'melon-column melon-column-12' }, _react2['default'].createElement(_melonTitle2['default'], { level: 4 }, '\u7981\u7528\u7684\u6309\u94AE'), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-12' }, _react2['default'].createElement(_melonButton2['default'], { disabled: true }, 'disabled'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: ['raised'],
+            disabled: true
+        }, 'disabled')))));
+    }
+    module.exports = View;
+});
+
+define('components/code/ButtonGroup.txt', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = '%0Aimport%20React%20from%20%27react%27%3B%0Aimport%20Button%20from%20%27melon/Button%27%3B%0A%0Afunction%20View%28props%29%20%7B%0A%0A%20%20%20%20return%20%28%0A%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-12%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22ui-buttongroup%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27info%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%u6DFB%u52A0%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27info%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%u5220%u9664%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27info%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%u542F%u7528%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%29%3B%0A%7D%0A%0Amodule.exports%20%3D%20View%3B%0A';
+});
+
+define('components/examples/ButtonGroup', [
+    'require',
+    'exports',
+    'module',
+    '../../babelHelpers',
+    'react',
+    'melon/Button',
+    '../code/ButtonGroup.txt'
+], function (require, exports, module) {
+    var babelHelpers = require('../../babelHelpers');
+    var _react = require('react');
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+    var _melonButton = require('melon/Button');
+    var _melonButton2 = babelHelpers.interopRequireDefault(_melonButton);
+    require('../code/ButtonGroup.txt');
+    function View(props) {
+        return _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-12' }, _react2['default'].createElement('div', { className: 'ui-buttongroup' }, _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'info'
+            ]
+        }, '\u6DFB\u52A0'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'info'
+            ]
+        }, '\u5220\u9664'), _react2['default'].createElement(_melonButton2['default'], {
+            variants: [
+                'raised',
+                'info'
+            ]
+        }, '\u542F\u7528'))));
+    }
+    module.exports = View;
+});
+
+define('components/code/Button.txt', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = '%0Aimport%20React%20from%20%27react%27%3B%0Aimport%20Tabs%2C%20%7BTab%7D%20from%20%27melon/Tabs%27%3B%0Aimport%20Button%20from%20%27melon/Button%27%3B%0Aimport%20Icon%20from%20%27melon/Icon%27%3B%0A%0Aconst%20View%20%3D%20React.createClass%28%7B%0A%0A%20%20%20%20render%28%29%20%7B%0A%0A%20%20%20%20%20%20%20%20return%20%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CTabs%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTab%20label%3D%22Flat%20Buttons%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%3Edefault%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27primary%27%5D%7D%3Eprimary%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27secondery%27%5D%7D%3Esecondery%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27success%27%5D%7D%3Esuccess%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27info%27%5D%7D%3Einfo%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27warning%27%5D%7D%3Ewarning%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27danger%27%5D%7D%3Edanger%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27danger%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CIcon%20icon%3D%22add%22%20/%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Tab%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTab%20label%3D%22Raised%20Buttons%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%5D%7D%3Edefault%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%3Eprimary%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27secondery%27%5D%7D%3Esecondery%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27success%27%5D%7D%3Esuccess%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27info%27%5D%7D%3Einfo%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27warning%27%5D%7D%3Ewarning%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27danger%27%5D%7D%3Edanger%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27danger%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CIcon%20icon%3D%22add%22%20/%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Tab%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTab%20label%3D%22Floating%20Buttons%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27floating%27%2C%20%27success%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CIcon%20icon%3D%22add%22%20/%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27floating%27%2C%20%27primary%27%5D%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CIcon%20icon%3D%22edit%22%20/%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Tab%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/Tabs%3E%0A%20%20%20%20%20%20%20%20%29%3B%0A%20%20%20%20%7D%0A%0A%7D%29%3B%0A%0Aexport%20default%20View%3B%0A';
+});
+
+define('components/examples/Button', [
+    'require',
+    'exports',
+    'module',
+    '../../babelHelpers',
+    'react',
+    'melon/Tabs',
+    'melon/Button',
+    'melon/Icon',
+    '../code/Button.txt'
+], function (require, exports, module) {
+    var babelHelpers = require('../../babelHelpers');
+    exports.__esModule = true;
+    var _react = require('react');
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+    var _melonTabs = require('melon/Tabs');
+    var _melonTabs2 = babelHelpers.interopRequireDefault(_melonTabs);
+    var _melonButton = require('melon/Button');
+    var _melonButton2 = babelHelpers.interopRequireDefault(_melonButton);
+    var _melonIcon = require('melon/Icon');
+    var _melonIcon2 = babelHelpers.interopRequireDefault(_melonIcon);
+    require('../code/Button.txt');
+    var View = _react2['default'].createClass({
+        displayName: 'View',
+        render: function render() {
+            return _react2['default'].createElement(_melonTabs2['default'], null, _react2['default'].createElement(_melonTabs.Tab, { label: 'Flat Buttons' }, _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], null, 'default')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['primary'] }, 'primary'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['secondery'] }, 'secondery')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['success'] }, 'success'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['info'] }, 'info')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['warning'] }, 'warning'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['danger'] }, 'danger')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['danger'] }, _react2['default'].createElement(_melonIcon2['default'], { icon: 'add' }))))), _react2['default'].createElement(_melonTabs.Tab, { label: 'Raised Buttons' }, _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], { variants: ['raised'] }, 'default')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'primary'
+                ]
+            }, 'primary'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'secondery'
+                ]
+            }, 'secondery')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'success'
+                ]
+            }, 'success'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'info'
+                ]
+            }, 'info')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'warning'
+                ]
+            }, 'warning'))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'danger'
+                ]
+            }, 'danger')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'danger'
+                ]
+            }, _react2['default'].createElement(_melonIcon2['default'], { icon: 'add' }))))), _react2['default'].createElement(_melonTabs.Tab, { label: 'Floating Buttons' }, _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'floating',
+                    'success'
+                ]
+            }, _react2['default'].createElement(_melonIcon2['default'], { icon: 'add' }))), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'floating',
+                    'primary'
+                ]
+            }, _react2['default'].createElement(_melonIcon2['default'], { icon: 'edit' }))))));
+        }
+    });
+    exports['default'] = View;
+    module.exports = exports['default'];
+});
+
 define('components/conf/properties', [
     'require',
     'exports',
@@ -970,7 +1182,8 @@ define('components/conf/properties', [
     './properties/drawer',
     './properties/scrollview',
     './properties/textbox',
-    './properties/calendar'
+    './properties/calendar',
+    './properties/button'
 ], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     var _propertiesTabs = require('./properties/tabs');
@@ -987,7 +1200,7 @@ define('components/conf/properties', [
     var _propertiesScrollview2 = babelHelpers.interopRequireDefault(_propertiesScrollview);
     var _propertiesTextbox = require('./properties/textbox');
     var _propertiesTextbox2 = babelHelpers.interopRequireDefault(_propertiesTextbox);
-    module.exports = babelHelpers._extends({}, _propertiesTabs2['default'], _propertiesProgress2['default'], _propertiesPager2['default'], _propertiesSnackbar2['default'], _propertiesDrawer2['default'], _propertiesScrollview2['default'], _propertiesTextbox2['default'], require('./properties/calendar'));
+    module.exports = babelHelpers._extends({}, _propertiesTabs2['default'], _propertiesProgress2['default'], _propertiesPager2['default'], _propertiesSnackbar2['default'], _propertiesDrawer2['default'], _propertiesScrollview2['default'], _propertiesTextbox2['default'], require('./properties/calendar'), require('./properties/button'));
 });
 
 define('components/conf/properties/textbox', [
@@ -1545,6 +1758,37 @@ define('components/conf/properties/calendar', [
     };
 });
 
+define('components/conf/properties/button', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = {
+        Button: [{
+                title: 'Button',
+                props: [
+                    {
+                        name: 'hasRipple',
+                        type: 'boolean',
+                        defaultValue: 'true',
+                        description: '\u662F\u5426\u6709 waves \u52A8\u753B'
+                    },
+                    {
+                        name: 'disabled',
+                        type: 'boolean',
+                        defaultValue: 'false',
+                        description: '\u7981\u7528'
+                    },
+                    {
+                        name: 'variants',
+                        type: 'array',
+                        description: '\u4E0D\u540C\u7684\u6309\u94AE\u6837\u5F0F'
+                    }
+                ]
+            }]
+    };
+});
+
 define('components/component/PropsTable', [
     'require',
     'exports',
@@ -1721,6 +1965,23 @@ define('components/conf/examples', [
     'module'
 ], function (require, exports, module) {
     module.exports = {
+        Button: [
+            {
+                title: '\u6309\u94AE',
+                brief: 'material\u98CE\u683C\u7684\u6309\u94AE\uFF0C\u5E26\u6709 waves \u52A8\u753B\uFF0C\u6709 Flat\u3001Raised\u3001Floating \u4E09\u79CD\u6837\u5F0F\uFF0C\u6709 default\u3001primary\u3001secondery\u3001success\u3001info\u3001warning\u3001danger \u4E03\u79CD\u72B6\u6001\uFF0C\u652F\u6301\u56FE\u6807\u6309\u94AE',
+                name: 'Button'
+            },
+            {
+                title: '\u6309\u94AE\u7EC4',
+                brief: '\u652F\u6301\u7C7B ui-buttongroup\uFF0C\u5C06\u591A\u4E2A button \u7EC4\u7EC7\u8D77\u6765',
+                name: 'ButtonGroup'
+            },
+            {
+                title: '\u6309\u94AE\u5927\u5C0F',
+                brief: '\u652F\u6301\u8BBE\u5B9A\u6309\u94AE\u7684\u5927\u5C0F\uFF0C\u652F\u6301\u9ED8\u8BA4, xxs, xs, s, m, l, xl, xxl, xxxl\uFF0C\u652F\u6301\u7981\u7528\u7684\u6837\u5F0F',
+                name: 'ButtonSize'
+            }
+        ],
         Calendar: [
             {
                 title: '\u65E5\u5386',
@@ -2253,6 +2514,11 @@ define('common/conf/navs', [
             text: 'Components',
             children: [
                 {
+                    text: 'Button',
+                    pathname: '/components',
+                    query: { name: 'Button' }
+                },
+                {
                     text: 'Calendar',
                     pathname: '/components',
                     query: { name: 'Calendar' }
@@ -2509,7 +2775,7 @@ define('common/component/ZippyNav', [
                 'onActive'
             ]);
             var expand = state.expand;
-            var listHeight = nav.children.length * 32;
+            var listHeight = nav.children.length * 35;
             return _react2['default'].createElement('div', babelHelpers._extends({}, others, { className: cx(props).build() }), _react2['default'].createElement('dt', null, _react2['default'].createElement(_melonButton2['default'], {
                 size: 'xs',
                 onClick: function () {
@@ -2549,7 +2815,9 @@ define('common/component/DrawerNav', [
     'react',
     'melon/Drawer',
     'melon/Title',
+    'melon/Link',
     './ZippyNav',
+    '../../locator',
     'melon/common/util/cxBuilder',
     'underscore',
     '../conf/navs'
@@ -2562,8 +2830,11 @@ define('common/component/DrawerNav', [
     var _melonDrawer2 = babelHelpers.interopRequireDefault(_melonDrawer);
     var _melonTitle = require('melon/Title');
     var _melonTitle2 = babelHelpers.interopRequireDefault(_melonTitle);
+    var _melonLink = require('melon/Link');
+    var _melonLink2 = babelHelpers.interopRequireDefault(_melonLink);
     var _ZippyNav = require('./ZippyNav');
     var _ZippyNav2 = babelHelpers.interopRequireDefault(_ZippyNav);
+    var _locator = require('../../locator');
     var cx = require('melon/common/util/cxBuilder').create('DrawerNav');
     var _ = require('underscore');
     var navs = require('../conf/navs');
@@ -2588,8 +2859,14 @@ define('common/component/DrawerNav', [
             }, this);
         };
         DrawerNav.prototype.render = function render() {
+            var _this2 = this;
             var props = this.props;
-            return _react2['default'].createElement(_melonDrawer2['default'], babelHelpers._extends({}, props, { className: cx(props).build() }), _react2['default'].createElement(_melonTitle2['default'], { level: 2 }, 'Melon'), this.renderNavs());
+            return _react2['default'].createElement(_melonDrawer2['default'], babelHelpers._extends({}, props, { className: cx(props).build() }), _react2['default'].createElement(_melonLink2['default'], {
+                href: _locator.createHref('/'),
+                onClick: function () {
+                    _this2.props.onHide();
+                }
+            }, _react2['default'].createElement(_melonTitle2['default'], { level: 2 }, 'Melon')), this.renderNavs());
         };
         babelHelpers.createClass(DrawerNav, null, [{
                 key: 'displayName',
@@ -2820,8 +3097,8 @@ define('main', [
     var _es6Promise = require('es6-promise');
     var _es6Promise2 = babelHelpers.interopRequireDefault(_es6Promise);
     var AppComponent = _eiUtilCreateAppComponent2['default'](_ei2['default'].App);
+    _es6Promise2['default'].polyfill();
     function init() {
-        _es6Promise2['default'].polyfill();
         var main = document.getElementById('main');
         _locator2['default'].on(function (location) {
             _reactDom2['default'].render(_react2['default'].createElement(AppComponent, { routes: _routes2['default'] }, _react2['default'].createElement('div', { className: 'ui-app' }, _react2['default'].createElement(_commonComponentNav2['default'], { location: location }), _react2['default'].createElement(_eiComponentPage2['default'], {

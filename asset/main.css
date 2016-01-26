@@ -1428,6 +1428,10 @@ a{text-decoration:none;color:#d32f2f}
 .ui-homeview-footer{padding:72px 24px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;text-align:center;background-color:#212121;color:rgba(255,255,255,.87)}
 .ui-example-card{padding-bottom:1em}
 .ui-example-card-main{padding:30px 50px}
+.ui-example-card .variant-button{padding:0}
+.ui-example-card .variant-button .ui-tabs-panel{padding:1em}
+.ui-example-card .variant-button .melon-column{text-align:center}
+.ui-example-card .variant-buttonsize .ui-button{margin-right:15px}
 .ui-example-card .variant-tabs{padding:0}
 .ui-example-card .variant-tabs .ui-tabs-panel{min-height:200px;padding:1em;line-height:1.5em}
 .ui-example-card .variant-tabs .ui-tabs-panel .ui-title{color:#000}

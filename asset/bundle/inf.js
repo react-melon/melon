@@ -14324,8 +14324,8 @@ define('ei/Router', [
                         resource: MUST_USE_ATTRIBUTE,
                         'typeof': MUST_USE_ATTRIBUTE,
                         vocab: MUST_USE_ATTRIBUTE,
-                        autoCapitalize: null,
-                        autoCorrect: null,
+                        autoCapitalize: MUST_USE_ATTRIBUTE,
+                        autoCorrect: MUST_USE_ATTRIBUTE,
                         autoSave: null,
                         color: null,
                         itemProp: MUST_USE_ATTRIBUTE,
@@ -14344,9 +14344,7 @@ define('ei/Router', [
                         httpEquiv: 'http-equiv'
                     },
                     DOMPropertyNames: {
-                        autoCapitalize: 'autocapitalize',
                         autoComplete: 'autocomplete',
-                        autoCorrect: 'autocorrect',
                         autoFocus: 'autofocus',
                         autoPlay: 'autoplay',
                         autoSave: 'autosave',
@@ -17308,7 +17306,7 @@ define('ei/Router', [
                         var props = this._currentElement.props;
                         var value = LinkedValueUtils.getValue(props);
                         if (value != null) {
-                            updateOptions(this, props, value);
+                            updateOptions(this, Boolean(props.multiple), value);
                         }
                     }
                 }
@@ -18059,7 +18057,9 @@ define('ei/Router', [
                     'setValueForProperty': 'update attribute',
                     'setValueForAttribute': 'update attribute',
                     'deleteValueForProperty': 'remove attribute',
-                    'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+                    'setValueForStyles': 'update styles',
+                    'replaceNodeWithMarkup': 'replace',
+                    'updateTextContent': 'set textContent'
                 };
                 function getTotalTime(measurements) {
                     var totalTime = 0;
@@ -21662,7 +21662,7 @@ define('ei/Router', [
         97: [
             function (_dereq_, module, exports) {
                 'use strict';
-                module.exports = '0.14.3';
+                module.exports = '0.14.6';
             },
             {}
         ],
@@ -24691,7 +24691,7 @@ define('ei/Router', [
         161: [
             function (_dereq_, module, exports) {
                 'use strict';
-                var invariant = function (condition, format, a, b, c, d, e, f) {
+                function invariant(condition, format, a, b, c, d, e, f) {
                     if ('development' !== 'production') {
                         if (format === undefined) {
                             throw new Error('invariant requires an error message argument');
@@ -24711,14 +24711,15 @@ define('ei/Router', [
                                 f
                             ];
                             var argIndex = 0;
-                            error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+                            error = new Error(format.replace(/%s/g, function () {
                                 return args[argIndex++];
                             }));
+                            error.name = 'Invariant Violation';
                         }
                         error.framesToPop = 1;
                         throw error;
                     }
-                };
+                }
                 module.exports = invariant;
             },
             {}
@@ -24856,11 +24857,16 @@ define('ei/Router', [
             function (_dereq_, module, exports) {
                 'use strict';
                 var performance = _dereq_(169);
-                var curPerformance = performance;
-                if (!curPerformance || !curPerformance.now) {
-                    curPerformance = Date;
+                var performanceNow;
+                if (performance.now) {
+                    performanceNow = function () {
+                        return performance.now();
+                    };
+                } else {
+                    performanceNow = function () {
+                        return Date.now();
+                    };
                 }
-                var performanceNow = curPerformance.now.bind(curPerformance);
                 module.exports = performanceNow;
             },
             { '169': 169 }
