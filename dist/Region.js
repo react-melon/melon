@@ -76,7 +76,7 @@ define('melon/Region', [
             return _.isArray(area) && area.length > 0 ? React.createElement('ul', null, area.map(function (a, index) {
                 return React.createElement(Area, {
                     key: index,
-                    letiants: index % 2 ? ['even'] : [],
+                    variants: index % 2 ? ['even'] : [],
                     datasource: a,
                     onChange: this.onAreaChange.bind(this, index, cIndex)
                 });
