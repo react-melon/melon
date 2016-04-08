@@ -21,5 +21,6 @@ module.exports = {
     ...textbox,
 
     ...require('./properties/calendar'),
-    ...require('./properties/button')
+    ...require('./properties/button'),
+    ...require('./properties/dialog')
 };

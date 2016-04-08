@@ -31,6 +31,12 @@ module.exports = [{
             name: 'Drawer'
         }
     }, {
+        text: 'Dialog',
+        pathname: '/components',
+        query: {
+            name: 'Dialog'
+        }
+    }, {
         text: 'Pager',
         pathname: '/components',
         query: {

@@ -31,6 +31,12 @@ module.exports = {
         name: 'RangeCalendar'
     }],
 
+    Dialog: [{
+        title: '弹窗',
+        brief: '弹出的对话框，可以支持标题和按钮',
+        name: 'DialogCommon'
+    }],
+
     Drawer: [{
         title: '创建Drawer',
         brief: '可配置位置、大小',

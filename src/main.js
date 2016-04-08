@@ -3,7 +3,7 @@
  * @author leon<lupengyu@baidu.com>
  */
 
-import ei from 'ei';
+import {App} from 'ei';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,13 +11,12 @@ import ReactDOM from 'react-dom';
 import locator from './locator';
 import routes from './routes';
 
-import createAppComponent from 'ei/util/createAppComponent';
 import Page from 'ei/component/Page';
 import Nav from './common/component/Nav';
 
 import ES6Promise from 'es6-promise';
 
-const AppComponent = createAppComponent(ei.App);
+const AppComponent = App.Component;
 
 ES6Promise.polyfill();
 
