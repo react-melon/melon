@@ -918,6 +918,129 @@ define('components/examples/Drawer', [
     module.exports = View;
 });
 
+define('components/code/DialogCommon.txt', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = '%0Aimport%20React%20from%20%27react%27%3B%0Aimport%20Dialog%20from%20%27melon/Dialog%27%3B%0Aimport%20Button%20from%20%27melon/Button%27%3B%0Aimport%20Title%20from%20%27melon/Title%27%3B%0A%0Aconst%20View%20%3D%20React.createClass%28%7B%0A%0A%20%20%20%20getInitialState%28%29%20%7B%0A%20%20%20%20%20%20%20%20return%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20dialog1%3A%20false%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20dialog2%3A%20false%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20dialog3%3A%20false%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20dialog4%3A%20false%0A%20%20%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20render%28%29%20%7B%0A%0A%20%20%20%20%20%20%20%20const%20actions%20%3D%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20label%3D%22Submit%22%20key%3D%22submit%22%20/%3E%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20label%3D%22Cancel%22%20key%3D%22cancel%22%20onClick%3D%7Bthis.dialog4Hide%7D%20/%3E%0A%20%20%20%20%20%20%20%20%5D%3B%0A%0A%20%20%20%20%20%20%20%20return%20%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTitle%20level%3D%7B4%7D%3E%u666E%u901A%3C/Title%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20onClick%3D%7Bthis.dialog1Show%7D%3E%u5F39%u51FA%u7A97%u53E3%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CDialog%20open%3D%7Bthis.state.dialog1%7D%20onHide%3D%7Bthis.dialog1Hide%7D%3EHello%3C/Dialog%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTitle%20level%3D%7B4%7D%3E%u5185%u5BB9%u5F88%u957F%u7684%u5F39%u7A97%3C/Title%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20onClick%3D%7Bthis.dialog2Show%7D%3E%u5F39%u51FA%u7A97%u53E3%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CDialog%20open%3D%7Bthis.state.dialog2%7D%20onHide%3D%7Bthis.dialog2Hide%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20ref%3D%22content%22%20style%3D%7B%7Bheight%3A%201000%7D%7D%3ELong%21%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Dialog%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-row%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTitle%20level%3D%7B4%7D%3E%u6709%u6807%u9898%u7684%u5F39%u7A97%3C/Title%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20onClick%3D%7Bthis.dialog3Show%7D%3E%u5F39%u51FA%u7A97%u53E3%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CDialog%20open%3D%7Bthis.state.dialog3%7D%20onHide%3D%7Bthis.dialog3Hide%7D%20title%3D%22Dialog%20With%20A%20Title%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20This%20is%20Content.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Dialog%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20className%3D%22melon-column%20melon-column-6%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CTitle%20level%3D%7B4%7D%3E%u6709%u6309%u94AE%u7684%u5F39%u7A97%3C/Title%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CButton%20variants%3D%7B%5B%27raised%27%2C%20%27primary%27%5D%7D%20onClick%3D%7Bthis.dialog4Show%7D%3E%u5F39%u51FA%u7A97%u53E3%3C/Button%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3CDialog%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20open%3D%7Bthis.state.dialog4%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20maskClickClose%3D%7Bfalse%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20title%3D%22Dialog%20With%20Actions%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20actions%3D%7Bactions%7D%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20This%20is%20Content.%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/Dialog%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/div%3E%0A%20%20%20%20%20%20%20%20%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog1Show%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog1%3A%20true%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog1Hide%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog1%3A%20false%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog2Show%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog2%3A%20true%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog2Hide%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog2%3A%20false%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog3Show%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog3%3A%20true%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog3Hide%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog3%3A%20false%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog4Show%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog4%3A%20true%7D%29%3B%0A%20%20%20%20%7D%2C%0A%0A%20%20%20%20dialog4Hide%28%29%20%7B%0A%20%20%20%20%20%20%20%20this.setState%28%7Bdialog4%3A%20false%7D%29%3B%0A%20%20%20%20%7D%0A%7D%29%3B%0A%0Amodule.exports%20%3D%20View%3B%0A';
+});
+
+define('components/examples/DialogCommon', [
+    'require',
+    'exports',
+    'module',
+    '../../babelHelpers',
+    'react',
+    'melon/Dialog',
+    'melon/Button',
+    'melon/Title',
+    '../code/DialogCommon.txt'
+], function (require, exports, module) {
+    var babelHelpers = require('../../babelHelpers');
+    var _react = require('react');
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+    var _melonDialog = require('melon/Dialog');
+    var _melonDialog2 = babelHelpers.interopRequireDefault(_melonDialog);
+    var _melonButton = require('melon/Button');
+    var _melonButton2 = babelHelpers.interopRequireDefault(_melonButton);
+    var _melonTitle = require('melon/Title');
+    var _melonTitle2 = babelHelpers.interopRequireDefault(_melonTitle);
+    require('../code/DialogCommon.txt');
+    var View = _react2['default'].createClass({
+        displayName: 'View',
+        getInitialState: function getInitialState() {
+            return {
+                dialog1: false,
+                dialog2: false,
+                dialog3: false,
+                dialog4: false
+            };
+        },
+        render: function render() {
+            var actions = [
+                _react2['default'].createElement(_melonButton2['default'], {
+                    label: 'Submit',
+                    key: 'submit'
+                }),
+                _react2['default'].createElement(_melonButton2['default'], {
+                    label: 'Cancel',
+                    key: 'cancel',
+                    onClick: this.dialog4Hide
+                })
+            ];
+            return _react2['default'].createElement('div', null, _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonTitle2['default'], { level: 4 }, '\u666E\u901A'), _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'primary'
+                ],
+                onClick: this.dialog1Show
+            }, '\u5F39\u51FA\u7A97\u53E3'), _react2['default'].createElement(_melonDialog2['default'], {
+                open: this.state.dialog1,
+                onHide: this.dialog1Hide
+            }, 'Hello')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonTitle2['default'], { level: 4 }, '\u5185\u5BB9\u5F88\u957F\u7684\u5F39\u7A97'), _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'primary'
+                ],
+                onClick: this.dialog2Show
+            }, '\u5F39\u51FA\u7A97\u53E3'), _react2['default'].createElement(_melonDialog2['default'], {
+                open: this.state.dialog2,
+                onHide: this.dialog2Hide
+            }, _react2['default'].createElement('div', {
+                ref: 'content',
+                style: { height: 1000 }
+            }, 'Long!')))), _react2['default'].createElement('div', { className: 'melon-row' }, _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonTitle2['default'], { level: 4 }, '\u6709\u6807\u9898\u7684\u5F39\u7A97'), _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'primary'
+                ],
+                onClick: this.dialog3Show
+            }, '\u5F39\u51FA\u7A97\u53E3'), _react2['default'].createElement(_melonDialog2['default'], {
+                open: this.state.dialog3,
+                onHide: this.dialog3Hide,
+                title: 'Dialog With A Title'
+            }, 'This is Content.')), _react2['default'].createElement('div', { className: 'melon-column melon-column-6' }, _react2['default'].createElement(_melonTitle2['default'], { level: 4 }, '\u6709\u6309\u94AE\u7684\u5F39\u7A97'), _react2['default'].createElement(_melonButton2['default'], {
+                variants: [
+                    'raised',
+                    'primary'
+                ],
+                onClick: this.dialog4Show
+            }, '\u5F39\u51FA\u7A97\u53E3'), _react2['default'].createElement(_melonDialog2['default'], {
+                open: this.state.dialog4,
+                maskClickClose: false,
+                title: 'Dialog With Actions',
+                actions: actions
+            }, 'This is Content.'))));
+        },
+        dialog1Show: function dialog1Show() {
+            this.setState({ dialog1: true });
+        },
+        dialog1Hide: function dialog1Hide() {
+            this.setState({ dialog1: false });
+        },
+        dialog2Show: function dialog2Show() {
+            this.setState({ dialog2: true });
+        },
+        dialog2Hide: function dialog2Hide() {
+            this.setState({ dialog2: false });
+        },
+        dialog3Show: function dialog3Show() {
+            this.setState({ dialog3: true });
+        },
+        dialog3Hide: function dialog3Hide() {
+            this.setState({ dialog3: false });
+        },
+        dialog4Show: function dialog4Show() {
+            this.setState({ dialog4: true });
+        },
+        dialog4Hide: function dialog4Hide() {
+            this.setState({ dialog4: false });
+        }
+    });
+    module.exports = View;
+});
+
 define('components/code/Calendar.txt', [
     'require',
     'exports',
@@ -1183,7 +1306,8 @@ define('components/conf/properties', [
     './properties/scrollview',
     './properties/textbox',
     './properties/calendar',
-    './properties/button'
+    './properties/button',
+    './properties/dialog'
 ], function (require, exports, module) {
     var babelHelpers = require('../../babelHelpers');
     var _propertiesTabs = require('./properties/tabs');
@@ -1200,7 +1324,7 @@ define('components/conf/properties', [
     var _propertiesScrollview2 = babelHelpers.interopRequireDefault(_propertiesScrollview);
     var _propertiesTextbox = require('./properties/textbox');
     var _propertiesTextbox2 = babelHelpers.interopRequireDefault(_propertiesTextbox);
-    module.exports = babelHelpers._extends({}, _propertiesTabs2['default'], _propertiesProgress2['default'], _propertiesPager2['default'], _propertiesSnackbar2['default'], _propertiesDrawer2['default'], _propertiesScrollview2['default'], _propertiesTextbox2['default'], require('./properties/calendar'), require('./properties/button'));
+    module.exports = babelHelpers._extends({}, _propertiesTabs2['default'], _propertiesProgress2['default'], _propertiesPager2['default'], _propertiesSnackbar2['default'], _propertiesDrawer2['default'], _propertiesScrollview2['default'], _propertiesTextbox2['default'], require('./properties/calendar'), require('./properties/button'), require('./properties/dialog'));
 });
 
 define('components/conf/properties/textbox', [
@@ -1591,6 +1715,52 @@ define('components/conf/properties/drawer', [
                         type: 'boolean',
                         defaultValue: 'true',
                         description: '\u662F\u5426\u70B9\u51FB\u906E\u7F69\u4EE5\u540E\u5173\u95ED'
+                    }
+                ]
+            }]
+    };
+});
+
+define('components/conf/properties/dialog', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    module.exports = {
+        Dialog: [{
+                title: 'Dialog',
+                props: [
+                    {
+                        name: 'actions',
+                        type: 'node',
+                        description: '\u6309\u94AE\uFF0C\u53EF\u4EE5\u662F\u4E00\u4E2A\u6570\u636E'
+                    },
+                    {
+                        name: 'maskClickClose',
+                        type: 'boolean',
+                        defaultValue: 'true',
+                        description: '\u70B9\u51FBmask\u5C31\u5173\u95ED'
+                    },
+                    {
+                        name: 'open',
+                        type: 'boolean',
+                        defaultValue: 'false',
+                        description: '\u662F\u5426\u5C55\u73B0'
+                    },
+                    {
+                        name: 'onShow',
+                        type: 'function',
+                        description: '\u663E\u793A\u7684\u56DE\u8C03'
+                    },
+                    {
+                        name: 'onHide',
+                        type: 'function',
+                        description: '\u9690\u85CF\u7684\u56DE\u8C03'
+                    },
+                    {
+                        name: 'title',
+                        type: 'string / element',
+                        description: '\u6807\u9898'
                     }
                 ]
             }]
@@ -1994,6 +2164,11 @@ define('components/conf/examples', [
                 name: 'RangeCalendar'
             }
         ],
+        Dialog: [{
+                title: '\u5F39\u7A97',
+                brief: '\u5F39\u51FA\u7684\u5BF9\u8BDD\u6846\uFF0C\u53EF\u4EE5\u652F\u6301\u6807\u9898\u548C\u6309\u94AE',
+                name: 'DialogCommon'
+            }],
         Drawer: [{
                 title: '\u521B\u5EFADrawer',
                 brief: '\u53EF\u914D\u7F6E\u4F4D\u7F6E\u3001\u5927\u5C0F',
@@ -2529,6 +2704,11 @@ define('common/conf/navs', [
                     query: { name: 'Drawer' }
                 },
                 {
+                    text: 'Dialog',
+                    pathname: '/components',
+                    query: { name: 'Dialog' }
+                },
+                {
                     text: 'Pager',
                     pathname: '/components',
                     query: { name: 'Pager' }
@@ -2632,7 +2812,17 @@ define('common/component/Nav', [
             var conf = this.getCurrentPathConf();
             var pathname = this.props.location.pathname;
             var variant = pathname.split('/')[1];
-            return _react2['default'].createElement('aside', { className: cx(this.props).addVariants(variant).build() }, this.renderButton(), this.renderTitle(conf), this.renderMenu(conf));
+            return _react2['default'].createElement('aside', { className: cx(this.props).addVariants(variant).build() }, this.renderButton(), this.renderTitle(conf), this.renderMenu(conf), _react2['default'].createElement('a', { href: 'https://github.com/react-melon/melon' }, _react2['default'].createElement('img', {
+                style: {
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    border: 0
+                },
+                src: 'https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67',
+                alt: 'Fork me on GitHub',
+                'data-canonical-src': 'https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png'
+            })));
         };
         Nav.prototype.renderButton = function renderButton() {
             return _react2['default'].createElement(_melonButton2['default'], {
@@ -3071,7 +3261,6 @@ define('main', [
     'react-dom',
     './locator',
     './routes',
-    'ei/util/createAppComponent',
     'ei/component/Page',
     './common/component/Nav',
     'es6-promise'
@@ -3079,7 +3268,6 @@ define('main', [
     var babelHelpers = require('./babelHelpers');
     exports.__esModule = true;
     var _ei = require('ei');
-    var _ei2 = babelHelpers.interopRequireDefault(_ei);
     var _react = require('react');
     var _react2 = babelHelpers.interopRequireDefault(_react);
     var _reactDom = require('react-dom');
@@ -3088,15 +3276,13 @@ define('main', [
     var _locator2 = babelHelpers.interopRequireDefault(_locator);
     var _routes = require('./routes');
     var _routes2 = babelHelpers.interopRequireDefault(_routes);
-    var _eiUtilCreateAppComponent = require('ei/util/createAppComponent');
-    var _eiUtilCreateAppComponent2 = babelHelpers.interopRequireDefault(_eiUtilCreateAppComponent);
     var _eiComponentPage = require('ei/component/Page');
     var _eiComponentPage2 = babelHelpers.interopRequireDefault(_eiComponentPage);
     var _commonComponentNav = require('./common/component/Nav');
     var _commonComponentNav2 = babelHelpers.interopRequireDefault(_commonComponentNav);
     var _es6Promise = require('es6-promise');
     var _es6Promise2 = babelHelpers.interopRequireDefault(_es6Promise);
-    var AppComponent = _eiUtilCreateAppComponent2['default'](_ei2['default'].App);
+    var AppComponent = _ei.App.Component;
     _es6Promise2['default'].polyfill();
     function init() {
         var main = document.getElementById('main');
