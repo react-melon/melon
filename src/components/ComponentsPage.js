@@ -7,7 +7,6 @@ import React from 'react';
 import ei from 'ei';
 import {Promise} from 'es6-promise';
 
-import pageDispatchEvent from '../common/middleware/pageDispatchEvent';
 import asyncAction from '../common/middleware/asyncAction';
 import logger from '../common/middleware/logger';
 
@@ -18,7 +17,7 @@ import _ from 'underscore';
 
 const ComponentsPage = ei.Page.extend({
 
-    middlewares: [asyncAction, pageDispatchEvent, logger],
+    middlewares: [asyncAction, logger],
 
     view: require('./ComponentView'),
 

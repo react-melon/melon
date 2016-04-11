@@ -73,5 +73,11 @@ module.exports = [{
             name: 'TextBox'
         }
     }]
+}, {
+    text: 'Style',
+    children: [{
+        text: 'Icon',
+        pathname: '/icon'
+    }]
 }];
 
