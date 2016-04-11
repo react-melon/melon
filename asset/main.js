@@ -2258,7 +2258,6 @@ define('components/ComponentsPage', [
     'react',
     'ei',
     'es6-promise',
-    '../common/middleware/pageDispatchEvent',
     '../common/middleware/asyncAction',
     '../common/middleware/logger',
     '../common/util/ReducerBuilder',
@@ -2273,8 +2272,6 @@ define('components/ComponentsPage', [
     var _ei = require('ei');
     var _ei2 = babelHelpers.interopRequireDefault(_ei);
     var _es6Promise = require('es6-promise');
-    var _commonMiddlewarePageDispatchEvent = require('../common/middleware/pageDispatchEvent');
-    var _commonMiddlewarePageDispatchEvent2 = babelHelpers.interopRequireDefault(_commonMiddlewarePageDispatchEvent);
     var _commonMiddlewareAsyncAction = require('../common/middleware/asyncAction');
     var _commonMiddlewareAsyncAction2 = babelHelpers.interopRequireDefault(_commonMiddlewareAsyncAction);
     var _commonMiddlewareLogger = require('../common/middleware/logger');
@@ -2288,7 +2285,6 @@ define('components/ComponentsPage', [
     var ComponentsPage = _ei2['default'].Page.extend({
         middlewares: [
             _commonMiddlewareAsyncAction2['default'],
-            _commonMiddlewarePageDispatchEvent2['default'],
             _commonMiddlewareLogger2['default']
         ],
         view: require('./ComponentView'),
@@ -2739,6 +2735,13 @@ define('common/conf/navs', [
                     query: { name: 'TextBox' }
                 }
             ]
+        },
+        {
+            text: 'Style',
+            children: [{
+                    text: 'Icon',
+                    pathname: '/icon'
+                }]
         }
     ];
 });
@@ -3233,13 +3236,27 @@ define('babelHelpers', [
     module.exports = babelHelpers;
 });
 
+define('style/routes', [
+    'require',
+    'exports',
+    'module'
+], function (require, exports, module) {
+    exports.__esModule = true;
+    exports['default'] = [{
+            path: '/icon',
+            page: 'style/IconPage'
+        }];
+    module.exports = exports['default'];
+});
+
 define('routes', [
     'require',
     'exports',
     'module',
     './babelHelpers',
     './home/routes',
-    './components/routes'
+    './components/routes',
+    './style/routes'
 ], function (require, exports, module) {
     var babelHelpers = require('./babelHelpers');
     exports.__esModule = true;
@@ -3247,7 +3264,9 @@ define('routes', [
     var _homeRoutes2 = babelHelpers.interopRequireDefault(_homeRoutes);
     var _componentsRoutes = require('./components/routes');
     var _componentsRoutes2 = babelHelpers.interopRequireDefault(_componentsRoutes);
-    exports['default'] = [].concat(_homeRoutes2['default'], _componentsRoutes2['default']);
+    var _styleRoutes = require('./style/routes');
+    var _styleRoutes2 = babelHelpers.interopRequireDefault(_styleRoutes);
+    exports['default'] = [].concat(_homeRoutes2['default'], _componentsRoutes2['default'], _styleRoutes2['default']);
     module.exports = exports['default'];
 });
 
