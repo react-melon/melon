@@ -30,6 +30,12 @@ exports.getProcessors = function () {
         compileOptions: {
             compact: false,
             ast: false,
+            plugins: [
+                'external-helpers',
+                'transform-es2015-modules-umd',
+                'transform-es3-property-literals',
+                'transform-es3-member-expression-literals'
+            ],
             moduleId: '',
             getModuleId: function (filename) {
                 return filename.replace('src/', '');
