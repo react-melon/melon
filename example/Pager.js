@@ -3,21 +3,25 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Pager = require('../src/Pager');
+import Title from '../src/Title';
+import Pager from '../src/Pager';
 
-var View = React.createClass({
+export default class View extends React.Component {
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
             page1: 1,
             page2: 1
         };
-    },
 
-    render: function () {
+    }
+
+    render() {
         return (
             <div>
                 <Title level={3}>翻页器</Title>
@@ -36,9 +40,9 @@ var View = React.createClass({
 
             </div>
         );
-    },
+    }
 
-    getCurrentPage: function (index) {
+    getCurrentPage(index) {
         return (
             <div>
                 <label style={{lineHeight: '48px', marginLeft: 10}}>
@@ -46,18 +50,14 @@ var View = React.createClass({
                 </label>
             </div>
         );
-    },
+    }
 
-    onChange: function (index, e) {
+    onChange(index, e) {
 
-        var state = {};
-
-        state['page' + index] = e.page;
-
-        this.setState(state);
+        this.setState({
+            [`page${index}`]: e.page
+        });
 
     }
 
-});
-
-module.exports = View;
+}

@@ -3,13 +3,22 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const Icon = require('../Icon');
-const cx = require('../common/util/cxBuilder').create('RegionSelector');
+import React, {Component, PropTypes} from 'react';
+import Icon from '../Icon';
+import {create} from '../common/util/cxBuilder';
 
-const RegionSelector = React.createClass({
+const cx = create('RegionSelector');
 
-    displayName: 'RegionSelector',
+export default class RegionSelector extends Component {
+
+    constructor(props) {
+
+        super(props);
+
+        this.onClick = this.onClick.bind(this);
+
+    }
+
 
     onClick(e) {
         let {
@@ -21,12 +30,12 @@ const RegionSelector = React.createClass({
             value: !checked,
             target: this
         });
-    },
+    }
 
     getIcon(isChecked) {
         let icons = RegionSelector.Icons;
         return icons[isChecked ? 'checked' : 'unchecked'];
-    },
+    }
 
     render() {
 
@@ -57,13 +66,13 @@ const RegionSelector = React.createClass({
 
     }
 
-});
+}
+
+RegionSelector.displayName = 'RegionSelector';
 
 RegionSelector.defaultProps = {
     hasInput: false
 };
-
-const PropTypes = React.PropTypes;
 
 RegionSelector.propTypes = {
     label: PropTypes.string,
@@ -80,5 +89,3 @@ RegionSelector.Icons = {
     checked: 'check-box',
     unchecked: 'check-box-outline-blank'
 };
-
-module.exports = RegionSelector;

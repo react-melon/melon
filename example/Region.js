@@ -3,11 +3,11 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var Region = require('../src/Region');
+import React from 'react';
+import Title from '../src/Title';
+import Region from '../src/Region';
 
-var REGION_LIST = [
+const REGION_LIST = [
     {
         'id':'90',
         'text':'中国',
@@ -681,7 +681,7 @@ var REGION_LIST = [
     {'id':'0','text':'其他'}
 ];
 
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -716,5 +716,3 @@ class View extends React.Component {
 
 
 }
-
-module.exports = View;

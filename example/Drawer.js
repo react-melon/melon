@@ -3,14 +3,13 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var SnackBar = require('../src/SnackBar');
-var Button = require('../src/Button');
-var Drawer = require('../src/Drawer');
-const Select = require('../src/Select');
+import React from 'react';
+import Title from '../src/Title';
+import Button from '../src/Button';
+import Drawer from '../src/Drawer';
+import Select from '../src/Select';
 
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -82,5 +81,3 @@ class View extends React.Component {
 
 
 }
-
-module.exports = View;

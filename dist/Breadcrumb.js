@@ -1,26 +1,2 @@
-define('melon/Breadcrumb', [
-    'require',
-    'exports',
-    'module',
-    './babelHelpers',
-    'react',
-    './common/util/cxBuilder',
-    './breadcrumb/Item'
-], function (require, exports, module) {
-    var babelHelpers = require('./babelHelpers');
-    var React = require('react');
-    var cx = require('./common/util/cxBuilder').create('Breadcrumb');
-    var Item = require('./breadcrumb/Item');
-    var Breadcrumb = function Breadcrumb(props) {
-        var children = props.children;
-        var rest = babelHelpers.objectWithoutProperties(props, ['children']);
-        return React.createElement('div', babelHelpers._extends({}, rest, { className: cx(props).build() }), React.Children.map(children, function (child, index) {
-            return child && child.type === Item ? React.cloneElement(child, {
-                key: index,
-                level: index
-            }) : null;
-        }));
-    };
-    Breadcrumb.Item = Item;
-    module.exports = Breadcrumb;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./common/util/cxBuilder","./breadcrumb/Item","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./common/util/cxBuilder"),require("./breadcrumb/Item"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Item,e.babelHelpers),e.Breadcrumb=r.exports}}(this,function(exports,e,t,r,i){"use strict";function n(e){var t=e.children,r=i.objectWithoutProperties(e,["children"]);return o["default"].createElement("div",i["extends"]({},r,{className:u(e).build()}),o["default"].Children.map(t,function(e,t){return e&&e.type===a["default"]?o["default"].cloneElement(e,{key:t,level:t}):null}))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=n;var o=i.interopRequireDefault(e),a=i.interopRequireDefault(r),u=t.create("Breadcrumb");n.Item=a["default"],n.createCrumbs=function(e){return e.map(function(e,t){var r=e.text,n=i.objectWithoutProperties(e,["text"]);return o["default"].createElement(a["default"],i["extends"]({},n,{key:t,level:t}),r)})}});

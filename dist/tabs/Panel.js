@@ -1,18 +1,2 @@
-define('melon/tabs/Panel', [
-    'require',
-    'exports',
-    'module',
-    '../babelHelpers',
-    'react',
-    '../common/util/cxBuilder'
-], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
-    var React = require('react');
-    var cx = require('../common/util/cxBuilder').create('TabsPanel');
-    function TabsPanel(props) {
-        var active = props.active;
-        var others = babelHelpers.objectWithoutProperties(props, ['active']);
-        return React.createElement('div', babelHelpers._extends({}, others, { className: cx(props).addStates({ active: active }).build() }));
-    }
-    module.exports = TabsPanel;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Panel=r.exports}}(this,function(exports,e,t,r){"use strict";function i(e){var t=e.active,i=r.objectWithoutProperties(e,["active"]);return n["default"].createElement("div",r["extends"]({},i,{className:o(e).addStates({active:t}).build()}))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var n=r.interopRequireDefault(e),o=t.create("TabsPanel");i.displayName="TabsPanel",i.propTypes={active:e.PropTypes.bool},i.defaultProps={active:!1}});

@@ -1,39 +1,28 @@
 /**
- * @file esui-react/Tabs
+ * @file melon/Tabs
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Tabs');
+import React, {Component, PropTypes, cloneElement, Children} from  'react';
+import Tab from  './tabs/Tab';
+import TabPanel from  './tabs/Panel';
+import {create} from './common/util/cxBuilder';
 
-const Tab = require('./tabs/Tab');
-const TabPanel = require('./tabs/Panel');
+const cx = create('Tabs');
 
-const {PropTypes} = React;
+export default class Tabs extends Component {
 
-const Tabs = React.createClass({
+    constructor(props) {
 
-    propTypes: {
-        selectedIndex: PropTypes.number,
-        onChange: PropTypes.func,
-        onBeforeChange: PropTypes.func
-    },
+        super(props);
 
-    getDefaultProps() {
-        return {
-            selectedIndex: 0
-        };
-    },
+        const {selectedIndex} = props;
 
-    getInitialState() {
-
-        let {selectedIndex} = this.props;
-
-        return {
-            selectedIndex: selectedIndex
+        this.state = {
+            selectedIndex
         };
 
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
 
@@ -42,7 +31,7 @@ const Tabs = React.createClass({
                 selectedIndex: nextProps.selectedIndex
             });
         }
-    },
+    }
 
     handleTabClick(index, e) {
 
@@ -67,61 +56,54 @@ const Tabs = React.createClass({
             onChange && onChange(e);
         });
 
-    },
+    }
 
     getTabCount() {
-        return React.Children.count(this.props.children);
-    },
+        return Children.count(this.props.children);
+    }
 
     getSelected(tab, index) {
         return this.state.selectedIndex === index;
-    },
+    }
 
     render() {
 
-        var props = this.props;
-        var percent = 1 / this.getTabCount() * 100 + '%';
-        var tabIndex = 0;
-        var tabContent = [];
+        const props = this.props;
+        let tabIndex = 0;
+        const percent = 1 / this.getTabCount() * 100 + '%';
+        const tabContents = [];
+        const tabs = [];
+        const children = Children.toArray(props.children);
 
-        var tabs = React.Children.map(props.children, function (tab, index) {
+        for (let i = 0, len = children.length; i < len; ++i) {
 
-            var selected = this.getSelected(tab, index);
-            var {
-                disabled,
-                children
-            } = tab.props;
+            let tab = children[i];
+
+            const selected = this.getSelected(tab, i);
 
             if (selected) {
-                tabIndex = index;
+                tabIndex = i;
             }
 
             if (children) {
-                tabContent.push(
-                    <TabPanel
-                        key={index}
-                        active={selected} >
-                        {children}
+                tabContents.push(
+                    <TabPanel key={i} active={selected}>
+                        {tab.props.children}
                     </TabPanel>
                 );
             }
 
-            let options = {
-                key: index,
+            tabs.push(cloneElement(tab, {
+                key: i,
                 selected: selected,
-                tabIndex: index,
-                style: {width: percent}
-            };
+                tabIndex: i,
+                style: {width: percent},
+                onClick: tab.props.disabled ? null : this.handleTabClick.bind(this, i)
+            }));
 
-            if (!disabled) {
-                options.onClick = this.handleTabClick.bind(this, index);
-            }
+        }
 
-            return React.cloneElement(tab, options);
-
-        }, this);
-
-        var InkBarStyles = {
+        const InkBarStyles = {
             width: percent,
             left: 'calc(' + percent + '*' + tabIndex + ')'
         };
@@ -132,14 +114,22 @@ const Tabs = React.createClass({
                     {tabs}
                     <li className={cx().part('inkbar').build()} style={InkBarStyles}></li>
                 </ul>
-                {tabContent}
+                {tabContents}
             </div>
         );
 
     }
 
-});
+}
+
+Tabs.propTypes = {
+    selectedIndex: PropTypes.number.isRequired,
+    onChange: PropTypes.func,
+    onBeforeChange: PropTypes.func
+};
+
+Tabs.defaultProps = {
+    selectedIndex: 0
+};
 
 Tabs.Tab = Tab;
-
-module.exports = Tabs;

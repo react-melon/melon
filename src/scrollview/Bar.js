@@ -1,29 +1,35 @@
 /**
- * @file esui-react/ScrollViewBar
+ * @file melon/ScrollViewBar
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import * as dom from '../common/util/dom';
+import {throttle} from '../common/util/fn';
 
-const cx = require('../common/util/cxBuilder').create('ScrollviewBar');
+const cx = create('ScrollviewBar');
 
-const dom = require('../common/util/dom');
-const _ = require('underscore');
+export default class ScrollViewBar extends Component {
 
-const ScrollViewBar = React.createClass({
+    constructor(props) {
 
-    displayName: 'ScrollViewBar',
+        super(props);
 
-    getInitialState() {
+        this.removeStateShow = throttle(this.removeStateShow.bind(this), 100);
 
-        this.removeStateShow = _.throttle.call(this, this.removeStateShow, 100);
+        this.onBarMouseDown = this.onBarMouseDown.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
 
-        return {};
-    },
+        this.state = {};
+
+    }
 
     componentDidMount() {
         this.positionThumb();
-    },
+    }
 
     shouldComponentUpdate(nextProps) {
         if (Math.abs(nextProps.position - this.props.position) < 0.0005) {
@@ -32,15 +38,15 @@ const ScrollViewBar = React.createClass({
         dom.addClass(this.refs.main, 'state-show');
         this.removeStateShow();
         return true;
-    },
+    }
 
     componentDidUpdate() {
         this.positionThumb();
-    },
+    }
 
     componentWillUnmount() {
         this.clearTimer();
-    },
+    }
 
     positionThumb() {
 
@@ -60,20 +66,21 @@ const ScrollViewBar = React.createClass({
         this.barSize = main[isVertical ? 'offsetHeight' : 'offsetWidth'] - thumbSize - 4;
         thumb.style[isVertical ? 'height' : 'width'] = thumbSize + 'px';
         thumb.style[axis] = Math.round(position * this.barSize) + 'px';
-    },
+
+    }
 
     getMousePosition(e, isVertical) {
         if (isVertical) {
             return e.pageY || e.clientY;
         }
         return e.pageX || e.clientX;
-    },
+    }
 
     clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-    },
+    }
 
     removeStateShow() {
         this.clearTimer();
@@ -81,7 +88,7 @@ const ScrollViewBar = React.createClass({
         this.timer = setTimeout(function () {
             dom.removeClass(main, 'state-show');
         }, 1800);
-    },
+    }
 
     /**
      * 点击滚动轨道触发
@@ -118,7 +125,7 @@ const ScrollViewBar = React.createClass({
         me.fireAction('change', pos / barSize);
 
         e.preventDefault();
-    },
+    }
 
     onMouseDown(e) {
         let body = document.body;
@@ -134,7 +141,7 @@ const ScrollViewBar = React.createClass({
         dom.on(body, 'mouseup', this.onMouseUp);
 
         e.preventDefault();
-    },
+    }
 
     onMouseMove(e) {
 
@@ -147,7 +154,7 @@ const ScrollViewBar = React.createClass({
 
         let pos = Math.min(this.barSize, Math.max(0, this.thumbStart + moveLength));
         this.fireAction('change', pos / this.barSize);
-    },
+    }
 
     onMouseUp(e) {
         let body = document.body;
@@ -155,7 +162,7 @@ const ScrollViewBar = React.createClass({
         dom.off(body, 'mousemove', this.onMouseMove);
         dom.off(body, 'mouseup', this.onMouseUp);
         this.thumbStart = this.moveStart = 0;
-    },
+    }
 
     fireAction(action, pos) {
         let e = {
@@ -167,7 +174,7 @@ const ScrollViewBar = React.createClass({
         let onAction = this.props.onAction;
 
         onAction && onAction(e);
-    },
+    }
 
     render() {
 
@@ -186,9 +193,9 @@ const ScrollViewBar = React.createClass({
 
     }
 
-});
+}
 
-var PropTypes = React.PropTypes;
+ScrollViewBar.displayName = 'ScrollViewBar';
 
 ScrollViewBar.propTypes = {
     direction: PropTypes.oneOf(['vertical', 'horizontal']).isRequired,
@@ -197,5 +204,3 @@ ScrollViewBar.propTypes = {
     show: PropTypes.bool,
     onAction: PropTypes.func
 };
-
-module.exports = ScrollViewBar;

@@ -1,52 +1,47 @@
 /**
- * @file esui-react/Tree
+ * @file melon/Tree
  * @author cxtom<cxtom2010@gmail.com>
+ * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const _     = require('underscore');
-const ReactDOM = require('react-dom');
-const cx = require('./common/util/cxBuilder').create('Tree');
+import React, {Component, PropTypes, cloneElement, Children} from 'react';
+import ReactDOM from 'react-dom';
+import {create} from './common/util/cxBuilder';
+import TreeNode from './tree/TreeNode';
 
-const TreeNode = require('./tree/TreeNode');
+const cx = create('Tree');
 
-const Tree = React.createClass({
+export default class Tree extends Component {
 
-    displayName: 'Tree',
-
-    propTypes: {
-        defaultExpandAll: React.PropTypes.bool,
-        datasource: React.PropTypes.oneOfType([
-            React.PropTypes.array,
-            React.PropTypes.object
-        ])
-    },
-
-    getDefaultProps() {
-
-        return {
-            /**
-             * 默认展开树
-             * @type {Boolean}
-             */
-            defaultExpandAll: false
-        };
-    },
+    constructor(props) {
+        super(props);
+        this.onTreeNodeClick = this.onTreeNodeClick.bind(this);
+    }
 
     onTreeNodeClick(e) {
 
-        var target = e.currentTarget;
-        var main = ReactDOM.findDOMNode(this);
+        const target = e.currentTarget;
+        const main = ReactDOM.findDOMNode(this);
 
         e.stopPropagation();
 
-        _.each(main.querySelectorAll('[data-role=tree-node]'), function (ele) {
-            var className = ele.className.split(' ');
-            ele.className = _.without(className, 'state-selected').join(' ');
-        });
+        const elements = main.querySelectorAll('[data-role=tree-node]');
+
+        for (let i = 0, len = elements.length; i < len; ++i) {
+
+            elements[i].className = elements[i]
+                .className
+                .split(' ')
+                .filter(function (className) {
+                    return className !== 'state-selected';
+                })
+                .join(' ');
+
+        }
 
         target.className += ' state-selected';
-    },
+
+    }
 
     renderTreeNode(children, level) {
 
@@ -54,11 +49,11 @@ const Tree = React.createClass({
             return;
         }
 
-        var expand = this.props.defaultExpandAll;
+        const expand = this.props.defaultExpandAll;
 
-        return React.Children.map(children, function (child, index) {
+        return Children.map(children, function (child, index) {
 
-            return React.cloneElement(child, {
+            return cloneElement(child, {
                 onClick: this.onTreeNodeClick,
                 key: index,
                 level: level,
@@ -66,22 +61,21 @@ const Tree = React.createClass({
             }, this.renderTreeNode(child.props.children, level + 1));
 
         }, this);
-    },
+    }
 
     render() {
 
-        var props = this.props;
-        var children = props.children;
+        const {children, ...rest} = this.props;
 
         return (
-            <ul {...props} className={cx(props).build()}>
+            <ul {...rest} className={cx(this.props).build()}>
                 {this.renderTreeNode(children, 1)}
             </ul>
         );
 
     }
 
-});
+}
 
 
 Tree.TreeNode = TreeNode;
@@ -90,14 +84,15 @@ Tree.createTreeNodes = function (datasource, level) {
 
     level = level || 1;
 
-    if (_.isObject(datasource) && datasource.id && level === 1) {
-        datasource = [datasource];
-    }
-    if (!_.isArray(datasource)) {
-        return;
+    if (datasource == null) {
+        return null;
     }
 
-    return _.map(datasource, function (item, index) {
+    if (!Array.isArray(datasource)) {
+        datasource = [datasource];
+    }
+
+    return datasource.map(function (item, index) {
 
         return (
             <TreeNode
@@ -108,8 +103,26 @@ Tree.createTreeNodes = function (datasource, level) {
            </TreeNode>
         );
 
-    }, this);
+    });
 
 };
 
-module.exports = Tree;
+Tree.displayName = 'Tree';
+
+Tree.propTypes = {
+    defaultExpandAll: PropTypes.bool,
+    datasource: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object
+    ])
+},
+
+Tree.defaultProps = {
+
+    /**
+     * 默认展开树
+     * @type {Boolean}
+     */
+    defaultExpandAll: false
+
+};

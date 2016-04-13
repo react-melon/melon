@@ -3,13 +3,13 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var SnackBar = require('../src/SnackBar');
-var Button = require('../src/Button');
-var TextBox = require('../src/TextBox');
+import React from 'react';
+import Title from '../src/Title';
+import SnackBar from '../src/SnackBar';
+import Button from '../src/Button';
+import TextBox from '../src/TextBox';
 
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -40,17 +40,17 @@ class View extends React.Component {
     }
 
     onChange(e) {
-        var duration = e.value - 0;
-        this.setState({duration: duration});
+        const duration = e.value - 0;
+        this.setState({duration});
     }
 
     onDirChange(e) {
-        var direction = e.value;
-        this.setState({direction: direction});
+        const direction = e.value;
+        this.setState({direction});
     }
 
     onBarClick() {
-        var {
+        const {
             direction,
             duration,
             content
@@ -98,7 +98,7 @@ class View extends React.Component {
                         <div style={{clear: 'both'}}>
                             <h1>以下结点操作异常</h1>
                             <ul>
-                                {['华北', '华南', '华东', '日本', '台湾', '美国'].map((number) => {
+                                {['华北', '华南', '华东', '日本', '台湾', '美国'].map(number => {
                                     return (
                                         <li key={number}>{number}{number}{number}{number}{number}</li>
                                     );
@@ -118,5 +118,3 @@ class View extends React.Component {
 
 
 }
-
-module.exports = View;

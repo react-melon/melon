@@ -3,37 +3,38 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
+import Title from '../src/Title';
 
-var Title = require('../src/Title');
+const styles = {
+    cell: {
+        boxSizing: 'border-box',
+        padding: 10,
+        textAlign: 'center',
+        color: '#ffffff',
+        backgroundColor: 'rgb(0, 159, 147)'
+    }
+};
 
-var View = React.createClass({
-
-    render: function() {
-        return (
-            <div>
-                <Title level={3}>按钮</Title>
-                <Title level={4}>预定义样式</Title>
-
-                {this.renderGrid(12)}
-
-            </div>
-        );
-    },
+export default class View extends Component {
 
     renderGrid(columns) {
 
-        var grid = [];
+        const grid = [];
 
-        for (var i = 1; i < columns; ++i) {
+        for (let i = 1; i < columns; ++i) {
 
-            var prev = 'melon-column melon-column-' + i;
-            var next = 'melon-column melon-column-' + (columns - i);
+            const prev = 'melon-column melon-column-' + i;
+            const next = 'melon-column melon-column-' + (columns - i);
 
             grid[i] = (
                 <div className="melon-row" key={i}>
-                    <div className={prev}>{i}</div>
-                    <div className={next}>{columns - i}</div>
+                    <div className={prev}>
+                        <div style={styles.cell}>{i}</div>
+                    </div>
+                    <div className={next}>
+                        <div style={styles.cell}>{columns - i}</div>
+                    </div>
                 </div>
             );
 
@@ -43,6 +44,19 @@ var View = React.createClass({
 
     }
 
-});
 
-module.exports = View;
+    render() {
+
+        return (
+            <div>
+                <Title level={3}>按钮</Title>
+                <Title level={4}>预定义样式</Title>
+
+                {this.renderGrid(12)}
+
+            </div>
+        );
+
+    }
+
+}

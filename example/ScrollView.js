@@ -3,11 +3,11 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var ScrollView = require('../src/ScrollView');
+import React from 'react';
+import Title from '../src/Title';
+import ScrollView from '../src/ScrollView';
 
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -55,5 +55,3 @@ class View extends React.Component {
 
 
 }
-
-module.exports = View;

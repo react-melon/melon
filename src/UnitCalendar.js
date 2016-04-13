@@ -3,20 +3,26 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const BoxGroup = require('./BoxGroup');
-const date = require('./common/util/date');
-const cx = require('./common/util/cxBuilder').create('UnitCalendar');
+import React, {PropTypes} from 'react';
+import BoxGroup from './BoxGroup';
+import * as date from './common/util/date';
+import {create} from './common/util/cxBuilder';
+import InputComponent from './InputComponent';
 
-let UnitCalendar = React.createClass({
+const cx = create('UnitCalendar');
 
-    displayName: 'UnitCalendar',
+export default class UnitCalendar extends InputComponent {
+
+    constructor(props) {
+        super(props);
+        this.onChange = this.onChange.bind(this);
+    }
 
     onChange(e) {
 
         const nextValue = e.value;
 
-        let {continuous, value} = this.props;
+        const {continuous, value} = this.props;
 
         this.props.onChange({
 
@@ -28,7 +34,7 @@ let UnitCalendar = React.createClass({
                 : value
         });
 
-    },
+    }
 
     calculate(current, next) {
 
@@ -55,26 +61,19 @@ let UnitCalendar = React.createClass({
             let firstCurrent = new Date(current[0]);
 
             if (firtNext < firstCurrent) {
-                return UnitCalendar.getContinuousFragments(firtNext, firstCurrent, unit)
-                    .map(this.format)
-                    .concat(current);
+                return getContinuousFragments(firtNext, firstCurrent, unit).map(this.format).concat(current);
             }
 
             let lastNext = new Date(next[nLength - 1]);
             lastNext.setDate(lastNext.getDate() + 1);
             let lastCurrent = new Date(current[cLength - 1]);
 
-            return current.concat(
-                UnitCalendar
-                    .getContinuousFragments(lastCurrent, lastNext, unit)
-                    .slice(1)
-                    .map(this.format)
-            );
+            return current.concat(getContinuousFragments(lastCurrent, lastNext, unit).slice(1).map(this.format));
 
         }
 
         // cut
-        for (var i = 0; i < nLength; ++i) {
+        for (let i = 0; i < nLength; ++i) {
             if (current[i] < next[i]) {
                 if (i === 0) {
                     return current.slice(1);
@@ -85,42 +84,50 @@ let UnitCalendar = React.createClass({
 
         return current.slice(0, -1);
 
-    },
+    }
 
     parse(time) {
         return new Date(time);
-    },
+    }
 
     format(time) {
         return date.format(time, 'yyyy-mm-dd');
-    },
+    }
 
     parseValue(value = '') {
         return value
             .split(',')
-            .map((date) => {
+            .map(function (date) {
                 return this.parse(date);
             });
-    },
+    }
 
     stringifyValue(value = []) {
         return value
-            .map((term) => {
+            .map(function (term) {
                 return this.format(term);
             })
             .join(',');
-    },
+    }
 
     render() {
 
-        let {begin, end, unit, value, ...rest} = this.props;
+        let {begin, end, unit, value, format, ...rest} = this.props;
         let {onChange} = this;
 
         value = value
-            .map((fragment) => {
-                return date.format(UnitCalendar.normalize(fragment, unit), 'yyyy-mm-dd');
+            .map(function (fragment) {
+                return date.format(normalize(fragment, unit), format);
             })
             .sort();
+
+        const options = getContinuousFragments(begin, end, unit).map(fragment => {
+            let begin = this.format(fragment);
+            let end = getNextTime(fragment, unit);
+            end.setDate(end.getDate() - 1);
+            end = this.format(end);
+            return (<option key={begin} value={begin} label={`${begin} ~ ${end}`} />);
+        });
 
         return (
             <div className={cx(this.props).build()}>
@@ -129,29 +136,15 @@ let UnitCalendar = React.createClass({
                     boxModel="checkbox"
                     onChange={onChange}
                     value={value}>
-                    {UnitCalendar.getContinuousFragments(begin, end, unit).map((fragment) => {
-                        let begin = this.format(fragment);
-                        let end = UnitCalendar.getNextTime(fragment, unit);
-                        end.setDate(end.getDate() - 1);
-                        end = this.format(end);
-                        return (
-                            <option
-                                key={begin}
-                                value={begin}
-                                label={`${begin} ~ ${end}`} />
-                        );
-                    })}
+                    {options}
                 </BoxGroup>
             </div>
         );
 
     }
 
-});
 
-UnitCalendar = require('./createInputComponent').create(UnitCalendar);
-
-const {PropTypes} = React;
+}
 
 UnitCalendar.propTypes = {
     begin: PropTypes.instanceOf(Date),
@@ -165,10 +158,11 @@ UnitCalendar.propTypes = {
 UnitCalendar.defaultProps = {
     continuous: true,
     value: [],
-    defaultValue: []
+    defaultValue: [],
+    format: 'yyyy-mm-dd'
 };
 
-UnitCalendar.normalize = function (time, unit) {
+export function normalize(time, unit) {
     time = new Date(time);
     // 得到周一
     if (unit === 'week') {
@@ -184,10 +178,10 @@ UnitCalendar.normalize = function (time, unit) {
         time.setDate(1);
     }
     return time;
-};
+}
 
-UnitCalendar.getNextTime = function (time, unit) {
-    time = UnitCalendar.normalize(time, unit);
+export function getNextTime(time, unit) {
+    time = normalize(time, unit);
     if (unit === 'week') {
         time.setDate(time.getDate() + 7);
     }
@@ -198,9 +192,9 @@ UnitCalendar.getNextTime = function (time, unit) {
         time.setFullYear(time.getFullYear() + 1);
     }
     return time;
-};
+}
 
-UnitCalendar.getContinuousFragments = function (begin, end, unit) {
+export function getContinuousFragments(begin, end, unit) {
 
     begin = UnitCalendar.normalize(begin, unit);
 
@@ -221,6 +215,4 @@ UnitCalendar.getContinuousFragments = function (begin, end, unit) {
 
     return result;
 
-};
-
-module.exports = UnitCalendar;
+}

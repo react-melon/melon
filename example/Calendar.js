@@ -3,21 +3,24 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
 
-var Title = require('../src/Title');
-var Calendar = require('../src/Calendar');
+import Title from '../src/Title';
+import Calendar from '../src/Calendar';
+import RangeCalendar from '../src/RangeCalendar';
 
-var RangeCalendar = require('../src/RangeCalendar');
-var UnitCalendar = require('../src/UnitCalendar');
+// const UnitCalendar = require('../src/UnitCalendar');
 
-var View = React.createClass({
+export default class View extends Component {
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
             weekRange: [],
             value: '2015-08-07',
-            monthRange: [],
+            monthRange: []
             // yearRange: UnitCalendar
             //     .getContinuousFragments(
             //         new Date(2012, 1, 1),
@@ -25,14 +28,16 @@ var View = React.createClass({
             //         'year'
             //     )
         };
-    },
 
-    onChange: function (e) {
+        this.onChange = this.onChange.bind(this);
+
+    }
+
+    onChange(e) {
         this.setState({value: e.value});
-    },
+    }
 
-
-    render: function () {
+    render() {
 
         return (
             <div>
@@ -92,7 +97,7 @@ var View = React.createClass({
                     </div>
                 </div>
                 <div className="melon-row">
-                    <div className="melon-column melon-column-4">
+                    {/*<div className="melon-column melon-column-4">
                         <Title level={5}>日期区间</Title>
                         <UnitCalendar
                             size="xxs"
@@ -124,14 +129,10 @@ var View = React.createClass({
                             end={new Date(2020, 4, 1)}
                             unit="year" />
                     </div>
+                    */}
                 </div>
             </div>
         );
     }
 
-});
-
-
-
-
-module.exports = View;
+}

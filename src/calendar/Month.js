@@ -3,49 +3,50 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('CalendarMonth');
-const Day = require('./Day');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Day from './Day';
+import * as DateTime from '../common/util/date';
 
-const _ = require('underscore');
-const DateTime = require('../common/util/date');
+const cx = create('CalendarMonth');
 
-const PropTypes = React.PropTypes;
+export default class CalendarMonth extends Component {
 
-const CalendarMonth = React.createClass({
-
-    displayName: 'CalendarMonth',
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
 
     onClick(e) {
-        var onChange = this.props.onChange;
+        const onChange = this.props.onChange;
         if (onChange) {
             onChange({
                 target: this,
                 date: e.date
             });
         }
-    },
+    }
 
     renderWeekHeader() {
-        var days = this.props.lang.days.split(',');
+        const days = this.props.lang.days.split(',');
 
         return (
             <div className={cx().part('weekheader').build()}>
-                {_.map(days, function (day, index) {
-                    return <span key={index}>{day}</span>;
+                {days.map(function (day, index) {
+                    return <span key={day}>{day}</span>;
                 })}
             </div>
         );
-    },
+    }
 
     renderDates() {
-        var props = this.props;
-        var month = props.month;
+        const props = this.props;
+        const month = props.month;
 
-        var weekArray = DateTime.getFullWeekArray(month);
+        const weekArray = DateTime.getFullWeekArray(month);
 
-        var weeks = [];
-        var len = weekArray.length;
+        const weeks = [];
+        const len = weekArray.length;
 
         weeks.push(
             this.renderDay(weekArray[0], ['pre-month'])
@@ -54,7 +55,7 @@ const CalendarMonth = React.createClass({
             this.renderDay(weekArray[1], [])
         );
 
-        for (var i = 2; i < len - 1; i++) {
+        for (let i = 2; i < len - 1; i++) {
             weeks.push(
                 this.renderDay(weekArray[i], [])
             );
@@ -64,12 +65,8 @@ const CalendarMonth = React.createClass({
             this.renderDay(weekArray[len - 1], ['next-month'])
         );
 
-        return (
-            <ul>
-                {_.map(weeks, this.renderWeek, this)}
-            </ul>
-        );
-    },
+        return (<ul>{weeks.map(this.renderWeek)}</ul>);
+    }
 
     renderWeek(week, index) {
 
@@ -78,21 +75,22 @@ const CalendarMonth = React.createClass({
                 {week}
             </li>
         );
-    },
 
-    renderDay(array, variants) {
+    }
 
-        var props = this.props;
+    renderDay(arr, variants) {
 
-        var date = props.date;
-        var minDate = props.minDate;
-        var maxDate = props.maxDate;
+        const {
+            date,
+            minDate,
+            maxDate
+        } = this.props;
 
-        return _.map(array, function (day, index) {
+        return arr.map((day, index) => {
 
-            var selected = DateTime.isEqualDate(day, date);
-            var disabled = (_.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
-                            || (_.isDate(maxDate) && DateTime.isAfterDate(day, maxDate));
+            const selected = DateTime.isEqualDate(day, date);
+            const disabled = (DateTime.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
+                            || (DateTime.isDate(maxDate) && DateTime.isAfterDate(day, maxDate));
 
             return (
                 <Day
@@ -103,8 +101,9 @@ const CalendarMonth = React.createClass({
                     selected={selected}
                     onClick={this.onClick} />
             );
-        }, this);
-    },
+        });
+
+    }
 
     render() {
 
@@ -116,7 +115,9 @@ const CalendarMonth = React.createClass({
         );
     }
 
-});
+}
+
+CalendarMonth.displayName = 'CalendarMonth';
 
 CalendarMonth.propTypes = {
     date: PropTypes.object.isRequired,
@@ -130,5 +131,3 @@ CalendarMonth.propTypes = {
         title: PropTypes.string
     }).isRequired
 };
-
-module.exports = CalendarMonth;

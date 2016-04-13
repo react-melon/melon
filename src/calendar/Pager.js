@@ -3,36 +3,56 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('CalendarPager');
-const Icon = require('../Icon');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Icon from '../Icon';
+import * as DateTime from '../common/util/date';
 
-const _ = require('underscore');
-const DateTime = require('../common/util/date');
+const cx = create('CalendarPager');
 
-const PropTypes = React.PropTypes;
+export default class CalendarPager extends Component {
 
-const CalendarPager = React.createClass({
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
 
-    displayName: 'CalendarPager',
+    onClick(e) {
+
+        const target = e.currentTarget;
+        const month = this.props.month;
+
+        const action = target.getAttribute('data-action');
+        const newMonth = DateTime.addMonths(month, action === 'next' ? 1 : -1);
+
+        const onChange = this.props.onChange;
+
+        if (onChange) {
+            onChange({
+                target: this,
+                month: newMonth
+            });
+        }
+
+    }
 
     render() {
 
-        var {
+        const {
             maxDate,
             minDate,
             month
         } = this.props;
 
-        var m = month.getMonth() + 1;
-        var y = month.getFullYear();
+        const m = month.getMonth() + 1;
+        const y = month.getFullYear();
 
-        var beforeState = {
-            disabled: _.isDate(minDate) && DateTime.isBeforeMonth(DateTime.addMonths(month, -1), minDate)
+        const beforeState = {
+            disabled: DateTime.isDate(minDate) && DateTime.isBeforeMonth(DateTime.addMonths(month, -1), minDate)
         };
 
-        var nextState = {
-            disabled: _.isDate(maxDate) && DateTime.isAfterMonth(DateTime.addMonths(month, 1), maxDate)
+        const nextState = {
+            disabled: DateTime.isDate(maxDate) && DateTime.isAfterMonth(DateTime.addMonths(month, 1), maxDate)
         };
 
         return (
@@ -52,29 +72,11 @@ const CalendarPager = React.createClass({
                 {y + ' 年 ' + m + ' 月'}
             </div>
         );
-    },
-
-    onClick(e) {
-
-        var target = e.currentTarget;
-        var month = this.props.month;
-
-        var action = target.getAttribute('data-action');
-        var newMonth = DateTime.addMonths(month, action === 'next' ? 1 : -1);
-
-        var onChange = this.props.onChange;
-
-        if (onChange) {
-            onChange({
-                target: this,
-                month: newMonth
-            });
-        }
-
     }
 
-});
+}
 
+CalendarPager.displayName = 'CalendarPager';
 
 CalendarPager.propTypes = {
     month: PropTypes.object.isRequired,
@@ -82,5 +84,3 @@ CalendarPager.propTypes = {
     minDate: PropTypes.object,
     onChange: PropTypes.func
 };
-
-module.exports = CalendarPager;

@@ -25,52 +25,7 @@ require.config({
     },
     waitSeconds: 5
 });
-
-require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App, config) {
-
-    function dispatch() {
-
-        var hash = window.location.hash;
-        var name = hash ? hash.slice(2) : 'Button';
-
-        // ReactDOM.render(
-        //     React.createElement(
-        //         App,
-        //         {
-        //             components: config.components,
-        //             component: name,
-        //             Component: null
-        //         }
-        //     ),
-        //     document.getElementById('app')
-        // );
-
-        require([name], function (Component) {
-            ReactDOM.render(
-                React.createElement(
-                    App,
-                    {
-                        components: config.components,
-                        name: name,
-                        Component: Component
-                    }
-                ),
-                document.getElementById('app')
-            );
-        });
-
-    }
-
-    window.onhashchange = function () {
-        dispatch();
-    };
-
-    dispatch();
-
-});
-
-
-
+require(['index']);
 </script>
 </body>
 </html>

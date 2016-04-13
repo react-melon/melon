@@ -3,19 +3,23 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
 
-var Nav = require('./common/Nav');
+import Nav from './common/Nav';
 
-class App extends React.Component {
+export default class App extends Component {
+
     render() {
-        var {components, name, Component} = this.props;
+
+        const {components, name, Component} = this.props;
+
         return (
             <div>
                 <Nav components={components} component={name}/>
                 {this.renderContent(Component)}
             </div>
         );
+
     }
     renderContent(Component) {
         return Component
@@ -23,5 +27,3 @@ class App extends React.Component {
             : '加载中~';
     }
 }
-
-module.exports = App;

@@ -1,27 +1,68 @@
 /**
- * @file esui-react/Progress
+ * @file melon/Progress
  * @author cxtom<cxtom2010@gmail.com>
  * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Progress');
+import React, {Component, PropTypes} from 'react';
+import {create} from './common/util/cxBuilder';
 
-const Progress = React.createClass({
+const cx = create('Progress');
 
-    displayName: 'Progress',
+export default class Progress extends Component {
 
-    getInitialState() {
+    constructor(props) {
+        super(props);
         this.timers = {};
-        return {};
-    },
+    }
+
+    componentDidMount() {
+
+        if (this.isDeterminate()) {
+            return;
+        }
+
+        const isCircle = this.props.shape.toLowerCase() === 'circle';
+
+        if (isCircle) {
+            this.scalePath(this.refs.path);
+            this.rotateWrapper(this.refs.wrapper);
+            return;
+        }
+
+        this.barUpdate(
+            0,
+            'bar1',
+            [[-35, 100], [100, -90]]
+        );
+
+        this.timers.bar2 = setTimeout(() => {
+            this.barUpdate(
+                0,
+                'bar2',
+                [[-200, 100], [107, -8]]
+            );
+        }, 850);
+
+    }
+
+    componentWillUnmount() {
+
+        Object.keys(this.timers).forEach(name => {
+            clearTimeout(this.timers[name]);
+            this.timers[name] = null;
+        });
+
+        this.timers = {};
+
+    }
 
     barUpdate(step, barName, stepValues) {
 
         step = step || 0;
         step %= 4;
 
-        var element = this.refs[barName];
+        const element = this.refs[barName];
 
         switch (step) {
             case 0:
@@ -45,7 +86,7 @@ const Progress = React.createClass({
             420
         );
 
-    },
+    }
 
     scalePath(path, step) {
 
@@ -75,7 +116,7 @@ const Progress = React.createClass({
         path.style.strokeDashoffset = -124;
         path.style.transitionDuration = '850ms';
 
-    },
+    }
 
     rotateWrapper(wrapper) {
 
@@ -90,68 +131,27 @@ const Progress = React.createClass({
             wrapper.style.transitionTimingFunction = 'linear';
         }, 50);
 
-    },
-
-    componentDidMount() {
-
-        if (this.isDeterminate()) {
-            return;
-        }
-
-        var isCircle = this.props.shape.toLowerCase() === 'circle';
-
-        if (isCircle) {
-            this.scalePath(this.refs.path);
-            this.rotateWrapper(this.refs.wrapper);
-            return;
-        }
-
-        this.barUpdate(
-            0,
-            'bar1',
-            [[-35, 100], [100, -90]]
-        );
-
-        this.timers.bar2 = setTimeout(() => {
-            this.barUpdate(
-                0,
-                'bar2',
-                [[-200, 100], [107, -8]]
-            );
-        }, 850);
-
-    },
-
-    componentWillUnmount() {
-
-        Object.keys(this.timers).forEach((name) => {
-            clearTimeout(this.timers[name]);
-            this.timers[name] = null;
-        });
-
-        this.timers = {};
-
-    },
+    }
 
     getRelativeValue() {
-        var value = this.props.value;
-        var min = this.props.min;
-        var max = this.props.max;
 
-        var clampedValue = Math.min(Math.max(min, value), max);
-        var rangeValue = max - min;
-        var relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
+        const {value, min, max} = this.props;
+
+        const clampedValue = Math.min(Math.max(min, value), max);
+        const rangeValue = max - min;
+        const relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
+
         return relValue * 100;
-    },
+    }
 
     isDeterminate() {
         return this.props.mode.toLowerCase() === 'determinate';
-    },
+    }
 
     renderLinear() {
 
-        var children;
-        var style;
+        let children;
+        let style;
 
         if (this.isDeterminate()) {
             style = {
@@ -170,11 +170,11 @@ const Progress = React.createClass({
                 {children}
             </div>
         );
-    },
+    }
 
     getZoom() {
         return Progress.SIZES[this.props.size] || 1;
-    },
+    }
 
     renderCircle() {
         let zoom = this.getZoom();
@@ -204,7 +204,7 @@ const Progress = React.createClass({
                 </svg>
             </div>
         );
-    },
+    }
 
     render() {
 
@@ -227,7 +227,9 @@ const Progress = React.createClass({
 
     }
 
-});
+}
+
+Progress.displayName = 'Progress';
 
 Progress.SIZES = {
     xxs: 0.75,
@@ -248,12 +250,10 @@ Progress.defaultProps = {
 };
 
 Progress.propTypes = {
-    shape: React.PropTypes.oneOf(['circle', 'linear']),
-    mode: React.PropTypes.oneOf(['determinate', 'indeterminate']),
-    value: React.PropTypes.number,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    size: React.PropTypes.oneOf(Object.keys(Progress.SIZES))
+    shape: PropTypes.oneOf(['circle', 'linear']),
+    mode: PropTypes.oneOf(['determinate', 'indeterminate']),
+    value: PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    size: PropTypes.oneOf(Object.keys(Progress.SIZES))
 };
-
-module.exports = Progress;

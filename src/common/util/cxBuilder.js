@@ -3,28 +3,30 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const cx = require('./classname');
+import {createClasses, createClassName} from './classname';
 
-const hyphenate = require('./hyphenate');
-const pascalize = require('./pascalize');
+import hyphenate from './hyphenate';
+import pascalize from './pascalize';
 
-const {
+import {
     COMPONENT_CLASS_PREFIX,
     COMPONENT_SIZES,
     COMPONENT_VARIANT_PREFIX,
     COMPONENT_STATE_PREFIX
-} = require('../../config');
+} from '../../config';
 
 function addPrefix(prefix) {
-    return function () {
-        return cx
-            .createClasses
-            .apply(null, arguments)
-            .map((className) => {
+
+    return function (...args) {
+
+        return createClasses(...args)
+            .map(function (className) {
                 return `${prefix}-${className}`;
             })
             .join(' ');
+
     };
+
 }
 
 /**
@@ -62,7 +64,7 @@ function resolveStates(props) {
     };
 }
 
-exports.create = (type) => {
+export function create(type) {
 
     const displayName = pascalize(type);
     const hyphenatedClassName = hyphenate(displayName);
@@ -114,13 +116,13 @@ exports.create = (type) => {
             return builder;
         }
 
-        function addVariants() {
-            variants = variants.concat([].slice.call(arguments));
+        function addVariants(...args) {
+            variants = [...variants, ...args];
             return builder;
         }
 
         function removeVariants(variant) {
-            variants = variants.filter((term) => {
+            variants = variants.filter(function (term) {
                 return term !== variant;
             });
             return builder;
@@ -132,7 +134,7 @@ exports.create = (type) => {
         }
 
         function build() {
-            return cx.createClassName(
+            return createClassName(
                 props.className,
                 getPartClassName(part),
                 getVariantClassName(variants),
@@ -156,4 +158,4 @@ exports.create = (type) => {
 
     return builder;
 
-};
+}

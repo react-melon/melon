@@ -3,11 +3,11 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
+import Title from '../src/Title';
+import Icon from '../src/Icon';
 
-var Title = require('../src/Title');
-var Button = require('../src/Button');
-var icons = [
+const icons = [
     'error',
     'error-outline',
     'warning',
@@ -805,55 +805,62 @@ var icons = [
     'offline-pin'
 ];
 
-var Icon = require('../src/Icon');
+const styles = {
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    cell: {
+        width: 128,
+        textAlign: 'center',
+        marginTop: 50
 
-var View = React.createClass({
+    },
+    icon: {
+        fontSize: 64,
+        marginBottom: 5,
+        display: 'block'
+    },
+    iconHover: {
+        fontSize: 64,
+        display: 'block',
+        marginBottom: 5,
+        color: '#009f93'
+    }
+};
 
-    render: function() {
+export default class View extends Component {
 
-        var iconStyle = {
-            fontSize: 64,
-            display: 'block'
-        };
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-        var list = icons
-            .reduce(function (result, icon, index) {
+    render() {
 
-                var rowIndex = index % 4;
-                var row = result[rowIndex];
+        const {state} = this;
 
-                if (!row) {
-                    row = result[rowIndex] = [];
-                }
-
-                row.push(icon);
-
-                return result;
-
-            }, [])
-            .map(function (row, index) {
+        const list = icons
+            .map((icon, index) => {
                 return (
-                    <div className="line" key={index}>
-                        {row.map(function (icon, index) {
-                            return (
-                                <div className="cell" key={index}>
-                                    <Icon icon={icon} style={iconStyle} title={icon} />
-                                    <label>{icon}</label>
-                                </div>
-                            );
-                        })}
+                    <div key={icon} style={styles.cell}>
+                        <Icon
+                            icon={icon}
+                            style={state[icon] ? styles.iconHover : styles.icon} title={icon}
+                            onMouseOver={() => this.setState({[icon]: true})}
+                            onMouseOut={() => this.setState({[icon]: false})} />
+                        <label>{icon}</label>
                     </div>
-                )
+                );
             });
 
         return (
-            <div style={{width: '100%'}}>
-                <Title level={4}>图标</Title>
-                {list}
+            <div>
+                <Title level={2}>图标</Title>
+                <div style={styles.row}>{list}</div>
             </div>
         );
     }
 
-});
-
-module.exports = View;
+}

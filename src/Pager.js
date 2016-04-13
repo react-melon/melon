@@ -1,27 +1,35 @@
 /**
- * @file esui-react/Pager
+ * @file melon/Pager
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const _ = require('underscore');
-const Icon = require('./Icon');
-const cx = require('./common/util/cxBuilder').create('Pager');
+import React, {Component, PropTypes} from 'react';
+import Icon from './Icon';
+import {create} from './common/util/cxBuilder';
+import {range} from './common/util/array';
 
+const cx = create('Pager');
 
-const Pager = React.createClass({
+export default class Pager extends Component {
 
-    displayName: 'Pager',
+    constructor(props) {
 
-    getInitialState() {
-        return {
-            page: this.props.page || 0
-        };
-    },
+        super(props);
+
+        const {
+            page = 0
+        } = props;
+
+        this.state = {page};
+
+        this.onMainClick = this.onMainClick.bind(this);
+
+    }
 
     onMainClick(e) {
 
         const {currentTarget} = e;
+
         let {target} = e;
 
         e.preventDefault();
@@ -34,7 +42,7 @@ const Pager = React.createClass({
             e.cancelBubble = true;
         }
 
-        var role = target.getAttribute('data-role');
+        let role = target.getAttribute('data-role');
 
         while (role !== 'pager-item' && target !== currentTarget) {
             target = target.parentNode;
@@ -45,23 +53,22 @@ const Pager = React.createClass({
             return;
         }
 
-        var page = +target.getAttribute('data-page') + this.props.first;
+        const {first, onChange} = this.props;
+
+        const page = +target.getAttribute('data-page') + first;
+
         target = null;
 
         if (this.state.page === page) {
             return;
         }
 
-        this.setState({page: page}, () => {
-            let onChange = this.props.onChange;
+        this.setState(
+            {page},
+            onChange ? () => onChange({target: this, page: page}) : null
+        );
 
-            _.isFunction(onChange) && onChange({
-                target: this,
-                page: page
-            });
-        });
-
-    },
+    }
 
     /**
      * 生成一个页码数组, 如果需要ellipsis, 那么ellpsis用负数表示它;
@@ -77,12 +84,13 @@ const Pager = React.createClass({
      */
     range(start, stop, paddingLeft, paddingRight) {
         return start + paddingLeft < stop - paddingRight
-            ? _
-                .range(start, start + paddingLeft)
-                .concat(-start - paddingLeft)
-                .concat(_.range(stop - paddingRight, stop))
-            : _.range(start, stop);
-    },
+            ? [
+                ...range(start, start + paddingLeft),
+                -start - paddingLeft,
+                ...range(stop - paddingRight, stop)
+            ]
+            : range(start, stop);
+    }
 
     renderItem(conf) {
 
@@ -122,7 +130,7 @@ const Pager = React.createClass({
                 </a>
             </li>
         );
-    },
+    }
 
     render() {
 
@@ -197,16 +205,16 @@ const Pager = React.createClass({
             },
             part: 'next'
         })
-        .map((conf) => {
+        .map(conf => {
 
             if (typeof conf === 'number') {
-                var part = conf >= 0 ? '' : 'ellipsis';
+                const part = conf >= 0 ? '' : 'ellipsis';
                 conf = {
                     page: Math.abs(conf),
                     states: {
                         ellipsis: !!part
                     },
-                    part: part
+                    part
                 };
             }
 
@@ -225,7 +233,9 @@ const Pager = React.createClass({
 
     }
 
-});
+}
+
+Pager.displayName = 'Pager';
 
 Pager.defaultProps = {
 
@@ -267,19 +277,19 @@ Pager.defaultProps = {
 };
 
 Pager.propTypes = {
-    disabled: React.PropTypes.bool,
-    type: React.PropTypes.string,
-    page: React.PropTypes.number,
-    first: React.PropTypes.number,
-    padding: React.PropTypes.number,
-    showAlways: React.PropTypes.bool,
-    showCount: React.PropTypes.number,
-    total: React.PropTypes.number,
-    useLang: React.PropTypes.bool,
-    lang: React.PropTypes.shape({
-        prev: React.PropTypes.string,
-        ellipsis: React.PropTypes.string,
-        next: React.PropTypes.string
+    disabled: PropTypes.bool,
+    type: PropTypes.string,
+    page: PropTypes.number,
+    first: PropTypes.number,
+    padding: PropTypes.number,
+    showAlways: PropTypes.bool,
+    showCount: PropTypes.number,
+    total: PropTypes.number,
+    useLang: PropTypes.bool,
+    lang: PropTypes.shape({
+        prev: PropTypes.string,
+        ellipsis: PropTypes.string,
+        next: PropTypes.string
     })
 };
 
@@ -288,5 +298,3 @@ Pager.ICONS = {
     next: 'navigate-next',
     ellipsis: 'keyboard-control'
 };
-
-module.exports = Pager;

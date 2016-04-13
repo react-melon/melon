@@ -3,68 +3,71 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes, Component} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Selector from './Selector';
+import Province from './Province';
+import City from './City';
+import * as helper from './helper';
 
-const cx = require('../common/util/cxBuilder').create('RegionArea');
-const Selector = require('./Selector');
-const Province = require('./Province');
-const City = require('./City');
+const cx = create('RegionArea');
 
-const helper = require('./helper');
-const _ = require('underscore');
+export default class RegionArea extends Component {
 
-const PropTypes = React.PropTypes;
+    constructor(props) {
 
-const RegionArea = React.createClass({
+        super(props);
 
-    displayName: 'RegionArea',
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+        this.onProvinceChange = this.onProvinceChange.bind(this);
+
+    }
 
     onSelectorChange(e) {
-        var value = e.value;
 
-        var data = this.props.datasource;
+        const value = e.value;
+        const {datasource, onChange} = this.props;
 
-        helper[value ? 'selectAll' : 'cancelAll'](data);
-
-        let onChange = this.props.onChange;
+        helper[value ? 'selectAll' : 'cancelAll'](datasource);
 
         onChange && onChange({
-            data: data
+            data: datasource
         });
-    },
+
+    }
 
     onProvinceChange(index, e) {
-        var data = e.data;
 
-        var datasource = this.props.datasource;
+        const data = e.data;
+        const {datasource, onChange} = this.props;
 
         datasource.children[index] = data;
 
         helper.isAllSelected(datasource);
 
-        let onChange = this.props.onChange;
-
         onChange && onChange({
             data: datasource
         });
-    },
+
+    }
 
     onCityChange(pIndex, cIndex, e) {
-        var data = e.data;
 
-        var datasource = this.props.datasource;
+        const data = e.data;
 
-        var p = datasource.children[pIndex];
+        const {datasource, onChange} = this.props;
+
+        const p = datasource.children[pIndex];
+
         p.children[cIndex] = data;
 
         helper.isAllSelected(p);
 
-        let onChange = this.props.onChange;
-
         onChange && onChange({
             data: datasource
         });
-    },
+
+    }
 
     renderProvince(child, index) {
         return (
@@ -72,33 +75,34 @@ const RegionArea = React.createClass({
                 key={index}
                 datasource={child}
                 onChange={this.onProvinceChange.bind(this, index)}>
-                {(_.isArray(child.children) && child.children.length > 0)
-                    ? _.map(child.children, this.renderCity.bind(this, index))
+                {
+                    Array.isArray(child.children) && child.children.length > 0
+                    ? child.children.map((child, i) => {
+                        return this.renderCity(index, child, i);
+                    })
                     : null
                 }
             </Province>
         );
-    },
+    }
 
     renderCity(pIndex, child, index) {
         return (
             <City
                 key={index}
                 datasource={child}
-                onChange={this.onCityChange.bind(this, pIndex, index)} />
+                onChange={e => {
+                    return this.onCityChange(pIndex, index, e);
+                }} />
         );
-    },
+    }
 
     render() {
 
-        var props = this.props;
-
-        var {
-            datasource
-        } = props;
+        const {datasource} = this.props;
 
         return (
-            <li className={cx(props).build()}>
+            <li className={cx(this.props).build()}>
                 <div className={cx().part('selector').build()}>
                     <Selector
                         label={datasource.text}
@@ -107,13 +111,20 @@ const RegionArea = React.createClass({
                         onChange={this.onSelectorChange} />
                 </div>
                 <div className={cx().part('content').build()}>
-                    {_.map(datasource.children, this.renderProvince, this)}
+                    {datasource
+                        .children
+                        .map((...args) => {
+                            return this.renderProvince(...args);
+                        })
+                    }
                 </div>
             </li>
         );
     }
 
-});
+}
+
+RegionArea.displayName = 'RegionArea';
 
 
 RegionArea.propTypes = {
@@ -121,5 +132,3 @@ RegionArea.propTypes = {
     disabled: PropTypes.bool,
     datasource: PropTypes.object
 };
-
-module.exports = RegionArea;

@@ -3,18 +3,19 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
 
-var Title = require('../src/Title');
-var Dialog = require('../src/Dialog');
-var Button = require('../src/Button');
-var Alert = require('../src/dialog/Alert');
-var Confirm = require('../src/dialog/Confirm');
+import Title from '../src/Title';
+import Dialog from '../src/Dialog';
+import Button from '../src/Button';
+import Alert from '../src/Alert';
+import Confirm from '../src/Confirm';
 
-var View = React.createClass({
+export default class View extends Component {
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+        super(props);
+        this.state =  {
             dialog1: false,
             dialog2: false,
             dialog3: false,
@@ -22,13 +23,25 @@ var View = React.createClass({
             dialog5: false,
             dialog6: false
         };
-    },
+    }
 
-    render: function () {
+    onShow(field) {
+        this.setState({
+            [field]: true
+        });
+    }
 
-        var actions = [
-            <Button label="Submit" key="submit" />,
-            <Button label="Cancel" key="cancel" onClick={this.dialog4Hide} />
+    onHide(field) {
+        this.setState({
+            [field]: false
+        });
+    }
+
+    render() {
+
+        const actions = [
+            <Button label="Submit" key="submit" onClick={this.onHide.bind(this, 'dialog4')} />,
+            <Button label="Cancel" key="cancel" onClick={this.onHide.bind(this, 'dialog4')} />
         ];
 
         return (
@@ -37,29 +50,48 @@ var View = React.createClass({
 
                 <div className="row">
                     <Title level={4}>普通</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog1Show}>弹出窗口</Button>
-                    <Dialog open={this.state.dialog1} onHide={this.dialog1Hide}>Hello</Dialog>
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog1')}>
+                        弹出窗口
+                    </Button>
+                    <Dialog
+                        open={this.state.dialog1}
+                        onHide={this.onHide.bind(this, 'dialog1')}>Hello</Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>内容很长的弹窗</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog2Show}>弹出窗口</Button>
-                    <Dialog open={this.state.dialog2} onHide={this.dialog2Hide}>
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog2')}>弹出窗口</Button>
+                    <Dialog
+                        open={this.state.dialog2}
+                        onHide={this.onHide.bind(this, 'dialog2')}>
                         <div ref="content" style={{height: 1000}}>Long!</div>
                     </Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>有标题的弹窗</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog3Show}>弹出窗口</Button>
-                    <Dialog open={this.state.dialog3} onHide={this.dialog3Hide} title="Dialog With A Title">
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog3')}>弹出窗口</Button>
+                    <Dialog
+                        open={this.state.dialog3}
+                        onHide={this.onHide.bind(this, 'dialog3')}
+                        title="Dialog With A Title">
                         This is Content.
                     </Dialog>
                 </div>
 
                 <div className="row">
                     <Title level={4}>有按钮的弹窗</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog4Show}>弹出窗口</Button>
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog4')}>
+                        弹出窗口
+                    </Button>
                     <Dialog
                         open={this.state.dialog4}
                         maskClickClose={false}
@@ -71,72 +103,45 @@ var View = React.createClass({
 
                 <div className="row">
                     <Title level={4}>Alert</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog5Show}>弹出窗口</Button>
-                    <Alert open={this.state.dialog5}  onConfirm={this.dialog5Hide} >This is Content.</Alert>
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog5')}>
+                        弹出窗口
+                    </Button>
+                    <Alert
+                        open={this.state.dialog5}
+                        onConfirm={this.onHide.bind(this, 'dialog5')}>
+                        This is Content.
+                    </Alert>
                 </div>
 
                 <div className="row">
                     <Title level={4}>Confirm</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.dialog6Show}>弹出窗口</Button>
+                    <Button
+                        variants={['raised', 'primary']}
+                        onClick={this.onShow.bind(this, 'dialog6')}>
+                        弹出窗口
+                    </Button>
                     <Confirm
                         open={this.state.dialog6}
-                        onConfirm={this.onConfirm}
-                        onCancel={this.onConfirm}>
+                        onConfirm={this.onHide.bind(this, 'dialog6')}
+                        onCancel={this.onHide.bind(this, 'dialog6')}>
                         This is Content.
                     </Confirm>
                 </div>
+
             </div>
         );
-    },
-
-    dialog1Show: function () {
-        this.setState({dialog1: true});
-    },
-
-    dialog1Hide: function () {
-        this.setState({dialog1: false});
-    },
-
-    dialog2Show: function () {
-        this.setState({dialog2: true});
-    },
-
-    dialog2Hide: function () {
-        this.setState({dialog2: false});
-    },
-
-    dialog3Show: function () {
-        this.setState({dialog3: true});
-    },
-
-    dialog3Hide: function () {
-        this.setState({dialog3: false});
-    },
-
-    dialog4Show: function () {
-        this.setState({dialog4: true});
-    },
-
-    dialog4Hide: function () {
-        this.setState({dialog4: false});
-    },
-
-    dialog5Show: function () {
-        this.setState({dialog5: true});
-    },
-
-    dialog5Hide: function () {
-        this.setState({dialog5: false});
-    },
-
-    dialog6Show: function () {
-        this.setState({dialog6: true});
-    },
-
-    onConfirm: function (e) {
-        this.setState({dialog6: false});
     }
 
-});
 
-module.exports = View;
+    //
+
+    //
+
+    //
+
+    //
+
+
+}

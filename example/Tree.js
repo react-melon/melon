@@ -3,37 +3,35 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
+import Title from '../src/Title';
 
-var Tree = require('../src/Tree');
-var TreeNode = Tree.TreeNode;
+import Tree from '../src/Tree';
 
-var View = React.createClass({
+const TreeNode = Tree.TreeNode;
 
-    getInitialState: function () {
-        return {};
-    },
+export default class View extends React.Component {
 
-    componentDidMount: function () {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-    },
+    render() {
 
-    render: function() {
-
-        var datasource = {
+        const datasource = {
             id: '1',
             text: '百度',
-            children:[
+            children: [
                 {
                     id: '2',
                     text: '联盟研发部',
                     children: [
-                        { id: '21', text: 'RD' },
-                        { id: '22', text: 'FE' },
-                        { id: '23', text: 'QA' },
-                        { id: '24', text: 'PM' }
+                        {id: '21', text: 'RD'},
+                        {id: '22', text: 'FE'},
+                        {id: '23', text: 'QA'},
+                        {id: '24', text: 'PM'}
                     ]
                 },
                 {
@@ -44,13 +42,13 @@ var View = React.createClass({
                             id: '31',
                             text: 'RD',
                             children: [
-                                { id: '311', text: 'UI' },
-                                { id: '312', text: 'BS' }
+                                {id: '311', text: 'UI'},
+                                {id: '312', text: 'BS'}
                             ]
                         },
-                        { id: '32', text: 'FE' },
-                        { id: '33', text: 'QA' },
-                        { id: '34', text: 'PM' }
+                        {id: '32', text: 'FE'},
+                        {id: '33', text: 'QA'},
+                        {id: '34', text: 'PM'}
                     ]
                 },
                 {
@@ -102,6 +100,4 @@ var View = React.createClass({
         );
     }
 
-});
-
-module.exports = View;
+}

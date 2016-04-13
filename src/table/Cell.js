@@ -3,29 +3,16 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('TableCell');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-// const RENDERER_PROPS = [
-//     'cellData',
-//     'cellDataKey',
-//     'rowData',
-//     'rowIndex',
-//     'columnData',
-//     'columnIndex',
-//     'width',
-//     'height',
-//     'part'
-// ];
+const cx = create('TableCell');
 
-
-const TableCell = React.createClass({
-
-    displayName: 'TableCell',
+export default class TableCell extends Component {
 
     shouldComponentUpdate(nextProps) {
         return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
-    },
+    }
 
     getCellContent() {
 
@@ -39,13 +26,13 @@ const TableCell = React.createClass({
                 {content}
             </div>
         );
-    },
+    }
 
     render() {
 
-        var props = this.props;
+        const props = this.props;
 
-        var style = {
+        const style = {
             textAlign: props.align,
             width: props.width,
             height: props.height
@@ -65,9 +52,9 @@ const TableCell = React.createClass({
 
     }
 
-});
+}
 
-const {PropTypes} = React;
+TableCell.displayName = 'TableCell';
 
 TableCell.propTypes = {
 
@@ -94,5 +81,3 @@ TableCell.propTypes = {
 TableCell.defaultProps = {
     align: 'left'
 };
-
-module.exports = TableCell;

@@ -50,29 +50,57 @@ melon-generate-grid()
                 background-color: #1b1c1d + 10%
                 color: #fff
 
-.row
-    padding: 10px 0
+@require '../src/css/theme/default'
+@require '../src/css/Breadcrumb.styl'
+@require '../src/css/BoxGroup.styl'
+@require '../src/css/Button.styl'
 
-@import '../src/css/theme/default'
-@import '../src/css/Card.styl'
-@require 'BoxGroup.styl'
-@require 'Breadcrumb.styl'
-@require 'Button.styl'
-@require 'Calendar.styl'
-@require 'Dialog.styl'
-@require 'Drawer.styl'
-@require 'Form.styl'
-@require 'Grid.styl'
-@require 'Icon.styl'
-@require 'Pager.styl'
-@require 'Progress.styl'
-@require 'Region.styl'
-@require 'ScrollView.styl'
-@require 'Select.styl'
-@require 'SnackBar.styl'
-@require 'Table.styl'
-@require 'Tabs.styl'
-@require 'TextBox.styl'
-@require 'Tooltip.styl'
-@require 'Tree.styl'
-@require 'Uploader.styl'
+.melon-column
+
+    > .ui-button + .ui-button
+        margin-left: 1em
+
+@require '../src/css/Calendar.styl'
+@require '../src/css/Card.styl'
+@require '../src/css/Dialog.styl'
+@require '../src/css/Drawer.styl'
+@require '../src/css/Icon.styl'
+
+@require '../src/css/Pager.styl'
+@require '../src/css/Progress.styl'
+@require '../src/css/Region.styl'
+
+.row
+    max-width: 800px;
+
+@require '../src/css/ScrollView.styl'
+
+.ui-scrollview
+    line-height: 25px
+
+@require '../src/css/Select.styl'
+@require '../src/css/SnackBar.styl'
+@require '../src/css/Table.styl'
+
+#app
+    padding-bottom 200px
+
+.ui-table
+    margin: 20px 0
+
+@require '../src/css/Tabs.styl'
+@require '../src/css/TextBox.styl'
+.melon-row
+    margin: 2em 0
+
+@require '../src/css/Title.styl'
+
+@require '../src/css/Toggle.styl'
+@require '../src/css/Tooltip.styl'
+
+.ui-tooltip + .ui-tooltip
+    margin-left: 1em
+
+@require '../src/css/Tree.styl'
+@require '../src/css/Validity.styl'
+@require '../src/css/Uploader.styl'

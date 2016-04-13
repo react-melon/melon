@@ -3,46 +3,37 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
+import {create} from './common/util/cxBuilder';
+import {default as V} from './validator/Validity';
 
-const cx = require('./common/util/cxBuilder').create('Validity');
+const cx = create('Validity');
 
-const Validity = React.createClass({
+/* eslint-disable fecs-prefer-class */
+export default function Validity(props) {
 
-    displayName: 'Validity',
+    const {validity} = props;
 
-    render() {
-        const {
-            validity
-        } = this.props;
+    const isValid = validity ? validity.isValid() : true;
+    const message = validity ? validity.getMessage() : null;
 
-        if (!validity) {
-            return null;
-        }
+    const statefulClassName = cx(props)
+        .addStates({
+            valid: isValid,
+            invalid: !isValid
+        })
+        .build();
 
-        const isValid = validity.isValid();
-        const message = validity.getMessage();
+    return (
+        <div className={statefulClassName}>
+            {message}
+        </div>
+    );
 
-        const statefulClassName = cx(this.props)
-            .addStates({
-                valid: isValid,
-                invalid: !isValid
-            })
-            .build();
+}
 
-        return (
-            <div className={statefulClassName}>
-                {message}
-            </div>
-        );
-    }
-
-});
-
-const {PropTypes} = React;
+Validity.displayName = 'Validity';
 
 Validity.propTypes = {
-    validity: PropTypes.instanceOf(require('./validator/Validity'))
+    validity: PropTypes.instanceOf(V)
 };
-
-module.exports = Validity;

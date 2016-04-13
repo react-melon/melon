@@ -3,11 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
+import {create} from './common/util/cxBuilder';
 
-const cx = require('./common/util/cxBuilder').create('Icon');
+const cx = create('Icon');
 
-function Icon(props) {
+/* eslint-disable fecs-prefer-class */
+export default function Icon(props) {
 
     const {
         icon,
@@ -17,13 +19,13 @@ function Icon(props) {
     return (
         <i {...rest} data-icon={icon} className={cx(props).build()}/>
     );
+
 }
+/* eslint-enable fecs-prefer-class */
 
 
 Icon.propTypes = {
-    icon: React.PropTypes.string.isRequired
+    icon: PropTypes.string.isRequired
 };
 
 Icon.displayName = 'Icon';
-
-module.exports = Icon;

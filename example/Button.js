@@ -3,15 +3,15 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
 
-var Title = require('../src/Title');
-var Button = require('../src/Button');
-var Icon = require('../src/Icon');
+import Title from '../src/Title';
+import Button from '../src/Button';
+import Icon from '../src/Icon';
 
-var View = React.createClass({
+export default class View extends Component {
 
-    render: function () {
+    render() {
         return (
             <div>
                 <Title level={3}>按钮</Title>
@@ -177,21 +177,25 @@ var View = React.createClass({
 
             </div>
         );
-    },
+    }
 
-    getInitialState: function () {
-        return {
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
             text: '赞我',
             count: 0,
             disabled: false
         };
-    },
 
-    onClick: function () {
+    }
 
-        var count = this.state.count + 1;
+    onClick() {
 
-        var disabled = count === 5;
+        const count = this.state.count + 1;
+
+        const disabled = count === 5;
 
         this.setState({
             text: disabled ? '今天的5个赞集满啦，客官明天赶早来~' : '+' + (count),
@@ -201,6 +205,4 @@ var View = React.createClass({
 
     }
 
-});
-
-module.exports = View;
+}

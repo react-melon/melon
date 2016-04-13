@@ -3,20 +3,41 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var BoxGroup = require('../src/BoxGroup');
-var Button = require('../src/Button');
-var Toggle = require('../src/Toggle');
+import Title from '../src/Title';
+import BoxGroup from '../src/BoxGroup';
+import Toggle from '../src/Toggle';
 
-var View = React.createClass({
+export default class View extends React.Component {
 
-    render: function() {
+    constructor(props) {
 
-        var value = this.state.value;
+        super(props);
 
-        var datasource = [{
+        this.state = {a: [], b: [], controlledCheckbox: [], controlledRadio: []};
+        this.onChange = this.onChange.bind(this);
+
+    }
+
+    onChange(name, e) {
+        this.setState({
+            [name + 'value']: e.value
+        });
+    }
+
+    getCurrentValue(name) {
+        const value = this.state[name + 'value'];
+        return value ? '当前的选择是：' + value : '';
+    }
+
+    onButtonClick() {
+        this.setState({value: ['A', 'B']});
+    }
+
+    render() {
+
+        const datasource = [{
             value: 'A',
             name: '青年A'
         }, {
@@ -34,7 +55,7 @@ var View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">
                         <Title level={5}>复选框</Title>
-                        <BoxGroup boxModel="checkbox">
+                        <BoxGroup boxModel="checkbox" value={['1']}>
                             <option name="checkbox1" value="1" label="1" />
                             <option name="checkbox1" value="2" label="2" />
                             <option name="checkbox1" value="3" label="3" />
@@ -122,25 +143,7 @@ var View = React.createClass({
 
             </div>
         );
-    },
 
-    getInitialState: () => ({a: [], b: [], controlledCheckbox: [], controlledRadio: []}),
-
-    onChange(name, e) {
-        this.setState({
-            [name + 'value']: e.value
-        });
-    },
-
-    getCurrentValue(name) {
-        var value = this.state[name + 'value'];
-        return value ? '当前的选择是：' + value : '';
-    },
-
-    onButtonClick: function () {
-        this.setState({value: ['A', 'B']});
     }
 
-});
-
-module.exports = View;
+}

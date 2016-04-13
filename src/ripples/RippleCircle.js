@@ -1,17 +1,15 @@
 /**
- * @file esui-react/RippleCircle
+ * @file melon/RippleCircle
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
+import React, {Component, PropTypes} from 'react';
 
-class RippleCircle extends React.Component {
-
-    static displayName = 'RippleCircle';
+export default class RippleCircle extends Component {
 
     shouldComponentUpdate(nextProps) {
 
-        let {
+        const {
             opacity,
             scale
         } = this.props;
@@ -21,7 +19,7 @@ class RippleCircle extends React.Component {
 
     render() {
 
-        let {
+        const {
             style,
             opacity,
             scale,
@@ -46,7 +44,7 @@ class RippleCircle extends React.Component {
 
 }
 
-const {PropTypes} = React;
+RippleCircle.displayName = 'RippleCircle';
 
 RippleCircle.defaultProps = {
     opacity: 0.3,
@@ -57,5 +55,3 @@ RippleCircle.propTypes = {
     opacity: PropTypes.number.isRequired,
     scale: PropTypes.number.isRequired
 };
-
-module.exports = RippleCircle;

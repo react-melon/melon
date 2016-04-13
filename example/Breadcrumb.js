@@ -3,23 +3,26 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React, {Component} from 'react';
+import Title from '../src/Title';
+import Breadcrumb from '../src/Breadcrumb';
+import Icon from '../src/Icon';
 
-var Title = require('../src/Title');
-var Breadcrumb = require('../src/Breadcrumb');
-var Icon = require('../src/Icon');
+export default class View extends Component {
 
-var View = React.createClass({
+    constructor(props) {
 
-    getInitialState() {
-        return {
+        super(props);
+
+        this.state = {
             href: ''
         };
-    },
 
-    render: function () {
+    }
 
-        const onClick = (e) => {
+    render() {
+
+        const onClick = e => {
             e.preventDefault();
             this.setState({
                 href: e.currentTarget.href
@@ -71,6 +74,4 @@ var View = React.createClass({
         );
     }
 
-});
-
-module.exports = View;
+}

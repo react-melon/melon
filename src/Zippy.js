@@ -3,74 +3,63 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
+import {Motion, spring} from 'react-motion';
+import {create} from './common/util/cxBuilder';
 
-const {
-    Motion,
-    spring
-} = require('react-motion');
+const cx = create('Zippy');
 
-const cx = require('./common/util/cxBuilder').create('Zippy');
+function getStyle(horizontal, value) {
 
-const {PropTypes} = React;
+    return {
+        [horizontal ? 'overflowX' : 'overflowY']: 'hidden',
+        [horizontal ? 'width' : 'height']: Math.round(value)
+    };
 
-const Zippy = React.createClass({
+}
 
-    displayName: 'Zippy',
+/* eslint-disable fecs-prefer-class */
+export default function Zippy(props) {
 
-    propTypes: {
-        size: PropTypes.number.isRequired,
-        horizontal: PropTypes.bool,
-        expand: PropTypes.bool
-    },
+    const {
+        expand,
+        size,
+        children,
+        horizontal,
+        value,
+        style,
+        ...others
+    } = props;
 
-    getDefaultProps() {
-        return {
-            horizontal: false,
-            expand: false
-        };
-    },
+    const className = cx(props).addStates({expand}).build();
 
-    getStyle(value) {
+    return (
+        <Motion style={{value: spring(expand ? size : 0, [60, 15])}}>
+            {({value}) =>
+                <div
+                    {...others}
+                    className={className}
+                    style={{
+                        ...style,
+                        ...getStyle(horizontal, value)
+                    }}>
+                    {children}
+                </div>
+            }
+        </Motion>
+    );
 
-        const {
-            horizontal,
-            style
-        } = this.props;
+}
 
-        return {
-            ...style,
-            [horizontal ? 'overflowX' : 'overflowY']: 'hidden',
-            [horizontal ? 'width' : 'height']: Math.round(value)
-        };
+Zippy.displayName = 'Zippy';
 
-    },
+Zippy.propTypes = {
+    size: PropTypes.number.isRequired,
+    horizontal: PropTypes.bool,
+    expand: PropTypes.bool
+};
 
-    render() {
-
-        const props = this.props;
-
-        const {
-            expand,
-            size,
-            children,
-            ...others
-        } = props;
-
-        const className = cx(props).addStates({expand}).build();
-
-        return (
-            <Motion style={{value: spring(expand ? size : 0, [60, 15])}}>
-                {({value}) =>
-                    <div {...others} className={className} style={this.getStyle(value)}>
-                        {children}
-                    </div>
-                }
-            </Motion>
-        );
-
-    }
-
-});
-
-module.exports = Zippy;
+Zippy.defaultProps = {
+    horizontal: false,
+    expand: false
+};

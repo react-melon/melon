@@ -3,12 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const Title = require('../src/Title');
-const Zippy = require('../src/Zippy');
-const Button = require('../src/Button');
+import React from 'react';
+import Title from '../src/Title';
+import Zippy from '../src/Zippy';
+import Button from '../src/Button';
 
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -74,5 +74,3 @@ class View extends React.Component {
 
 
 }
-
-module.exports = View;

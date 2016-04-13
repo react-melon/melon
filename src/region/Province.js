@@ -3,65 +3,68 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes, Component} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Selector from './Selector';
+import * as helper from './helper';
 
-const cx = require('../common/util/cxBuilder').create('RegionProvince');
-const Selector = require('./Selector');
+const cx = create('RegionProvince');
 
-const helper = require('./helper');
+export default class RegionProvince extends Component {
 
-const PropTypes = React.PropTypes;
+    constructor(props) {
 
-const RegionProvince = React.createClass({
+        super(props);
 
-    displayName: 'RegionProvince',
-
-    getInitialState() {
-        return {
+        this.state = {
             expand: false
         };
-    },
+
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+
+    }
 
     onSelectorChange(e) {
-        var value = e.value;
 
-        var {
-            datasource
-        } = this.props;
+        const {value} = e;
+        const {datasource, onChange} = this.props;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource);
-
-        let onChange = this.props.onChange;
 
         onChange && onChange({
             data: datasource
         });
-    },
+
+    }
 
     onMouseEnter(e) {
         this.setState({expand: true});
-    },
+    }
 
     onMouseLeave(e) {
         this.setState({expand: false});
-    },
+    }
 
     renderSelectedInfo() {
-        var {
-            datasource
-        } = this.props;
 
-        var total = datasource.children && datasource.children.length;
+        const {datasource} = this.props;
+
+        const total = datasource.children && datasource.children.length;
+
         if (!total) {
             return;
         }
 
-        var num = datasource.children.reduce(function (result, child, index) {
-            if (child.selected) {
-                result++;
-            }
-            return result;
-        }, 0);
+        const num = datasource
+            .children
+            .reduce(function (result, child, index) {
+                if (child.selected) {
+                    result++;
+                }
+                return result;
+            }, 0);
 
         return (num === total || num === 0)
             ? null : (
@@ -69,11 +72,11 @@ const RegionProvince = React.createClass({
                     {'(' + num + '/' + total + ')'}
                 </span>
             );
-    },
+    }
 
     render() {
 
-        var {
+        const {
             datasource,
             children
         } = this.props;
@@ -99,13 +102,10 @@ const RegionProvince = React.createClass({
         );
     }
 
-});
-
+}
 
 RegionProvince.propTypes = {
     onChange: PropTypes.func,
     disabled: PropTypes.bool,
     datasource: PropTypes.object
 };
-
-module.exports = RegionProvince;

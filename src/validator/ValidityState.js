@@ -3,9 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-function ValidityState({isValid, message}) {
-    this.isValid = isValid;
-    this.message = message || '';
-}
+export default class ValidityState {
 
-module.exports = ValidityState;
+    constructor({isValid, message}) {
+
+        this.isValid = isValid;
+        this.message = message || '';
+    }
+
+
+}

@@ -11,8 +11,8 @@ import TestUtils from 'react-addons-test-utils';
 
 import DialogWindow from '../../src/dialog/DialogWindow';
 import Dialog from '../../src/Dialog';
-import Alert from '../../src/dialog/Alert';
-import Confirm from '../../src/dialog/Confirm';
+import Alert from '../../src/Alert';
+import Confirm from '../../src/Confirm';
 import Mask from '../../src/Mask';
 
 expect.extend(expectJSX);
@@ -34,7 +34,12 @@ describe('Dialog', function () {
     it('Mask', function () {
         renderer.render(<Mask />);
         let actualElement = renderer.getRenderOutput();
-        let expectedElement = (<div autoLockScrolling={true} className="ui-mask" />);
+        let expectedElement = (
+            <div
+                lockScrollingOnShow={true}
+                className="ui-mask"
+                show={false} />
+        );
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
@@ -85,7 +90,7 @@ describe('Dialog', function () {
 
                 componentDidMount() {
                     this.setState({show: true}, () => {
-                        var body = document.getElementsByTagName('body')[0];
+                        const body = document.getElementsByTagName('body')[0];
                         expect(body.style.overflow).toBe('hidden');
                         done();
                     });
@@ -94,8 +99,11 @@ describe('Dialog', function () {
                 render() {
 
                     return (
-                        <Mask show={this.state.show} autoLockScrolling={true} />
+                        <Mask
+                            show={this.state.show}
+                            lockScrollingOnShow={true} />
                     );
+
                 }
             });
 
@@ -115,22 +123,17 @@ describe('Dialog', function () {
                 },
 
                 componentDidMount() {
-                    expect(this.refs.dialog.state.open).toBe(false);
                     this.setState({open: true});
                 },
 
                 onShow() {
-                    expect(this.refs.dialog.state.open).toBe(true);
                     showSpy();
-
                     let mask = document.querySelector('.ui-mask');
                     TestUtils.Simulate.click(mask);
                 },
 
                 onHide() {
-                    expect(this.refs.dialog.state.open).toBe(false);
                     expect(showSpy).toHaveBeenCalled();
-
                     this.setState({open: false}, done);
                 },
 
@@ -145,7 +148,9 @@ describe('Dialog', function () {
                             Hello
                         </Dialog>
                     );
+
                 }
+
             });
 
             ReactDOM.render(<TestComponent />, container);
@@ -163,8 +168,6 @@ describe('Dialog', function () {
                 },
 
                 componentDidMount() {
-                    let alert = ReactDOM.findDOMNode(this.refs.alert);
-                    expect(alert.className).toInclude('state-open');
                     let button = document.querySelector('button');
                     TestUtils.Simulate.click(button);
 
@@ -175,16 +178,18 @@ describe('Dialog', function () {
                 onConfirm() {
 
                     this.setState({open: false}, () => {
-                        let alert = ReactDOM.findDOMNode(this.refs.alert);
-                        expect(alert.className).toExclude('state-open');
                         done();
                     });
+
                 },
 
                 render() {
 
                     return (
-                        <Alert ref="alert" title="hello" onConfirm={this.onConfirm} open={this.state.open}>
+                        <Alert
+                            title="hello"
+                            onConfirm={this.onConfirm}
+                            open={this.state.open}>
                             报警！
                         </Alert>
                     );
@@ -205,34 +210,33 @@ describe('Dialog', function () {
                 },
 
                 componentDidMount() {
-                    let alert = ReactDOM.findDOMNode(this.refs.alert);
-                    expect(alert.className).toInclude('state-open');
                     let button = document.querySelector('.variant-cancel');
                     TestUtils.Simulate.click(button);
                 },
 
                 onCancel() {
+
                     let button = document.querySelector('.variant-confirm');
+
                     TestUtils.Simulate.click(button);
 
                     this.setState({open: false}, () => {
-                        let alert = ReactDOM.findDOMNode(this.refs.alert);
-                        expect(alert.className).toExclude('state-open');
                         done();
                     });
+
                 },
 
                 render() {
 
                     return (
                         <Confirm
-                            ref="alert"
                             title="hello"
                             onCancel={this.onCancel}
                             open={this.state.open}>
                             <div style={{height: 2000, width: 100}}></div>
                         </Confirm>
                     );
+
                 }
             });
 
@@ -243,5 +247,3 @@ describe('Dialog', function () {
     });
 
 });
-
-

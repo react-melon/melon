@@ -3,7 +3,14 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-module.exports = {
+import {Component} from 'react';
+
+export default class Item extends Component {
+
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
 
     shouldComponentUpdate(nextProps) {
 
@@ -15,13 +22,13 @@ module.exports = {
         return nextProps.disabled !== disabled
             || nextProps.selected !== selected;
 
-    },
+    }
 
     onClick(e) {
 
         e.preventDefault();
 
-        var {
+        const {
             disabled,
             onClick,
             date,
@@ -46,4 +53,5 @@ module.exports = {
             onClick(e);
         }
     }
-};
+
+}

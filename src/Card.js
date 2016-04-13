@@ -3,10 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Card');
+import React from 'react';
+import {create} from './common/util/cxBuilder';
 
-function Card(props) {
+const cx = create('Card');
+
+/* eslint-disable fecs-prefer-class */
+export default function Card(props) {
 
     const {children} = props;
 
@@ -17,5 +20,4 @@ function Card(props) {
     );
 
 }
-
-module.exports = Card;
+/* eslint-enable fecs-prefer-class */

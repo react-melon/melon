@@ -3,40 +3,46 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
 
-const cx = require('./common/util/cxBuilder').create('Region');
-const Selector = require('./region/Selector');
-const Area = require('./region/Area');
+import Selector from './region/Selector';
+import Area from './region/Area';
+import * as helper from './region/helper';
+import InputComponent from './InputComponent';
+import {create} from './common/util/cxBuilder';
 
-const helper = require('./region/helper');
-const _ = require('underscore');
+const cx = create('Region');
 
-const Region = React.createClass({
+export default class Region extends InputComponent {
 
-    displayName: 'Region',
+    constructor(props, context) {
 
-    getInitialState() {
+        super(props, context);
 
-        return {
+        this.state = {
+            ...this.state,
             datasource: this.props.datasource
         };
-    },
+
+        this.onChange = this.onChange.bind(this);
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+
+    }
 
     onChange(rawValue) {
 
-        let onChange = this.props.onChange;
-
-        onChange({
+        super.onChange({
             type: 'change',
             target: this,
             value: this.stringifyValue(rawValue)
         });
-    },
+
+    }
 
     onAreaChange(index, cIndex, e) {
-        var data = e.data;
-        var datasource = this.state.datasource;
+
+        const data = e.data;
+        const datasource = this.state.datasource;
 
         helper.isAllSelected(data);
         datasource[cIndex].children[index] = data;
@@ -45,37 +51,56 @@ const Region = React.createClass({
         this.setState({datasource}, function () {
             this.onChange(datasource);
         });
-    },
+
+    }
 
     onSelectorChange(index, e) {
-        var {
-            value
-        } = e;
 
-        var datasource = this.state.datasource;
+        const {value} = e;
+        const {datasource} = this.state;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
 
         this.setState({datasource}, function () {
             this.onChange(datasource);
         });
-    },
+
+    }
 
     parseValue(value) {
         value = value.split(',');
-        return _.map(this.props.datasource, helper.parse.bind(this, value));
-    },
+        return this.props.datasource.map(helper.parse.bind(this, value));
+    }
 
     stringifyValue(datasource) {
-        return datasource ? _.reduce(datasource, this.format, [], this).join(',') : '';
-    },
+        return datasource
+            ? datasource.reduce(
+                (...args) => {
+                    return this.format(...args);
+                },
+                []
+            ).join(',')
+            : '';
+    }
 
     format(result, child, index) {
+
         if (child.selected) {
             result.push(child.id);
         }
-        return _.reduce(child.children, this.format, result, this);
-    },
+
+        return child.children
+            ? child.children.reduce(
+                (...args) => {
+                    return this.format(...args);
+                },
+                result
+            )
+            : result;
+
+
+
+    }
 
     renderCountry(country, index) {
         return (
@@ -86,60 +111,59 @@ const Region = React.createClass({
                         id={country.id}
                         index={index}
                         checked={country.selected}
-                        onChange={this.onSelectorChange.bind(this, index)} />
+                        onChange={e => {
+                            this.onSelectorChange(index, e);
+                        }} />
                 </h1>
                 {this.renderArea(country.children, index)}
             </div>
         );
-    },
+    }
 
     renderArea(area, cIndex) {
-        return _.isArray(area) && area.length > 0
+        return Array.isArray(area) && area.length > 0
             ? (
                 <ul>
-                    {area.map(function (a, index) {
+                    {area.map((a, index) => {
                         return (
                             <Area
                                 key={index}
                                 variants={index % 2 ? ['even'] : []}
                                 datasource={a}
-                                onChange={this.onAreaChange.bind(this, index, cIndex)} />
+                                onChange={e => {
+                                    this.onAreaChange(index, cIndex, e);
+                                }} />
                         );
-                    }, this)}
+                    })}
                 </ul>
             ) : null;
-    },
+    }
 
     render() {
 
-        var datasource = this.state.datasource;
+        const {datasource} = this.state;
 
         return (
             <div className={cx(this.props).build()}>
-                {datasource.map(this.renderCountry, this)}
+                {datasource.map((...args) => {
+                    return this.renderCountry(...args);
+                })}
             </div>
         );
+
     }
 
-});
+
+}
+
 
 Region.defaultProps = {
-    defaultValue: '',
-    datasource: [],
-    validateEvents: ['change']
+    ...InputComponent.defaultProps,
+    datasource: []
 };
-
-const PropTypes = React.PropTypes;
 
 Region.propTypes = {
-    onChange: PropTypes.func,
-    readOnly: PropTypes.bool,
-    disabled: PropTypes.bool,
+    ...InputComponent.propTypes,
     selected: PropTypes.bool,
-    name: PropTypes.string,
-    value: PropTypes.string,
-    defaultValue: PropTypes.string,
     datasource: PropTypes.arrayOf(PropTypes.object)
 };
-
-module.exports = require('./createInputComponent').create(Region);

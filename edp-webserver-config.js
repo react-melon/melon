@@ -5,14 +5,14 @@
 
 /* globals home, redirect, content, empty, autocss, file, less, stylus, header, proxyNoneExists */
 
+'use strict';
+
 exports.port = 8848;
 exports.directoryIndexes = true;
 exports.documentRoot = __dirname;
 
-require('babel/register');
-
-var babel = require('babel');
-var nib = require('nib');
+const babel = require('babel-core');
+const nib = require('nib');
 
 function amdify(context) {
     context.content =  ''
@@ -35,7 +35,8 @@ exports.getLocations = function () {
                 file(),
                 stylus({
                     'use': nib(),
-                    'resolve url': true
+                    'resolve url': true,
+                    'resolve url nocheck': true
                 })
             ]
         },
@@ -48,12 +49,19 @@ exports.getLocations = function () {
                 function (context) {
                     try {
                         context.content = babel
-                            .transform(
-                                context.content,
-                                {
-                                    optional: ['es7.classProperties']
+                            .transform(context.content, {
+                                compact: false,
+                                ast: false,
+                                presets: ['es2015', 'es2015-loose', 'react', 'stage-1'],
+                                plugins: [
+                                    'transform-es3-property-literals',
+                                    'transform-es3-member-expression-literals'
+                                ],
+                                moduleId: '',
+                                getModuleId: function (filename) {
+                                    return filename.replace('src/', '');
                                 }
-                            )
+                            })
                             .code;
                     }
                     catch (e) {

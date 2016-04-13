@@ -7,18 +7,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import expect from 'expect';
-
+import Form from '../../src/Form';
+import Select from '../../src/Select';
 import then from '../then';
-
-// import SeparatePopup from '../../src/select/SeparatePopup';
-// import createInputComponent from '../../src/createInputComponent';
 
 describe('Select', function () {
 
     let container;
-
-    const Form = require('../../src/Form');
-    const Select = require('../../src/Select');
 
     const datasource = [
         {value: '1', name: 'Never'},
@@ -47,10 +42,12 @@ describe('Select', function () {
         const TestComponent = React.createClass({
 
             componentDidMount() {
-                select = this.refs.form.fields[0].child;
+
+                select = this.refs.form.fields[0];
+
                 element = document.querySelector('.ui-select');
 
-                expect(select.props.value).toBe('1');
+                expect(select.getValue()).toBe('1');
                 expect(select.isOpen()).toBe(false);
 
                 TestUtils.Simulate.click(element);
@@ -66,13 +63,13 @@ describe('Select', function () {
                 })
                 .then(() => {
                     expect(select.isOpen()).toBe(false);
-                    expect(select.props.value).toBe('3');
+                    expect(select.getValue()).toBe('3');
 
                     const option = document.querySelectorAll('.ui-select-option')[4];
                     TestUtils.Simulate.click(option);
                 })
                 .then(() => {
-                    expect(select.props.value).toBe('3');
+                    expect(select.getValue()).toBe('3');
                     done();
                 });
             },
@@ -89,6 +86,7 @@ describe('Select', function () {
                         </Select>
                     </Form>
                 );
+
             }
         });
 

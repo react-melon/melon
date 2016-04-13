@@ -3,21 +3,27 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+/* eslint-disable no-console */
 
-var Title = require('../src/Title');
-var Button = require('../src/Button');
-var Form = require('../src/Form');
-var TextBox = require('../src/TextBox');
-var Select = require('../src/Select');
-var BoxGroup = require('../src/BoxGroup');
-var Toggle = require('../src/Toggle');
-var Calendar = require('../src/Calendar');
-var Uploader = require('../src/Uploader');
-var View = React.createClass({
+import React, {Component} from 'react';
 
-    getInitialState() {
-        return {
+import Title from '../src/Title';
+import Button from '../src/Button';
+import Form from '../src/Form';
+import TextBox from '../src/TextBox';
+import Select from '../src/Select';
+import BoxGroup from '../src/BoxGroup';
+import Toggle from '../src/Toggle';
+import Calendar from '../src/Calendar';
+import Uploader from '../src/Uploader';
+
+export default class View extends Component {
+
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
             name: 'ludafa',
             email: 'ludafa@outlook.com',
             sex: '',
@@ -25,7 +31,9 @@ var View = React.createClass({
             fruits: [],
             date: '2015-08-11'
         };
-    },
+
+
+    }
 
     render() {
         return (
@@ -120,8 +128,8 @@ var View = React.createClass({
                                 boxModel="checkbox"
                                 name="fruit"
                                 value={this.state.fruits}
-                                onInvalid={(e) => {console.log(e)}}
-                                onValid={(e) => {console.log(e)}}
+                                onInvalid={e => console.log(e)}
+                                onValid={e => console.log(e)}
                                 rules={{
                                     required: true
                                 }}>
@@ -138,8 +146,8 @@ var View = React.createClass({
                                 name="fruit"
                                 variants={['horizontal']}
                                 value={this.state.fruits}
-                                onInvalid={(e) => {console.log(e)}}
-                                onValid={(e) => {console.log(e)}}
+                                onInvalid={e => console.log(e)}
+                                onValid={e => console.log(e)}
                                 rules={{
                                     required: true
                                 }}>
@@ -186,15 +194,15 @@ var View = React.createClass({
                 </Form>
             </div>
         );
-    },
+    }
 
-    onMusicChange: function (e) {
+    onMusicChange(e) {
         this.setState({isMusicOn: !!e.value});
-    },
+    }
 
     onFieldChange(name, value) {
         this.setState({[name]: value});
-    },
+    }
 
     upload(files) {
 
@@ -202,20 +210,20 @@ var View = React.createClass({
 
             setTimeout(
                 function () {
-                    resolve('https://www.baidu.com/img/bd_logo1.png')
+                    resolve('https://www.baidu.com/img/bd_logo1.png');
                 },
                 1000
             );
 
         });
-    },
+    }
 
     validate(name, value, form) {
         return {
             isValid: false,
             message: 'haha'
         };
-    },
+    }
 
     save(e) {
         const {data} = e;
@@ -223,6 +231,4 @@ var View = React.createClass({
         console.log(data);
     }
 
-});
-
-module.exports = View;
+}

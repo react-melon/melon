@@ -1,59 +1,49 @@
 /**
- * @file esui-react/Mask
+ * @file melon/Mask
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Mask');
-const PropTypes = React.PropTypes;
+import React, {PropTypes, Component} from 'react';
+import {create} from './common/util/cxBuilder';
 
-const Mask = React.createClass({
+const cx = create('Mask');
 
-    getInitialState() {
-        this.originalBodyOverflow = '';
-        return {};
-    },
-
-    propTypes: {
-        autoLockScrolling: PropTypes.bool,
-        show: PropTypes.bool
-    },
-
-    getDefaultProps() {
-        return {
-            autoLockScrolling: true
-        };
-    },
+export default class Mask extends Component {
 
     componentDidMount() {
+
         this.originalBodyOverflow = document.getElementsByTagName('body')[0].style.oveflow;
-    },
 
-    componentDidUpdate() {
+        const {show, lockScrollingOnShow} = this.props;
 
-        const {autoLockScrolling, show} = this.props;
-
-        if (!autoLockScrolling) {
-            return;
+        if (show && lockScrollingOnShow) {
+            this.lockScroll();
         }
 
-        show ? this.preventScrolling() : this.allowScrolling();
+    }
 
-    },
+    shouldComponentUpdate({show}) {
+        return this.props.show !== show;
+    }
+
+    componentDidUpdate() {
+        const {show, lockScrollingOnShow} = this.props;
+        show && lockScrollingOnShow ? this.lockScroll() : this.unlockScroll();
+    }
 
     componentWillUnmount() {
-        this.allowScrolling();
-    },
+        this.unlockScroll();
+    }
 
-    preventScrolling() {
-        var body = document.getElementsByTagName('body')[0];
+    lockScroll() {
+        const body = document.getElementsByTagName('body')[0];
         body.style.overflow = 'hidden';
-    },
+    }
 
-    allowScrolling() {
-        var body = document.getElementsByTagName('body')[0];
+    unlockScroll() {
+        const body = document.getElementsByTagName('body')[0];
         body.style.overflow = this.originalBodyOverflow || '';
-    },
+    }
 
     render() {
 
@@ -66,6 +56,15 @@ const Mask = React.createClass({
 
     }
 
-});
+}
 
-module.exports = Mask;
+Mask.defaultProps = {
+    lockScrollingOnShow: true,
+    show: false
+};
+
+
+Mask.propTypes = {
+    lockScrollingOnShow: PropTypes.bool,
+    show: PropTypes.bool
+};

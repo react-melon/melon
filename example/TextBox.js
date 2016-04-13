@@ -3,12 +3,11 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
+import Title from '../src/Title';
+import TextBox from '../src/TextBox';
 
-var Title = require('../src/Title');
-var TextBox = require('../src/TextBox');
-
-class View extends React.Component {
+export default class View extends React.Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +20,6 @@ class View extends React.Component {
     render() {
         return (
             <div >
-                <Title level={4}>文本输入</Title>
 
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
@@ -33,6 +31,10 @@ class View extends React.Component {
                         <TextBox defaultValue="default value" placeholder='请输入' />
                     </div>
                 </div>
+
+                <Title level={4}>文本输入</Title>
+
+
 
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
@@ -98,12 +100,12 @@ class View extends React.Component {
                             pattern="\d+"
                             patternErrorMessage="出价需要是整数呢"
                             floatingLabel="出价" />
-                            <span className="ui-textbox-suffix">万元
+                            <span className="ui-text-box-suffix">万元
                         </span>
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={5}>后缀</Title>
-                        <span className="ui-textbox-prefix">{'http://'}</span><TextBox floatingLabel="网址" prefix="http://" />
+                        <span className="ui-text-box-prefix">{'http://'}</span><TextBox floatingLabel="网址" prefix="http://" />
                     </div>
                 </div>
 
@@ -135,5 +137,3 @@ class View extends React.Component {
     }
 
 }
-
-module.exports = View;

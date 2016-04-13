@@ -1,54 +1,41 @@
 /**
- * @file esui-react/CenterRipple
+ * @file melon/CenterRipple
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('CenterRipple');
-const RippleCircle = require('./RippleCircle');
-const {PropTypes} = React;
 
-const {
-    spring,
-    TransitionMotion
-} = require('react-motion');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import RippleCircle from './RippleCircle';
+import {spring, TransitionMotion} from 'react-motion';
 
-const CenterRipple = React.createClass({
+const cx = create('CenterRipple');
 
-    displayName: 'CenterRipple',
+export default class CenterRipple extends Component {
 
-    getInitialState() {
+    constructor(props) {
 
-        return {
+        super(props);
+
+        this.state = {
             now: 't' + 0
         };
 
-    },
+        this.willLeave = this.willLeave.bind(this);
 
-    getDefaultProps() {
-        return {
-            opacity: 0.5,
-            scale: 2
-        };
-    },
-
-    propTypes: {
-        opacity: PropTypes.number.isRequired,
-        scale: PropTypes.number.isRequired,
-        flag: PropTypes.bool
-    },
+    }
 
     animate() {
         this.setState({
             now: 't' + Date.now()
         });
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.flag === !this.props.flag) {
             this.animate();
         }
-    },
+    }
 
     willLeave(key, valOfKey) {
         return {
@@ -56,15 +43,16 @@ const CenterRipple = React.createClass({
             opacity: spring(0, [60, 15]),
             scale: spring(this.props.scale, [60, 15])
         };
-    },
+    }
 
     render() {
 
+        const {opacity, children} = this.props;
         const {now} = this.state;
 
         const styles = {
             [now]: {
-                opacity: spring(this.props.opacity),
+                opacity: spring(opacity),
                 scale: spring(0)
             }
         };
@@ -92,7 +80,7 @@ const CenterRipple = React.createClass({
                                     scale={scale} />
                             );
                         })}
-                        {this.props.children}
+                        {children}
                     </div>
                 }
             </TransitionMotion>
@@ -100,6 +88,17 @@ const CenterRipple = React.createClass({
 
     }
 
-});
+}
 
-module.exports = CenterRipple;
+CenterRipple.defaultProps = {
+    opacity: 0.5,
+    scale: 2
+};
+
+CenterRipple.propTypes = {
+    opacity: PropTypes.number.isRequired,
+    scale: PropTypes.number.isRequired,
+    flag: PropTypes.bool
+};
+
+CenterRipple.displayName = 'CenterRipple';

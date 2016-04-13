@@ -1,28 +1,31 @@
 /**
- * @file esui-react/TouchRipple
+ * @file melon/TouchRipple
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const cx = require('../common/util/cxBuilder').create('TouchRipple');
-const RippleCircle = require('./RippleCircle');
-const _ = require('underscore');
-const dom = require('../common/util/dom');
+import React, {PropTypes, Component} from 'react';
+import ReactDOM from 'react-dom';
+import RippleCircle from './RippleCircle';
+import dom from '../common/util/dom';
+import {create} from '../common/util/cxBuilder';
+import {spring, TransitionMotion} from 'react-motion';
 
-const {
-    spring,
-    TransitionMotion
-} = require('react-motion');
+const cx = create('TouchRipple');
 
-const TouchRipple = React.createClass({
+export default class TouchRipple extends Component {
 
-    getInitialState() {
-        return  {
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
             now: 't' + 0,
             center: [0, 0]
         };
-    },
+
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.willLeave = this.willLeave.bind(this);
+    }
 
     onMouseDown({pageX, pageY}) {
 
@@ -33,28 +36,28 @@ const TouchRipple = React.createClass({
 
         this.setState({
             center: [pageX - left - this.radius, pageY - top - this.radius],
-            now: 't' + _.now()
+            now: 't' + new Date().getTime()
         });
 
-    },
+    }
 
     componentDidMount() {
         this.updatePosition();
-    },
+    }
 
     componentDidUpdate() {
         this.updatePosition();
-    },
+    }
 
     componentWillUnmount() {
         this.position = this.radius = null;
-    },
+    }
 
     updatePosition() {
         let main = ReactDOM.findDOMNode(this);
         this.position = dom.getPosition(main);
         this.radius = Math.max(this.position.width, this.position.height) / 2;
-    },
+    }
 
     willLeave(key, valOfKey) {
         return {
@@ -62,7 +65,7 @@ const TouchRipple = React.createClass({
             opacity: spring(0, [60, 15]),
             scale: spring(2, [60, 15])
         };
-    },
+    }
 
     render() {
 
@@ -84,11 +87,11 @@ const TouchRipple = React.createClass({
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
-                {(circles) =>
+                {circles =>
                     <div
                         onMouseDown={this.onMouseDown}
                         className={cx(this.props).build()}>
-                        {Object.keys(circles).map((key) => {
+                        {Object.keys(circles).map(key => {
                             let {opacity, scale} = circles[key];
                             opacity = Math.round(opacity * 100) / 100;
                             scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
@@ -113,9 +116,7 @@ const TouchRipple = React.createClass({
 
     }
 
-});
-
-const {PropTypes} = React;
+}
 
 TouchRipple.defaultProps = {
     opacity: 0.3
@@ -124,5 +125,3 @@ TouchRipple.defaultProps = {
 TouchRipple.propTypes = {
     opacity: PropTypes.number
 };
-
-module.exports = TouchRipple;

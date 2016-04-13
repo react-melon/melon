@@ -1,17 +1,2 @@
-define('melon/common/util/joinByStrick', [
-    'require',
-    'exports',
-    'module'
-], function (require, exports, module) {
-    function joinByStrike() {
-        var result = [];
-        for (var i = 0, len = arguments.length; i < len; ++i) {
-            var arg = arguments[i];
-            if (arg) {
-                result.push(arg);
-            }
-        }
-        return result.join('-');
-    }
-    module.exports = joinByStrike;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["module","../../babelHelpers"],t);else if("undefined"!=typeof exports)t(module,require("../../babelHelpers"));else{var r={exports:{}};t(r,e.babelHelpers),e.joinByStrick=r.exports}}(this,function(module,e){"use strict";function t(){for(var e=[],t=0,r=arguments.length;r>t;++t){var n=arguments[t];if(n)e.push(n)}return e.join("-")}module.exports=t});

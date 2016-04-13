@@ -28,7 +28,6 @@
   ],
   "dependencies": {
     "react": "0.14.0",
-    "react-motion": "~0.3.1",
-    "underscore": "~1.8.3"
+    "react-motion": "~0.3.1"
   }
 }

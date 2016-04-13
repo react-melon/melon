@@ -3,26 +3,38 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const cx = require('./common/util/cxBuilder').create('Select');
-const Icon = require('./Icon');
-const SeparatePopup = require('./select/SeparatePopup');
-const Validity = require('./Validity');
+import React, {PropTypes, Children} from 'react';
+import ReactDOM from 'react-dom';
+import Icon from './Icon';
+import SeparatePopup from './select/SeparatePopup';
+import Validity from './Validity';
+import InputComponent from './InputComponent';
+import Group from './select/OptionGroup';
+import Option from './select/Option';
+import {create} from './common/util/cxBuilder';
 
-let Select = React.createClass({
+const cx = create('Select');
 
-    displayName: 'Select',
+export default class Select extends InputComponent {
 
-    getInitialState() {
+    constructor(props, context) {
 
-        return {
-            open: this.props.open
+        super(props, context);
+
+        this.state = {
+            ...this.state,
+            open: false
         };
 
-    },
+        this.onClick = this.onClick.bind(this);
+        this.onClickOption = this.onClickOption.bind(this);
+        this.onPopupHide = this.onPopupHide.bind(this);
+
+    }
 
     componentDidMount() {
+
+        super.componentDidMount();
 
         let container = this.container = document.createElement('div');
 
@@ -35,15 +47,40 @@ let Select = React.createClass({
                 target={ReactDOM.findDOMNode(this)}
                 open={false}
                 onHide={this.onPopupHide}>
-                {React.Children.map(
+                {Children.map(
                     this.props.children,
-                    this.renderItem
+                    this.renderItem,
+                    this
                 )}
             </SeparatePopup>,
             container
         );
 
-    },
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        const {children} = nextProps;
+
+        if (children !== this.props.children) {
+            this.popup = ReactDOM.render(
+                <SeparatePopup
+                    target={ReactDOM.findDOMNode(this)}
+                    open={this.state.open}
+                    onHide={this.onPopupHide}>
+                    {Children.map(
+                        children,
+                        this.renderItem,
+                        this
+                    )}
+                </SeparatePopup>,
+                this.container
+            );
+        }
+
+        super.componentWillReceiveProps(nextProps);
+
+    }
 
     componentWillUnmount() {
 
@@ -55,7 +92,7 @@ let Select = React.createClass({
             this.container = container = null;
         }
 
-    },
+    }
 
     showOptions() {
 
@@ -67,7 +104,7 @@ let Select = React.createClass({
                     target={ReactDOM.findDOMNode(this)}
                     open={true}
                     onHide={this.onPopupHide}>
-                    {React.Children.map(
+                    {Children.map(
                         this.props.children,
                         this.renderItem,
                         this
@@ -77,7 +114,7 @@ let Select = React.createClass({
             );
         });
 
-    },
+    }
 
     hideOptions() {
 
@@ -89,7 +126,7 @@ let Select = React.createClass({
                     target={ReactDOM.findDOMNode(this)}
                     open={false}
                     onHide={this.onPopupHide}>
-                    {React.Children.map(
+                    {Children.map(
                         this.props.children,
                         this.renderItem,
                         this
@@ -99,7 +136,7 @@ let Select = React.createClass({
             );
         });
 
-    },
+    }
 
     onClick() {
 
@@ -110,109 +147,51 @@ let Select = React.createClass({
             this.showOptions();
         }
 
-    },
+    }
 
-    onClickOption(e) {
-
-        let {target} = e;
+    onClickOption({value}) {
 
         this.hideOptions();
 
-        // 如果选项是禁用状态的，收起
-        var disabled = target.getAttribute('data-disabled');
-
-        if (disabled) {
-            return;
-        }
-
-        this.props.onChange({
+        super.onChange({
             type: 'change',
             target: this,
-            value: target.getAttribute('data-value')
+            value
         });
 
-    },
+    }
 
     onPopupHide(e) {
         this.hideOptions();
-    },
+    }
 
-    renderItem(child) {
+    renderItem(child, index) {
 
         if (!child) {
             return null;
         }
 
         if (child.type === 'option') {
-            return this.renderOption(child, false);
+            return (
+                <Option
+                    {...child.props}
+                    onClick={this.onClickOption}
+                    key={index} />
+            );
         }
 
         if (child.type === 'optgroup') {
-            return this.renderOptGroup(child);
+            return (
+                <Group
+                    {...child.props}
+                    onClick={this.onClickOption}
+                    key={index} />
+            );
         }
 
         return null;
 
-    },
-
-    renderOptGroup(group) {
-
-        const {
-            disabled,
-            children,
-            label
-        } = group.props;
-
-        var className = cx().part('group').addStates({disabled}).build();
-
-        return (
-            <div className={className}>
-                <h4 className={cx().part('group-title').build()}>{label}</h4>
-                <div className={cx().part('group-list').build()}>
-                    {React.Children.map(
-                        children,
-                        (child, index) => {
-                            return this.renderOption(child, disabled);
-                        }
-                    )}
-                </div>
-            </div>
-        );
-
-    },
-
-    renderOption(option, isGroupDisabled) {
-
-        const {
-            children,
-            label,
-            disabled,
-            value
-        } = option.props;
-
-        const optionDisabled = isGroupDisabled || disabled;
-
-        const className = cx()
-            .part('option')
-            .addStates({
-                selected: this.props.value === value,
-                disabled: optionDisabled
-            })
-            .build();
-
-        return (
-            <div className={className}
-                key={value}
-                data-value={value}
-                data-role="option"
-                data-disabled={optionDisabled}
-                title={label || children}
-                onClick={this.onClickOption}>
-                {label || children}
-            </div>
-        );
-
-    },
+    }
 
     renderHiddenInput() {
 
@@ -226,7 +205,8 @@ let Select = React.createClass({
                     value={value} />
             )
             : null;
-    },
+
+    }
 
     /**
      * 渲染label部件
@@ -236,7 +216,8 @@ let Select = React.createClass({
      */
     renderLabel() {
 
-        const {value, children, placeholder} = this.props;
+        const {value} = this.state;
+        const {children, placeholder} = this.props;
 
         const option = this.findOption(value, children);
 
@@ -254,20 +235,20 @@ let Select = React.createClass({
             </label>
         );
 
-    },
+    }
 
     findOption(value, children) {
 
-        children = React.Children.toArray(children);
+        children = Children.toArray(children);
 
         if (!children) {
             return null;
         }
 
-        for (var i = 0, len = children.length; i < len; ++i) {
-            var child = children[i];
+        for (let i = 0, len = children.length; i < len; ++i) {
+            const child = children[i];
             if (child.type === 'optgroup') {
-                var option = this.findOption(value, child.props.children);
+                const option = this.findOption(value, child.props.children);
                 if (option) {
                     return option;
                 }
@@ -279,58 +260,50 @@ let Select = React.createClass({
         }
 
         return null;
-    },
+    }
 
     renderIcon() {
         return <Icon icon='expand-more' />;
-    },
+    }
 
     isOpen() {
         return this.state.open;
-    },
+    }
 
     render() {
-
-        const {validity} = this.props;
 
         return (
             <div
                 onClick={this.onClick}
-                className={cx(this.props).build()}>
+                className={cx(this.props).addStates(this.getStyleStates()).build()}>
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
-                <Validity validity={validity} />
+                <Validity validity={this.state.validity} />
             </div>
         );
 
     }
 
-});
+}
+
+Select.displayName = 'Select';
 
 Select.defaultProps = {
+    ...InputComponent.defaultProps,
     validateEvents: ['change'],
     placeholder: '请选择',
-    open: false
+    open: false,
+    defaultValue: ''
 };
 
-const {PropTypes} = React;
-
 Select.propTypes = {
-    onChange: PropTypes.func,
-    readOnly: PropTypes.bool,
-    disabled: PropTypes.bool,
-    name: PropTypes.string,
-    rawValue: PropTypes.string,
-    value: PropTypes.string,
-    defaultValue: PropTypes.string,
+    ...InputComponent.propTypes,
     placeholder: PropTypes.string,
     children: PropTypes.node.isRequired
 };
 
-Select = require('./createInputComponent').create(Select);
-
-Select.createOptions = function (dataSource) {
+export function createOptions(dataSource) {
 
     return dataSource.map(function (option, index) {
 
@@ -344,6 +317,6 @@ Select.createOptions = function (dataSource) {
 
     });
 
-};
+}
 
-module.exports = Select;
+Select.createOptions = createOptions;

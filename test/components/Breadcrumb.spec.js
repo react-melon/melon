@@ -48,5 +48,31 @@ describe('Breadcrumb', function () {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
+    it('createCrumbs', function () {
+
+        const renderer = createRenderer();
+        const crumbs = [{
+            href: '#1',
+            text: 'crumb1'
+        }, {
+            href: '#2',
+            text: 'crumb2'
+        }];
+        renderer.render(
+            <Breadcrumb>
+                {Breadcrumb.createCrumbs(crumbs)}
+            </Breadcrumb>
+        );
+        let actualElement = renderer.getRenderOutput();
+        let expectedElement = (
+            <div className={'ui-breadcrumb'}>
+                <Item href="#1" level={0}>crumb1</Item>
+                <Item href="#2" level={1}>crumb2</Item>
+            </div>
+        );
+        expect(actualElement).toEqualJSX(expectedElement);
+
+    });
+
 
 });

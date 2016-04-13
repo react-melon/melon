@@ -3,38 +3,40 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes, Component} from 'react';
 
-const cx = require('../common/util/cxBuilder').create('RegionCity');
-const Selector = require('./Selector');
+import {create} from '../common/util/cxBuilder';
+import Selector from './Selector';
 
-const PropTypes = React.PropTypes;
+const cx = create('RegionCity');
 
-const RegionCity = React.createClass({
+export default class RegionCity extends Component {
 
-    displayName: 'RegionCity',
+    constructor(props) {
+
+        super(props);
+
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+
+    }
 
     onSelectorChange(e) {
-        var value = e.value;
 
-        var {
-            datasource
-        } = this.props;
+        const {value} = e;
 
-        let onChange = this.props.onChange;
+        const {datasource, onChange} = this.props;
 
         datasource.selected = value;
 
         onChange && onChange({
             data: datasource
         });
-    },
+
+    }
 
     render() {
 
-        var {
-            datasource
-        } = this.props;
+        const {datasource} = this.props;
 
         return (
             <li className={cx(this.props).build()}>
@@ -45,15 +47,15 @@ const RegionCity = React.createClass({
                     onChange={this.onSelectorChange} />
             </li>
         );
+
     }
 
-});
+}
 
+RegionCity.displayName = 'RegionCity';
 
 RegionCity.propTypes = {
     onChange: PropTypes.func,
     disabled: PropTypes.bool,
     datasource: PropTypes.object
 };
-
-module.exports = RegionCity;

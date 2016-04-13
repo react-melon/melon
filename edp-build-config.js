@@ -10,9 +10,9 @@
     AmdWrapper
 */
 
-exports.input = __dirname;
+'use strict';
 
-require('babel/register');
+exports.input = __dirname;
 
 var path = require('path');
 exports.output = path.resolve(__dirname, 'output');
@@ -21,29 +21,15 @@ exports.output = path.resolve(__dirname, 'output');
 // var pageEntries = 'html,htm,phtml,tpl,vm';
 
 exports.getProcessors = function () {
-    var lessProcessor = new LessCompiler();
-    var cssProcessor = new CssCompressor();
-    var moduleProcessor = new ModuleCompiler({
-        bizId: 'melon'
-    });
     var jsProcessor = new JsCompressor();
     var pathMapperProcessor = new PathMapper();
     var addCopyright = new AddCopyright();
 
-    var amdWrapper = new AmdWrapper({
-        files: ['src/**/*.js']
-    });
-
     var babel = new BabelProcessor({
         files: ['src/**/*.js'],
         compileOptions: {
-            stage: 0,
-            modules: 'commonStrict',
             compact: false,
             ast: false,
-            blacklist: ['strict'],
-            externalHelpers: true,
-            loose: 'all',
             moduleId: '',
             getModuleId: function (filename) {
                 return filename.replace('src/', '');
@@ -52,15 +38,11 @@ exports.getProcessors = function () {
     });
 
     return {
-        amd: [
+        'default': [
             babel,
-            amdWrapper,
-            moduleProcessor,
-            pathMapperProcessor
-        ],
-        release: [
-            lessProcessor, cssProcessor, moduleProcessor,
-            jsProcessor, pathMapperProcessor, addCopyright
+            pathMapperProcessor,
+            jsProcessor,
+            addCopyright
         ]
     };
 };

@@ -3,12 +3,13 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const DateTime = require('../common/util/date');
-const cx = require('../common/util/cxBuilder').create('CalendarHeader');
-const PropTypes = React.PropTypes;
+import React, {PropTypes} from 'react';
+import * as DateTime from '../common/util/date';
+import {create} from '../common/util/cxBuilder';
 
-function CalendarHeader(props) {
+const cx = create('CalendarHeader');
+
+export default function CalendarHeader(props) {
 
     const {
         date,
@@ -40,5 +41,3 @@ CalendarHeader.displayName = 'CalendarHeader';
 CalendarHeader.propTypes = {
     date: PropTypes.object.isRequired
 };
-
-module.exports = CalendarHeader;

@@ -3,16 +3,16 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Tooltip = require('../src/Tooltip');
-var Button = require('../src/Button');
-var Icon = require('../src/Icon');
+import Title from '../src/Title';
+import Tooltip from '../src/Tooltip';
+import Button from '../src/Button';
+import Icon from '../src/Icon';
 
-var View = React.createClass({
+export default class View extends React.Component {
 
-    render: function() {
+    render() {
 
         return (
             <div>
@@ -55,6 +55,4 @@ var View = React.createClass({
         );
     }
 
-});
-
-module.exports = View;
+}

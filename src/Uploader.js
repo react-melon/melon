@@ -3,30 +3,32 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const Button = require('./Button');
-const Icon = require('./Icon');
-const Progress = require('./Progress');
-const Link = require('./Link');
-const cx = require('./common/util/cxBuilder').create('Uploader');
-const Validity = require('./Validity');
+import React, {PropTypes} from 'react';
+import Button from './Button';
+import Icon from './Icon';
+import Progress from './Progress';
+import Link from './Link';
+import Validity from './Validity';
+import InputComponent from './InputComponent';
 
-const Uploader = React.createClass({
+import {create} from './common/util/cxBuilder';
 
-    displayName: 'Uploader',
+const cx = create('Uploader');
 
-    getInitialState() {
+export default class Uploader extends InputComponent {
 
-        return {
+    constructor(props, context) {
+
+        super(props, context);
+
+        this.state = {
+            ...this.state,
             isUploading: false,
             isUploaded: !!this.props.value
         };
 
-    },
+    }
 
-    onSelect() {
-        this.refs.file.click();
-    },
 
     onFileChange(e) {
 
@@ -39,24 +41,17 @@ const Uploader = React.createClass({
                 files: e.target.files
             })
             .then(
-                (result) => {
-                    this.setFile(result);
-                },
-                (error) => {
-                    this.clearFile();
-                }
+                result => this.setFile(result),
+                error => this.clearFile()
             );
-    },
 
-    onClearClick() {
-        this.clearFile();
-    },
+    }
 
     setUploading() {
         this.setState({
             isUploading: true
         });
-    },
+    }
 
     setFile(value) {
 
@@ -65,14 +60,14 @@ const Uploader = React.createClass({
             isUploaded: true,
             isUploading: false
         }, () => {
-            this.props.onChange({
+            super.onChange({
                 type: 'change',
                 target: this,
                 value: value
             });
         });
 
-    },
+    }
 
     clearFile() {
 
@@ -81,18 +76,20 @@ const Uploader = React.createClass({
             isUploaded: false,
             isUploading: false
         }, () => {
-            this.props.onChange({
+
+            super.onChange({
                 type: 'change',
                 target: this,
                 value: ''
             });
+
         });
 
-    },
+    }
 
     renderUploadFile() {
 
-        var {isUploading, isUploaded} = this.state;
+        const {isUploading, isUploaded} = this.state;
 
         return isUploading || isUploaded
             ? null
@@ -101,11 +98,13 @@ const Uploader = React.createClass({
                     ref="file"
                     type="file"
                     className={cx().part('file').build()}
-                    onChange={this.onFileChange}
+                    onChange={e => {
+                        this.onFileChange(e);
+                    }}
                     accept={this.props.accept} />
             );
 
-    },
+    }
 
     renderUploadButton() {
 
@@ -123,7 +122,6 @@ const Uploader = React.createClass({
 
         if (isUploaded) {
 
-
             return (
                 <div className={cx().part('uploaded').build()}>
                     <Icon icon="done" size={size} /> 已上传
@@ -137,7 +135,9 @@ const Uploader = React.createClass({
                     <Button
                         size={size}
                         type="button"
-                        onClick={this.onClearClick} >
+                        onClick={() => {
+                            this.clearFile();
+                        }} >
                         重选
                     </Button>
                 </div>
@@ -148,32 +148,35 @@ const Uploader = React.createClass({
             <Button
                 type="button"
                 variants={['raised']}
-                onClick={this.onSelect}>
+                onClick={() => {
+                    this.refs.file.click();
+                }}>
                 <Icon icon="file-upload" />
                 点击上传
             </Button>
         );
-    },
+
+    }
 
     render() {
 
         const props = this.props;
-        const {value, validity} = props;
+        const {value, name} = props;
 
         return (
-            <div className={cx(props).build()}>
-                <input name={props.name} type="hidden" value={value} />
+            <div className={cx(props).addStates(this.getStyleStates()).build()}>
+                <input name={name} type="hidden" value={value} />
                 {this.renderUploadFile()}
                 {this.renderUploadButton()}
-                <Validity validity={validity} />
+                <Validity validity={this.state.validity} />
             </div>
         );
 
     }
 
-});
+}
 
-var PropTypes = React.PropTypes;
+Uploader.displayName = 'Uploader';
 
 Uploader.propTypes = {
     multiple: PropTypes.bool,
@@ -183,7 +186,6 @@ Uploader.propTypes = {
 };
 
 Uploader.defaultProps = {
+    ...InputComponent.defaultProps,
     validateEvents: ['change']
 };
-
-module.exports = require('./createInputComponent').create(Uploader);

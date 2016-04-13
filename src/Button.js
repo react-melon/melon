@@ -1,13 +1,16 @@
 /**
- * @file esui-react/Button
+ * @file melon/Button
  * @author leon<lupengyu@baidu.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Button');
-const TouchRipple = require('./ripples/TouchRipple');
+import React from 'react';
+import {create} from './common/util/cxBuilder';
+import TouchRipple from './ripples/TouchRipple';
 
-function Button(props) {
+const cx = create('Button');
+
+/* eslint-disable fecs-prefer-class */
+export default function Button(props) {
 
     const {
         hasRipple,
@@ -37,6 +40,7 @@ function Button(props) {
     );
 
 }
+/* eslint-enable fecs-prefer-class */
 
 Button.defaultProps = {
     hasRipple: true,
@@ -47,5 +51,3 @@ Button.propTypes = {
     hasRipple: React.PropTypes.bool,
     disabled: React.PropTypes.bool
 };
-
-module.exports = Button;

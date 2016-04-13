@@ -3,13 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Button = require('melon/Button');
-const Icon = require('melon/Icon');
-const Breadcrumb = require('melon/Breadcrumb');
-const Title = require('melon/Title');
-const Link = require('melon/Link');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Button from 'melon/Button';
+import Icon from 'melon/Icon';
+import Breadcrumb from 'melon/Breadcrumb';
+import Title from 'melon/Title';
+import Link from 'melon/Link';
 
 ReactDOM.render(
     <div>

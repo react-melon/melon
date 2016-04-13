@@ -3,19 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
+import {PropTypes} from 'react';
 
-const TableColumn = React.createClass({
+export default function TableColumn(props) {
+    return null;
+}
 
-    displayName: 'TableColumn',
-
-    render() {
-        return null;
-    }
-
-});
-
-const {PropTypes} = React;
+TableColumn.displayName = 'TableColumn';
 
 TableColumn.propTypes = {
 
@@ -64,5 +58,3 @@ TableColumn.defaultProps = {
 };
 
 TableColumn._TABLE_COMPONENT_ = 'COLUMN';
-
-module.exports = TableColumn;

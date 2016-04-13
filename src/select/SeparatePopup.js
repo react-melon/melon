@@ -3,16 +3,19 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('SeparatePopup');
-const {Motion, spring} = require('react-motion');
-const domUtil = require('../common/util/dom');
+import React, {Component, PropTypes} from 'react';
+import {Motion, spring} from 'react-motion';
+import domUtil from '../common/util/dom';
 
-const SelectSeparatePopup = React.createClass({
+import {create} from '../common/util/cxBuilder';
 
-    displayName: 'SelectSeparatePopup',
+const cx = create('SeparatePopup');
 
-    getInitialState() {
+export default class SelectSeparatePopup extends Component {
+
+    constructor(props) {
+
+        super(props);
 
         // 做一个可以随时释放的 debounce 啦
         this.onWindowResize = (() => {
@@ -28,7 +31,7 @@ const SelectSeparatePopup = React.createClass({
 
         this.id = Date.now();
 
-        return {
+        this.state = {
             styles: {
                 top: 0,
                 left: -5000,
@@ -38,11 +41,14 @@ const SelectSeparatePopup = React.createClass({
             }
         };
 
-    },
+        this.onClick = this.onClick.bind(this);
+        this.onWindowResize = this.onWindowResize.bind(this);
+
+    }
 
     componentDidMount() {
         domUtil.on(document.body, 'click', this.onClick);
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
 
@@ -55,12 +61,12 @@ const SelectSeparatePopup = React.createClass({
             styles: this.getStyle(open)
         });
 
-    },
+    }
 
     componentWillUnmount() {
         domUtil.off(window, 'resize', this.onWindowResize);
         domUtil.off(document.body, 'click', this.onClick);
-    },
+    }
 
     getStyle(open) {
 
@@ -137,7 +143,7 @@ const SelectSeparatePopup = React.createClass({
             width: Math.max(targetPosition.width, popupPosition.width)
         };
 
-    },
+    }
 
     onClick(e) {
 
@@ -149,14 +155,14 @@ const SelectSeparatePopup = React.createClass({
             onHide && onHide();
         }
 
-    },
+    }
 
     onWindowResize() {
         this.setState({
             ...this.state,
             styles: this.getStyle(true)
         });
-    },
+    }
 
     render() {
 
@@ -175,7 +181,7 @@ const SelectSeparatePopup = React.createClass({
                     height: spring(height, [120, 15]),
                     opacity: spring(opacity, [120, 15])
                 }}>
-                {(style) => {
+                {style => {
 
                     return (
                         <div
@@ -184,8 +190,10 @@ const SelectSeparatePopup = React.createClass({
                                 ...style,
                                 visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
                             }}
-                            ref={(main) => {
-                                this.main = main;
+                            ref={main => {
+                                if (main) {
+                                    this.main = main;
+                                }
                             }}>
                             <div className={contentClassName} >
                                 {children}
@@ -198,13 +206,11 @@ const SelectSeparatePopup = React.createClass({
 
     }
 
-});
+}
 
-const {PropTypes} = React;
+SelectSeparatePopup.displayName = 'SelectSeparatePopup';
 
 SelectSeparatePopup.propTypes = {
     target: PropTypes.object.isRequired,
     onHide: PropTypes.func.isRequired
 };
-
-module.exports = SelectSeparatePopup;

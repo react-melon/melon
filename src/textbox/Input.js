@@ -3,42 +3,44 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('TextBoxInput');
+import {createElement, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-const TextBoxInput = React.createClass({
+const cx = create('TextBoxInput');
 
-    render() {
+export default function TextBoxInput(props) {
 
-        const {
-            multiline,
-            className,
-            rows,
-            isFocus,
-            ...rest
-        } = this.props;
+    const {
+        multiline,
+        className,
+        rows,
+        isFocus,
+        ...rest
+    } = props;
 
-        const tag = multiline ? 'textarea' : 'input';
+    const tag = multiline ? 'textarea' : 'input';
 
-        return React.createElement(
-            tag,
-            {
-                ...rest,
-                className: cx(this.props)
-                    .addStates({
-                        focus: isFocus
-                    })
-                    .build(),
-                rows: multiline ? rows : null
-            }
-        );
+    return createElement(
+        tag,
+        {
+            ...rest,
+            className: cx(props)
+                .addStates({
+                    focus: isFocus
+                })
+                .build(),
+            rows: multiline ? rows : null
+        }
+    );
 
-    }
+}
 
-});
+TextBoxInput.displayName = 'TextBoxInput';
+
+TextBoxInput.propTypes = {
+    rows: PropTypes.number
+};
 
 TextBoxInput.defaultProps = {
     rows: 2
 };
-
-module.exports = TextBoxInput;
