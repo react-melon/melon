@@ -1,15 +1,2 @@
-define('melon/Card', [
-    'require',
-    'exports',
-    'module',
-    'react',
-    './common/util/cxBuilder'
-], function (require, exports, module) {
-    var React = require('react');
-    var cx = require('./common/util/cxBuilder').create('Card');
-    function Card(props) {
-        var children = props.children;
-        return React.createElement('div', { className: cx(props).build() }, children);
-    }
-    module.exports = Card;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Card=r.exports}}(this,function(exports,e,t,r){"use strict";function a(e){var t=e.children;return n["default"].createElement("div",{className:i(e).build()},t)}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=a;var n=r.interopRequireDefault(e),i=t.create("Card")});

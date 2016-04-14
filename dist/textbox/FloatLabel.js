@@ -1,26 +1,2 @@
-define('melon/textbox/FloatLabel', [
-    'require',
-    'exports',
-    'module',
-    'react',
-    '../common/util/cxBuilder'
-], function (require, exports, module) {
-    var React = require('react');
-    var cx = require('../common/util/cxBuilder').create('TextBoxFloatingLabel');
-    function TextBoxFloatingLabel(props) {
-        var floating = props.floating;
-        var focused = props.focused;
-        var label = props.label;
-        var className = cx(props).addStates({
-            focus: focused,
-            floating: floating
-        }).build();
-        return React.createElement('label', { className: className }, label);
-    }
-    var PropTypes = React.PropTypes;
-    TextBoxFloatingLabel.propTypes = {
-        label: PropTypes.string.isRequired,
-        floating: PropTypes.bool.isRequired
-    };
-    module.exports = TextBoxFloatingLabel;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.FloatLabel=r.exports}}(this,function(exports,e,t,r){"use strict";function i(e){var t=e.floating,r=e.focused,i=e.label,a=n(e).addStates({focus:r,floating:t}).build();return o["default"].createElement("label",{className:a},i)}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var o=r.interopRequireDefault(e),n=t.create("TextBoxFloatingLabel");i.propTypes={label:e.PropTypes.string.isRequired,floating:e.PropTypes.bool.isRequired}});
