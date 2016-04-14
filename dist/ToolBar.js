@@ -1,19 +1,2 @@
-define('melon/ToolBar', [
-    'require',
-    'exports',
-    'module',
-    'react',
-    './common/util/cxBuilder'
-], function (require, exports, module) {
-    var React = require('react');
-    var cx = require('./common/util/cxBuilder').create('ToolBar');
-    var ToolBar = React.createClass({
-        displayName: 'ToolBar',
-        render: function () {
-            var props = this.props;
-            var children = props.children;
-            return React.createElement('div', { className: cx(props).build() }, children);
-        }
-    });
-    module.exports = ToolBar;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.ToolBar=r.exports}}(this,function(exports,e,t,r){"use strict";function i(e){var t=e.children;return o["default"].createElement("div",{className:n(e).build()},t)}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var o=r.interopRequireDefault(e),n=t.create("ToolBar")});

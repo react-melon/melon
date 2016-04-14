@@ -34,7 +34,8 @@
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test/components --compilers js:babel-core/register --require ./test/setup.js",
     "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover --report html ./node_modules/.bin/_mocha -- test/components --require ./test/setup.js",
     "lint": "fecs src",
-    "build": "sh tool/build.sh"
+    "build": "sh tool/build.sh",
+    "prepublish": "sh tool/build.sh && exit 1"
   },
   "repository": {
     "type": "git",

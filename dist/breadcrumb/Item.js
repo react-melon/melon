@@ -1,17 +1,2 @@
-define('melon/breadcrumb/Item', [
-    'require',
-    'exports',
-    'module',
-    '../babelHelpers',
-    'react',
-    '../common/util/cxBuilder'
-], function (require, exports, module) {
-    var babelHelpers = require('../babelHelpers');
-    var React = require('react');
-    var cx = require('../common/util/cxBuilder').create('BreadcrumbItem');
-    function BreadcrumbItem(props) {
-        return React.createElement('a', babelHelpers._extends({}, props, { className: cx(props).build() }));
-    }
-    BreadcrumbItem.propTypes = { href: React.PropTypes.string };
-    module.exports = BreadcrumbItem;
-});
+/*! 2016 Baidu Inc. All Rights Reserved */
+!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Item=r.exports}}(this,function(exports,e,t,r){"use strict";function i(e){return o["default"].createElement("a",r["extends"]({},e,{className:n(e).build()}))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var o=r.interopRequireDefault(e),n=t.create("BreadcrumbItem");i.propTypes={href:o["default"].PropTypes.string}});
