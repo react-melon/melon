@@ -3,11 +3,14 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Breadcrumb');
-const Item = require('./breadcrumb/Item');
+import React from 'react';
+import {create} from './common/util/cxBuilder';
+import Item from './breadcrumb/Item';
 
-const Breadcrumb = function Breadcrumb(props) {
+const cx = create('Breadcrumb');
+
+/* eslint-disable fecs-prefer-class */
+export default function Breadcrumb(props) {
 
     const {
         children,
@@ -30,8 +33,25 @@ const Breadcrumb = function Breadcrumb(props) {
         </div>
     );
 
-};
+}
+/* eslint-enable fecs-prefer-class */
 
 Breadcrumb.Item = Item;
 
-module.exports = Breadcrumb;
+Breadcrumb.createCrumbs = function (crumbs) {
+
+    return crumbs.map(function (crumb, index) {
+
+        const {text, ...rest} = crumb;
+
+        return (
+            <Item
+                {...rest}
+                key={index}
+                level={index}>
+                {text}
+            </Item>
+        );
+    });
+
+};

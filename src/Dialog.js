@@ -1,101 +1,83 @@
 /**
- * @file esui-react/Dialog
+ * @file melon/Dialog
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Mask = require('./Mask');
-const dom = require('./common/util/dom');
-const cx = require('./common/util/cxBuilder').create('Dialog');
-const DialogWindow = require('./dialog/DialogWindow');
-const windowScrollHelper = require('./dialog/windowScrollHelper');
+import React, {Component, PropTypes} from 'react';
+import ReactDOM from 'react-dom';
+import Mask from './Mask';
+import dom from './common/util/dom';
+import DialogWindow from './dialog/DialogWindow';
+import * as windowScrollHelper from './dialog/windowScrollHelper';
 
-const {
-    Motion,
-    spring
-} = require('react-motion');
+import {create} from './common/util/cxBuilder';
 
-const {PropTypes} = React;
+import {Motion, spring} from 'react-motion';
 
-const Dialog = React.createClass({
+const cx = create('Dialog');
 
-    propTypes: {
-        actions: PropTypes.node,
-        maskClickClose: PropTypes.bool,
-        open: PropTypes.bool,
-        onHide: PropTypes.func,
-        onShow: PropTypes.func,
-        title: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.element
-        ])
-    },
+export default class Dialog extends Component {
 
-    getDefaultProps() {
-        return {
-            maskClickClose: true,
-            open: false
-        };
-    },
+    constructor(props) {
 
-    getInitialState() {
+        super(props);
 
         this.originalHTMLBodySize = {};
 
-        return {
+        this.state = {
             open: this.props.open
         };
 
-    },
+        this.onShow = this.onShow.bind(this);
+        this.onHide = this.onHide.bind(this);
+        this.onMaskClick = this.onMaskClick.bind(this);
+
+    }
 
     componentDidMount() {
         this.positionDialog();
-    },
+    }
 
     componentWillUpdate() {
         this.positionDialog();
-    },
+    }
 
-    componentWillReceiveProps(nextProps) {
-
-        const open = nextProps.open;
+    componentWillReceiveProps({open}) {
 
         if (open === this.state.open) {
             return;
         }
 
-        const onEvent = open ? this.onShow : this.onHide;
-        this.setState({open}, onEvent);
+        this.setState({open}, open ? this.onShow : this.onHide);
 
-    },
+    }
 
     positionDialog() {
         let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
         let marginTop = -dialogWindow.offsetHeight / 2;
 
-        const windowHeight = dom.getClientHeight();
+        let windowHeight = dom.getClientHeight();
 
         marginTop = dialogWindow.offsetHeight > windowHeight
                         ? (-windowHeight / 2 + 16)
                         : marginTop;
         dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
         dialogWindow.style.marginTop = marginTop + 'px';
-    },
+    }
 
     bodyScrolling() {
-        const show = this.state.open;
+        const {show} = this.state;
         windowScrollHelper[show ? 'stop' : 'restore']();
-    },
+    }
 
-    handleMaskClick(e) {
+    onMaskClick(e) {
         if (this.props.maskClickClose) {
             this.setState({open: false}, this.onHide);
         }
         else {
             e.stopPropagation();
         }
-    },
+    }
 
     onShow() {
         this.bodyScrolling();
@@ -103,7 +85,7 @@ const Dialog = React.createClass({
         if (onShow) {
             onShow();
         }
-    },
+    }
 
     onHide() {
         this.bodyScrolling();
@@ -111,17 +93,22 @@ const Dialog = React.createClass({
         if (onHide) {
             onHide();
         }
-    },
+    }
 
     renderTitle() {
-        const title = this.props.title;
+
+        const {title} = this.props;
+
         return title
             ? <h1 className={cx().part('title').build()}>{title}</h1>
             : null;
-    },
+
+    }
 
     renderAction() {
-        const actions = this.props.actions;
+
+        const {actions} = this.props;
+
         return actions
             ? (
                 <div ref="dialogActions" className={cx().part('actions').build()}>
@@ -129,11 +116,12 @@ const Dialog = React.createClass({
                 </div>
             )
             : null;
-    },
+
+    }
 
     render() {
 
-        let {props, state} = this;
+        const {props, state} = this;
 
         const {
             children,
@@ -142,7 +130,7 @@ const Dialog = React.createClass({
 
         const {open} = state;
 
-        let title = this.renderTitle();
+        const title = this.renderTitle();
 
         const body = (
             <div className={cx().part('body').build()}>
@@ -165,20 +153,35 @@ const Dialog = React.createClass({
                             }}
                             title={title}
                             footer={footer}
-                            className={windowPartClassName} >
+                            className={windowPartClassName}>
                             {body}
                         </DialogWindow>
                     }
                 </Motion>
                 <Mask
                     show={open}
-                    autoLockScrolling={false}
-                    onClick={this.handleMaskClick} />
+                    lockScrollingOnShow={true}
+                    onClick={this.onMaskClick} />
             </div>
         );
 
     }
 
-});
+}
 
-module.exports = Dialog;
+Dialog.propTypes = {
+    actions: PropTypes.node,
+    maskClickClose: PropTypes.bool,
+    open: PropTypes.bool,
+    onHide: PropTypes.func,
+    onShow: PropTypes.func,
+    title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element
+    ])
+};
+
+Dialog.defaultProps = {
+    maskClickClose: true,
+    open: false
+};

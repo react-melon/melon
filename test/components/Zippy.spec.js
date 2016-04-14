@@ -22,16 +22,17 @@ describe('Zippy', () => {
     });
 
     it('work', () => {
+
         component = TestUtils.renderIntoDocument(
-            <Zippy size={100}>
-                <p>test</p>
-            </Zippy>
+            <Zippy size={100}><p>test</p></Zippy>
         );
 
         expect(TestUtils.isCompositeComponent(component)).toBe(true);
+
     });
 
     it('horizontal', () => {
+
         component = TestUtils.renderIntoDocument(
             <Zippy size={100} horizontal>
                 <p>test</p>
@@ -39,8 +40,8 @@ describe('Zippy', () => {
         );
 
         expect(TestUtils.isCompositeComponent(component)).toBe(true);
-
         expect(ReactDOM.findDOMNode(component).style.width).toBe('0px');
+
     });
 
     it('expand', done => {
@@ -88,4 +89,3 @@ describe('Zippy', () => {
     });
 
 });
-

@@ -4,21 +4,31 @@
  * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Toggle');
-const CenterRipple = require('./ripples/CenterRipple');
-const Validity = require('./Validity');
 
-const Toggle = React.createClass({
 
-    displayName: 'Toggle',
+import React, {PropTypes} from 'react';
+import InputComponent from './InputComponent';
+import {create} from './common/util/cxBuilder';
+import CenterRipple from './ripples/CenterRipple';
+import Validity from './Validity';
+
+const cx = create('Toggle');
+
+export default class Toggle extends InputComponent {
+
+    constructor(props, context) {
+
+        super(props, context);
+
+        this.onChange = this.onChange.bind(this);
+
+    }
 
     onChange(e) {
 
         const {
             disabled,
             readOnly,
-            onChange,
             trueValue,
             falseValue
         } = this.props;
@@ -27,41 +37,28 @@ const Toggle = React.createClass({
             return;
         }
 
-        onChange({
+        super.onChange({
             type: 'change',
             target: this,
             value: e.target.checked ? trueValue : falseValue
         });
 
-    },
-
-    renderBar() {
-
-        const {checked, disabled} = this.props;
-
-        return (
-            <div className={cx().part('bar-container').build()}>
-                <div className={cx().part('bar').build()} />
-                <div className={cx().part('circle').build()}>
-                    {disabled ? null : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
-                </div>
-            </div>
-        );
-
-    },
+    }
 
     render() {
 
         const {
             props,
+            state,
             onChange
         } = this;
 
+        const {value, validity} = state;
+
         const {
             name,
-            value,
             trueValue,
-            validity
+            disabled
         } = props;
 
         const checked = value === trueValue;
@@ -74,29 +71,33 @@ const Toggle = React.createClass({
                     value={value}
                     onChange={onChange}
                     checked={checked} />
-                {this.renderBar()}
+                    <div className={cx().part('bar-container').build()}>
+                        <div className={cx().part('bar').build()} />
+                        <div className={cx().part('circle').build()}>
+                            {disabled
+                                ? null
+                                : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
+                        </div>
+                    </div>
                 <Validity validity={validity} />
             </label>
         );
 
     }
 
-});
+}
+
+Toggle.displayName = 'Toggle';
 
 Toggle.defaultProps = {
+    ...InputComponent.defaultProps,
     trueValue: 'on',
     falseValue: '',
     defaultValue: ''
 };
 
-const {PropTypes} = React;
-
 Toggle.propTypes = {
-    name: PropTypes.string,
-    value: PropTypes.string,
+    ...InputComponent.propTypes,
     trueValue: PropTypes.string.isRequired,
-    falseValue: PropTypes.string,
-    onChange: PropTypes.func
+    falseValue: PropTypes.string
 };
-
-module.exports = require('./createInputComponent').create(Toggle);

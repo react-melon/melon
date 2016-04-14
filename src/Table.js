@@ -3,40 +3,40 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const Row = require('./table/Row');
-const {PropTypes, Children} = React;
-const dom = require('./common/util/dom');
-const cx = require('./common/util/cxBuilder').create('Table');
+import React, {Component, PropTypes, Children} from 'react';
+import Row from './table/Row';
+import * as dom from './common/util/dom';
+import {create} from './common/util/cxBuilder';
+import Column from './table/Column';
 
-const Table = React.createClass({
+const cx = create('Table');
 
-    displayName: 'Table',
+export default class Table extends Component {
 
-    getInitialState() {
+    constructor(props) {
 
-        return {
+        super(props);
+
+        this.state = {
             columns: this.getColumns(this.props)
         };
 
-    },
+    }
 
     componentDidMount() {
         this.onWindowResize();
         dom.on(window, 'resize', this.onWindowResize);
-    },
-
-    componentWillUnmount() {
-        dom.off(window, 'resize', this.onWindowResize);
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
-
         this.setState({
             columns: this.getColumns(nextProps)
         });
+    }
 
-    },
+    componentWillUnmount() {
+        dom.off(window, 'resize', this.onWindowResize);
+    }
 
     getColumns(props) {
 
@@ -60,7 +60,7 @@ const Table = React.createClass({
                 []
             );
 
-    },
+    }
 
     renderHeader(columns, width) {
         const {props} = this;
@@ -73,7 +73,7 @@ const Table = React.createClass({
                     tableWidth={width} />
             </div>
         );
-    },
+    }
 
     renderBody(columns, width) {
 
@@ -97,7 +97,7 @@ const Table = React.createClass({
             </div>
         );
 
-    },
+    }
 
     renderRow(columns, rowData, index, tableWidth) {
         const {rowHeight, highlight} = this.props;
@@ -112,11 +112,11 @@ const Table = React.createClass({
                 data={rowData}
                 tableWidth={tableWidth} />
         );
-    },
+    }
 
     renderFooter(columns) {
         return null;
-    },
+    }
 
     onWindowResize() {
 
@@ -128,7 +128,7 @@ const Table = React.createClass({
             });
         }
 
-    },
+    }
 
     render() {
 
@@ -161,7 +161,11 @@ const Table = React.createClass({
 
     }
 
-});
+
+
+}
+
+Table.displayName = 'Table';
 
 Table.propTypes = {
     rowHeight: PropTypes.number.isRequired,
@@ -178,6 +182,4 @@ Table.defaultProps = {
     noDataContent: '没有数据'
 };
 
-Table.Column = require('./table/Column');
-
-module.exports = Table;
+Table.Column = Column;

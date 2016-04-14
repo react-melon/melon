@@ -1,13 +1,13 @@
 /**
- * @file esui-react/ScrollView
+ * @file melon/ScrollView
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const Bar = require('./scrollview/Bar');
-const cx = require('./common/util/cxBuilder').create('scrollview');
+import React, {Component, PropTypes} from 'react';
+import Bar from './scrollview/Bar';
+import {create} from './common/util/cxBuilder';
 
-const _ = require('underscore');
+const cx = create('scrollview');
 
 const DIRECTIONS = {
     vertical: 'deltaY',
@@ -19,11 +19,11 @@ const SIZES = {
     horizontal: 'offsetWidth'
 };
 
-const ScrollView = React.createClass({
+export default class ScrollView extends Component {
 
-    displayName: 'ScrollView',
+    constructor(props) {
 
-    getInitialState() {
+        super(props);
 
         this.thumbSize = {
             vertical: 0,
@@ -32,39 +32,44 @@ const ScrollView = React.createClass({
 
         this.timer = null;
 
-        return {
+        this.onWheel = this.onWheel.bind(this);
+
+        this.state = {
             position: {
                 vertical: 0,
                 horizontal: 0
             }
         };
 
-    },
+
+    }
 
     componentDidMount() {
         this.updateContentSize();
-        this.setState({position: {
-            vertical: 0,
-            horizontal: 0
-        }});
-    },
+        this.setState({
+            position: {
+                vertical: 0,
+                horizontal: 0
+            }
+        });
+    }
 
     componentDidUpdate() {
         this.updateContentSize();
-    },
+    }
 
     updateContentSize() {
 
-        let {
+        const {
             main,
             content
         } = this.refs;
 
-        let {
+        const {
             position
         } = this.state;
 
-        _.each(this.getDirections(), function (key) {
+        this.getDirections().forEach(key => {
             let contentSize = content[SIZES[key]];
             let mainSize = main[SIZES[key]];
             this.thumbSize[key] = mainSize === contentSize
@@ -73,8 +78,9 @@ const ScrollView = React.createClass({
 
             let top = Math.round(position[key] * contentSize * (1 - mainSize / contentSize));
             content.style[key === 'vertical' ? 'top' : 'left'] = (-top) + 'px';
-        }, this);
-    },
+        });
+
+    }
 
     onAction(direction, e) {
         let {
@@ -89,7 +95,7 @@ const ScrollView = React.createClass({
                 this.setScrollPercent(pos);
                 break;
         }
-    },
+    }
 
     onWheel(e) {
 
@@ -101,13 +107,16 @@ const ScrollView = React.createClass({
 
         let current = this.state.position;
 
-        _.each(directions, function (name) {
-            let percentDelta = e[DIRECTIONS[name]] * wheelSpeed;
-            current[name] += percentDelta;
-            let percent = current[name];
+        directions.forEach(function (name) {
+
+            current[name] += e[DIRECTIONS[name]] * wheelSpeed;
+
+            const percent = current[name];
+
             if (percent >= 0.005 && percent <= 0.995) {
                 e.preventDefault();
             }
+
         });
 
         this.setScrollPercent(current);
@@ -116,51 +125,52 @@ const ScrollView = React.createClass({
             e.preventDefault();
         }
 
-    },
+    }
 
     setScrollPercent(percent) {
 
         let position = this.state.position;
 
-        _.each(Object.keys(percent), function (key) {
+        Object.keys(percent).forEach(function (key) {
+
             let pos = percent[key];
+
             if (pos < 0.005) {
                 pos = 0;
             }
             else if (1 - pos < 0.005) {
                 pos = 1;
             }
+
             position[key] = pos;
+
         });
 
         this.setState({position}, function () {
             let onScroll = this.props.onScroll;
             onScroll && onScroll({
-                position,
+                position: position,
                 target: this
             });
         });
-    },
+
+    }
 
     getDirections() {
-        let {
-            direction
-        } = this.props;
-
-        return direction === 'both' ? Object.keys(DIRECTIONS) : [direction];
-    },
+        const {direction} = this.props;
+        const directions = direction === 'both' ? Object.keys(DIRECTIONS) : [direction];
+        return directions;
+    }
 
     renderScrollBar() {
 
-        let directions = this.getDirections();
+        const directions = this.getDirections();
 
-        let {
-            position
-        } = this.state;
+        const {position} = this.state;
 
-        return directions.map(function (dir, index) {
+        return directions.map((dir, index) => {
 
-            let size = this.thumbSize[dir];
+            const size = this.thumbSize[dir];
 
             if (!size) {
                 return;
@@ -174,25 +184,24 @@ const ScrollView = React.createClass({
                     position={position[dir]}
                     direction={dir} />
             );
-        }, this);
-    },
+
+        });
+    }
 
     render() {
 
-        const props = this.props;
-
         const {
             children,
-            ...others
-        } = props;
-
-        const styles = _.pick(props, 'height', 'width');
+            others,
+            height,
+            width
+        } = this.props;
 
         return (
             <div
                 {...others}
-                className={cx(props).addVariants(this.getDirections()).build()}
-                style={styles}
+                className={cx(this.props).addVariants(this.getDirections()).build()}
+                style={{height, width}}
                 onWheel={this.onWheel}
                 ref="main">
                 {this.renderScrollBar()}
@@ -204,9 +213,9 @@ const ScrollView = React.createClass({
 
     }
 
-});
+}
 
-const PropTypes = React.PropTypes;
+ScrollView.displayName = 'ScrollView';
 
 ScrollView.propTypes = {
     direction: PropTypes.oneOf(['vertical', 'horizontal', 'both']),
@@ -218,5 +227,3 @@ ScrollView.defaultProps = {
     direction: 'vertical',
     wheelSpeed: 0.005
 };
-
-module.exports = ScrollView;

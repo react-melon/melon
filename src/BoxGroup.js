@@ -1,61 +1,43 @@
 /**
- * @file esui-react/BoxGroup
+ * @file melon/BoxGroup
  * @author cxtom<cxtom2010@gmail.com>
  * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const Option = require('./boxgroup/Option');
-const cx = require('./common/util/cxBuilder').create('BoxGroup');
-const Validity = require('./Validity');
+import React, {PropTypes, Children} from 'react';
+import Option from './boxgroup/Option';
+import {create} from './common/util/cxBuilder';
+import InputComponent from './InputComponent';
+import Validity from './Validity';
 
-let BoxGroup = React.createClass({
+const cx = create('BoxGroup');
 
-    displayName: 'BoxGroup',
+export default class BoxGroup extends InputComponent {
 
-    getValue() {
+    constructor(props, context) {
 
-        const {
-            disabled,
-            value
-        } = this.props;
+        super(props, context);
 
-        if (disabled) {
-            return [];
-        }
+        const {value} = this.state;
 
-        const children = React.Children.toArray(this.props.children);
+        this.state = {
+            ...this.state,
+            value: Array.isArray(value) ? value : [value]
+        };
 
-        // 要过滤掉被禁用的项
-        return value.reduce(
-            (result, value) => {
-                for (let i = children.length - 1; i >= 0; --i) {
-                    let child = children[i];
-                    if (child
-                        && child.type === 'option'
-                        && child.props.value === value
-                        && !child.props.disabled
-                    ) {
-                        result.push(value);
-                        break;
-                    }
-                }
-                return result;
-            },
-            []
-        );
-    },
+        this.onChange = this.onChange.bind(this);
+        this.renderOption = this.renderOption.bind(this);
+
+    }
 
     onChange(e) {
 
         const optionValue = e.target.value;
         const value = this.getValue();
 
-        const {
-            boxModel
-        } = this.props;
+        const {boxModel} = this.props;
 
-        let nextValue = [];
+        let nextValue;
 
         // 计算 radio 的值
         if (boxModel === 'radio') {
@@ -66,100 +48,121 @@ let BoxGroup = React.createClass({
 
             const index = value.indexOf(optionValue);
 
-            if (index === -1) {
-                nextValue = [...value, optionValue];
-            }
-            else {
-                nextValue = [...value.slice(0, index), ...value.slice(index + 1)];
-            }
+            nextValue = index > -1
+                ? [...value.slice(0, index), ...value.slice(index + 1)]
+                : [...value, optionValue];
 
         }
 
-        this.props.onChange({
+        super.onChange({
             type: 'change',
             target: this,
             value: nextValue
         });
 
-    },
+    }
 
+
+    getValue() {
+
+        const currentValue = this.state.value;
+
+        return Children
+            .toArray(this.props.children)
+            .reduce(function (result, option) {
+
+                if (option && option.props) {
+
+                    const {disabled, value} = option.props;
+
+                    if (!disabled && currentValue.indexOf(value) > -1) {
+                        result.push(value);
+                    }
+
+                }
+
+                return result;
+
+            }, []);
+
+
+    }
+
+
+
+    /**
+     * 渲染选项
+     *
+     * @param  {?ReactElement} option 选项
+     * @return {Array.ReactElement}
+     */
     renderOption(option) {
 
-        const optionProps = option.props;
+        const {type, props} = option;
 
-        if (option.type !== 'option') {
+        // 如果 child 不是一个 <Option> 那么直接返回它
+        if (type !== 'option') {
             return option;
         }
 
-        const {
-            boxModel,
-            value
-        } = this.props;
-
-        const disabled = this.props.disabled || optionProps.disabled;
-        const optionValue = optionProps.value;
+        const {boxModel} = this.props;
+        const {value, children, label} = props;
 
         return (
             <Option
+                key={value}
                 boxModel={boxModel}
-                label={optionProps.label || optionProps.children}
-                value={optionValue}
-                checked={value.indexOf(optionValue) !== -1}
-                name={optionProps.name}
-                disabled={disabled}
+                label={label || children}
+                value={value}
+                checked={this.state.value.indexOf(value) > -1}
+                disabled={this.props.disabled || props.disabled}
                 onChange={this.onChange} />
-        );
-
-    },
-
-    render() {
-
-        const {props} = this;
-        const {validity} = props;
-
-        return (
-            <div className={cx(props).build()}>
-                {React.Children.map(props.children, this.renderOption)}
-                <Validity validity={validity} />
-            </div>
         );
 
     }
 
-});
+    render() {
+        return (
+            <div className={cx(this.props).addStates(this.getStyleStates()).build()}>
+                {Children.map(this.props.children, this.renderOption)}
+                <Validity validity={this.state.validity} />
+            </div>
+        );
+    }
 
-const {PropTypes} = React;
+}
+
+BoxGroup.displayName = 'BoxGroup';
 
 BoxGroup.propTypes = {
-    disabled: PropTypes.bool,
+    ...InputComponent.propTypes,
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
-    onChange: PropTypes.func,
     value: PropTypes.arrayOf(PropTypes.string),
-    name: PropTypes.string,
     children: PropTypes.node.isRequired
 };
 
 BoxGroup.defaultProps = {
+    ...InputComponent.defaultProps,
     boxModel: 'checkbox',
-    disabled: false,
-    value: [],
-    validateEvents: ['change']
+    defaultValue: []
 };
 
-BoxGroup = require('./createInputComponent').create(BoxGroup);
-
-BoxGroup.createOptions = function (datasource) {
+export function createOptions(datasource) {
 
     return datasource.map(function (option, index) {
+
+        const {name, value, disabled} = option;
+
         return (
             <option
-                key={index}
-                disabled={option.disabled}
-                label={option.name}
-                value={option.value} />
+                key={value}
+                disabled={!!disabled}
+                label={name}
+                value={value} />
         );
+
     });
 
-};
+}
 
-module.exports = BoxGroup;
+BoxGroup.createOptions = createOptions;

@@ -3,18 +3,14 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('CalendarDay');
-const DateTime = require('../common/util/date');
-const ItemMixin = require('./ItemMixin');
+import React, {PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import * as DateTime from '../common/util/date';
+import Item from './Item';
 
-const PropTypes = React.PropTypes;
+const cx = create('CalendarDay');
 
-const CalendarDay = React.createClass({
-
-    displayName: 'CalendarDay',
-
-    mixins: [ItemMixin],
+export default class CalendarDay extends Item {
 
     render() {
 
@@ -29,7 +25,6 @@ const CalendarDay = React.createClass({
             .addStates({selected})
             .build();
 
-
         return (
             <a
                 {...others}
@@ -39,16 +34,16 @@ const CalendarDay = React.createClass({
                 {date.getDate()}
             </a>
         );
+
     }
 
-});
+}
 
+CalendarDay.displayName = 'CalendarDay';
 
 CalendarDay.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
     selected: PropTypes.bool
 };
-
-module.exports = CalendarDay;

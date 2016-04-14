@@ -3,25 +3,19 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('ToolBar');
+import React from 'react';
+import {create} from './common/util/cxBuilder';
 
-const ToolBar = React.createClass({
+const cx = create('ToolBar');
 
-    displayName: 'ToolBar',
+export default function ToolBar(props) {
 
-    render() {
+    const {children} = props;
 
-        const {props} = this;
-        const {children} = props;
+    return (
+        <div className={cx(props).build()}>
+            {children}
+        </div>
+    );
 
-        return (
-            <div className={cx(props).build()}>
-                {children}
-            </div>
-        );
-    }
-
-});
-
-module.exports = ToolBar;
+}

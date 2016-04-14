@@ -3,36 +3,51 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var _ = require('underscore');
+export function selectAll(child) {
 
-var helper = {
-    selectAll: function (child) {
-        child.selected = true;
-        _.isArray(child.children) && _.each(child.children, helper.selectAll);
-    },
-    cancelAll: function (child) {
-        child.selected = false;
-        _.isArray(child.children) && _.each(child.children, helper.cancelAll);
-    },
-    parse: function (value, child, index) {
-        if (_.contains(value, child.id)) {
-            child.selected;
-        }
-        child.selected = _.contains(value, child.id);
+    child.selected = true;
 
-        if (_.isArray(child.children)) {
-            child.children = _.map(child.children, helper.parse.bind(this, value));
-        }
-        return child;
-    },
-    isAllSelected: function (data) {
-        if (!_.isArray(data.children) || !(data.children.length > 0)) {
-            return;
-        }
-        data.selected = _.reduce(data.children, function (result, child, index) {
-            return result && child.selected;
-        }, true);
+    if (Array.isArray(child.children)) {
+        child.children.forEach(selectAll);
     }
-};
 
-module.exports = helper;
+}
+
+export function cancelAll(child) {
+
+    child.selected = false;
+
+    if (Array.isArray(child.children)) {
+        child.children.forEach(cancelAll);
+    }
+
+}
+
+export function parse(value, child, index) {
+
+    if (value.indexOf(child.id) > -1) {
+        child.selected = true;
+    }
+
+    if (Array.isArray(child.children)) {
+        child.children = child.children.map(function (c, i) {
+            return parse(value, c, i);
+        });
+    }
+
+    return child;
+}
+export function isAllSelected(data) {
+
+    if (!Array.isArray(data.children) || !(data.children.length > 0)) {
+        return;
+    }
+
+    data.selected = data.children.reduce(
+        function (result, child, index) {
+            return result && child.selected;
+        },
+        true
+    );
+
+}

@@ -3,23 +3,27 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('BoxGroupOption');
-const Icon = require('../Icon');
-const CenterRipple = require('../ripples/CenterRipple');
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Icon from '../Icon';
+import CenterRipple from '../ripples/CenterRipple';
 
-const BoxGroupOption = React.createClass({
+const cx = create('BoxGroupOption');
 
-    displayName: 'BoxGroupOption',
+export default class BoxGroupOption extends Component {
+
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
 
     onClick() {
         this.refs.ripple && this.refs.ripple.animate();
-    },
+    }
 
     getIcon(boxModel, isChecked) {
-        const icons = BoxGroupOption.Icons[boxModel];
-        return icons[isChecked ? 'checked' : 'unchecked'];
-    },
+        return BoxGroupOption.Icons[boxModel][isChecked ? 'checked' : 'unchecked'];
+    }
 
     render() {
 
@@ -33,6 +37,7 @@ const BoxGroupOption = React.createClass({
 
 
         const className = cx(props).addStates({checked}).build();
+        const icon = this.getIcon(boxModel, checked);
 
         return (
             <label className={className} onClick={disabled ? null : this.onClick}>
@@ -43,7 +48,7 @@ const BoxGroupOption = React.createClass({
                     value={props.value}
                     name={props.name}
                     onChange={props.onChange} />
-                <Icon icon={this.getIcon(boxModel, checked)} />
+                <Icon icon={icon} />
                 {props.label}
                 {disabled ? null : <CenterRipple ref="ripple" />}
             </label>
@@ -51,9 +56,9 @@ const BoxGroupOption = React.createClass({
 
     }
 
-});
+}
 
-const {PropTypes} = React;
+BoxGroupOption.displayName = 'BoxGroupOption';
 
 BoxGroupOption.propTypes = {
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
@@ -75,5 +80,3 @@ BoxGroupOption.Icons = {
         unchecked: 'check-box-outline-blank'
     }
 };
-
-module.exports = BoxGroupOption;

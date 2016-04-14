@@ -1,52 +1,59 @@
 /**
- * @file esui-react/RangeCalendar
+ * @file melon/RangeCalendar
  * @author cxtom <cxtom2010@gmail.com>
  * @author leon <ludafa@outlook.com>
  */
 
-const _ = require('underscore');
-const React = require('react');
-const Calendar = require('./Calendar');
-const Icon = require('./Icon');
-const Confirm = require('./dialog/Confirm');
-const Panel = require('./calendar/Panel');
-const Validity = require('./Validity');
+import React, {PropTypes} from 'react';
+import Calendar from './Calendar';
+import Icon from './Icon';
+import Confirm from './Confirm';
+import Panel from './calendar/Panel';
+import Validity from './Validity';
+import {create} from './common/util/cxBuilder';
+import InputComponent from './InputComponent';
+import * as DateTime from './common/util/date';
 
-const DateTime = require('./common/util/date');
-const cx = require('./common/util/cxBuilder').create('RangeCalendar');
+const cx = create('RangeCalendar');
 
-const RangeCalendar = React.createClass({
+export default class RangeCalendar extends InputComponent {
 
-    displayName: 'RangeCalendar',
+    constructor(props, context) {
 
-    getInitialState() {
+        super(props, context);
 
-        return {
+        const {begin, end} = props;
+
+        this.state = {
+            ...this.state,
             open: false,
-            date: this.getNormalizeValue(this.props)
+            date: this.getNormalizeValue(this.state.value, begin, end)
         };
 
-    },
+        this.onLabelClick = this.onLabelClick.bind(this);
+        this.onConfirm = this.onConfirm.bind(this);
+        this.onLabelClick = this.onLabelClick.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
+        this.formatDate = this.formatDate.bind(this);
+
+    }
 
     componentWillReceiveProps(nextProps) {
 
-        const {value} = nextProps;
+        const {begin, end, value} = nextProps;
 
-        if (value !== this.props.value) {
+        if (value !== this.state.value) {
             this.setState({
-                date: this.getNormalizeValue(nextProps)
+                date: this.getNormalizeValue(value, begin, end)
             });
         }
 
-    },
+        super.componentWillReceiveProps(nextProps);
 
-    getNormalizeValue(props) {
+    }
 
-        let {
-            begin,
-            end,
-            value
-        } = props;
+    getNormalizeValue(value, begin, end) {
 
         begin = this.parseDate(begin);
         end = this.parseDate(end);
@@ -66,15 +73,20 @@ const RangeCalendar = React.createClass({
 
         return value;
 
-    },
+    }
 
     getValue() {
+
+        const {begin, end} = this.props;
+        const {value} = this.state;
+
         return this
-            .getNormalizeValue(this.props)
+            .getNormalizeValue(value, begin, end)
             .map(date => {
                 return this.formatDate(date);
             });
-    },
+
+    }
 
     /**
      * 点击textbox时触发
@@ -94,7 +106,7 @@ const RangeCalendar = React.createClass({
 
         this.setState({open: true});
 
-    },
+    }
 
     /**
      * Calendar DialogCalendar隐藏时触发
@@ -105,7 +117,7 @@ const RangeCalendar = React.createClass({
         this.setState({
             open: false
         });
-    },
+    }
 
     onDateChange(index, e) {
 
@@ -116,16 +128,15 @@ const RangeCalendar = React.createClass({
         date[index] = value;
 
         this.setState({
-            date,
+            date: date,
             month: date
         });
 
-    },
+    }
 
     onConfirm() {
 
-        const {date} = this.state;
-        const {value, onChange} = this.props;
+        const {date, value} = this.state;
 
         // 不管怎么样，先把窗口关了
         this.setState({
@@ -137,7 +148,7 @@ const RangeCalendar = React.createClass({
                 !DateTime.isEqualDate(date[0], this.parseDate(value[0]))
                 || !DateTime.isEqualDate(date[1], this.parseDate(value[1]))
             ) {
-                onChange({
+                super.onChange({
                     type: 'change',
                     target: this,
                     value: date.map(this.formatDate)
@@ -146,7 +157,7 @@ const RangeCalendar = React.createClass({
 
         });
 
-    },
+    }
 
     /**
      * 按设置格式化日期
@@ -164,18 +175,18 @@ const RangeCalendar = React.createClass({
             lang
         );
 
-    },
+    }
 
     parseDate(date) {
 
-        if (!_.isString(date)) {
+        if (typeof date !== 'string') {
             return date;
         }
 
         let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.parse(date, format);
-    },
+    }
 
     render() {
 
@@ -197,8 +208,8 @@ const RangeCalendar = React.createClass({
 
         const {open, date} = this.state;
 
-        begin = this.parseDate(begin);
-        end = this.parseDate(end);
+        begin = begin ? this.parseDate(begin) : null;
+        end = end ? this.parseDate(end) : null;
 
         return (
             <div
@@ -222,41 +233,42 @@ const RangeCalendar = React.createClass({
                     onCancel={this.onCancel}
                     size={size}
                     buttonVariants={['secondery', 'calendar']} >
-                        <div className={cx().part('row').build()}>
-                            <Panel
-                                lang={lang}
-                                date={date[0]}
-                                begin={begin}
-                                end={date[1]}
-                                onChange={this.onDateChange.bind(this, 0)} />
-                            <Panel
-                                lang={lang}
-                                date={date[1]}
-                                begin={date[0]}
-                                end={end}
-                                onChange={this.onDateChange.bind(this, 1)}/>
-                        </div>
+                    <div className={cx().part('row').build()}>
+                        <Panel
+                            lang={lang}
+                            date={date[0]}
+                            begin={begin}
+                            end={date[1]}
+                            onChange={this.onDateChange.bind(this, 0)} />
+                        <Panel
+                            lang={lang}
+                            date={date[1]}
+                            begin={date[0]}
+                            end={end}
+                            onChange={this.onDateChange.bind(this, 1)} />
+                    </div>
                 </Confirm>
             </div>
         );
 
     }
 
-});
+}
+
+RangeCalendar.displayName = 'RangeCalendar';
 
 RangeCalendar.defaultProps = {
     ...Calendar.defaultProps,
-    defaultValue: [
+    value: [
         DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
         DateTime.format(DateTime.addMonths(new Date(), 1), 'yyyy-mm-dd', Calendar.LANG)
     ]
 };
 
-const {PropTypes} = React;
-
 RangeCalendar.propTypes = {
     ...Calendar.propTypes,
     value: PropTypes.arrayOf(PropTypes.string),
+    autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
     begin: PropTypes.oneOfType([
         PropTypes.object,
@@ -267,5 +279,3 @@ RangeCalendar.propTypes = {
         PropTypes.string
     ])
 };
-
-module.exports = require('./createInputComponent').create(RangeCalendar);

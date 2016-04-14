@@ -3,62 +3,70 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const dom = require('./common/util/dom');
-const cx = require('./common/util/cxBuilder').create('Tooltip');
+import React, {Component, PropTypes} from 'react';
+import ReactDOM from 'react-dom';
+import dom from './common/util/dom';
+import {create} from './common/util/cxBuilder';
 
-const Tooltip = React.createClass({
+const cx = create('Tooltip');
 
-    displayName: 'Tooltip',
+export default class Tooltip extends Component {
 
-    getInitialState() {
-        return {
+    constructor(props) {
+
+        super(props);
+
+        this.onClick = this.onClick.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+
+        this.state = {
             isShown: false
         };
-    },
+
+    }
 
     componentDidMount() {
         const popup = this.popup = Tooltip.createPopup();
         this.renderPopup(popup, this.props.content);
-    },
+    }
 
     componentWillUnmount() {
         Tooltip.destroyPopup(this.popup);
         this.popup = null;
-    },
+    }
 
     componentDidUpdate() {
         this.renderPopup(this.popup, this.props.content);
-    },
+    }
 
     onClick(e) {
         this.toggle();
-    },
+    }
 
     onMouseEnter(e) {
         this.show();
-    },
+    }
 
     onMouseLeave(e) {
         this.hide();
-    },
+    }
 
     isShown() {
         return this.state.isShown;
-    },
+    }
 
     toggle() {
         this.isShown() ? this.hide() : this.show();
-    },
+    }
 
     show() {
         this.setState({isShown: true});
-    },
+    }
 
     hide() {
         this.setState({isShown: false});
-    },
+    }
 
     getPosition() {
 
@@ -88,9 +96,7 @@ const Tooltip = React.createClass({
 
         const {offsetWidth, offsetHeight} = popup;
 
-        let styles = {
-            opacity: 1
-        };
+        const styles = {opacity: 1};
 
         switch (direction) {
             case 'top':
@@ -112,7 +118,8 @@ const Tooltip = React.createClass({
         }
 
         return styles;
-    },
+
+    }
 
     renderPopup(target, content) {
 
@@ -125,7 +132,7 @@ const Tooltip = React.createClass({
             target
         );
 
-    },
+    }
 
     render() {
 
@@ -157,9 +164,9 @@ const Tooltip = React.createClass({
         );
     }
 
-});
+}
 
-const {PropTypes} = React;
+Tooltip.displayName = 'Tooltip';
 
 Tooltip.propTypes = {
     arrow: PropTypes.bool.isRequired,
@@ -175,26 +182,28 @@ Tooltip.defaultProps = {
     offsetY: 14
 };
 
-let container;
+(function () {
 
-Tooltip.createPopup = function () {
+    let container;
 
-    if (!container) {
-        container = document.createElement('div');
-        container.className = cx().part('container').build();
-        document.body.appendChild(container);
-    }
+    Tooltip.createPopup = function () {
 
-    let popup = document.createElement('div');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = cx().part('container').build();
+            document.body.appendChild(container);
+        }
 
-    container.appendChild(popup);
+        const popup = document.createElement('div');
 
-    return popup;
+        container.appendChild(popup);
 
-};
+        return popup;
 
-Tooltip.destroyPopup = function (popup) {
-    container.removeChild(popup);
-};
+    };
 
-module.exports = Tooltip;
+    Tooltip.destroyPopup = function (popup) {
+        container.removeChild(popup);
+    };
+
+})();

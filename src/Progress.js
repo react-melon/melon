@@ -1,96 +1,20 @@
 /**
- * @file esui-react/Progress
+ * @file melon/Progress
  * @author cxtom<cxtom2010@gmail.com>
  * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Progress');
+import React, {Component, PropTypes} from 'react';
+import {create} from './common/util/cxBuilder';
 
-const Progress = React.createClass({
+const cx = create('Progress');
 
-    displayName: 'Progress',
+export default class Progress extends Component {
 
-    getInitialState() {
+    constructor(props) {
+        super(props);
         this.timers = {};
-        return {};
-    },
-
-    barUpdate(step, barName, stepValues) {
-
-        step = step || 0;
-        step %= 4;
-
-        let element = this.refs[barName];
-
-        switch (step) {
-            case 0:
-                element.style.left = stepValues[0][0] + '%';
-                element.style.right = stepValues[0][1] + '%';
-                break;
-            case 1:
-                element.style.transitionDuration = '840ms';
-                break;
-            case 2:
-                element.style.left = stepValues[1][0] + '%';
-                element.style.right = stepValues[1][1] + '%';
-                break;
-            case 3:
-                element.style.transitionDuration = '0ms';
-                break;
-        }
-
-        this.timers[barName] = setTimeout(
-            this.barUpdate.bind(this, step + 1, barName, stepValues),
-            420
-        );
-
-    },
-
-    scalePath(path, step) {
-
-        step = step || 0;
-        step %= 3;
-
-        this.timers.path = setTimeout(
-            this.scalePath.bind(this, path, step + 1),
-            step ? 750 : 250
-        );
-
-        if (step === 0) {
-            path.style.strokeDasharray = '1, 200';
-            path.style.strokeDashoffset = 0;
-            path.style.transitionDuration = '0ms';
-            return;
-        }
-
-        if (step === 1) {
-            path.style.strokeDasharray = '89, 200';
-            path.style.strokeDashoffset = -35;
-            path.style.transitionDuration = '750ms';
-            return;
-        }
-
-        path.style.strokeDasharray = '89, 200';
-        path.style.strokeDashoffset = -124;
-        path.style.transitionDuration = '850ms';
-
-    },
-
-    rotateWrapper(wrapper) {
-
-        this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
-
-        wrapper.style.transitionDuration = '0ms';
-        wrapper.style.transform = 'rotate(0deg)';
-
-        this.timers.wrapperUpdater = setTimeout(() => {
-            wrapper.style.transitionDuration = '10s';
-            wrapper.style.transform = 'rotate(1800deg)';
-            wrapper.style.transitionTimingFunction = 'linear';
-        }, 50);
-
-    },
+    }
 
     componentDidMount() {
 
@@ -120,7 +44,7 @@ const Progress = React.createClass({
             );
         }, 850);
 
-    },
+    }
 
     componentWillUnmount() {
 
@@ -131,22 +55,98 @@ const Progress = React.createClass({
 
         this.timers = {};
 
-    },
+    }
+
+    barUpdate(step, barName, stepValues) {
+
+        step = step || 0;
+        step %= 4;
+
+        const element = this.refs[barName];
+
+        switch (step) {
+            case 0:
+                element.style.left = stepValues[0][0] + '%';
+                element.style.right = stepValues[0][1] + '%';
+                break;
+            case 1:
+                element.style.transitionDuration = '840ms';
+                break;
+            case 2:
+                element.style.left = stepValues[1][0] + '%';
+                element.style.right = stepValues[1][1] + '%';
+                break;
+            case 3:
+                element.style.transitionDuration = '0ms';
+                break;
+        }
+
+        this.timers[barName] = setTimeout(
+            this.barUpdate.bind(this, step + 1, barName, stepValues),
+            420
+        );
+
+    }
+
+    scalePath(path, step) {
+
+        step = step || 0;
+        step %= 3;
+
+        this.timers.path = setTimeout(
+            this.scalePath.bind(this, path, step + 1),
+            step ? 750 : 250
+        );
+
+        if (step === 0) {
+            path.style.strokeDasharray = '1, 200';
+            path.style.strokeDashoffset = 0;
+            path.style.transitionDuration = '0ms';
+            return;
+        }
+
+        if (step === 1) {
+            path.style.strokeDasharray = '89, 200';
+            path.style.strokeDashoffset = -35;
+            path.style.transitionDuration = '750ms';
+            return;
+        }
+
+        path.style.strokeDasharray = '89, 200';
+        path.style.strokeDashoffset = -124;
+        path.style.transitionDuration = '850ms';
+
+    }
+
+    rotateWrapper(wrapper) {
+
+        this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
+
+        wrapper.style.transitionDuration = '0ms';
+        wrapper.style.transform = 'rotate(0deg)';
+
+        this.timers.wrapperUpdater = setTimeout(() => {
+            wrapper.style.transitionDuration = '10s';
+            wrapper.style.transform = 'rotate(1800deg)';
+            wrapper.style.transitionTimingFunction = 'linear';
+        }, 50);
+
+    }
 
     getRelativeValue() {
-        const value = this.props.value;
-        const min = this.props.min;
-        const max = this.props.max;
+
+        const {value, min, max} = this.props;
 
         const clampedValue = Math.min(Math.max(min, value), max);
         const rangeValue = max - min;
         const relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
+
         return relValue * 100;
-    },
+    }
 
     isDeterminate() {
         return this.props.mode.toLowerCase() === 'determinate';
-    },
+    }
 
     renderLinear() {
 
@@ -170,11 +170,11 @@ const Progress = React.createClass({
                 {children}
             </div>
         );
-    },
+    }
 
     getZoom() {
         return Progress.SIZES[this.props.size] || 1;
-    },
+    }
 
     renderCircle() {
         let zoom = this.getZoom();
@@ -204,7 +204,7 @@ const Progress = React.createClass({
                 </svg>
             </div>
         );
-    },
+    }
 
     render() {
 
@@ -227,7 +227,9 @@ const Progress = React.createClass({
 
     }
 
-});
+}
+
+Progress.displayName = 'Progress';
 
 Progress.SIZES = {
     xxs: 0.75,
@@ -248,12 +250,10 @@ Progress.defaultProps = {
 };
 
 Progress.propTypes = {
-    shape: React.PropTypes.oneOf(['circle', 'linear']),
-    mode: React.PropTypes.oneOf(['determinate', 'indeterminate']),
-    value: React.PropTypes.number,
-    min: React.PropTypes.number,
-    max: React.PropTypes.number,
-    size: React.PropTypes.oneOf(Object.keys(Progress.SIZES))
+    shape: PropTypes.oneOf(['circle', 'linear']),
+    mode: PropTypes.oneOf(['determinate', 'indeterminate']),
+    value: PropTypes.number,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    size: PropTypes.oneOf(Object.keys(Progress.SIZES))
 };
-
-module.exports = Progress;

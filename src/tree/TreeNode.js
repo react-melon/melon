@@ -1,49 +1,31 @@
 /**
- * @file esui-react/Tree
+ * @file melon/Tree
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('TreeNode');
-const Icon  = require('../Icon');
+import React, {Component, PropTypes, Children} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Icon from '../Icon';
 
-const {PropTypes} = React;
+const cx = create('TreeNode');
 
-const TreeNode = React.createClass({
+export default class TreeNode extends Component {
 
-    propTypes: {
-        label: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.element
-        ]),
-        expandIcon: PropTypes.string,
-        unexpandIcon: PropTypes.string,
-        expand: PropTypes.bool,
-        selected: PropTypes.bool,
-        level: PropTypes.number
-    },
+    constructor(props) {
 
-    getDefaultProps() {
-        return {
-            label: '',
-            expand: false,
-            selected: false
-        };
-    },
+        super(props);
 
-    getInitialState() {
+        this.onClick = this.onClick.bind(this);
 
-        let props = this.props;
-
-        return {
+        this.state = {
             expand: props.expand || false
         };
 
-    },
+    }
 
     shouldComponentUpdate(nextProps, nextState) {
         return nextState.expand !== this.state.expand;
-    },
+    }
 
     componentWillReceiveProps(props) {
 
@@ -52,36 +34,26 @@ const TreeNode = React.createClass({
         }
 
         this.setState({expand: props.expand});
-    },
+    }
 
-    handleOnClick(e) {
-
-        const state = this.state;
-
-        const expand = state.expand;
-
-        this.setState({expand: !expand});
-    },
+    onClick(e) {
+        this.setState({expand: !this.state.expand});
+    }
 
     render() {
 
         const props = this.props;
-        const {
-            label,
-            children,
-            expandIcon,
-            unexpandIcon,
-            ...others
-        } = props;
+        const {label, ...others} = props;
         const expand = this.state.expand;
 
         const icon = expand
-            ? (expandIcon || TreeNode.ICON[1])
-            : (unexpandIcon || TreeNode.ICON[0]);
+            ? (props.expandIcon || TreeNode.ICON[1])
+            : (props.unexpandIcon || TreeNode.ICON[0]);
+
+        let children = props.children;
 
         let iconStyle;
         let labelStyle;
-        let content;
 
         if (props.level) {
             const level = props.level - 0;
@@ -94,15 +66,15 @@ const TreeNode = React.createClass({
         }
 
         // 是否还有子节点
-        if (React.Children.count(children) > 0) {
-            content = [
+        if (Children.count(children) > 0) {
+            children = [
                 <Icon
                     key="icon"
                     icon={icon}
-                    onClick={this.handleOnClick}
+                    onClick={this.onClick}
                     style={iconStyle} />,
                 <span
-                    onClick={this.handleOnClick}
+                    onClick={this.onClick}
                     key="label"
                     data-role="tree-node-label"
                     style={labelStyle}
@@ -118,9 +90,9 @@ const TreeNode = React.createClass({
             ];
         }
         else {
-            content = (
+            children = (
                 <span
-                    onClick={this.handleOnClick}
+                    onClick={this.onClick}
                     key="label"
                     data-role="tree-node-label"
                     style={labelStyle}
@@ -135,17 +107,33 @@ const TreeNode = React.createClass({
                 {...others}
                 data-role="tree-node"
                 className={cx(props).addVariants('level' + props.level).build()}>
-                {content}
+                {children}
             </li>
         );
 
     }
 
-});
+}
+
+TreeNode.propTypes = {
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element
+    ]),
+    expandIcon: PropTypes.string,
+    unexpandIcon: PropTypes.string,
+    expand: PropTypes.bool,
+    selected: PropTypes.bool,
+    level: PropTypes.number
+},
+
+TreeNode.defaultProps = {
+    label: '',
+    expand: false,
+    selected: false
+};
 
 TreeNode.ICON = [
     'chevron-right',
     'expand-more'
 ];
-
-module.exports = TreeNode;

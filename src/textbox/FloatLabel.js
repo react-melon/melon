@@ -3,10 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('TextBoxFloatingLabel');
+import React, {PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-function TextBoxFloatingLabel(props) {
+const cx = create('TextBoxFloatingLabel');
+
+/* eslint-disable fecs-prefer-class */
+export default function TextBoxFloatingLabel(props) {
 
     const {
         floating,
@@ -29,12 +32,7 @@ function TextBoxFloatingLabel(props) {
 
 }
 
-
-const {PropTypes} = React;
-
 TextBoxFloatingLabel.propTypes = {
     label: PropTypes.string.isRequired,
     floating: PropTypes.bool.isRequired
 };
-
-module.exports = TextBoxFloatingLabel;

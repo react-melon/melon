@@ -3,19 +3,14 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('CalendarSelectorItem');
+import React, {PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
+import Item from './Item';
+import * as DateTime from '../common/util/date';
 
-const ItemMixin = require('./ItemMixin');
-const DateTime = require('../common/util/date');
+const cx = create('CalendarSelectorItem');
 
-const PropTypes = React.PropTypes;
-
-const CalendarSelectorItem = React.createClass({
-
-    displayName: 'CalendarSelectorItem',
-
-    mixins: [ItemMixin],
+export default class CalendarSelectorItem extends Item {
 
     render() {
 
@@ -42,16 +37,18 @@ const CalendarSelectorItem = React.createClass({
                 </span>
             </li>
         );
-    }
-});
 
+    }
+
+}
+
+CalendarSelectorItem.displayName = 'CalendarSelectorItem';
 
 CalendarSelectorItem.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
     mode: PropTypes.oneOf(['month', 'year'])
 };
 
-module.exports = CalendarSelectorItem;

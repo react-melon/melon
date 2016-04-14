@@ -3,14 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
+import React, {Component, PropTypes} from 'react';
+import Mask from './Mask';
+import {create} from './common/util/cxBuilder';
+import domUtil from './common/util/dom';
 
-const Mask = require('./Mask');
-
-const cx = require('./common/util/cxBuilder').create('Drawer');
-const domUtil = require('./common/util/dom');
-
-const {PropTypes} = React;
+const cx = create('Drawer');
 
 const REVERT_POSITION = {
     top: 'bottom',
@@ -19,32 +17,19 @@ const REVERT_POSITION = {
     right: 'left'
 };
 
-const Drawer = React.createClass({
-
-    displayName: 'Drawer',
-
-    propTypes: {
-        position: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
-        open: PropTypes.bool.isRequired,
-        size: PropTypes.number.isRequired,
-        mask: PropTypes.bool,
-        maskClickClose: PropTypes.bool
-    },
-
-    onMaskClick() {
-
-        const {onHide, maskClickClose} = this.props;
-
-        if (maskClickClose && onHide) {
-            onHide();
-        }
-
-    },
+export default class Drawer extends Component {
 
     render() {
 
-        const {props} = this;
-        const {children, open, position, size, mask} = props;
+        const {
+            children,
+            open,
+            position,
+            size,
+            mask,
+            onHide,
+            maskClickClose
+        } = this.props;
 
         let posValue = open ? 0 : -size;
 
@@ -81,28 +66,45 @@ const Drawer = React.createClass({
                 +  'opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, '
                 +  'visibility 0ms cubic-bezier(0.23, 1, 0.32, 1) ' + visibilityTransitionDelay;
 
+        const masker = mask
+            ? <Mask
+                show={open}
+                onClick={maskClickClose && onHide ? onHide : null} />
+            : null;
+
         return (
-            <div className={cx(props).build()}>
+            <div className={cx(this.props).build()}>
                 <div
                     className={cx().part('window').build()}
                     style={{
                         ...style,
                         opacity: open ? 1 : 0,
                         visibility: open ? 'visible' : 'hidden',
-                        transition,
+                        transition: transition,
                         WebkitTransition: transition,
                         MozTransition: transition,
                         msTransition: transition
                     }}>
                     {children}
                 </div>
-                {mask ? <Mask show={open} onClick={this.onMaskClick} /> : null}
+                {masker}
             </div>
         );
 
     }
 
-});
+}
+
+Drawer.displayName = 'Drawer';
+
+Drawer.propTypes = {
+    position: PropTypes.oneOf(Object.keys(REVERT_POSITION)).isRequired,
+    open: PropTypes.bool.isRequired,
+    size: PropTypes.number.isRequired,
+    mask: PropTypes.bool,
+    maskClickClose: PropTypes.bool,
+    onHide: PropTypes.func.isRequired
+};
 
 Drawer.defaultProps = {
     position: 'left',
@@ -111,6 +113,3 @@ Drawer.defaultProps = {
     mask: true,
     maskClickClose: true
 };
-
-
-module.exports = Drawer;
