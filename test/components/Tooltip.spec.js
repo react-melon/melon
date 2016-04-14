@@ -83,9 +83,9 @@ describe('Tooltip', () => {
     ['top', 'left', 'right', 'bottom'].forEach(function (pos) {
 
         it('position ' + pos, () => {
+
             component = TestUtils.renderIntoDocument(
-                <Tooltip direction={pos} content="这是一个 tooltip 呢">
-                </Tooltip>
+                <Tooltip direction={pos} content="这是一个 tooltip 呢" />
             );
 
             component.isShown = () => true;
@@ -95,9 +95,9 @@ describe('Tooltip', () => {
             expect(style.opacity).toBe(1);
             expect(style.left).toExist();
             expect(style.top).toExist();
+
         });
 
     });
 
 });
-

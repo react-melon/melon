@@ -13,7 +13,6 @@ import TestUtils, {createRenderer} from 'react-addons-test-utils';
 import TextBox from '../../src/TextBox';
 import Input from '../../src/textbox/Input';
 import FloatLabel from '../../src/textbox/FloatLabel';
-import {InputComponent} from '../../src/createInputComponent';
 import then from '../then';
 
 expect.extend(expectJSX);
@@ -82,14 +81,12 @@ describe('TextBox', function () {
 
     describe('work', () => {
 
-        let component;
         let textbox;
-        let child;
         let spy = expect.createSpy();
 
         before(() => {
 
-            component = TestUtils.renderIntoDocument(
+            textbox = TestUtils.renderIntoDocument(
                 <TextBox
                     floatingLabel="floating"
                     defaultValue="haha"
@@ -98,44 +95,40 @@ describe('TextBox', function () {
                     name="haha" />
             );
 
-            textbox = TestUtils.findRenderedComponentWithType(component, InputComponent);
-
-            child = textbox.child;
 
         });
 
         it('init', () => {
 
             expect(TestUtils.isCompositeComponent(textbox)).toBe(true);
-            expect(TestUtils.isCompositeComponent(component)).toBe(true);
-            expect(TestUtils.isCompositeComponent(child)).toBe(true);
 
-            expect(child.state).toEqual({
+            expect(textbox.state).toInclude({
                 isFloating: true,
-                isFocus: false
+                isFocus: false,
+                value: 'haha'
             });
 
-            expect(textbox.state.value).toBe('haha');
-            expect(child.props.value).toBe('haha');
+            expect(textbox.getValue()).toBe('haha');
 
         });
 
         it('focus', done => {
 
-            const input = TestUtils.findRenderedDOMComponentWithTag(component, 'input');
+            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
             TestUtils.Simulate.focus(input);
 
             then(() => {
 
-                expect(child.state).toEqual({
+                expect(textbox.state).toInclude({
                     isFloating: true,
-                    isFocus: true
+                    isFocus: true,
+                    value: 'haha'
                 });
 
                 expect(spy.calls.length).toEqual(1);
                 expect(spy.calls[0].arguments).toInclude({
                     type: 'focus',
-                    target: child
+                    target: textbox
                 });
 
                 done();
@@ -146,15 +139,12 @@ describe('TextBox', function () {
 
         it('change', done => {
 
-            const input = TestUtils.findRenderedDOMComponentWithTag(component, 'input');
+            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
             input.value = 'aaa';
             TestUtils.Simulate.change(input);
 
             then(() => {
-
-                expect(textbox.state.value).toBe('aaa');
-                expect(child.props.value).toBe('aaa');
-
+                expect(textbox.getValue()).toBe('aaa');
                 done();
             });
 
@@ -163,26 +153,26 @@ describe('TextBox', function () {
 
         it('blur', done => {
 
-            const input = TestUtils.findRenderedDOMComponentWithTag(component, 'input');
+            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
             input.value = '';
             TestUtils.Simulate.change(input);
 
             then(() => {
-                expect(textbox.state.value).toBe('');
-                expect(child.props.value).toBe('');
+                expect(textbox.getValue()).toBe('');
                 TestUtils.Simulate.blur(input);
             })
             .then(() => {
 
-                expect(child.state).toEqual({
+                expect(textbox.state).toInclude({
                     isFloating: false,
-                    isFocus: false
+                    isFocus: false,
+                    value: ''
                 });
 
                 expect(spy.calls.length).toEqual(2);
                 expect(spy.calls[1].arguments).toInclude({
                     type: 'blur',
-                    target: child
+                    target: textbox
                 });
 
                 done();
@@ -193,9 +183,8 @@ describe('TextBox', function () {
 
     describe('multiline & controled', () => {
 
-        let component;
         let textbox;
-        let child;
+        let test;
 
         const TestComponent = React.createClass({
 
@@ -210,7 +199,6 @@ describe('TextBox', function () {
             },
 
             render() {
-
                 return (
                     <TextBox
                         floatingLabel="floating"
@@ -224,34 +212,24 @@ describe('TextBox', function () {
         });
 
         before(() => {
-
-            component = TestUtils.renderIntoDocument(<TestComponent />);
-
-            textbox = TestUtils.findRenderedComponentWithType(component, InputComponent);
-
-            child = textbox.child;
-
+            test = TestUtils.renderIntoDocument(<TestComponent />);
+            textbox = TestUtils.findRenderedComponentWithType(test, TextBox);
         });
 
         it('init', () => {
-
             expect(TestUtils.isCompositeComponent(textbox)).toBe(true);
-            expect(TestUtils.isCompositeComponent(child)).toBe(true);
-
-            expect(textbox.state.value).toBe('haha');
-            expect(child.props.value).toBe('haha');
-
+            expect(textbox.getValue()).toBe('haha');
+            expect(textbox.props.value).toBe('haha');
         });
 
         it('change', () => {
 
-            const textarea = TestUtils.findRenderedDOMComponentWithTag(component, 'textarea');
+            const textarea = TestUtils.findRenderedDOMComponentWithTag(textbox, 'textarea');
             textarea.value = '';
             TestUtils.Simulate.change(textarea);
 
             then(() => {
-                expect(textbox.state.value).toBe('');
-                expect(child.props.value).toBe('');
+                expect(textbox.getValue()).toBe('');
             });
 
         });
@@ -259,7 +237,7 @@ describe('TextBox', function () {
 
         it('syncTextareaHeight', () => {
 
-            const textarea = TestUtils.findRenderedDOMComponentWithTag(component, 'textarea');
+            const textarea = TestUtils.findRenderedDOMComponentWithTag(textbox, 'textarea');
             textarea.value = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
             TestUtils.Simulate.change(textarea);
 

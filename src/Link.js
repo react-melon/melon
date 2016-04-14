@@ -3,10 +3,15 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Link');
+import React from 'react';
 
-function Link(props) {
+import {create} from './common/util/cxBuilder';
+
+const cx = create('Link');
+
+/* eslint-disable fecs-prefer-class */
+
+export default function Link(props) {
 
     return (
         <a {...props} className={cx(props).build()} />
@@ -14,4 +19,4 @@ function Link(props) {
 
 }
 
-module.exports = Link;
+/* eslint-enable fecs-prefer-class */

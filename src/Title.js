@@ -3,15 +3,15 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const cx = require('./common/util/cxBuilder').create('Title');
+import React, {PropTypes} from 'react';
+import {create} from './common/util/cxBuilder';
 
-function Title(props) {
+const cx = create('Title');
 
-    const {
-        level,
-        ...rest
-    } = props;
+/* eslint-disable fecs-prefer-class */
+export default function Title(props) {
+
+    const {level, ...rest} = props;
 
     return React.createElement(
         `h${level}`,
@@ -24,11 +24,9 @@ function Title(props) {
 }
 
 Title.propsTypes = {
-    level: React.PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired
+    level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired
 };
 
 Title.defaultProps = {
     level: 1
 };
-
-module.exports = Title;

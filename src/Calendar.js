@@ -1,48 +1,60 @@
 /**
- * @file esui-react/Calendar
+ * @file melon/Calendar
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const _ = require('underscore');
-const React = require('react');
-const {PropTypes} = React;
+import React, {PropTypes} from 'react';
+import InputComponent from './InputComponent';
+import {create} from './common/util/cxBuilder';
+import Icon  from './Icon';
+import Confirm from './Confirm';
+import Panel from './calendar/Panel';
+import * as DateTime from './common/util/date';
+import Validity from './Validity';
 
-const cx = require('./common/util/cxBuilder').create('Calendar');
-const Icon = require('./Icon');
-const Confirm = require('./dialog/Confirm');
-const Panel = require('./calendar/Panel');
+const cx = create('Calendar');
 
-const DateTime = require('./common/util/date');
-const Validity = require('./Validity');
+export default class Calendar extends InputComponent {
 
-let Calendar = React.createClass({
+    constructor(props, context) {
 
-    displayName: 'Calendar',
+        super(props, context);
 
-    getInitialState() {
+        const {value} = this.state;
 
-        return {
+        this.onLabelClick = this.onLabelClick.bind(this);
+        this.onConfirm = this.onConfirm.bind(this);
+        this.onLabelClick = this.onLabelClick.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
+
+        this.state = {
+
+            ...this.state,
 
             // 缓存用户在 confirm 前的选中值
-            date: this.parseDate(this.props.value),
+            date: value ? this.parseDate(value) : new Date(),
 
             // 是否打开选择窗
             open: false
+
         };
 
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
 
         const {value} = nextProps;
 
-        if (value !== this.props.value) {
+        if (value !== this.state.value) {
             this.setState({
-                date: this.parseDate(value)
+                date: value == null ? new Date() : this.parseDate(value)
             });
         }
 
-    },
+        super.componentWillReceiveProps(nextProps);
+
+    }
 
     /**
      * 格式化日期对象
@@ -53,7 +65,7 @@ let Calendar = React.createClass({
      */
     parseValue(value) {
         return this.parseDate(value);
-    },
+    }
 
     /**
      * 格式化日期
@@ -65,30 +77,34 @@ let Calendar = React.createClass({
      */
     stringifyValue(rawValue) {
 
-        if (!_.isDate(rawValue)) {
+        if (!DateTime.isDate(rawValue)) {
             return rawValue;
         }
 
-        const format = this.props.dateFormat.toLowerCase();
+        const {dateFormat, lang} = this.props;
 
-        return DateTime.format(rawValue, format, this.props.lang);
+        return DateTime.format(
+            rawValue,
+            dateFormat.toLowerCase(),
+            lang
+        );
 
-    },
+    }
 
     parseDate(date) {
 
-        if (!_.isString(date)) {
+        if (typeof date !== 'string') {
             return date;
         }
 
-        const format = this.props.dateFormat.toLowerCase();
+        let format = this.props.dateFormat.toLowerCase();
 
         return DateTime.parse(date, format);
-    },
+    }
 
     getValue() {
-        return this.stringifyValue(this.props.value);
-    },
+        return this.stringifyValue(this.state.value);
+    }
 
     /**
      * 点击textbox时触发
@@ -97,13 +113,15 @@ let Calendar = React.createClass({
      */
     onLabelClick() {
 
-        if (this.props.disabled || this.props.readOnly) {
+        const {disabled, readOnly} = this.props;
+
+        if (disabled || readOnly) {
             return;
         }
 
         this.setState({open: true});
 
-    },
+    }
 
     /**
      * rawValue 在Calendar Dialog上点击确定或取消按钮触发
@@ -112,46 +130,42 @@ let Calendar = React.createClass({
      */
     onConfirm() {
 
-        const {date} = this.state;
-        const {value} = this.props;
+        let {value, date} = this.state;
 
-        const rawValue = this.parseDate(value);
+        value = this.parseDate(value);
 
-        if (DateTime.isEqualDate(date, rawValue)) {
+        if (DateTime.isEqualDate(date, this.parseDate(value))) {
             this.setState({open: false});
             return;
         }
 
-        this.setState({
-            open: false
-        }, () => {
-            this.props.onChange({
+        this.setState({open: false}, () => {
+
+            super.onChange({
                 type: 'change',
                 target: this,
                 value: this.stringifyValue(date)
             });
+
         });
 
-    },
+    }
 
     onCancel() {
         this.setState({open: false});
-    },
+    }
 
     onDateChange(e) {
 
         const {value} = e;
         const {autoConfirm} = this.props;
 
-        this.setState({
-            date: value
-        }, () => {
-            if (autoConfirm) {
-                this.onConfirm();
-            }
-        });
+        this.setState(
+            {date: this.parseDate(value)},
+            autoConfirm ? () => this.onConfirm() : null
+        );
 
-    },
+    }
 
     render() {
 
@@ -162,28 +176,28 @@ let Calendar = React.createClass({
 
         const {
             lang,
-            value,
             disabled,
             size,
             name,
             dateFormat,
-            validity,
             ...others
         } = props;
 
-        let {
-            begin, end
-        } = props;
+        const {value, validity} = state;
 
-        begin = this.parseDate(begin);
-        end = this.parseDate(end);
+        let {begin, end} = props;
+
+        begin = begin ? this.parseDate(begin) : null;
+        end = end ? this.parseDate(end) : null;
 
         const {open, date} = state;
+        const className = cx(props)
+            .addStates({focus: open})
+            .addStates(this.getStyleStates())
+            .build();
 
         return (
-            <div
-                {...others}
-                className={cx(props).addStates({focus: open}).build()}>
+            <div {...others} className={className}>
                 <input
                     name={name}
                     ref="input"
@@ -218,9 +232,12 @@ let Calendar = React.createClass({
         );
 
     }
-});
 
-const LANG = {
+}
+
+Calendar.displayName = 'Calendar';
+
+Calendar.LANG = {
 
     // 对于 '周' 的称呼
     week: '周',
@@ -231,12 +248,15 @@ const LANG = {
 };
 
 Calendar.defaultProps = {
-    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', LANG),
+    ...InputComponent.defaultProps,
+    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
     dateFormat: 'yyyy-MM-dd',
-    lang: LANG
+    lang: Calendar.LANG
 };
 
 Calendar.propTypes = {
+
+    ...InputComponent.propTypes,
 
     value: PropTypes.string,
 
@@ -254,17 +274,9 @@ Calendar.propTypes = {
         PropTypes.string
     ]),
 
-    onChange: PropTypes.func,
-
     lang: PropTypes.shape({
         week: PropTypes.string,
         days: PropTypes.string
     })
 
 };
-
-Calendar = require('./createInputComponent').create(Calendar);
-
-Calendar.LANG = LANG;
-
-module.exports = Calendar;

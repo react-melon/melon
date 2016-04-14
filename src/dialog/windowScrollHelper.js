@@ -3,10 +3,10 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var originalHTMLBodySize = {};
+const originalHTMLBodySize = {};
 
-function stop(name) {
-    var element = document.getElementsByTagName(name)[0];
+function stopWindowScrolling(name) {
+    const element = document.getElementsByTagName(name)[0];
     originalHTMLBodySize[name] = {
         width: element.style.width,
         height: element.style.height,
@@ -17,9 +17,9 @@ function stop(name) {
     return element;
 }
 
-function restore(name) {
-    var element = document.getElementsByTagName(name)[0];
-    var size = originalHTMLBodySize[name];
+function restoreWindowScrolling(name) {
+    const element = document.getElementsByTagName(name)[0];
+    const size = originalHTMLBodySize[name];
     element.style.width = size.width;
     element.style.height = size.height;
     element.style.overflow = size.overflow;
@@ -27,22 +27,20 @@ function restore(name) {
     return element;
 }
 
-exports.update = function () {
-    exports.stop();
-    exports.restore();
-};
+export function stop() {
+    stopWindowScrolling('body').style.overflow = 'hidden';
+    stopWindowScrolling('html').style.overflow = 'hidden';
+}
 
-exports.stop = function () {
-    stop('body').style.overflow = 'hidden';
-    stop('html').style.overflow = 'hidden';
-};
-
-exports.restore = function () {
-
+export function restore() {
     if (!originalHTMLBodySize.body || !originalHTMLBodySize.html) {
         return;
     }
+    restoreWindowScrolling('body');
+    restoreWindowScrolling('html');
+}
 
-    restore('body');
-    restore('html');
-};
+export function update() {
+    stop();
+    restore();
+}

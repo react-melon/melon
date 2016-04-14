@@ -5,10 +5,12 @@
 
 import {jsdom} from 'jsdom';
 
-const html = '<!doctype html><html><head><meta charset="UTF-8"></head><body></body></html>';
+global.document = jsdom(
+    '<!doctype html><html><head><meta charset="UTF-8"></head><body><div id="app"></div></body></html>'
+);
 
-global.document = jsdom(html);
 global.window = document.defaultView;
+global.navigator = window.navigator;
 
 document.documentElement.clientWidth = window.innerWidth;
 document.documentElement.clientHeight = window.innerHeight;
@@ -20,7 +22,8 @@ window.HTMLElement.prototype.offsetWidth = 100;
 window.HTMLElement.prototype.offsetHeight = 100;
 window.HTMLElement.prototype.scrollIntoView = () => {};
 
-
+// take all properties of the window object and also attach it to the
+// mocha global object
 propagateToGlobal(window);
 
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80

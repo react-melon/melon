@@ -3,9 +3,9 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const Table = require('./Table');
-const SelectorColumn = require('./table/SelectorColumn');
+import React, {Component, PropTypes} from 'react';
+import Table from './Table';
+import SelectorColumn from './table/SelectorColumn';
 
 function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex) {
 
@@ -33,15 +33,23 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
 
 }
 
-const SelectableTable = React.createClass({
+export default class SelectableTable extends Component {
 
-    displayName: 'SelectableTable',
+    constructor(props) {
 
-    getInitialState() {
-        return {
+        super(props);
+
+        this.getSelected = this.getSelected.bind(this);
+        this.isAllRowsSelected = this.isAllRowsSelected.bind(this);
+        this.isRowSelected = this.isRowSelected.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+        this.onSelectAll = this.onSelectAll.bind(this);
+
+        this.state = {
             selected: this.props.selected
         };
-    },
+
+    }
 
     componentWillReceiveProps(props) {
 
@@ -51,20 +59,20 @@ const SelectableTable = React.createClass({
             });
         }
 
-    },
+    }
 
     onSelect(rowIndex) {
         this.onRowSelectorClick(
             this.isRowSelected(rowIndex) ? 'unselect' : 'select',
             rowIndex
         );
-    },
+    }
 
     onSelectAll() {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
         );
-    },
+    }
 
     onRowSelectorClick(action, rowIndex) {
 
@@ -86,8 +94,8 @@ const SelectableTable = React.createClass({
 
         if (onSelect) {
             onSelect({
-                target: this,
-                selected
+                selected,
+                target: this
             });
             return;
         }
@@ -96,24 +104,24 @@ const SelectableTable = React.createClass({
             selected
         });
 
-    },
+    }
 
     getSelected() {
         const {state, props} = this;
         const {onSelect} = props;
         const {selected} = onSelect ? props : state;
         return selected;
-    },
+    }
 
     isRowSelected(rowIndex) {
         const selected = this.getSelected();
         return selected.indexOf(rowIndex) !== -1;
-    },
+    }
 
     isAllRowsSelected() {
         const selected = this.getSelected();
         return selected.length === this.props.dataSource.length;
-    },
+    }
 
     render() {
 
@@ -133,9 +141,9 @@ const SelectableTable = React.createClass({
 
     }
 
-});
+}
 
-const {PropTypes} = React;
+SelectableTable.displayName = 'SelectableTable';
 
 SelectableTable.propTypes = {
     ...Table.propTypes,
@@ -149,5 +157,3 @@ SelectableTable.defaultProps = {
     multiple: true,
     selected: []
 };
-
-module.exports = SelectableTable;

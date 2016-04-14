@@ -1,6 +1,7 @@
 /**
  * @file BoxGroup单测
  * @author cxtom(cxtom2010@gmail.com)
+ * @author leon(ludafa@outlook.com)
  */
 
 /* globals before */
@@ -10,14 +11,14 @@ import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import TestUtils, {createRenderer} from 'react-addons-test-utils';
 
-expect.extend(expectJSX);
 
 import BoxGroup from '../../src/BoxGroup';
 import Icon from '../../src/Icon';
 import CenterRipple from '../../src/ripples/CenterRipple';
 import BoxGroupOption from '../../src/boxgroup/Option';
 import then from '../then';
-import {InputComponent} from '../../src/createInputComponent';
+
+expect.extend(expectJSX);
 
 const datasource = [
     {value: '1', name: 'Never'},
@@ -41,8 +42,8 @@ describe('BoxGroup', function () {
                 disabled={false}
                 onChange={() => {}} />
         );
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
+        const actualElement = renderer.getRenderOutput();
+        const expectedElement = (
             <label className={'ui-box-group-option state-checked'} onClick={() => {}}>
                 <input
                     disabled={false}
@@ -73,7 +74,7 @@ describe('BoxGroup', function () {
                 </BoxGroup>
             );
 
-            boxgroup = TestUtils.findRenderedComponentWithType(component, InputComponent);
+            boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
             options = TestUtils.scryRenderedDOMComponentsWithTag(component, 'label');
             inputs = TestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
         });
@@ -100,7 +101,6 @@ describe('BoxGroup', function () {
             then(() => {
                 expect(options[2].className).toInclude('state-checked');
                 expect(boxgroup.getValue()).toEqual(['1', '3']);
-
                 done();
             });
 
@@ -115,7 +115,6 @@ describe('BoxGroup', function () {
             then(() => {
                 expect(options[0].className).toExclude('state-checked');
                 expect(boxgroup.getValue()).toEqual(['3']);
-
                 done();
             });
 
@@ -126,17 +125,31 @@ describe('BoxGroup', function () {
 
     describe('disabled', () => {
 
-        it('work', () => {
+        it('Option disabled will not appear in getValue()', () => {
+
+            const value = ['1', '2', '3'];
+
+            const datasource = [{
+                value: '1',
+                label: 'a'
+            }, {
+                value: '2',
+                label: 'b'
+            }, {
+                value: '3',
+                label: 'c',
+                disabled: true
+            }];
 
             const component = TestUtils.renderIntoDocument(
-                <BoxGroup disabled value={['1']}>
+                <BoxGroup disabled value={value}>
                     {BoxGroup.createOptions(datasource)}
                 </BoxGroup>
             );
 
-            const boxgroup = TestUtils.findRenderedComponentWithType(component, InputComponent);
+            const boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
 
-            expect(boxgroup.getValue()).toEqual([]);
+            expect(boxgroup.getValue()).toEqual(['1', '2']);
 
         });
 
@@ -157,7 +170,7 @@ describe('BoxGroup', function () {
                 </BoxGroup>
             );
 
-            boxgroup = TestUtils.findRenderedComponentWithType(component, InputComponent);
+            boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
             options = TestUtils.scryRenderedDOMComponentsWithTag(component, 'label');
             inputs = TestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
         });

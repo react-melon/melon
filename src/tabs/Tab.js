@@ -1,13 +1,15 @@
 /**
- * @file esui-react Tabs Tab
+ * @file melon Tabs Tab
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-const cx = require('../common/util/cxBuilder').create('TabsItem');
+const cx = create('TabsItem');
 
-function Tab(props) {
+/* eslint-disable fecs-prefer-class */
+export default function Tab(props) {
 
     const {
         selected,
@@ -16,11 +18,22 @@ function Tab(props) {
         ...others
     } = props;
 
+    const className = cx(props).addStates({selected, disabled}).build();
+
     return (
-        <li {...others} className={cx(props).addStates({selected, disabled}).build()}>
+        <li {...others} className={className}>
             {label}
         </li>
     );
 }
 
-module.exports = Tab;
+Tab.propTypes = {
+    label: PropTypes.node,
+    disabled: PropTypes.bool,
+    selected: PropTypes.bool
+};
+
+Tab.defaultProps = {
+    disabled: false,
+    selected: false
+};

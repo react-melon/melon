@@ -3,20 +3,16 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
 
-const Icon = require('../Icon');
-const Column = require('./Column');
+import Icon from '../Icon';
+import Column from './Column';
 
-const TableSelectorColumn = React.createClass({
+export default function TableSelectorColumn(props) {
+    return null;
+}
 
-    displayName: 'TableSelectorColumn',
-
-    render() {
-        return null;
-    }
-
-});
+TableSelectorColumn.displayName = 'TableSelectorColumn';
 
 TableSelectorColumn.icons = {
     radio: {
@@ -69,9 +65,6 @@ TableSelectorColumn.onCellClick = function (props) {
 
 };
 
-
-const {PropTypes} = React;
-
 TableSelectorColumn.propTypes = {
 
     ...Column.propTypes,
@@ -81,6 +74,7 @@ TableSelectorColumn.propTypes = {
     onSelect: PropTypes.func,
     onSelectAll: PropTypes.func,
     name: PropTypes.string
+
 };
 
 /**
@@ -98,5 +92,3 @@ TableSelectorColumn.defaultProps = {
 };
 
 TableSelectorColumn._TABLE_COMPONENT_ = 'COLUMN';
-
-module.exports = TableSelectorColumn;

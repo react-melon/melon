@@ -1,14 +1,16 @@
 /**
- * @file esui-react Tabs Panel
+ * @file melon Tabs Panel
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-const React = require('react');
-const cx = require('../common/util/cxBuilder').create('TabsPanel');
+import React, {PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-function TabsPanel(props) {
+const cx = create('TabsPanel');
 
-    let {active, ...others} = props;
+export default function TabsPanel(props) {
+
+    const {active, ...others} = props;
 
     return (
         <div {...others} className={cx(props).addStates({active}).build()} />
@@ -16,4 +18,12 @@ function TabsPanel(props) {
 
 }
 
-module.exports = TabsPanel;
+TabsPanel.displayName = 'TabsPanel';
+
+TabsPanel.propTypes = {
+    active: PropTypes.bool
+};
+
+TabsPanel.defaultProps = {
+    active: false
+};

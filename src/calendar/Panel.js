@@ -3,40 +3,45 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const {PropTypes} = React;
+import React, {Component, PropTypes} from 'react';
+import {create} from '../common/util/cxBuilder';
 
-const cx = require('../common/util/cxBuilder').create('CalendarPanel');
-const Header = require('./Header');
-const Selector = require('./Selector');
-const Pager = require('./Pager');
-const Month = require('./Month');
-const DateTime = require('../common/util/date');
+import Header from './Header';
+import Selector from './Selector';
+import Pager from './Pager';
+import Month from './Month';
 
-const CalendarPanel = React.createClass({
+import * as DateTime from '../common/util/date';
 
-    displayName: 'CaneldarPanel',
+const cx = create('CalendarPanel');
 
-    getInitialState() {
-        return {
+export default class CalendarPanel extends Component {
+
+    constructor(props) {
+
+        super(props);
+
+        this.onHeaderClick = this.onHeaderClick.bind(this);
+        this.onSelectorChange = this.onSelectorChange.bind(this);
+        this.onPagerChange = this.onPagerChange.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
+
+        this.state = {
             selectorType: 'main',
-            month: this.props.date,
-            date: this.props.date
+            month: props.date
         };
-    },
+
+    }
 
     componentWillReceiveProps(nextProps) {
 
         const {date} = nextProps;
 
         if (this.props.date !== date) {
-            this.setState({
-                date,
-                month: date
-            });
+            this.setState({date});
         }
 
-    },
+    }
 
     onHeaderClick(e) {
 
@@ -46,7 +51,7 @@ const CalendarPanel = React.createClass({
             selectorType: selectorType === 'main' ? 'year' : 'main'
         });
 
-    },
+    }
 
     onSelectorChange(e) {
 
@@ -70,22 +75,20 @@ const CalendarPanel = React.createClass({
         }
 
         this.setState({
-            date,
+            date: date,
             month: date,
             selectorType: mode
         });
 
-    },
+    }
 
     onPagerChange(e) {
 
         let month = e.month;
 
-        this.setState({
-            month
-        });
+        this.setState({month});
 
-    },
+    }
 
     onDateChange(e) {
 
@@ -93,7 +96,7 @@ const CalendarPanel = React.createClass({
             value: e.date
         });
 
-    },
+    }
 
     render() {
 
@@ -137,17 +140,12 @@ const CalendarPanel = React.createClass({
 
     }
 
-});
+}
+
+CalendarPanel.displayName = 'CalendarPanel';
 
 CalendarPanel.propTypes = {
     date: PropTypes.instanceOf(Date).isRequired,
     begin: PropTypes.instanceOf(Date),
-    end: PropTypes.instanceOf(Date),
-    lang: PropTypes.shape({
-        week: PropTypes.string,
-        days: PropTypes.string,
-        title: PropTypes.string
-    }).isRequired
+    end: PropTypes.instanceOf(Date)
 };
-
-module.exports = CalendarPanel;

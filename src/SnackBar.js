@@ -1,27 +1,33 @@
 /**
- * @file esui-react/SnackBar
+ * @file melon/SnackBar
  * @author cxtom<cxtom2010@gmail.com>
+ * @author leon<ludafa@outlook.com>
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const Button = require('./Button');
-const dom = require('./common/util/dom');
-const cx = require('./common/util/cxBuilder').create('SnackBar');
+import React, {PropTypes, Component} from 'react';
+import ReactDOM from 'react-dom';
+import Button from './Button';
+import * as dom from './common/util/dom';
+import {create} from './common/util/cxBuilder';
 
-const SnackBar = React.createClass({
+const cx = create('SnackBar');
 
-    displayName: 'SnackBar',
+export default class SnackBar extends Component {
 
-    getInitialState() {
+    constructor(props) {
+
+        super(props);
 
         this.autoHideTimer = null;
 
-        return {
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onHide = this.onHide.bind(this);
+
+        this.state = {
             open: this.props.open
         };
 
-    },
+    }
 
     componentDidMount() {
 
@@ -32,23 +38,12 @@ const SnackBar = React.createClass({
         }
 
         this.locate();
-    },
 
-    componentWillUnmount() {
-        dom.off(document.body, 'mouseup', this.onMouseUp);
-
-        if (this.autoHideTimer) {
-            clearTimeout(this.autoHideTimer);
-        }
-    },
-
-    componentDidUpdate() {
-        this.locate();
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
 
-        const open = nextProps.open;
+        const {open} = nextProps;
 
         if (open === this.state.open) {
             return;
@@ -56,9 +51,24 @@ const SnackBar = React.createClass({
 
         open ? this.onShow() : this.onHide();
 
-    },
+    }
+
+    componentDidUpdate() {
+        this.locate();
+    }
+
+    componentWillUnmount() {
+
+        dom.off(document.body, 'mouseup', this.onMouseUp);
+
+        if (this.autoHideTimer) {
+            clearTimeout(this.autoHideTimer);
+        }
+
+    }
 
     locate() {
+
         const {
             direction
         } = this.props;
@@ -68,60 +78,63 @@ const SnackBar = React.createClass({
         const main = ReactDOM.findDOMNode(this);
 
         if (open) {
-
-            switch (direction) {
-                case 'bc':
-                case 'tc':
-                    main.style.marginTop = '';
-                    main.style.marginLeft = -main.offsetWidth / 2 + 'px';
-                    break;
-                case 'lc':
-                case 'rc':
-                    main.style.marginLeft = '';
-                    main.style.marginTop = -main.offsetHeight / 2 + 'px';
-                    break;
-            }
+            return;
         }
-    },
+
+        switch (direction) {
+            case 'bc':
+            case 'tc':
+                main.style.marginTop = '';
+                main.style.marginLeft = -main.offsetWidth / 2 + 'px';
+                break;
+            case 'lc':
+            case 'rc':
+                main.style.marginLeft = '';
+                main.style.marginTop = -main.offsetHeight / 2 + 'px';
+                break;
+        }
+
+    }
 
     onHide() {
-        const {
-            onHide,
-            autoHideDuration
-        } = this.props;
 
-        const autoHideTimer = this.autoHideTimer;
+        const {onHide} = this.props;
 
         this.setState({open: false}, function () {
             if (onHide) {
                 onHide();
             }
-
-            if (autoHideDuration > 0 && autoHideTimer) {
-                clearTimeout(autoHideTimer);
-            }
         });
-    },
+
+    }
 
     onShow() {
+
         const {
             onShow,
             autoHideDuration
         } = this.props;
 
         this.setState({open: true}, function () {
+
             if (onShow) {
                 onShow();
             }
 
             if (autoHideDuration > 0) {
-                const onHide = this.onHide;
-                this.autoHideTimer = setTimeout(function () {
-                    onHide();
-                }, autoHideDuration);
+
+                this.autoHideTimer = setTimeout(
+                    () => {
+                        this.onHide();
+                    },
+                    autoHideDuration
+                );
+
             }
+
         });
-    },
+
+    }
 
     onMouseUp(e) {
 
@@ -130,6 +143,7 @@ const SnackBar = React.createClass({
         }
 
         e = e || window.event;
+
         const target = e.target || e.srcElement;
 
         const main = ReactDOM.findDOMNode(this);
@@ -139,17 +153,17 @@ const SnackBar = React.createClass({
             this.onHide();
             return;
         }
-    },
+    }
 
     render() {
 
-        let {
+        const {
             message,
             action,
             direction
         } = this.props;
 
-        let {open} = this.state;
+        const {open} = this.state;
 
         const className = cx(this.props)
             .addStates({open})
@@ -172,9 +186,9 @@ const SnackBar = React.createClass({
 
     }
 
-});
+}
 
-const {PropTypes} = React;
+SnackBar.displayName = 'SnackBar';
 
 SnackBar.defaultProps = {
     autoHideDuration: 0,
@@ -235,5 +249,3 @@ SnackBar.show = function (message, duration = 0, direction = 'bl') {
 
     return snackbar;
 };
-
-module.exports = SnackBar;

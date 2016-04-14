@@ -3,30 +3,49 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const cx = require('../common/util/cxBuilder').create('CalendarSelector');
+import React, {PropTypes, Component} from 'react';
+import ReactDOM from 'react-dom';
+import {create} from '../common/util/cxBuilder';
+import Item from './SelectorItem';
+import * as DateTime from '../common/util/date';
+import {range} from '../common/util/array';
 
-const Item = require('./SelectorItem');
+const cx = create('CalendarSelector');
 
-const _ = require('underscore');
-const DateTime = require('../common/util/date');
+export default class CalendarSelector extends Component {
 
-const PropTypes = React.PropTypes;
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
 
-const CalendarSelector = React.createClass({
+    onClick(e) {
 
-    displayName: 'CalendarSelector',
+        const {onChange} = this.props;
+
+        if (onChange) {
+            onChange({
+                target: this,
+                mode: e.mode,
+                date: e.date
+            });
+        }
+
+    }
 
     componentDidMount() {
-        this.refs.item
-        && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
-    },
+        const item = this.refs.item ? ReactDOM.findDOMNode(this.refs.item) : null;
+
+        // FIX jsdom 上没有这个方法，所以先判断一下
+        item && item.scrollIntoView && item.scrollIntoView();
+    }
 
     componentDidUpdate() {
-        this.refs.item
-        && ReactDOM.findDOMNode(this.refs.item).scrollIntoView();
-    },
+        const item = this.refs.item ? ReactDOM.findDOMNode(this.refs.item) : null;
+
+        // FIX jsdom 上没有这个方法，所以先判断一下
+        item && item.scrollIntoView && item.scrollIntoView();
+    }
 
     render() {
 
@@ -44,11 +63,11 @@ const CalendarSelector = React.createClass({
         const d = date.getDate();
 
         if (this.isMonthView()) {
-            children = _.range(12).map(function (month, index) {
+            children = range(12).map((month, index) => {
 
                 const newDate = new Date(y, month, d);
-                const disabled = (_.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
-                                || (_.isDate(maxDate) && DateTime.isAfterMonth(newDate, maxDate));
+                const disabled = (DateTime.isDate(minDate) && DateTime.isBeforeMonth(newDate, minDate))
+                                || (DateTime.isDate(maxDate) && DateTime.isAfterMonth(newDate, maxDate));
                 const selected = month === m;
 
                 return (
@@ -61,14 +80,17 @@ const CalendarSelector = React.createClass({
                         disabled={disabled}
                         selected={selected} />
                 );
-            }, this);
+
+            });
         }
         else {
-            const range = CalendarSelector.MAX_RANGE;
-            _.range(y - range, y + range).forEach(function (year, index) {
 
-                if ((_.isDate(minDate) && year < minDate.getFullYear())
-                    || (_.isDate(maxDate) && year > maxDate.getFullYear())) {
+            const maxRange = CalendarSelector.MAX_RANGE;
+
+            range(y - maxRange, y + maxRange).forEach((year, index) => {
+
+                if ((DateTime.isDate(minDate) && year < minDate.getFullYear())
+                    || (DateTime.isDate(maxDate) && year > maxDate.getFullYear())) {
 
                     return;
                 }
@@ -85,7 +107,8 @@ const CalendarSelector = React.createClass({
                         onClick={this.onClick}
                         selected={selected} />
                 );
-            }, this);
+
+            });
 
         }
 
@@ -94,20 +117,8 @@ const CalendarSelector = React.createClass({
                 {children}
             </ul>
         );
-    },
 
-    onClick(e) {
-
-        const onChange = this.props.onChange;
-
-        if (onChange) {
-            onChange({
-                target: this,
-                mode: e.mode,
-                date: e.date
-            });
-        }
-    },
+    }
 
     /**
      * 是否显示日期
@@ -126,7 +137,7 @@ const CalendarSelector = React.createClass({
         let onlyOneYear = false;
 
         // 如果范围中只有一年，则跳过yearview，直接显示month view
-        if (mode === 'year' && _.isDate(minDate) && _.isDate(maxDate)) {
+        if (mode === 'year' && DateTime.isDate(minDate) && DateTime.isDate(maxDate)) {
             onlyOneYear = (DateTime.yearDiff(minDate, maxDate) === 0);
         }
 
@@ -134,16 +145,16 @@ const CalendarSelector = React.createClass({
 
     }
 
-});
+}
+
+CalendarSelector.displayName = 'CalendarSelector';
 
 CalendarSelector.MAX_RANGE = 10;
 
 CalendarSelector.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-    maxDate: PropTypes.instanceOf(Date),
-    minDate: PropTypes.instanceOf(Date),
+    date: PropTypes.object.isRequired,
+    maxDate: PropTypes.object,
+    minDate: PropTypes.object,
     onChange: PropTypes.func,
     mode: PropTypes.oneOf(['month', 'year'])
 };
-
-module.exports = CalendarSelector;

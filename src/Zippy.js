@@ -3,48 +3,22 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
+import React, {PropTypes} from 'react';
+import {Motion, spring} from 'react-motion';
+import {create} from './common/util/cxBuilder';
 
-const {
-    Motion,
-    spring
-} = require('react-motion');
+const cx = create('Zippy');
 
-const cx = require('./common/util/cxBuilder').create('Zippy');
+function getStyle(horizontal, value) {
 
-const {PropTypes} = React;
+    return {
+        [horizontal ? 'overflowX' : 'overflowY']: 'hidden',
+        [horizontal ? 'width' : 'height']: Math.round(value)
+    };
 
-const Zippy = React.createClass({
+}
 
-    displayName: 'Zippy',
-
-    propTypes: {
-        size: PropTypes.number.isRequired,
-        horizontal: PropTypes.bool,
-        expand: PropTypes.bool
-    },
-
-    getDefaultProps() {
-        return {
-            horizontal: false,
-            expand: false
-        };
-    },
-
-    getStyle(value) {
-
-        const {
-            horizontal,
-            style
-        } = this.props;
-
-        return {
-            ...style,
-            [horizontal ? 'overflowX' : 'overflowY']: 'hidden',
-            [horizontal ? 'width' : 'height']: Math.floor(value)
-        };
-
-    },
+export default class Zippy extends React.Component {
 
     render() {
 
@@ -54,15 +28,24 @@ const Zippy = React.createClass({
             expand,
             size,
             children,
+            horizontal,
+            value,
+            style,
             ...others
         } = props;
 
         const className = cx(props).addStates({expand}).build();
 
         return (
-            <Motion style={{value: spring(expand ? size : 0)}}>
+            <Motion style={{value: spring(expand ? size : 0, [60, 15])}}>
                 {({value}) =>
-                    <div {...others} className={className} style={this.getStyle(value)}>
+                    <div
+                        {...others}
+                        className={className}
+                        style={{
+                            ...style,
+                            ...getStyle(horizontal, value)
+                        }}>
                         {children}
                     </div>
                 }
@@ -71,6 +54,17 @@ const Zippy = React.createClass({
 
     }
 
-});
+}
 
-module.exports = Zippy;
+Zippy.displayName = 'Zippy';
+
+Zippy.propTypes = {
+    size: PropTypes.number.isRequired,
+    horizontal: PropTypes.bool,
+    expand: PropTypes.bool
+};
+
+Zippy.defaultProps = {
+    horizontal: false,
+    expand: false
+};

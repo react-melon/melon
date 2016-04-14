@@ -6,13 +6,13 @@
 const toString = Object.prototype.toString;
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
-function classnames() {
+export function createClasses(...args) {
 
     let classes = [];
 
-    for (let i = 0, len = arguments.length; i < len; i++) {
+    for (let i = 0, len = args.length; i < len; i++) {
 
-        const arg = arguments[i];
+        const arg = args[i];
 
         if (!arg) {
             continue;
@@ -26,11 +26,11 @@ function classnames() {
                 break;
 
             case 'Array':
-                classes = classes.concat(classnames.apply(null, arg));
+                classes = classes.concat(createClasses.apply(null, arg));
                 break;
 
             case 'Object':
-                for (let key in arg) {
+                for (const key in arg) {
                     if (hasOwnProperty.call(arg, key) && arg[key]) {
                         classes.push(key);
                     }
@@ -41,10 +41,9 @@ function classnames() {
     }
 
     return classes;
+
 }
 
-exports.createClasses = classnames;
-
-exports.createClassName = function () {
-    return classnames(...arguments).join(' ');
-};
+export function createClassName(...args) {
+    return createClasses(...args).join(' ');
+}

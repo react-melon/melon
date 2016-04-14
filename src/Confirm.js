@@ -1,0 +1,75 @@
+/**
+ * @file melon/dialog/Confirm
+ * @author cxtom(cxtom2010@gmail.com)
+ */
+
+import React, {PropTypes} from 'react';
+import Dialog from './Dialog';
+import Button from './Button';
+
+// 这里我们尝试做过 function component
+// 但是在 TestUtils 中渲染出来的组件树中找不到 funciton component，非常诡异；
+// 先把这货改成正常的 component，后面再看能不能优化
+
+export default class Confirm extends React.Component {
+
+    render() {
+
+        const props = this.props;
+
+        const {
+            size,
+            buttonVariants,
+            variants = [],
+            onConfirm,
+            onCancel,
+            ...rest
+        } = props;
+
+        const actions = [
+            <Button
+                label="取消"
+                key="cancel"
+                size={size}
+                type="button"
+                onClick={onCancel ? () => onCancel() : null}
+                variants={[...buttonVariants, 'cancel']} />,
+            <Button
+                label="确定"
+                key="submit"
+                type="button"
+                size={size}
+                onClick={onConfirm ? () => onConfirm() : null}
+                variants={[...buttonVariants, 'confirm']} />
+        ];
+
+        return (
+            <Dialog
+                {...rest}
+                title={null}
+                maskClickClose={false}
+                actions={actions}
+                variants={[...variants, 'confirm']} />
+        );
+
+    }
+
+}
+
+Confirm.displayName = 'Confirm';
+
+Confirm.propTypes = {
+    ...Dialog.propTypes,
+    onConfirm: PropTypes.func,
+    onCancel: PropTypes.func,
+    cancelButtonText: PropTypes.string,
+    confirmButtonText: PropTypes.string,
+    buttonVariants: PropTypes.arrayOf(PropTypes.string)
+};
+
+Confirm.defaultProps = {
+    ...Dialog.defaultProps,
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    buttonVariants: ['primary']
+};

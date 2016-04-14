@@ -3,109 +3,44 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const ReactDOM = require('react-dom');
+import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
+import FloatingLabel from './textbox/FloatLabel';
+import TextBoxInput from './textbox/Input';
+import Validity from './Validity';
+import InputComponent from './InputComponent';
 
-const FloatingLabel = require('./textbox/FloatLabel');
-const TextBoxInput = require('./textbox/Input');
-const Validity = require('./Validity');
+import {create} from './common/util/cxBuilder';
 
-const cx = require('./common/util/cxBuilder').create('TextBox');
+const cx = create('TextBox');
 
-let TextBox = React.createClass({
+export default class TextBox extends InputComponent {
 
-    getInitialState() {
+    constructor(props, context) {
 
-        const {
-            value
-        } = this.props;
+        super(props, context);
 
-        return {
+        const {value} = this.state;
+
+        this.state = {
+            ...this.state,
             isFloating: !!value,
             isFocus: false
         };
 
-    },
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onChange = this.onChange.bind(this);
 
-    onFocus(e) {
 
-        const {
-            onFocus,
-            validate,
-            value
-        } = this.props;
-
-        if (onFocus)  {
-            onFocus({
-                type: 'focus',
-                target: this
-            });
-        }
-
-        this.setState({
-            isFocus: true,
-            isFloating: true
-        });
-
-        if (this.needValidate('focus')) {
-            validate(value);
-        }
-
-    },
-
-    onBlur(e) {
-
-        const {
-            onBlur,
-            value,
-            validate
-        } = this.props;
-
-        if (onBlur)  {
-            onBlur({
-                type: 'blur',
-                target: this
-            });
-        }
-
-        this.setState({
-            isFloating: !!value,
-            isFocus: false
-        });
-
-        if (this.needValidate('blur')) {
-            validate(value);
-        }
-
-    },
-
-    onChange(e) {
-
-        const value = e.target.value;
-
-        const {
-            onChange,
-            validate
-        } = this.props;
-
-        onChange({
-            type: 'change',
-            target: this,
-            value
-        });
-
-        if (this.needValidate('change')) {
-            validate(value);
-        }
-
-    },
+    }
 
     componentWillReceiveProps(nextProps) {
 
         const {value} = nextProps;
 
         // 多行文本框应该可以自动更新高度
-        if (nextProps.multiline && this.props.value !== value) {
+        if (nextProps.multiline && this.state.value !== value) {
             this.syncTextareaHeight();
         }
 
@@ -122,24 +57,85 @@ let TextBox = React.createClass({
             });
         }
 
-    },
+        super.componentWillReceiveProps(nextProps);
+
+    }
+
+    onFocus(e) {
+
+        this.setState({
+            isFocus: true,
+            isFloating: true
+        });
+
+        const {onFocus} = this.props;
+
+        if (onFocus)  {
+            onFocus({
+                type: 'focus',
+                target: this
+            });
+            return;
+        }
+
+        if (this.needValidate('focus')) {
+            this.validate(this.state.value);
+        }
+
+    }
+
+    onBlur(e) {
+
+        const {value} = e.target;
+
+        this.setState({
+            isFloating: !!value,
+            isFocus: false
+        });
+
+        const {onBlur} = this.props;
+
+        if (onBlur)  {
+            onBlur({
+                type: 'blur',
+                target: this
+            });
+            return;
+        }
+
+        this.setState({value});
+
+
+        if (this.needValidate('blur')) {
+            this.validate(value);
+        }
+
+    }
+
+    onChange(e) {
+
+        super.onChange({
+            type: 'change',
+            target: this,
+            value: e.target.value
+        });
+
+    }
 
     syncTextareaHeight() {
 
-        const {
-            input
-        } = this;
+        const {input} = this;
 
         if (input) {
             input.style.height = 'auto';
             input.style.height = input.scrollHeight + 'px';
         }
 
-    },
+    }
 
     needValidate(eventName) {
         return this.props.validateEvents.indexOf(eventName) !== -1;
-    },
+    }
 
     renderFloatingLabel(floatingLabel, isFloating, isFocus) {
 
@@ -154,8 +150,7 @@ let TextBox = React.createClass({
                 label={floatingLabel} />
         );
 
-    },
-
+    }
 
     render() {
 
@@ -170,11 +165,11 @@ let TextBox = React.createClass({
             floatingLabel,
             className,
             value,
-            validity,
             ...rest
         } = props;
 
         const {
+            validity,
             isFocus,
             isFloating
         } = this.state;
@@ -185,6 +180,7 @@ let TextBox = React.createClass({
                 floating: isFloating,
                 fulfilled: !!value
             })
+            .addStates(this.getStyleStates())
             .build();
 
         return (
@@ -208,31 +204,29 @@ let TextBox = React.createClass({
 
     }
 
-});
+
+
+}
+
+TextBox.displayName = 'TextBox';
 
 TextBox.defaultProps = {
-    defaultValue: '',
+    ...InputComponent.defaultProps,
     validateEvents: ['change', 'blur']
 };
 
-const {PropTypes} = React;
-
 TextBox.propTypes = {
 
-    type: PropTypes.oneOf(['text', 'password']),
+    ...InputComponent.propTypes,
 
-    value: PropTypes.string,
-    defaultValue: PropTypes.string,
+    type: PropTypes.oneOf(['text', 'password']),
 
     placeholder: PropTypes.string,
     floatingLabel: PropTypes.string,
 
     multiline: PropTypes.bool,
 
-    onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func
 
 };
-
-module.exports = require('./createInputComponent').create(TextBox);

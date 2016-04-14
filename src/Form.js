@@ -3,44 +3,22 @@
  * @author leon(ludafa@outlook.com)
  */
 
-const React = require('react');
-const validator = require('./Validator');
+import React, {Component, PropTypes} from 'react';
+import validator from './Validator';
 
-const {PropTypes} = React;
+export default class Form extends Component {
 
-let Form = React.createClass({
+    constructor(props) {
 
-    displayName: 'Form',
+        super(props);
 
-    propTypes: {
-        onSumbit: PropTypes.func,
-        target: PropTypes.string,
-        action: PropTypes.string,
-        method: PropTypes.oneOf(['POST', 'GET']),
-        validator: PropTypes.shape({
-            validate: PropTypes.func.isRequired
-        })
-    },
-
-    getDefaultProps() {
-        return {
-            validator
-        };
-    },
-
-    getInitialState() {
         this.fields = [];
-        return {};
-    },
+        this.state = {};
 
-    childContextTypes: {
-        attachForm: PropTypes.func,
-        detachForm: PropTypes.func,
-        validator: PropTypes.shape({
-            validate: PropTypes.func.isRequired
-        }),
-        pointer: PropTypes.string.isRequired
-    },
+        this.addField = this.addField.bind(this);
+        this.removeField = this.removeField.bind(this);
+
+    }
 
     getChildContext() {
         return {
@@ -49,16 +27,16 @@ let Form = React.createClass({
             detachForm: this.removeField,
             validator: this.props.validator
         };
-    },
+    }
 
     componentWillUnmount() {
         this.fields.length = 0;
         this.fields = null;
-    },
+    }
 
     addField(field) {
         this.fields.push(field);
-    },
+    }
 
     removeField(field) {
 
@@ -70,7 +48,7 @@ let Form = React.createClass({
             });
         }
 
-    },
+    }
 
     isValidFormField(field) {
 
@@ -84,7 +62,7 @@ let Form = React.createClass({
             && pointer
             && pointer.lastIndexOf('/') === 0;
 
-    },
+    }
 
     getData() {
         return this
@@ -100,11 +78,11 @@ let Form = React.createClass({
                 },
                 {}
             );
-    },
+    }
 
     validate() {
         return this.checkValidity().isValid;
-    },
+    }
 
     checkValidity() {
         return this
@@ -131,39 +109,60 @@ let Form = React.createClass({
                 isValid: true,
                 errors: []
             });
-    },
-
-    onSubmit(e) {
-
-        const {
-            onSubmit,
-            noValidate
-        } = this.props;
-
-        if (!noValidate) {
-            if (!this.validate()) {
-                e.preventDefault();
-                return;
-            }
-        }
-
-        if (onSubmit) {
-            e.data = this.getData();
-            onSubmit(e);
-        }
-
-    },
+    }
 
     render() {
 
-        const {props} = this;
+        const {
+            noValidate,
+            onSubmit,
+            ...rest
+        } = this.props;
 
         return (
-            <form {...props} onSubmit={this.onSubmit} />
+            <form {...rest} onSubmit={e => {
+
+                if (!noValidate) {
+                    if (!this.validate()) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
+
+                if (onSubmit) {
+                    e.data = this.getData();
+                    onSubmit(e);
+                }
+
+
+            }} />
         );
 
     }
 
-});
+}
 
-module.exports = Form;
+Form.displayName = 'Form';
+
+Form.propTypes = {
+    onSumbit: PropTypes.func,
+    target: PropTypes.string,
+    action: PropTypes.string,
+    method: PropTypes.oneOf(['POST', 'GET']),
+    validator: PropTypes.shape({
+        validate: PropTypes.func.isRequired
+    })
+};
+
+Form.defaultProps = {
+    validator
+};
+
+Form.childContextTypes = {
+    attachForm: PropTypes.func,
+    detachForm: PropTypes.func,
+    validator: PropTypes.shape({
+        validate: PropTypes.func.isRequired
+    }),
+    pointer: PropTypes.string.isRequired
+};
