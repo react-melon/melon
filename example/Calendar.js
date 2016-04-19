@@ -3,33 +3,28 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-const React = require('react');
+import React from 'react';
 
-const Title = require('../src/Title');
-const Calendar = require('../src/Calendar');
+import Title from '../src/Title';
+import Calendar from '../src/Calendar';
 
-const RangeCalendar = require('../src/RangeCalendar');
-const UnitCalendar = require('../src/UnitCalendar');
+import RangeCalendar from '../src/RangeCalendar';
+import UnitCalendar from '../src/UnitCalendar';
 
-const View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor() {
+        super();
+        this.state = {
             weekRange: [],
             value: '2015-08-07',
             monthRange: []
-            // yearRange: UnitCalendar
-            //     .getContinuousFragments(
-            //         new Date(2012, 1, 1),
-            //         new Date(2015, 0, 1),
-            //         'year'
-            //     )
         };
-    },
+    }
 
     onChange(e) {
         this.setState({value: e.value});
-    },
+    }
 
     render() {
 
@@ -74,7 +69,7 @@ const View = React.createClass({
                         <Calendar
                             autoConfirm
                             value={this.state.value}
-                            onChange={this.onChange} size="xs" />
+                            onChange={this.onChange.bind(this)} size="xs" />
                     </div>
                     <div className="melon-column melon-column-4">
                         {this.state.value}
@@ -127,10 +122,7 @@ const View = React.createClass({
             </div>
         );
     }
-
-});
-
-
+}
 
 
 module.exports = View;

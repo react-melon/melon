@@ -196,7 +196,7 @@ export function getNextTime(time, unit) {
 
 export function getContinuousFragments(begin, end, unit) {
 
-    begin = UnitCalendar.normalize(begin, unit);
+    begin = normalize(begin, unit);
 
     let result = [];
 

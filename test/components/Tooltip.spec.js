@@ -93,8 +93,8 @@ describe('Tooltip', () => {
             const style = component.getPosition();
 
             expect(style.opacity).toBe(1);
-            expect(style.left).toExist();
-            expect(style.top).toExist();
+            expect(style.left).toNotEqual(undefined);
+            expect(style.top).toNotEqual(undefined);
 
         });
 

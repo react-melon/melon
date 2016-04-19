@@ -62,8 +62,8 @@ export default class TouchRipple extends Component {
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
-            opacity: spring(0, [60, 15]),
-            scale: spring(2, [60, 15])
+            opacity: spring(0, {stiffness: 60, damping: 15}),
+            scale: spring(2, {stiffness: 60, damping: 15})
         };
     }
 
@@ -74,12 +74,13 @@ export default class TouchRipple extends Component {
             now
         } = this.state;
 
-        const styles = {
-            [now]: {
+        const styles = [{
+            key: now,
+            style: {
                 opacity: spring(this.props.opacity),
                 scale: spring(0)
             }
-        };
+        }];
 
         const circleClassName = cx().part('circle').build();
 
@@ -87,17 +88,15 @@ export default class TouchRipple extends Component {
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
-                {circles =>
+                {interpolatedStyles =>
                     <div
                         onMouseDown={this.onMouseDown}
                         className={cx(this.props).build()}>
-                        {Object.keys(circles).map(key => {
-                            let {opacity, scale} = circles[key];
-                            opacity = Math.round(opacity * 100) / 100;
-                            scale = opacity <= 0.01 ? 2 : Math.round(scale * 100) / 100;
+                        {interpolatedStyles.map(config => {
+                            let {opacity, scale} = config.style;
                             return (
                                 <RippleCircle
-                                    key={key}
+                                    key={config.key}
                                     className={circleClassName}
                                     opacity={opacity}
                                     scale={scale}

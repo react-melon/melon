@@ -3,10 +3,9 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var Uploader = require('../src/Uploader');
-var Progress = require('../src/Progress');
+import React from 'react';
+import Title from '../src/Title';
+import Uploader from '../src/Uploader';
 
 class View extends React.Component {
 
@@ -33,7 +32,7 @@ class View extends React.Component {
 
             setTimeout(
                 function () {
-                    resolve('https://www.baidu.com/img/bd_logo1.png')
+                    resolve('https://www.baidu.com/img/bd_logo1.png');
                 },
                 1000
             );

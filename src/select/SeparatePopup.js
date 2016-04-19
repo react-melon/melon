@@ -178,8 +178,8 @@ export default class SelectSeparatePopup extends Component {
             <Motion
                 style={{
                     ...styles,
-                    height: spring(height, [120, 15]),
-                    opacity: spring(opacity, [120, 15])
+                    height: spring(height, {stiffness: 120, damping: 15}),
+                    opacity: spring(opacity, {stiffness: 120, damping: 15})
                 }}>
                 {style => {
 

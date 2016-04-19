@@ -3,20 +3,21 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var BoxGroup = require('../src/BoxGroup');
-var Button = require('../src/Button');
-var Toggle = require('../src/Toggle');
+import Title from '../src/Title';
+import BoxGroup from '../src/BoxGroup';
+import Toggle from '../src/Toggle';
 
-var View = React.createClass({
+class View extends React.Component {
 
-    render: function() {
+    constructor() {
+        super();
+        this.state = {a: [], b: [], controlledCheckbox: [], controlledRadio: []};
+    }
 
-        var value = this.state.value;
-
-        var datasource = [{
+    render() {
+        const datasource = [{
             value: 'A',
             name: '青年A'
         }, {
@@ -99,7 +100,7 @@ var View = React.createClass({
                             name="a"
                             boxModel="checkbox"
                             value={this.state.a}
-                            onChange={this.onChange.bind(null, 'a')}>
+                            onChange={this.onChange.bind(this, 'a')}>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />
                             <option value="C" label="青年C" />
@@ -111,7 +112,7 @@ var View = React.createClass({
                             name="controlled-radio"
                             boxModel="radio"
                             value={this.state.b}
-                            onChange={this.onChange.bind(null, 'b')}>
+                            onChange={this.onChange.bind(this, 'b')}>
                             <option value="A" label="青年A" />
                             <option value="B" label="青年B" />
                             <option value="C" label="青年C" />
@@ -122,25 +123,23 @@ var View = React.createClass({
 
             </div>
         );
-    },
-
-    getInitialState: () => ({a: [], b: [], controlledCheckbox: [], controlledRadio: []}),
+    }
 
     onChange(name, e) {
         this.setState({
             [name + 'value']: e.value
         });
-    },
+    }
 
     getCurrentValue(name) {
-        var value = this.state[name + 'value'];
+        const value = this.state[name + 'value'];
         return value ? '当前的选择是：' + value : '';
-    },
+    }
 
-    onButtonClick: function () {
+    onButtonClick() {
         this.setState({value: ['A', 'B']});
     }
 
-});
+}
 
 module.exports = View;

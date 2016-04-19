@@ -22,4 +22,4 @@ const waitFor = (test, message, done, timeLeft) => {
 
 waitFor.clear = () => waitsInProgress.map(clearTimeout); // optionally call this in the beforeEach to ensure rogue tests are not still waiting
 
-module.exports = waitFor;
+export default waitFor;
