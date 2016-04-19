@@ -3,10 +3,10 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var TextBox = require('../src/TextBox');
+import Title from '../src/Title';
+import TextBox from '../src/TextBox';
 
 class View extends React.Component {
 

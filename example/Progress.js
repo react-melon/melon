@@ -3,36 +3,37 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Progress = require('../src/Progress');
+import Title from '../src/Title';
+import Progress from '../src/Progress';
 
-var View = React.createClass({
+class View extends React.Component {
 
-    getInitialState: function () {
-        return {
+    constructor() {
+        super();
+        this.state = {
             value: 20
         };
-    },
+    }
 
-    componentDidMount: function () {
-        var me = this;
-        var value = me.state.value;
-        me.timer = setTimeout(function tick() {
+    componentDidMount() {
+        const me = this;
+        let value = this.state.value;
+        this.timer = setTimeout(function tick() {
             value += 10;
             if (value < 100) {
                 me.timer = setTimeout(tick, 800);
-                me.setState({value: value});
+                me.setState({value});
             }
         }, 800);
-    },
+    }
 
     componentWillUnmount() {
         clearTimeout(this.timer);
-    },
+    }
 
-    render: function() {
+    render() {
         return (
             <div>
                 <Title level={3}>Progress</Title>
@@ -62,6 +63,6 @@ var View = React.createClass({
         );
     }
 
-});
+}
 
 module.exports = View;

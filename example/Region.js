@@ -3,11 +3,11 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-var React = require('react');
-var Title = require('../src/Title');
-var Region = require('../src/Region');
+import React from 'react';
+import Title from '../src/Title';
+import Region from '../src/Region';
 
-var REGION_LIST = [
+const REGION_LIST = [
     {
         'id':'90',
         'text':'中国',

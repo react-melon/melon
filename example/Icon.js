@@ -3,11 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Button = require('../src/Button');
-var icons = [
+import Title from '../src/Title';
+import Icon from '../src/Icon';
+
+const icons = [
     'error',
     'error-outline',
     'warning',
@@ -805,22 +806,20 @@ var icons = [
     'offline-pin'
 ];
 
-var Icon = require('../src/Icon');
+class View extends React.Component {
 
-var View = React.createClass({
+    render() {
 
-    render: function() {
-
-        var iconStyle = {
+        const iconStyle = {
             fontSize: 64,
             display: 'block'
         };
 
-        var list = icons
+        const list = icons
             .reduce(function (result, icon, index) {
 
-                var rowIndex = index % 4;
-                var row = result[rowIndex];
+                let rowIndex = index % 4;
+                let row = result[rowIndex];
 
                 if (!row) {
                     row = result[rowIndex] = [];
@@ -843,7 +842,7 @@ var View = React.createClass({
                             );
                         })}
                     </div>
-                )
+                );
             });
 
         return (
@@ -854,6 +853,6 @@ var View = React.createClass({
         );
     }
 
-});
+}
 
 module.exports = View;

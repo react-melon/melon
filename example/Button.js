@@ -3,15 +3,24 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Button = require('../src/Button');
-var Icon = require('../src/Icon');
+import Title from '../src/Title';
+import Button from '../src/Button';
+import Icon from '../src/Icon';
 
-var View = React.createClass({
+class View extends React.Component {
 
-    render: function () {
+    constructor() {
+        super();
+        this.state = {
+            text: '赞我',
+            count: 0,
+            disabled: false
+        };
+    }
+
+    render() {
         return (
             <div>
                 <Title level={3}>按钮</Title>
@@ -71,7 +80,7 @@ var View = React.createClass({
                         <Button
                             variants={['raised', 'primary']}
                             disabled={this.state.disabled}
-                            onClick={this.onClick}>
+                            onClick={this.onClick.bind(this)}>
                             {this.state.text}
                         </Button>
                     </div>
@@ -177,30 +186,22 @@ var View = React.createClass({
 
             </div>
         );
-    },
+    }
 
-    getInitialState: function () {
-        return {
-            text: '赞我',
-            count: 0,
-            disabled: false
-        };
-    },
+    onClick() {
 
-    onClick: function () {
+        const count = this.state.count + 1;
 
-        var count = this.state.count + 1;
-
-        var disabled = count === 5;
+        const disabled = count === 5;
 
         this.setState({
             text: disabled ? '今天的5个赞集满啦，客官明天赶早来~' : '+' + (count),
-            count: count,
-            disabled: disabled
+            count,
+            disabled
         });
 
     }
 
-});
+}
 
 module.exports = View;

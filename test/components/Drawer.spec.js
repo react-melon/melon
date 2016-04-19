@@ -24,6 +24,7 @@ const TestComponent = React.createClass({
 
         return (
             <Drawer
+                onHide={() => {}}
                 {...this.props}
                 open={this.state.open} />
         );
@@ -90,7 +91,6 @@ describe('Drawer', () => {
                 left: 'right',
                 right: 'left'
             };
-
 
             expect(dWindow.style.transition).toInclude(REVERT_POSITION[pos]);
         });

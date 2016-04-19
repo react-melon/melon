@@ -16,11 +16,49 @@ document.documentElement.clientWidth = window.innerWidth;
 document.documentElement.clientHeight = window.innerHeight;
 document.documentElement.clientTop = 0;
 document.documentElement.clientLeft = 0;
+document.documentElement.scrollTop = 0;
+document.documentElement.scrollLeft = 0;
 
 // patch
-window.HTMLElement.prototype.offsetWidth = 100;
-window.HTMLElement.prototype.offsetHeight = 100;
-window.HTMLElement.prototype.scrollIntoView = () => {};
+Object.defineProperties(window.HTMLElement.prototype, {
+    scrollIntoView: {
+        get() {
+            return () => {};
+        }
+    },
+    getBoundingClientRect: {
+        get() {
+            return () => {
+                return {
+                    top: 0,
+                    left: 0,
+                    width: parseFloat(window.getComputedStyle(this).width) || 0,
+                    height: parseFloat(window.getComputedStyle(this).height) || 0
+                };
+            };
+        }
+    },
+    offsetLeft: {
+        get() {
+            return parseFloat(window.getComputedStyle(this).marginLeft) || 0;
+        }
+    },
+    offsetTop: {
+        get() {
+            return parseFloat(window.getComputedStyle(this).marginTop) || 0;
+        }
+    },
+    offsetHeight: {
+        get() {
+            return parseFloat(window.getComputedStyle(this).height) || 0;
+        }
+    },
+    offsetWidth: {
+        get() {
+            return parseFloat(window.getComputedStyle(this).width) || 0;
+        }
+    }
+});
 
 // take all properties of the window object and also attach it to the
 // mocha global object

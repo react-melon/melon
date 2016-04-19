@@ -3,23 +3,22 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Breadcrumb = require('../src/Breadcrumb');
-var Icon = require('../src/Icon');
+import Title from '../src/Title';
+import Breadcrumb from '../src/Breadcrumb';
+import Icon from '../src/Icon';
 
-var View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
-            href: ''
-        };
-    },
+    constructor() {
+        super();
+        this.state = {href: ''};
+    }
 
-    render: function () {
+    render() {
 
-        const onClick = (e) => {
+        const onClick = e => {
             e.preventDefault();
             this.setState({
                 href: e.currentTarget.href
@@ -46,7 +45,7 @@ var View = React.createClass({
                 </Breadcrumb>
                 <Title level={5}>带 Icon</Title>
                 <Breadcrumb>
-                    <Breadcrumb.Item
+                    <Breadcrumb.Item d
                         onClick={onClick}
                         href="#/home">
                         <Icon icon="home" /> 首页
@@ -71,6 +70,6 @@ var View = React.createClass({
         );
     }
 
-});
+}
 
 module.exports = View;

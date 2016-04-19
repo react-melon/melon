@@ -3,13 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
-
-var Nav = require('./common/Nav');
+import React from 'react';
+import Nav from './common/Nav';
 
 class App extends React.Component {
     render() {
-        var {components, name, Component} = this.props;
+        const {components, name, Component} = this.props;
         return (
             <div>
                 <Nav components={components} component={name}/>

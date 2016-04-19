@@ -37,7 +37,7 @@ export default class Zippy extends React.Component {
         const className = cx(props).addStates({expand}).build();
 
         return (
-            <Motion style={{value: spring(expand ? size : 0, [60, 15])}}>
+            <Motion style={{value: spring(expand ? size : 0, {stiffness: 60, damping: 15})}}>
                 {({value}) =>
                     <div
                         {...others}

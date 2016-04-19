@@ -3,13 +3,13 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
+import Title from '../src/Title';
 
-var View = React.createClass({
+class View extends React.Component {
 
-    render: function() {
+    render() {
         return (
             <div>
                 <Title level={3}>按钮</Title>
@@ -19,16 +19,16 @@ var View = React.createClass({
 
             </div>
         );
-    },
+    }
 
     renderGrid(columns) {
 
-        var grid = [];
+        let grid = [];
 
-        for (var i = 1; i < columns; ++i) {
+        for (let i = 1; i < columns; ++i) {
 
-            var prev = 'melon-column melon-column-' + i;
-            var next = 'melon-column melon-column-' + (columns - i);
+            let prev = 'melon-column melon-column-' + i;
+            let next = 'melon-column melon-column-' + (columns - i);
 
             grid[i] = (
                 <div className="melon-row" key={i}>
@@ -40,9 +40,8 @@ var View = React.createClass({
         }
 
         return grid;
-
     }
 
-});
+}
 
 module.exports = View;

@@ -40,8 +40,8 @@ export default class CenterRipple extends Component {
     willLeave(key, valOfKey) {
         return {
             ...valOfKey,
-            opacity: spring(0, [60, 15]),
-            scale: spring(this.props.scale, [60, 15])
+            opacity: spring(0, {stiffness: 60, damping: 15}),
+            scale: spring(this.props.scale, {stiffness: 60, damping: 15})
         };
     }
 
@@ -50,12 +50,13 @@ export default class CenterRipple extends Component {
         const {opacity, children} = this.props;
         const {now} = this.state;
 
-        const styles = {
-            [now]: {
+        const styles = [{
+            key: now,
+            style: {
                 opacity: spring(opacity),
                 scale: spring(0)
             }
-        };
+        }];
 
         const className = cx(this.props).build();
         const circleClassName = cx().part('circle').build();
@@ -64,17 +65,13 @@ export default class CenterRipple extends Component {
             <TransitionMotion
                 willLeave={this.willLeave}
                 styles={styles}>
-                {circles =>
+                {interpolatedStyles =>
                     <div className={className}>
-                        {Object.keys(circles).map(key => {
-                            let {opacity, scale} = circles[key];
-                            opacity = Math.round(opacity * 100) / 100;
-                            scale = opacity <= 0.01
-                                ? this.props.scale
-                                : Math.round(scale * 100) / 100;
+                        {interpolatedStyles.map(config => {
+                            let {opacity, scale} = config.style;
                             return (
                                 <RippleCircle
-                                    key={key}
+                                    key={config.key}
                                     className={circleClassName}
                                     opacity={opacity}
                                     scale={scale} />

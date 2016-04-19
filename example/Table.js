@@ -3,56 +3,55 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Table = require('../src/Table');
-var Title = require('../src/Title');
-var Icon = require('../src/Icon');
-var SelectableTable = require('../src/SelectableTable');
+import Table from '../src/Table';
+import Title from '../src/Title';
+import Icon from '../src/Icon';
+import SelectableTable from '../src/SelectableTable';
+
+/* eslint-disable no-console */
 
 // helper to create a fixed number of rows
 function createDataSource(numberOfRows) {
-    var rows = [];
-    for (var i = 1; i <= numberOfRows; i++) {
+    let rows = [];
+    for (let i = 1; i <= numberOfRows; i++) {
         rows.push({
             id: i,
             task: 'Task ' + i,
             complete: Math.min(100, Math.round(Math.random() * 110)),
             priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-            issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
+            issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)]
         });
     }
     return rows;
 }
 
-var View = React.createClass({
+class View extends React.Component {
 
-    getInitialState: function () {
-
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             table1DataSource: createDataSource(20),
             table2DataSource: createDataSource(3),
             table3DataSource: createDataSource(5),
             selected: []
         };
+    }
 
-    },
+    getEditableTableColumns() {
+        return [];
+    }
 
-    getEditableTableColumns: function () {
-        return [
-
-        ];
-    },
-
-    renderEditableCell: function (props) {
+    renderEditableCell(props) {
         return props.cellData
             ? '嘿嘿'
             : <div>请填写<Icon icon="mode-edit" onClick={this.onStartEdit.bind(this, props)} /></div>;
-    },
+    }
 
-    onStartEdit: function (props) {
+    onStartEdit(props) {
         console.log('edit', props);
-    },
+    }
 
     render() {
         return (
@@ -187,22 +186,22 @@ var View = React.createClass({
                 </div>
             </div>
         );
-    },
+    }
 
-    renderSelected: function () {
-        var selected = this.state.selected;
+    renderSelected() {
+        const selected = this.state.selected;
         return selected.length
             ? <div>您已选中{selected.join(',')}</div>
             : '您没有选中任何一行';
-    },
+    }
 
-    onSelectableTable: function (selectedRows) {
+    onSelectableTable(selectedRows) {
         this.setState({
             selected: selectedRows
         });
     }
 
-});
+}
 
 module.exports = View;
 

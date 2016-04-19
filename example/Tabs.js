@@ -3,15 +3,18 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-var React = require('react');
+import React from 'react';
 
-var Title = require('../src/Title');
-var Tabs = require('../src/Tabs');
-var Tab = Tabs.Tab;
+import Title from '../src/Title';
+import Tabs from '../src/Tabs';
 
-var View = React.createClass({
+/* eslint-disable no-console */
 
-    render: function () {
+const Tab = Tabs.Tab;
+
+class View extends React.Component {
+
+    render() {
         return (
             <div>
                 <Title level={3}>Tabs</Title>
@@ -25,15 +28,11 @@ var View = React.createClass({
 
             </div>
         );
-    },
-
-
-    onBeforeChange: function (index, e) {
-
-        console.log('你选择了' + index);
-
     }
 
-});
+    onBeforeChange({selectedIndex}) {
+        console.log('你选择了' + selectedIndex);
+    }
+}
 
 module.exports = View;

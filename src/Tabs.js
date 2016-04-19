@@ -4,7 +4,7 @@
  */
 
 import React, {Component, PropTypes, cloneElement, Children} from  'react';
-import Tab from  './tabs/Tab';
+import Tab from './tabs/Tab';
 import TabPanel from  './tabs/Panel';
 import {create} from './common/util/cxBuilder';
 
