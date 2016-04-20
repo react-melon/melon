@@ -54,6 +54,7 @@ exports.getProcessors = function () {
 };
 
 exports.exclude = [
+    '*.log',
     '*.md',
     'dist',
     'README',
