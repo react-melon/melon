@@ -27,7 +27,7 @@
     "example"
   ],
   "dependencies": {
-    "react": "^15.0.1",
-    "react-motion": "https://npmcdn.com/react-motion/bower.zip#^0.4.2"
+    "react": "^0.14.8",
+    "react-motion": "https://npmcdn.com/react-motion/bower.zip"
   }
 }
