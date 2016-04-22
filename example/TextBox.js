@@ -60,6 +60,9 @@ class View extends React.Component {
                     <div className="melon-column melon-column-6">
                         <Title level={5}>多行输入</Title>
                         <TextBox placeholder='发个微博...' multiline={true} />
+                        <TextBox
+                            value={Array.from({length: 10}).map(() => '发个微博...').join('')}
+                            multiline={true} />
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={5}>多行文本浮动提示</Title>

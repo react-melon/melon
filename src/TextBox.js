@@ -61,6 +61,16 @@ export default class TextBox extends InputComponent {
 
     }
 
+    componentDidMount() {
+
+        super.componentDidMount();
+
+        if (this.props.multiline && this.state.value) {
+            this.syncTextareaHeight();
+        }
+
+    }
+
     onFocus(e) {
 
         this.setState({
