@@ -44,21 +44,28 @@ export default class Calendar extends InputComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        const {value} = nextProps;
+        const {value, customValidity} = nextProps;
 
-        if (value !== this.state.value) {
+        if (value !== this.state.value || customValidity !== this.props.customValidity) {
 
-            const date = this.parseValue(value);
+            // 如果有值，那么就试着解析一下；否则设置为 null
+            let date = value ? this.parseValue(value) : null;
+
+            // 如果 date 为 null 或者是 invalid date，那么就用上默认值；
+            // 否则就用解析出来的这个值
+            date = !date || isNaN(date.getTime()) ? new Date() : date;
+
+            const validity = customValidity
+                ? this.validator.createCustomValidity(customValidity)
+                : this.checkValidity(value);
 
             this.setState({
-                date: isNaN(date.getTime())
-                    ? new Date()
-                    : this.parseDate(value)
+                date,
+                validity,
+                value: this.stringifyValue(date)
             });
 
         }
-
-        super.componentWillReceiveProps(nextProps);
 
     }
 
