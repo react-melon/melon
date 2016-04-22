@@ -36,6 +36,7 @@ for level, value in $-melon-calendar-sizes
     position: relative
 
     & > label
+        display: block
         font-size: inherit
         padding: 1em 0 0.5em
         width: 100%
@@ -43,15 +44,15 @@ for level, value in $-melon-calendar-sizes
         border-bottom: 1px solid $-melon-colors.grey300
         transition border-color 1s
         cursor: pointer
+        clearfix()
 
         > span
-            display: inline-block
-            vertical-align: middle
+            float: left
 
         > .{$-melon-class-prefix}-icon
-            vertical-align: middle
-            display: inline-block
-            margin-left: 0.8em
+            float: right
+            margin-top: 0.25em;
+            margin-left: 0.5em;
 
     &.state-focus > label
         border-bottom-color: $-melon-colors.blue500
@@ -60,6 +61,7 @@ for level, value in $-melon-calendar-sizes
         border-bottom-color: $-melon-colors.red500
 
     &.state-disabled > label
+        color: $-melon-colors.grey400
         border-bottom-style: dotted
         cursor not-allowed
 
@@ -285,5 +287,3 @@ for level, value in $-melon-calendar-sizes
 
     $-main
         vertical-align: top
-
-
