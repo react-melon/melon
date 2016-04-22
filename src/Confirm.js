@@ -6,6 +6,7 @@
 import React, {PropTypes} from 'react';
 import Dialog from './Dialog';
 import Button from './Button';
+import createCommand from './dialog/commander';
 
 // 这里我们尝试做过 function component
 // 但是在 TestUtils 中渲染出来的组件树中找不到 funciton component，非常诡异；
@@ -73,3 +74,5 @@ Confirm.defaultProps = {
     cancelButtonText: '取消',
     buttonVariants: ['primary']
 };
+
+Confirm.show = createCommand(Confirm);

@@ -4,8 +4,10 @@
  */
 
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import Dialog from './Dialog';
 import Button from './Button';
+import createCommand from './dialog/commander';
 
 /* eslint-disable fecs-prefer-class */
 export default function Alert(props) {
@@ -55,3 +57,23 @@ Alert.defaultProps = {
     buttonText: '确定',
     buttonVariants: ['primary']
 };
+
+
+/**
+ * 命令式显示一个警告框
+ *
+ * @example
+ * const clean = Alert.show({
+ *     title: 'xxx',
+ *     children: <div>12321</div>,
+ *     onConfirm: function () {
+ *         同步操作
+ *         异步操作.then(function () {
+ *            clean();
+ *         })
+ *     }
+ * });
+ * @param {Object} options 警告窗参数
+ * @return {Function} 清理函数
+ */
+Alert.show = createCommand(Alert);
