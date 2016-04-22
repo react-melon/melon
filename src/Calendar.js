@@ -47,9 +47,15 @@ export default class Calendar extends InputComponent {
         const {value} = nextProps;
 
         if (value !== this.state.value) {
+
+            const date = this.parseValue(value);
+
             this.setState({
-                date: value == null ? new Date() : this.parseDate(value)
+                date: isNaN(date.getTime())
+                    ? new Date()
+                    : this.parseDate(value)
             });
+
         }
 
         super.componentWillReceiveProps(nextProps);

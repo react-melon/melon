@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "homepage": "https://github.com/jinzhubaofu/melon",
   "authors": [
     "ludafa@outlook.com"
@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "react": "^0.14.8",
-    "react-motion": "https://npmcdn.com/react-motion/bower.zip"
+    "react-motion": "^0.4.2"
   }
 }
