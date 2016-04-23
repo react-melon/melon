@@ -83,7 +83,8 @@ export default class Drawer extends Component {
                         transition: transition,
                         WebkitTransition: transition,
                         MozTransition: transition,
-                        msTransition: transition
+                        msTransition: transition,
+                        overflow: 'auto'
                     }}>
                     {children}
                 </div>

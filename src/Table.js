@@ -21,6 +21,7 @@ export default class Table extends Component {
             columns: this.getColumns(this.props)
         };
 
+        this.onWindowResize = this.onWindowResize.bind(this);
     }
 
     componentDidMount() {
