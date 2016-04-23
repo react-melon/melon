@@ -5,7 +5,7 @@
 
 function asyncActionMiddleware(state, action, next) {
 
-    var {type, payload} = action;
+    const {type, payload} = action;
 
     // 只处理 payload 是 Promise 的情况~
     if (!payload || typeof payload.then !== 'function') {
@@ -13,7 +13,7 @@ function asyncActionMiddleware(state, action, next) {
         return;
     }
 
-    var events = action.events || {};
+    const events = action.events || {};
 
     // 把一个 payload 是 promise 的 Aciton，转化为多个 action
     next({

@@ -17,7 +17,7 @@ const {
 } = require('react-motion');
 
 
-class ZippyNav extends React.Component {
+export default class ZippyNav extends React.Component {
 
     static displayName = 'ZippyNav';
 
@@ -79,4 +79,3 @@ class ZippyNav extends React.Component {
 
 }
 
-export default ZippyNav;

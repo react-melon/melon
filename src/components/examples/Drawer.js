@@ -3,22 +3,24 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-const React = require('react');
-const Button = require('melon/Button');
-const Drawer = require('melon/Drawer');
-const Select = require('melon/Select');
+import React from 'react';
+import Button from 'melon/Button';
+import Drawer from 'melon/Drawer';
+import Select from 'melon/Select';
 
 require('../code/Drawer.txt');
 
-const View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor() {
+        super();
+
+        this.state = {
             open: false,
             position: 'left',
             size: '300'
         };
-    },
+    }
 
     render() {
 
@@ -77,8 +79,6 @@ const View = React.createClass({
             </div>
         );
     }
-
-
-});
+}
 
 module.exports = View;

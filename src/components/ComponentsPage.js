@@ -7,9 +7,6 @@ import React from 'react';
 import ei from 'ei';
 import {Promise} from 'es6-promise';
 
-import asyncAction from '../common/middleware/asyncAction';
-import logger from '../common/middleware/logger';
-
 import ReducerBuilder from '../common/util/ReducerBuilder';
 
 import examples from './conf/examples';
@@ -17,7 +14,10 @@ import _ from 'underscore';
 
 const ComponentsPage = ei.Page.extend({
 
-    middlewares: [asyncAction, logger],
+    middlewares: [
+        require('../common/middleware/asyncAction'),
+        require('../common/middleware/logger')
+    ],
 
     view: require('./ComponentView'),
 

@@ -3,36 +3,38 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-const React = require('react');
+import React from 'react';
 
-const Title = require('melon/Title');
-const Progress = require('melon/Progress');
+import Title from 'melon/Title';
+import Progress from 'melon/Progress';
 
 require('../code/ProgressCircle.txt');
 
-const View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor() {
+        super();
+
+        this.state = {
             value: 20
         };
-    },
+    }
 
     componentDidMount() {
-        var me = this;
-        var value = me.state.value;
-        me.timer = setTimeout(function tick() {
+        const me = this;
+        let {value} = this.state;
+        this.timer = setTimeout(function tick() {
             value += 10;
-            me.setState({value: value});
+            me.setState({value});
             if (value < 100) {
                 me.timer = setTimeout(tick, 800);
             }
         }, 800);
-    },
+    }
 
     componentWillUnmount() {
         clearTimeout(this.timer);
-    },
+    }
 
     render() {
         return (
@@ -52,6 +54,6 @@ const View = React.createClass({
         );
     }
 
-});
+}
 
 module.exports = View;

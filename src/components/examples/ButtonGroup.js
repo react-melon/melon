@@ -9,6 +9,8 @@ import Button from 'melon/Button';
 
 require('../code/ButtonGroup.txt');
 
+/* eslint-disable fecs-prefer-class */
+
 function View(props) {
 
     return (

@@ -10,6 +10,7 @@ import Title from 'melon/Title';
 
 require('../code/TextBoxFloatingLabel.txt');
 
+/* eslint-disable fecs-prefer-class */
 function View(props) {
 
     return (

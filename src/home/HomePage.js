@@ -5,20 +5,18 @@
 
 import ei from 'ei';
 
-import pageDispatchEvent from '../common/middleware/pageDispatchEvent';
-import asyncAction from '../common/middleware/asyncAction';
-import logger from '../common/middleware/logger';
-
 const HomePage = ei.Page.extend({
 
-    middlewares: [asyncAction, pageDispatchEvent, logger],
+    middlewares: [
+        require('../common/middleware/asyncAction'),
+        require('../common/middleware/logger')
+    ],
 
     view: require('./HomeView'),
 
     reducer: {},
 
     getInitialState(request) {
-
         return {};
     }
 

@@ -17,7 +17,7 @@ const cx = require('melon/common/util/cxBuilder').create('DrawerNav');
 const _ = require('underscore');
 
 
-class DrawerNav extends React.Component {
+export default class DrawerNav extends React.Component {
 
     static displayName = 'DrawerNav';
 
@@ -62,5 +62,3 @@ class DrawerNav extends React.Component {
     }
 
 }
-
-export default DrawerNav;

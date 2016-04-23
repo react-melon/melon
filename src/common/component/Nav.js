@@ -13,7 +13,7 @@ import navs from '../conf/navs';
 const cx = require('melon/common/util/cxBuilder').create('Nav');
 const _ = require('underscore');
 
-class Nav extends React.Component {
+export default class Nav extends React.Component {
 
     static displayName = 'Nav';
 
@@ -129,5 +129,3 @@ class Nav extends React.Component {
     }
 
 }
-
-export default Nav;

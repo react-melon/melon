@@ -10,10 +10,9 @@ import Title from 'melon/Title';
 import Example from './component/Example';
 import PropsTable from './component/PropsTable';
 import _ from 'underscore';
+import properties from './conf/properties';
 
 const cx = require('melon/common/util/cxBuilder').create('ComponentView');
-
-import properties from './conf/properties';
 
 const ComponentView = React.createClass({
 

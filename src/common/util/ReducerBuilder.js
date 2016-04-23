@@ -3,7 +3,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-class ReducerBuilder {
+export default class ReducerBuilder {
 
     constructor() {
         this.reducers = {};
@@ -83,5 +83,3 @@ class ReducerBuilder {
 
 }
 
-
-export default ReducerBuilder;

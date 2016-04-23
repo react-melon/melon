@@ -8,42 +8,35 @@ import Pager from 'melon/Pager';
 
 require('../code/Pager1.txt');
 
-const PagerExample1 = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor() {
+        super();
+
+        this.state = {
             page: 3
         };
-    },
-
-    onChange(e) {
-
-        const {page} = e;
-
-        this.setState({page});
-
-    },
+    }
 
     render() {
 
         return (
 
             <div>
-
                 <Pager
                     total={15}
                     page={this.state.page}
-                    onChange={this.onChange} />
-
+                    onChange={({page}) => {
+                        this.setState({page});
+                    }} />
                 <p>
                     当前页码为{this.state.page}
                 </p>
-
             </div>
 
         );
     }
 
-});
+}
 
-module.exports = PagerExample1;
+module.exports = View;

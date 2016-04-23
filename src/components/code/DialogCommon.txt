@@ -1,25 +1,28 @@
 
+
 import React from 'react';
 import Dialog from 'melon/Dialog';
 import Button from 'melon/Button';
 import Title from 'melon/Title';
 
-const View = React.createClass({
+class View extends React.Component {
 
-    getInitialState() {
-        return {
+    constructor() {
+        super();
+
+        this.state = {
             dialog1: false,
             dialog2: false,
             dialog3: false,
             dialog4: false
         };
-    },
+    }
 
     render() {
 
         const actions = [
             <Button label="Submit" key="submit" />,
-            <Button label="Cancel" key="cancel" onClick={this.dialog4Hide} />
+            <Button label="Cancel" key="cancel" onClick={this.onHide.bind(this, 4)} />
         ];
 
         return (
@@ -27,13 +30,13 @@ const View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={4}>普通</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.dialog1Show}>弹出窗口</Button>
-                        <Dialog open={this.state.dialog1} onHide={this.dialog1Hide}>Hello</Dialog>
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
+                        <Dialog open={this.state.dialog1} onHide={this.onHide.bind(this, 1)}>Hello</Dialog>
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={4}>内容很长的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.dialog2Show}>弹出窗口</Button>
-                        <Dialog open={this.state.dialog2} onHide={this.dialog2Hide}>
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
+                        <Dialog open={this.state.dialog2} onHide={this.onHide.bind(this, 2)}>
                             <div ref="content" style={{height: 1000}}>Long!</div>
                         </Dialog>
                     </div>
@@ -41,14 +44,17 @@ const View = React.createClass({
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={4}>有标题的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.dialog3Show}>弹出窗口</Button>
-                        <Dialog open={this.state.dialog3} onHide={this.dialog3Hide} title="Dialog With A Title">
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
+                        <Dialog
+                            open={this.state.dialog3}
+                            onHide={this.onHide.bind(this, 3)}
+                            title="Dialog With A Title">
                             This is Content.
                         </Dialog>
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={4}>有按钮的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.dialog4Show}>弹出窗口</Button>
+                        <Button variants={['raised', 'primary']} onClick={this.onHide.bind(this, 4)}>弹出窗口</Button>
                         <Dialog
                             open={this.state.dialog4}
                             maskClickClose={false}
@@ -60,39 +66,19 @@ const View = React.createClass({
                 </div>
             </div>
         );
-    },
-
-    dialog1Show() {
-        this.setState({dialog1: true});
-    },
-
-    dialog1Hide() {
-        this.setState({dialog1: false});
-    },
-
-    dialog2Show() {
-        this.setState({dialog2: true});
-    },
-
-    dialog2Hide() {
-        this.setState({dialog2: false});
-    },
-
-    dialog3Show() {
-        this.setState({dialog3: true});
-    },
-
-    dialog3Hide() {
-        this.setState({dialog3: false});
-    },
-
-    dialog4Show() {
-        this.setState({dialog4: true});
-    },
-
-    dialog4Hide() {
-        this.setState({dialog4: false});
     }
-});
+
+    onShow(i) {
+        this.setState({
+            [`dialog${i}`]: true
+        });
+    }
+
+    onHide(i) {
+        this.setState({
+            [`dialog${i}`]: false
+        });
+    }
+}
 
 module.exports = View;

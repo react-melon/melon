@@ -5,12 +5,12 @@
 
 import ei from 'ei';
 
-import asyncAction from '../common/middleware/asyncAction';
-import logger from '../common/middleware/logger';
-
 const IconPage = ei.Page.extend({
 
-    middlewares: [asyncAction, logger],
+    middlewares: [
+        require('../common/middleware/asyncAction'),
+        require('../common/middleware/logger')
+    ],
 
     view: require('./IconView'),
 

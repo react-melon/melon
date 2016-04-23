@@ -10,6 +10,8 @@ import Title from 'melon/Title';
 
 require('../code/Calendar.txt');
 
+/* eslint-disable fecs-prefer-class */
+
 function View(props) {
 
     return (

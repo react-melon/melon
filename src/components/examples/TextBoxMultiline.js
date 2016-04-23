@@ -9,6 +9,8 @@ import TextBox from 'melon/TextBox';
 
 require('../code/TextBoxMultiline.txt');
 
+/* eslint-disable fecs-prefer-class */
+
 function View(props) {
 
     return (
