@@ -55,6 +55,10 @@ export default class RangeCalendar extends InputComponent {
 
     getNormalizeValue(value, begin, end) {
 
+        if (value.length === 0) {
+            return value;
+        }
+
         begin = this.parseDate(begin);
         end = this.parseDate(end);
 
@@ -201,6 +205,7 @@ export default class RangeCalendar extends InputComponent {
             begin,
             end,
             validity,
+            placeholder,
             ...others
         } = props;
 
@@ -222,7 +227,13 @@ export default class RangeCalendar extends InputComponent {
                     value={value.join(',')}
                     disabled={disabled} />
                 <label onClick={this.onLabelClick}>
-                    {`${value[0]} 至 ${value[1]}`}
+                    {value.length === 0
+                        ? (
+                            <span className={cx().part('label-placeholder').build()}>
+                                {placeholder}
+                            </span>
+                        ) : `${value[0]} 至 ${value[1]}`
+                    }
                     <Icon icon='expand-more' />
                 </label>
                 <Validity validity={validity} />
@@ -259,15 +270,13 @@ RangeCalendar.displayName = 'RangeCalendar';
 
 RangeCalendar.defaultProps = {
     ...Calendar.defaultProps,
-    value: [
-        DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
-        DateTime.format(DateTime.addMonths(new Date(), 1), 'yyyy-mm-dd', Calendar.LANG)
-    ]
+    defaultValue: [],
+    placeholder: '请选择'
 };
 
 RangeCalendar.propTypes = {
     ...Calendar.propTypes,
-    value: PropTypes.arrayOf(PropTypes.string),
+    defaultValue: PropTypes.arrayOf(PropTypes.string),
     autoOk: PropTypes.bool,
     dateFormat: PropTypes.string,
     begin: PropTypes.oneOfType([
