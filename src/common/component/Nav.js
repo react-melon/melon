@@ -8,9 +8,9 @@ import Title from 'melon/Title';
 import Button from 'melon/Button';
 import Icon from 'melon/Icon';
 import DrawerNav from './DrawerNav';
+import navs from '../conf/navs';
 
 const cx = require('melon/common/util/cxBuilder').create('Nav');
-const navs = require('../conf/navs');
 const _ = require('underscore');
 
 class Nav extends React.Component {

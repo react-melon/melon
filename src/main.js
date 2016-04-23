@@ -10,11 +10,10 @@ import ReactDOM from 'react-dom';
 
 import locator from './locator';
 import routes from './routes';
-
-import Page from 'ei/component/Page';
 import Nav from './common/component/Nav';
 
 import ES6Promise from 'es6-promise';
+import Page from 'ei/component/Page';
 
 const AppComponent = App.Component;
 
@@ -60,6 +59,6 @@ function init() {
 
 }
 
-export default {
-    init: init
+module.exports = {
+    init
 };

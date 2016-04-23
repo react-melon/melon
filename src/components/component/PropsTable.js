@@ -10,7 +10,7 @@ import Title from 'melon/Title';
 
 const cx = require('melon/common/util/cxBuilder').create('PropsTable');
 
-const PropsTable = React.createClass({
+export default React.createClass({
 
     displayName: 'PropsTable',
 
@@ -85,4 +85,3 @@ const PropsTable = React.createClass({
 
 });
 
-export default PropsTable;

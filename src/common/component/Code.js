@@ -6,7 +6,7 @@
 import React from 'react';
 import hljs from 'hljs';
 
-const Code = React.createClass({
+export default React.createClass({
 
     componentDidMount() {
         hljs.highlightBlock(this.refs.code);
@@ -35,4 +35,3 @@ const Code = React.createClass({
 
 });
 
-export default Code;

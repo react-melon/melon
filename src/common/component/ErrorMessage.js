@@ -8,7 +8,7 @@ import Icon from 'melon/Icon';
 
 const cx = require('melon/common/util/cxBuilder').create('ErrorMessage');
 
-class ErrorMessage extends React.Component {
+export default class ErrorMessage extends React.Component {
 
     static displayName = 'ErrorMessage';
 
@@ -38,5 +38,3 @@ ErrorMessage.propTypes = {
     error: PropTypes.instanceOf(Error).isRequired,
     debug: PropTypes.bool
 };
-
-export default ErrorMessage;

@@ -40,4 +40,4 @@ const View = React.createClass({
 
 });
 
-export default View;
+module.exports = View;

@@ -7,7 +7,7 @@ import React, {PropTypes} from 'react';
 
 import ExampleCard from './ExampleCard';
 
-const Example = React.createClass({
+export default React.createClass({
 
     propTypes: {
         ...ExampleCard.propTypes,
@@ -35,4 +35,3 @@ const Example = React.createClass({
 
 });
 
-export default Example;

@@ -24,4 +24,4 @@ const IconPage = ei.Page.extend({
 
 });
 
-export default IconPage;
+module.exports = IconPage;

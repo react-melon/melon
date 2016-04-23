@@ -6,8 +6,6 @@
 /* globals LessCompiler, CssCompressor, JsCompressor, PathMapper, AddCopyright, ModuleCompiler, TplMerge */
 /* globals StylusCompiler, BabelProcessor, AmdWrapper, OutputCleaner, MD5Renamer, StringReplace, RawWrapper */
 
-require('babel/register');
-
 exports.input = __dirname;
 
 var stylus = require('stylus');
@@ -75,15 +73,15 @@ exports.getProcessors = function () {
     });
 
     var babel = new BabelProcessor({
-        files: ['src/**/*.js', '!*.txt.js'],
+        files: ['src/**/*.js'],
         compileOptions: {
-            stage: 0,
-            modules: 'common',
             compact: false,
             ast: false,
-            blacklist: ['strict'],
-            externalHelpers: true,
-            loose: 'all',
+            presets: ['es2015', 'es2015-loose', 'react', 'stage-1'],
+            plugins: [
+                'transform-es3-property-literals',
+                'transform-es3-member-expression-literals'
+            ],
             moduleId: '',
             getModuleId: function (filename) {
                 return filename.replace('src/', '');
@@ -92,7 +90,7 @@ exports.getProcessors = function () {
     });
 
     var amdWrapper = new AmdWrapper({
-        files: ['src/**/*.js', '!*.txt']
+        files: ['src/**/*.js']
     });
 
     var clean = new OutputCleaner({
@@ -153,7 +151,7 @@ exports.getProcessors = function () {
             rawWrapper,
             amdWrapper,
             moduleProcessor,
-            // jsProcessor,
+            jsProcessor,
             addCopyright,
             renamer,
             clean,

@@ -5,7 +5,7 @@
 
 /* globals AbstractProcessor*/
 
-var babel = require('babel');
+var babel = require('babel-core');
 var path = require('path');
 
 function Babel(options) {
@@ -41,11 +41,9 @@ Babel.prototype.process = function (file, processContext, callback) {
 
     var result = babel.transform(
         file.data,
-        {
-            ...this.compileOptions,
-            filename: file.path,
-            optional: ['es7.classProperties']
-        }
+        Object.assign({}, this.compileOptions, {
+            filename: file.path
+        })
     );
 
     var code = result.code;

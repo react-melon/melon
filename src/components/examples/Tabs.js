@@ -41,4 +41,4 @@ const TabsExample = React.createClass({
 
 });
 
-export default TabsExample;
+module.exports = TabsExample;

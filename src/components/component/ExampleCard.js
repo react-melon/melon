@@ -11,12 +11,13 @@ import Zippy from 'melon/Zippy';
 import Title from 'melon/Title';
 import Button from 'melon/Button';
 import Icon from 'melon/Icon';
+import {create} from 'melon/common/util/cxBuilder';
 
 import Code from '../../common/component/Code';
 
-const cx = require('melon/common/util/cxBuilder').create('ExampleCard');
+const cx = create('ExampleCard');
 
-const ExampleCard = React.createClass({
+export default React.createClass({
 
     propTypes: {
         title: PropTypes.string.isRequired,
@@ -73,5 +74,3 @@ const ExampleCard = React.createClass({
     }
 
 });
-
-export default ExampleCard;

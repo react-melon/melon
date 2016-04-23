@@ -3,8 +3,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import {Promise} from 'es6-promise';
-import Confirm from 'melon/dialog/Confirm';
+import Confirm from 'melon/Confirm';
 import React from 'react';
 import ReactDOM from 'react-dom';
 

@@ -51,4 +51,4 @@ const SnackBarExample = React.createClass({
 
 });
 
-export default SnackBarExample;
+module.exports = SnackBarExample;

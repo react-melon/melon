@@ -3,7 +3,7 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-module.exports = [{
+export default [{
     text: 'Melon',
     children: [{
         text: 'Introduction',

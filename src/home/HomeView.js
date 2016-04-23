@@ -14,8 +14,6 @@ const cx = require('melon/common/util/cxBuilder').create('Homeview');
 
 class HomeView extends React.Component {
 
-    static displayName = 'HomeView';
-
     render() {
 
         return (
@@ -54,6 +52,6 @@ class HomeView extends React.Component {
 
 }
 
-HomeView = connect(HomeView, true);
+HomeView.displayName = 'HomeView';
 
-export default HomeView;
+module.exports = connect(HomeView, true);

@@ -6,9 +6,9 @@
 import React from 'react';
 import Button from 'melon/Button';
 import Link from 'melon/Link';
+import locator from '../../locator';
 
 const cx = require('melon/common/util/cxBuilder').create('ZippyNav');
-const locator = require('../../locator');
 const _ = require('underscore');
 
 const {

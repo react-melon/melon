@@ -4,9 +4,10 @@
  */
 
 import React from 'react';
-import Tabs, {Tab} from 'melon/Tabs';
+import Tabs from 'melon/Tabs';
 import Button from 'melon/Button';
 import Icon from 'melon/Icon';
+import Tab from 'melon/tabs/Tab';
 
 require('../code/Button.txt');
 
@@ -108,4 +109,4 @@ const View = React.createClass({
 
 });
 
-export default View;
+module.exports = View;

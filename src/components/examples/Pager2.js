@@ -40,4 +40,4 @@ const PagerExample2 = React.createClass({
 
 });
 
-export default PagerExample2;
+module.exports = PagerExample2;

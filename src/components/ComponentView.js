@@ -56,4 +56,4 @@ const ComponentView = React.createClass({
 
 });
 
-export default connect(ComponentView, true);
+module.exports = connect(ComponentView, true);

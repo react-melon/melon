@@ -3,9 +3,10 @@
  * @author chxtom
  */
 
-const ReducerBuilder = require('../../common/util/ReducerBuilder');
+import ReducerBuilder from '../../common/util/ReducerBuilder';
+import {ICON_SEARCH} from '../actionCreater/iconsearch';
+
 const {INIT} = require('ei/actionCreator/page');
-const {ICON_SEARCH} = require('../actionCreater/iconsearch');
 
 const icon = new ReducerBuilder();
 

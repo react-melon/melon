@@ -9,7 +9,7 @@ exports.port = 8878;
 exports.directoryIndexes = true;
 exports.documentRoot = __dirname;
 
-var babel = require('babel');
+var babel = require('babel-core');
 var path = require('path');
 
 var nib = require('nib');
@@ -58,8 +58,17 @@ exports.getLocations = function () {
                     try {
                         context.content = babel
                             .transform(context.content, {
-                                optional: ['es7.classProperties'],
-                                loose: 'all'
+                                compact: false,
+                                ast: false,
+                                presets: ['es2015', 'es2015-loose', 'react', 'stage-1'],
+                                plugins: [
+                                    'transform-es3-property-literals',
+                                    'transform-es3-member-expression-literals'
+                                ],
+                                moduleId: '',
+                                getModuleId: function (filename) {
+                                    return filename.replace('src/', '');
+                                }
                             })
                             .code;
                     }

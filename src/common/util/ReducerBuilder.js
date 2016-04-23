@@ -84,4 +84,4 @@ class ReducerBuilder {
 }
 
 
-module.exports = ReducerBuilder;
+export default ReducerBuilder;

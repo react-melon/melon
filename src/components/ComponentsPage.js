@@ -41,8 +41,8 @@ const ComponentsPage = ei.Page.extend({
                 return 'components/examples/' + item.name;
             });
 
-            require(requireList, function () {
-                let Components = _.toArray(arguments);
+            require(requireList, function (...args) {
+                let Components = _.toArray(args);
                 resolve(
                     _.map(Components, (Component, index) => {
 
@@ -65,9 +65,9 @@ const ComponentsPage = ei.Page.extend({
                     return 'components/code/' + item.name + '.txt';
                 });
 
-                require(requireList, function () {
+                require(requireList, function (...args) {
 
-                    let codes = _.toArray(arguments);
+                    let codes = _.toArray(args);
 
                     resolve(
                         _.map(codes, (code, index) => {
@@ -96,4 +96,4 @@ const ComponentsPage = ei.Page.extend({
 
 });
 
-export default ComponentsPage;
+module.exports = ComponentsPage;

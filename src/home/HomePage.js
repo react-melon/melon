@@ -9,7 +9,7 @@ import pageDispatchEvent from '../common/middleware/pageDispatchEvent';
 import asyncAction from '../common/middleware/asyncAction';
 import logger from '../common/middleware/logger';
 
-var HomePage = ei.Page.extend({
+const HomePage = ei.Page.extend({
 
     middlewares: [asyncAction, pageDispatchEvent, logger],
 
@@ -17,11 +17,11 @@ var HomePage = ei.Page.extend({
 
     reducer: {},
 
-    getInitialState: function (request) {
+    getInitialState(request) {
 
         return {};
     }
 
 });
 
-export default HomePage;
+module.exports = HomePage;

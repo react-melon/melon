@@ -72,6 +72,6 @@ const IconView = React.createClass({
 
 });
 
-export default connect(IconView, true, {
+module.exports = connect(IconView, true, {
     search: require('./actionCreater/iconsearch').search
 });
