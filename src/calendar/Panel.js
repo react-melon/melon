@@ -144,8 +144,12 @@ export default class CalendarPanel extends Component {
 
 CalendarPanel.displayName = 'CalendarPanel';
 
+CalendarPanel.defaultProps = {
+    date: new Date()
+};
+
 CalendarPanel.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date),
     begin: PropTypes.instanceOf(Date),
     end: PropTypes.instanceOf(Date)
 };
