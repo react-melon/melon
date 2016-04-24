@@ -4,7 +4,6 @@
  */
 
 import React, {PropTypes} from 'react';
-import ReactDOM from 'react-dom';
 import Dialog from './Dialog';
 import Button from './Button';
 import createCommand from './dialog/commander';
@@ -53,7 +52,6 @@ Alert.propTypes = {
 Alert.defaultProps = {
     ...Dialog.defaultProps,
     maskClickClose: false,
-    title: null,
     buttonText: '确定',
     buttonVariants: ['primary']
 };
