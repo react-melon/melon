@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "react": "^0.14.8",
-    "react-motion": "^0.4.2"
+    "react-motion": "https://npmcdn.com/react-motion/bower.zip"
   }
 }
