@@ -193,6 +193,7 @@ export default class Calendar extends InputComponent {
             size,
             name,
             dateFormat,
+            placeholder,
             ...others
         } = props;
 
@@ -219,10 +220,14 @@ export default class Calendar extends InputComponent {
                     disabled={disabled}
                     size={size} />
                 <label onClick={this.onLabelClick}>
-                    {DateTime.format(
+                    {value ? DateTime.format(
                         this.parseDate(value),
                         dateFormat.toLowerCase(),
                         lang
+                    ) : (
+                        <span className={cx().part('label-placeholder').build()}>
+                            {placeholder}
+                        </span>
                     )}
                     <Icon icon='expand-more' />
                 </label>
@@ -262,9 +267,10 @@ Calendar.LANG = {
 
 Calendar.defaultProps = {
     ...InputComponent.defaultProps,
-    defaultValue: DateTime.format(new Date(), 'yyyy-mm-dd', Calendar.LANG),
+    defaultValue: '',
     dateFormat: 'yyyy-MM-dd',
-    lang: Calendar.LANG
+    lang: Calendar.LANG,
+    placeholder: '请选择'
 };
 
 Calendar.propTypes = {

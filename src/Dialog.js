@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import Mask from './Mask';
 import dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
-import * as windowScrollHelper from './dialog/windowScrollHelper';
 
 import {create} from './common/util/cxBuilder';
 
@@ -65,11 +64,6 @@ export default class Dialog extends Component {
         dialogWindow.style.marginTop = marginTop + 'px';
     }
 
-    bodyScrolling() {
-        const {show} = this.state;
-        windowScrollHelper[show ? 'stop' : 'restore']();
-    }
-
     onMaskClick(e) {
         if (this.props.maskClickClose) {
             this.setState({open: false}, this.onHide);
@@ -80,7 +74,6 @@ export default class Dialog extends Component {
     }
 
     onShow() {
-        this.bodyScrolling();
         const {onShow} = this.props;
         if (onShow) {
             onShow();
@@ -88,7 +81,6 @@ export default class Dialog extends Component {
     }
 
     onHide() {
-        this.bodyScrolling();
         const {onHide} = this.props;
         if (onHide) {
             onHide();
