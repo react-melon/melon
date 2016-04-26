@@ -95,15 +95,26 @@ export default class InputComponent extends Component {
      */
     componentWillReceiveProps(nextProps) {
 
-        const {customValidity, defaultValue} = nextProps;
+        const {customValidity, defaultValue, disabled} = nextProps;
         const {value = defaultValue} = nextProps;
 
+        if (value !== this.state.value) {
+            this.setState({value});
+        }
+
+        // 如果组件进入了禁用状态，应当移除 validity
+        if (disabled) {
+            this.setState({validity: null});
+            return;
+        }
+
+        // 否则计算一下 validity，如果发生了变化就更新一下
         const validity = customValidity
             ? this.validator.createCustomValidity(customValidity)
             : this.checkValidity(value);
 
-        if (value !== this.state.value || customValidity !== this.props.customValidity) {
-            this.setState({value, validity});
+        if (customValidity !== this.props.customValidity) {
+            this.setState({validity});
         }
 
     }
