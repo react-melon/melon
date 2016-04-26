@@ -29,7 +29,7 @@ function restoreWindowScrolling(name) {
 
 export function stop() {
     stopWindowScrolling('body').style.overflow = 'hidden';
-    stopWindowScrolling('html').style.overflow = 'hidden';
+    stopWindowScrolling('html');
 }
 
 export function restore() {

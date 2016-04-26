@@ -60,13 +60,13 @@ export default class CalendarPager extends Component {
                 <Icon
                     icon="navigate-before"
                     data-role="pager"
-                    states={beforeState}
+                    className={cx().part('prev').addStates(beforeState).build()}
                     data-action="prev"
                     onClick={beforeState.disabled ? null : this.onClick} />
                 <Icon
                     icon="navigate-next"
                     data-role="pager"
-                    states={nextState}
+                    className={cx().part('prev').addStates(nextState).build()}
                     data-action="next"
                     onClick={nextState.disabled ? null : this.onClick} />
                 {y + ' 年 ' + m + ' 月'}

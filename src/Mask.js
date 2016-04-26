@@ -5,6 +5,7 @@
 
 import React, {PropTypes, Component} from 'react';
 import {create} from './common/util/cxBuilder';
+import * as windowScrollHelper from './dialog/windowScrollHelper';
 
 const cx = create('Mask');
 
@@ -12,14 +13,11 @@ export default class Mask extends Component {
 
     componentDidMount() {
 
-        this.originalBodyOverflow = document.getElementsByTagName('body')[0].style.oveflow;
-
         const {show, lockScrollingOnShow} = this.props;
 
         if (show && lockScrollingOnShow) {
             this.lockScroll();
         }
-
     }
 
     shouldComponentUpdate({show}) {
@@ -36,13 +34,11 @@ export default class Mask extends Component {
     }
 
     lockScroll() {
-        const body = document.getElementsByTagName('body')[0];
-        body.style.overflow = 'hidden';
+        windowScrollHelper.stop();
     }
 
     unlockScroll() {
-        const body = document.getElementsByTagName('body')[0];
-        body.style.overflow = this.originalBodyOverflow || '';
+        windowScrollHelper.restore();
     }
 
     render() {
