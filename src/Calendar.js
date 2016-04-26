@@ -11,6 +11,7 @@ import Confirm from './Confirm';
 import Panel from './calendar/Panel';
 import * as DateTime from './common/util/date';
 import Validity from './Validity';
+import {getNextValidity} from './common/util/syncPropsToState';
 
 const cx = create('Calendar');
 
@@ -42,30 +43,24 @@ export default class Calendar extends InputComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    getSyncUpdates(nextProps) {
 
-        const {value, customValidity} = nextProps;
+        const {disabled, customValidity, value} = nextProps;
 
-        if (value !== this.state.value || customValidity !== this.props.customValidity) {
+        // 如果有值，那么就试着解析一下；否则设置为 null
+        let date = value ? this.parseValue(value) : null;
 
-            // 如果有值，那么就试着解析一下；否则设置为 null
-            let date = value ? this.parseValue(value) : null;
+        // 如果 date 为 null 或者是 invalid date，那么就用上默认值；
+        // 否则就用解析出来的这个值
+        date = !date || isNaN(date.getTime()) ? new Date() : date;
 
-            // 如果 date 为 null 或者是 invalid date，那么就用上默认值；
-            // 否则就用解析出来的这个值
-            date = !date || isNaN(date.getTime()) ? new Date() : date;
+        const vilidity = getNextValidity(this, {value, disabled, customValidity});
 
-            const validity = customValidity
-                ? this.validator.createCustomValidity(customValidity)
-                : this.checkValidity(value);
-
-            this.setState({
-                date,
-                validity,
-                value: this.stringifyValue(date)
-            });
-
-        }
+        return {
+            date,
+            vilidity,
+            value: this.stringifyValue(date)
+        };
 
     }
 
