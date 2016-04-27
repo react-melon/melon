@@ -174,14 +174,14 @@ export default class TextBox extends InputComponent {
         const {
             floatingLabel,
             className,
-            value,
             ...rest
         } = props;
 
         const {
             validity,
             isFocus,
-            isFloating
+            isFloating,
+            value
         } = this.state;
 
         const statefulClassName = cx(props)
