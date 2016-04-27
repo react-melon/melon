@@ -28,7 +28,8 @@ export default class CalendarPanel extends Component {
 
         this.state = {
             selectorType: 'main',
-            month: props.date
+            month: props.date,
+            date: props.date
         };
 
     }
@@ -38,7 +39,7 @@ export default class CalendarPanel extends Component {
         const {date} = nextProps;
 
         if (this.props.date !== date) {
-            this.setState({date});
+            this.setState({date, month: date});
         }
 
     }
@@ -82,18 +83,25 @@ export default class CalendarPanel extends Component {
 
     }
 
-    onPagerChange(e) {
-
-        let month = e.month;
+    onPagerChange({month}) {
 
         this.setState({month});
 
     }
 
-    onDateChange(e) {
+    onDateChange({date}) {
+
+        const {month} = this.state;
+        const monthDiff = DateTime.monthDiff(date, month);
+
+        if (monthDiff !== 0) {
+            this.setState({
+                month: DateTime.addMonths(month, monthDiff)
+            });
+        }
 
         this.props.onChange({
-            value: e.date
+            value: date
         });
 
     }
