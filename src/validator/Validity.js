@@ -3,8 +3,6 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import ValidityState from './ValidityState';
-
 export default class Validity {
 
     constructor() {
@@ -12,7 +10,7 @@ export default class Validity {
     }
 
     addState(state) {
-        this.states.push(new ValidityState(state));
+        this.states.push(state);
     }
 
     isValid() {
