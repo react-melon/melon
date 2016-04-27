@@ -13,6 +13,7 @@ import Validity from './Validity';
 import {create} from './common/util/cxBuilder';
 import InputComponent from './InputComponent';
 import * as DateTime from './common/util/date';
+import {getNextValidity} from './common/util/syncPropsToState';
 
 const cx = create('RangeCalendar');
 
@@ -50,6 +51,26 @@ export default class RangeCalendar extends InputComponent {
         }
 
         super.componentWillReceiveProps(nextProps);
+
+    }
+
+    getSyncUpdates(nextProps) {
+
+        const {
+            disabled, customValidity,
+            value, begin, end
+        } = nextProps;
+
+        // 如果有值，那么就试着解析一下；否则设置为 null
+        let date = value ? this.getNormalizeValue(value, begin, end) : null;
+
+        const vilidity = getNextValidity(this, {value, disabled, customValidity});
+
+        return {
+            date,
+            vilidity,
+            value
+        };
 
     }
 

@@ -82,18 +82,25 @@ export default class CalendarPanel extends Component {
 
     }
 
-    onPagerChange(e) {
-
-        let month = e.month;
+    onPagerChange({month}) {
 
         this.setState({month});
 
     }
 
-    onDateChange(e) {
+    onDateChange({date}) {
+
+        const {month} = this.state;
+        const monthDiff = DateTime.monthDiff(date, month);
+
+        if (monthDiff !== 0) {
+            this.setState({
+                month: DateTime.addMonths(month, monthDiff)
+            });
+        }
 
         this.props.onChange({
-            value: e.date
+            value: date
         });
 
     }
