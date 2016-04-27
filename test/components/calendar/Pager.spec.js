@@ -28,15 +28,15 @@ describe('CalendarPager', function () {
         const expectedElement = (
             <div className={'ui-calendar-pager'}>
                 <Icon
+                    className="ui-calendar-pager-prev"
                     icon="navigate-before"
                     data-role="pager"
-                    states={{disabled: false}}
                     data-action="prev"
                     onClick={() => {}} />
                 <Icon
+                    className="ui-calendar-pager-next"
                     icon="navigate-next"
                     data-role="pager"
-                    states={{disabled: false}}
                     data-action="next"
                     onClick={() => {}} />
                 2016 年 12 月
@@ -58,14 +58,14 @@ describe('CalendarPager', function () {
                 <Icon
                     icon="navigate-before"
                     data-role="pager"
-                    states={{disabled: true}}
+                    className="ui-calendar-pager-prev state-disabled"
                     data-action="prev"
                     onClick={null} />
                 <Icon
                     icon="navigate-next"
                     data-role="pager"
-                    states={{disabled: false}}
                     data-action="next"
+                    className="ui-calendar-pager-next"
                     onClick={() => {}} />
                 2015 年 11 月
             </div>
@@ -85,14 +85,14 @@ describe('CalendarPager', function () {
             <div className={'ui-calendar-pager'}>
                 <Icon
                     icon="navigate-before"
+                    className="ui-calendar-pager-prev"
                     data-role="pager"
-                    states={{disabled: false}}
                     data-action="prev"
                     onClick={() => {}} />
                 <Icon
                     icon="navigate-next"
                     data-role="pager"
-                    states={{disabled: true}}
+                    className="ui-calendar-pager-next state-disabled"
                     data-action="next"
                     onClick={null} />
                 2015 年 11 月
@@ -113,6 +113,7 @@ describe('CalendarPager', function () {
         // 上一月
         TestUtils.Simulate.click(icons[0]);
 
+        /* eslint-disable fecs-no-arguments */
         then(() => {
             expect(spy).toHaveBeenCalled();
             expect(spy.calls[0].arguments[0]).toEqual({target: component, month: new Date(2015, 9, 1)});
@@ -126,6 +127,7 @@ describe('CalendarPager', function () {
 
             done();
         });
+        /* eslint-enable fecs-no-arguments */
 
     });
 

@@ -28,7 +28,8 @@ export default class CalendarPanel extends Component {
 
         this.state = {
             selectorType: 'main',
-            month: props.date
+            month: props.date,
+            date: props.date
         };
 
     }
@@ -38,7 +39,7 @@ export default class CalendarPanel extends Component {
         const {date} = nextProps;
 
         if (this.props.date !== date) {
-            this.setState({date});
+            this.setState({date, month: date});
         }
 
     }

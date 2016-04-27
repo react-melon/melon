@@ -150,6 +150,10 @@ export default class RangeCalendar extends InputComponent {
 
         let date = [...this.state.date];
 
+        if (date.length === 0) {
+            date = [new Date(), new Date()];
+        }
+
         date[index] = value;
 
         this.setState({
@@ -268,14 +272,14 @@ export default class RangeCalendar extends InputComponent {
                     <div className={cx().part('row').build()}>
                         <Panel
                             lang={lang}
-                            date={date[0]}
+                            date={date[0] || new Date()}
                             begin={begin}
-                            end={date[1]}
+                            end={date[1] || new Date()}
                             onChange={this.onDateChange.bind(this, 0)} />
                         <Panel
                             lang={lang}
-                            date={date[1]}
-                            begin={date[0]}
+                            date={date[1] || new Date()}
+                            begin={date[0] || new Date()}
                             end={end}
                             onChange={this.onDateChange.bind(this, 1)} />
                     </div>

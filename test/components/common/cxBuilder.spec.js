@@ -5,7 +5,7 @@
 * @author leon <ludafa@outlook.com>
 */
 
-import {create} from '../../../../src/common/util/cxBuilder';
+import {create} from '../../../src/common/util/cxBuilder';
 import expect from 'expect';
 
 describe('cxBuilder', function () {

@@ -9,7 +9,7 @@ import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
 import CalendarHeader from '../../../src/calendar/Header';
-import dateUtil from '../../../src/common/util/date';
+import * as dateUtil from '../../../src/common/util/date';
 
 expect.extend(expectJSX);
 
