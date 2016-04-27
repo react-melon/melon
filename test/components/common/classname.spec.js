@@ -6,7 +6,7 @@
 */
 
 
-import {createClasses} from '../../../../src/common/util/classname';
+import {createClasses} from '../../../src/common/util/classname';
 import expect from 'expect';
 
 describe('classname', function () {

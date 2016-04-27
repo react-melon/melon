@@ -13,6 +13,7 @@ import Validity from './Validity';
 import {create} from './common/util/cxBuilder';
 import InputComponent from './InputComponent';
 import * as DateTime from './common/util/date';
+import {getNextValidity} from './common/util/syncPropsToState';
 
 const cx = create('RangeCalendar');
 
@@ -50,6 +51,26 @@ export default class RangeCalendar extends InputComponent {
         }
 
         super.componentWillReceiveProps(nextProps);
+
+    }
+
+    getSyncUpdates(nextProps) {
+
+        const {
+            disabled, customValidity,
+            value, begin, end
+        } = nextProps;
+
+        // 如果有值，那么就试着解析一下；否则设置为 null
+        let date = value ? this.getNormalizeValue(value, begin, end) : null;
+
+        const vilidity = getNextValidity(this, {value, disabled, customValidity});
+
+        return {
+            date,
+            vilidity,
+            value
+        };
 
     }
 
@@ -128,6 +149,10 @@ export default class RangeCalendar extends InputComponent {
         const {value} = e;
 
         let date = [...this.state.date];
+
+        if (date.length === 0) {
+            date = [new Date(), new Date()];
+        }
 
         date[index] = value;
 
@@ -247,14 +272,14 @@ export default class RangeCalendar extends InputComponent {
                     <div className={cx().part('row').build()}>
                         <Panel
                             lang={lang}
-                            date={date[0]}
+                            date={date[0] || new Date()}
                             begin={begin}
-                            end={date[1]}
+                            end={date[1] || new Date()}
                             onChange={this.onDateChange.bind(this, 0)} />
                         <Panel
                             lang={lang}
-                            date={date[1]}
-                            begin={date[0]}
+                            date={date[1] || new Date()}
+                            begin={date[0] || new Date()}
                             end={end}
                             onChange={this.onDateChange.bind(this, 1)} />
                     </div>

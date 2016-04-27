@@ -20,7 +20,7 @@ export default class SelectSeparatePopup extends Component {
         // 做一个可以随时释放的 debounce 啦
         this.onWindowResize = (() => {
 
-            let handler = this.onWindowResize;
+            let handler = this.onWindowResize.bind(this);
 
             return () => {
                 clearTimeout(this.windowResizeTimer);
