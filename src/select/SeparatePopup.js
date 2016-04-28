@@ -65,7 +65,7 @@ export default class SelectSeparatePopup extends Component {
 
     componentWillUnmount() {
         domUtil.off(window, 'resize', this.onWindowResize);
-        domUtil.off(document.body, 'click', this.onClick);
+        domUtil.off(window, 'click', this.onClick);
     }
 
     getStyle(open) {

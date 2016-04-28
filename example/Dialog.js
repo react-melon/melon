@@ -71,20 +71,22 @@ class View extends React.Component {
                 </div>
 
                 <div className="row">
-                    <Title level={4}>Alert</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 5)}>弹出窗口</Button>
-                    <Alert open={this.state.dialog5}  onConfirm={this.onHide.bind(this, 5)} >This is Content.</Alert>
-                </div>
-
-                <div className="row">
                     <Title level={4}>Confirm</Title>
                     <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 6)}>弹出窗口</Button>
                     <Confirm
                         open={this.state.dialog6}
                         onConfirm={this.onConfirm.bind(this)}
-                        onCancel={this.onConfirm.bind(this)}>
+                        onCancel={() => {
+                            this.setState({dialog5: true});
+                        }}>
                         This is Content.
                     </Confirm>
+                </div>
+
+                <div className="row">
+                    <Title level={4}>Alert</Title>
+                    <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 5)}>弹出窗口</Button>
+                    <Alert open={this.state.dialog5}  onConfirm={this.onHide.bind(this, 5)} >This is Content.</Alert>
                 </div>
             </div>
         );
