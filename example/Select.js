@@ -57,6 +57,26 @@ class View extends React.Component {
                         </Select>
                     </div>
                 </div>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>只读</Title>
+                        <Select
+                            name="a"
+                            readOnly={true}
+                            defaultValue={this.state.a} >
+                            {Select.createOptions(datasource)}
+                        </Select>
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>禁用</Title>
+                        <Select
+                            name="a"
+                            disabled={true}
+                            defaultValue={this.state.a} >
+                            {Select.createOptions(datasource)}
+                        </Select>
+                    </div>
+                </div>
                 <Title level={5}>Controlled Select</Title>
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
