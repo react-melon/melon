@@ -11,39 +11,25 @@ const cx = create('TableCell');
 export default class TableCell extends Component {
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.cellRenderer || nextProps.cellData !== this.props.cellData;
-    }
-
-    getCellContent() {
-
-        const {props} = this;
-        const {cellRenderer, cellData} = this.props;
-
-        const content = cellRenderer ? cellRenderer(props) : cellData;
-
-        return (
-            <div className={cx().part('content').build()}>
-                {content}
-            </div>
-        );
+        return nextProps !== this.props;
     }
 
     render() {
 
-        const props = this.props;
+        const {align, width, height, content} = this.props;
 
         const style = {
-            textAlign: props.align,
-            width: props.width,
-            height: props.height
+            textAlign: align,
+            width: width,
+            height: height
         };
 
         return (
-            <div className={cx(props).build()}>
-                <div className={cx().part('wrap1').build()} style={style}>
-                    <div className={cx().part('wrap2').build()}>
-                        <div className={cx().part('wrap3').build()}>
-                            {this.getCellContent()}
+            <div className={cx(this.props).build()}>
+                <div className={cx.getPartClassName('wrap1')} style={style}>
+                    <div className={cx.getPartClassName('wrap2')}>
+                        <div className={cx.getPartClassName('wrap3')}>
+                            {content}
                         </div>
                     </div>
                 </div>

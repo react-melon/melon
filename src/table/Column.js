@@ -27,6 +27,10 @@ TableColumn.propTypes = {
      */
     cellRenderer: PropTypes.func,
 
+    headerRenderer: PropTypes.func,
+
+    bodyRenderer: PropTypes.func,
+
     /**
      * 单元格从行数据中取数据的键值
      *

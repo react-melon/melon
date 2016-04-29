@@ -81,9 +81,9 @@ export default class Table extends Component {
         const {dataSource, noDataContent} = this.props;
 
         const body = dataSource && dataSource.length
-            ? dataSource.map((rowData, index) => {
-                return this.renderRow(columns, rowData, index, width);
-            })
+            ? dataSource.map(
+                (rowData, index) => this.renderRow(columns, rowData, index, width)
+            )
             : (
                 <div
                     className={cx().part('body-empty').build()}
@@ -139,9 +139,10 @@ export default class Table extends Component {
             // 计算出tableWidth和所有的columnWidth，将更大的一个传递给row使用
             width = Math.max(
                 width,
-                columns.reduce((width, columns) => {
-                    return width + columns.props.width;
-                }, 0)
+                columns.reduce(
+                    (width, columns) => width + columns.props.width,
+                    0
+                )
             );
         }
         else {
