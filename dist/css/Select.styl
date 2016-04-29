@@ -69,6 +69,11 @@
     &.state-invalid
         border-bottom-color: $-melon-colors.red500
 
+    &.state-read-only &-label,
+    &.state-disabled &-label
+        cursor: not-allowed;
+
+
 .{$-melon-class-prefix}-separate-popup
     position: absolute
     overflow: hidden
