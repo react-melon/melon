@@ -203,6 +203,7 @@ Tooltip.defaultProps = {
     };
 
     Tooltip.destroyPopup = function (popup) {
+        ReactDOM.unmountComponentAtNode(popup);
         container.removeChild(popup);
     };
 
