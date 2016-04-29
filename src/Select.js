@@ -140,6 +140,12 @@ export default class Select extends InputComponent {
 
     onClick() {
 
+        const {disabled, readOnly} = this.props;
+
+        if (disabled || readOnly) {
+            return;
+        }
+
         if (this.isOpen()) {
             this.hideOptions();
         }
