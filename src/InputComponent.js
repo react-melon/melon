@@ -192,19 +192,19 @@ export default class InputComponent extends Component {
 
     getStyleStates() {
 
-        const {validity} = this.state;
-
-        if (!validity) {
-            return null;
-        }
-
-        const valid = validity.isValid();
-
-        return {
-            'valid': valid,
-            'invalid': !valid,
+        const states = {
             'read-only': this.isReadOnly()
         };
+
+        const {validity} = this.state;
+
+        if (validity) {
+            const valid = validity.isValid();
+            states.valid = valid;
+            states.invalid = !valid;
+        }
+
+        return states;
 
     }
 
