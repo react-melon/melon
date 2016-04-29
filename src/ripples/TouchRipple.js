@@ -29,34 +29,30 @@ export default class TouchRipple extends Component {
 
     onMouseDown({pageX, pageY}) {
 
-        const {
-            top,
-            left
-        } = this.position;
-
         this.setState({
-            center: [pageX - left - this.radius, pageY - top - this.radius],
+            center: this.getCenter(pageX, pageY),
             now: 't' + new Date().getTime()
         });
-
     }
 
-    componentDidMount() {
-        this.updatePosition();
+    sholdComponentUpdate(nextProps, nextState) {
+        const {props, state} = this;
+        return props.opacity !== nextProps.opacity
+            || state.now !== nextState.now;
     }
 
-    componentDidUpdate() {
-        this.updatePosition();
-    }
+    getCenter(pageX, pageY) {
 
-    componentWillUnmount() {
-        this.position = this.radius = null;
-    }
+        const main = ReactDOM.findDOMNode(this);
+        const position = dom.getPosition(main);
+        const radius = Math.max(position.width, position.height) / 2;
 
-    updatePosition() {
-        let main = ReactDOM.findDOMNode(this);
-        this.position = dom.getPosition(main);
-        this.radius = Math.max(this.position.width, this.position.height) / 2;
+        this.radius = radius;
+
+        return [
+            pageX - position.left - radius,
+            pageY - position.top - radius
+        ];
     }
 
     willLeave(key, valOfKey) {
