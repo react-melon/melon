@@ -169,8 +169,10 @@ class View extends React.Component {
                         dataKey='id'
                         header='ID'
                         footer='ID'
-                        align='right'
-                        width={100} />
+                        align='left'
+                        width={100}
+                        headerRenderer={({cellData}) => `${cellData}*2`}
+                        bodyRenderer={({cellData}) => cellData * 2} />
                     <Table.Column
                         dataKey='task'
                         header='Title'
@@ -204,4 +206,3 @@ class View extends React.Component {
 }
 
 module.exports = View;
-

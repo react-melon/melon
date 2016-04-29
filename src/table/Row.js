@@ -3,7 +3,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {create} from '../common/util/cxBuilder';
 import TableCell from './Cell';
 
@@ -29,42 +29,62 @@ function renderCell(props, columnData, index) {
         ? columnData[part]
         : data[dataKey];
 
+    const cellProps = {
+        part,
+        height,
+        width,
+        align,
+        rowIndex,
+        columnData,
+        cellData,
+        key: dataKey || part,
+        columnIndex: index,
+        rowData: data,
+        cellKey: dataKey
+    };
+
+    // 内容默认是 cellData
+    let content = cellData;
+
+    // 如果有 cellRenderer
+    if (typeof cellRenderer === 'function') {
+        content = cellRenderer(cellProps);
+    }
+    // 或者是有局部的 renderer
+    else {
+
+        const partSpecificRenderer = columnData[`${part}Renderer`];
+
+        if (typeof partSpecificRenderer === 'function') {
+            content = partSpecificRenderer(cellProps);
+        }
+
+    }
+
     return (
-        <TableCell
-            part={part}
-            height={height}
-            width={width}
-            align={align}
-            key={dataKey || part}
-            rowIndex={rowIndex}
-            columnIndex={index}
-            columnData={columnData}
-            rowData={data}
-            cellKey={dataKey}
-            cellData={cellData}
-            cellRenderer={cellRenderer} />
+        <TableCell {...cellProps} content={content} />
     );
 
 }
 
-export default function TableRow(props)  {
+export default class TableRow extends Component {
 
-    const {
-        columns,
-        tableWidth,
-        ...rest
-    } = props;
+    render() {
 
-    return (
-        <div
-            {...rest}
-            className={cx(props).build()}
-            style={{width: tableWidth ? tableWidth - 2 : null}}>
-            {columns.map((column, index) => {
-                return renderCell(props, column.props, index);
-            })}
-        </div>
-    );
+        const props = this.props;
+        const columns = props.columns;
+        const tableWidth = props.tableWidth;
+
+        return (
+            <div
+                className={cx(props).build()}
+                style={{width: tableWidth ? tableWidth - 2 : null}}>
+                {columns.map((column, index) => renderCell(props, column.props, index))}
+            </div>
+        );
+
+    }
+
 
 }
 

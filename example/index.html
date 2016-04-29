@@ -17,7 +17,7 @@ require.config({
     baseUrl: '.',
     paths: {
         'melon': '../src',
-        'react': '../dep/react/react',
+        'react': '../dep/react/react-with-addons',
         'react-motion': '../dep/react-motion/build/react-motion',
         'react-dom': '../dep/react/react-dom',
         'underscore': '../dep/underscore/underscore',
@@ -60,6 +60,10 @@ require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App,
         });
 
     }
+
+    window.ReactPerf = React.addons.Perf;
+
+    React.addons.Perf.start();
 
     window.onhashchange = function () {
         dispatch();
