@@ -48,6 +48,22 @@
             return _this;
         }
 
+        Pager.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+
+            var page = nextProps.page;
+            var total = nextProps.total;
+
+            if (page < 0) {
+                page = 0;
+            } else if (page > total) {
+                page = total - 1;
+            }
+
+            if (page !== this.state.page) {
+                this.setState({ page: page });
+            }
+        };
+
         Pager.prototype.onMainClick = function onMainClick(e) {
             var _this2 = this;
 
