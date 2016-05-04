@@ -1,2 +1,206 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./table/Row","./common/util/dom","./common/util/cxBuilder","./table/Column","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./table/Row"),require("./common/util/dom"),require("./common/util/cxBuilder"),require("./table/Column"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Row,e.dom,e.cxBuilder,e.Column,e.babelHelpers),e.Table=r.exports}}(this,function(exports,e,t,r,o,i,n){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var a=n.interopRequireDefault(e),s=n.interopRequireDefault(t),l=n.interopRequireWildcard(r),u=n.interopRequireDefault(i),p=o.create("Table"),c=function(t){function r(e){n.classCallCheck(this,r);var o=n.possibleConstructorReturn(this,t.call(this,e));return o.state={columns:o.getColumns(o.props)},o.onWindowResize=o.onWindowResize.bind(o),o}return n.inherits(r,t),r.prototype.componentDidMount=function(){this.onWindowResize(),l.on(window,"resize",this.onWindowResize)},r.prototype.componentWillReceiveProps=function(e){this.setState({columns:this.getColumns(e)})},r.prototype.componentWillUnmount=function(){l.off(window,"resize",this.onWindowResize)},r.prototype.getColumns=function(t){return e.Children.toArray(t.children).reduce(function(e,t){if(null!=t){if("COLUMN"!==t.type._TABLE_COMPONENT_)throw new Error("Table child must be a TableColumn");e.push(t)}return e},[])},r.prototype.renderHeader=function(e,t){var r=this.props;return a["default"].createElement("div",{className:p().part("header").build()},a["default"].createElement(s["default"],{part:"header",height:r.headerRowHeight,columns:e,tableWidth:t}))},r.prototype.renderBody=function(e,t){var r=this,o=this.props,i=o.dataSource,n=o.noDataContent,s=i&&i.length?i.map(function(o,i){return r.renderRow(e,o,i,t)}):a["default"].createElement("div",{className:p().part("body-empty").build(),style:{width:t-2}},n);return a["default"].createElement("div",{className:p().part("body").build()},s)},r.prototype.renderRow=function(e,t,r,o){var i=this.props,n=i.rowHeight,l=i.highlight;return a["default"].createElement(s["default"],{height:n,highlight:l,key:r,rowIndex:r,part:"body",columns:e,data:t,tableWidth:o})},r.prototype.renderFooter=function(e){return null},r.prototype.onWindowResize=function(){var e=this.main;if(this.main)this.setState({width:e.offsetWidth})},r.prototype.render=function(){var e=this,t=this.state,r=t.width,o=t.columns;if(r)r=Math.max(r,o.reduce(function(e,t){return e+t.props.width},0));else r="";return a["default"].createElement("div",{className:p(this.props).build(),ref:function(t){e.main=t}},this.renderHeader(o,r),this.renderBody(o,r),this.renderFooter(o,r))},r}(e.Component);exports["default"]=c,c.displayName="Table",c.propTypes={rowHeight:e.PropTypes.number.isRequired,highlight:e.PropTypes.bool,headerRowHeight:e.PropTypes.number,dataSource:e.PropTypes.array.isRequired,noDataContent:e.PropTypes.node},c.defaultProps={highlight:!0,rowHeight:48,headerRowHeight:56,noDataContent:"没有数据"},c.Column=u["default"]});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './table/Row', './common/util/dom', './common/util/cxBuilder', './table/Column', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./table/Row'), require('./common/util/dom'), require('./common/util/cxBuilder'), require('./table/Column'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Row, global.dom, global.cxBuilder, global.Column, global.babelHelpers);
+        global.Table = mod.exports;
+    }
+})(this, function (exports, _react, _Row, _dom, _cxBuilder, _Column, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Row2 = babelHelpers.interopRequireDefault(_Row);
+
+    var dom = babelHelpers.interopRequireWildcard(_dom);
+
+    var _Column2 = babelHelpers.interopRequireDefault(_Column);
+
+    /**
+     * @file melon/Table
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('Table');
+
+    var Table = function (_Component) {
+        babelHelpers.inherits(Table, _Component);
+
+        function Table(props) {
+            babelHelpers.classCallCheck(this, Table);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.state = {
+                columns: _this.getColumns(_this.props)
+            };
+
+            _this.onWindowResize = _this.onWindowResize.bind(_this);
+            return _this;
+        }
+
+        Table.prototype.componentDidMount = function componentDidMount() {
+            this.onWindowResize();
+            dom.on(window, 'resize', this.onWindowResize);
+        };
+
+        Table.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            this.setState({
+                columns: this.getColumns(nextProps)
+            });
+        };
+
+        Table.prototype.componentWillUnmount = function componentWillUnmount() {
+            dom.off(window, 'resize', this.onWindowResize);
+        };
+
+        Table.prototype.getColumns = function getColumns(props) {
+
+            return _react.Children.toArray(props.children).reduce(function (children, child) {
+
+                if (child != null) {
+
+                    if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
+                        throw new Error('Table child must be a TableColumn');
+                    }
+
+                    children.push(child);
+                }
+
+                return children;
+            }, []);
+        };
+
+        Table.prototype.renderHeader = function renderHeader(columns, width) {
+            var props = this.props;
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx().part('header').build() },
+                _react2['default'].createElement(_Row2['default'], {
+                    part: 'header',
+                    height: props.headerRowHeight,
+                    columns: columns,
+                    tableWidth: width })
+            );
+        };
+
+        Table.prototype.renderBody = function renderBody(columns, width) {
+            var _this2 = this;
+
+            var _props = this.props;
+            var dataSource = _props.dataSource;
+            var noDataContent = _props.noDataContent;
+
+
+            var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
+                return _this2.renderRow(columns, rowData, index, width);
+            }) : _react2['default'].createElement(
+                'div',
+                {
+                    className: cx().part('body-empty').build(),
+                    style: { width: width - 2 } },
+                noDataContent
+            );
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx().part('body').build() },
+                body
+            );
+        };
+
+        Table.prototype.renderRow = function renderRow(columns, rowData, index, tableWidth) {
+            var _props2 = this.props;
+            var rowHeight = _props2.rowHeight;
+            var highlight = _props2.highlight;
+
+            return _react2['default'].createElement(_Row2['default'], {
+                height: rowHeight,
+                highlight: highlight,
+                key: index,
+                rowIndex: index,
+                part: 'body',
+                columns: columns,
+                data: rowData,
+                tableWidth: tableWidth });
+        };
+
+        Table.prototype.renderFooter = function renderFooter(columns) {
+            return null;
+        };
+
+        Table.prototype.onWindowResize = function onWindowResize() {
+            var main = this.main;
+
+
+            if (this.main) {
+                this.setState({
+                    width: main.offsetWidth
+                });
+            }
+        };
+
+        Table.prototype.render = function render() {
+            var _this3 = this;
+
+            var _state = this.state;
+            var width = _state.width;
+            var columns = _state.columns;
+
+
+            if (width) {
+                // 计算出tableWidth和所有的columnWidth，将更大的一个传递给row使用
+                width = Math.max(width, columns.reduce(function (width, columns) {
+                    return width + columns.props.width;
+                }, 0));
+            } else {
+                width = '';
+            }
+
+            return _react2['default'].createElement(
+                'div',
+                {
+                    className: cx(this.props).build(),
+                    ref: function ref(main) {
+                        _this3.main = main;
+                    } },
+                this.renderHeader(columns, width),
+                this.renderBody(columns, width),
+                this.renderFooter(columns, width)
+            );
+        };
+
+        return Table;
+    }(_react.Component);
+
+    exports['default'] = Table;
+
+
+    Table.displayName = 'Table';
+
+    Table.propTypes = {
+        rowHeight: _react.PropTypes.number.isRequired,
+        highlight: _react.PropTypes.bool,
+        headerRowHeight: _react.PropTypes.number,
+        dataSource: _react.PropTypes.array.isRequired,
+        noDataContent: _react.PropTypes.node
+    }, Table.defaultProps = {
+        highlight: true,
+        rowHeight: 48,
+        headerRowHeight: 56,
+        noDataContent: '没有数据'
+    };
+
+    Table.Column = _Column2['default'];
+});

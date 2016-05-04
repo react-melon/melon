@@ -1,2 +1,72 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.helper=r.exports}}(this,function(exports,e){"use strict";function t(e){if(e.selected=!0,Array.isArray(e.children))e.children.forEach(t)}function r(e){if(e.selected=!1,Array.isArray(e.children))e.children.forEach(r)}function n(e,t,r){if(e.indexOf(t.id)>-1)t.selected=!0;if(Array.isArray(t.children))t.children=t.children.map(function(t,r){return n(e,t,r)});return t}function i(e){if(Array.isArray(e.children)&&e.children.length>0)e.selected=e.children.reduce(function(e,t,r){return e&&t.selected},!0)}Object.defineProperty(exports,"__esModule",{value:!0}),exports.selectAll=t,exports.cancelAll=r,exports.parse=n,exports.isAllSelected=i});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports", "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.helper = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.selectAll = selectAll;
+    exports.cancelAll = cancelAll;
+    exports.parse = parse;
+    exports.isAllSelected = isAllSelected;
+
+    /**
+     * @file melon/region/mixin
+     * @author cxtom(cxtom2010@gmail.com)
+     */
+
+    function selectAll(child) {
+
+        child.selected = true;
+
+        if (Array.isArray(child.children)) {
+            child.children.forEach(selectAll);
+        }
+    }
+
+    function cancelAll(child) {
+
+        child.selected = false;
+
+        if (Array.isArray(child.children)) {
+            child.children.forEach(cancelAll);
+        }
+    }
+
+    function parse(value, child, index) {
+
+        if (value.indexOf(child.id) > -1) {
+            child.selected = true;
+        }
+
+        if (Array.isArray(child.children)) {
+            child.children = child.children.map(function (c, i) {
+                return parse(value, c, i);
+            });
+        }
+
+        return child;
+    }
+    function isAllSelected(data) {
+
+        if (!Array.isArray(data.children) || !(data.children.length > 0)) {
+            return;
+        }
+
+        data.selected = data.children.reduce(function (result, child, index) {
+            return result && child.selected;
+        }, true);
+    }
+});

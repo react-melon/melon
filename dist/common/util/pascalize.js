@@ -1,2 +1,29 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["module","../../babelHelpers","./camelize"],t);else if("undefined"!=typeof exports)t(module,require("../../babelHelpers"),require("./camelize"));else{var r={exports:{}};t(r,e.babelHelpers,e.camelize),e.pascalize=r.exports}}(this,function(module,e,t){"use strict";module.exports=function(e){if(!e)return"";else return""+e.charAt(0).toUpperCase()+t(e.slice(1))}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['module', "../../babelHelpers", './camelize'], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(module, require("../../babelHelpers"), require('./camelize'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod, global.babelHelpers, global.camelize);
+        global.pascalize = mod.exports;
+    }
+})(this, function (module, babelHelpers, camelize) {
+    'use strict';
+
+    module.exports = function (source) {
+
+        if (!source) {
+            return '';
+        }
+
+        return '' + source.charAt(0).toUpperCase() + camelize(source.slice(1));
+    };
+    /**
+     * @file 大骆驼化
+     * @author leon(ludafa@outlook.com)
+     */
+});

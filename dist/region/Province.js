@@ -1,2 +1,139 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","./Selector","./helper","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("./Selector"),require("./helper"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Selector,e.helper,e.babelHelpers),e.Province=r.exports}}(this,function(exports,e,t,r,n,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var o=i.interopRequireDefault(e),a=i.interopRequireDefault(r),s=i.interopRequireWildcard(n),l=t.create("RegionProvince"),u=function(e){function t(r){i.classCallCheck(this,t);var n=i.possibleConstructorReturn(this,e.call(this,r));return n.state={expand:!1},n.onSelectorChange=n.onSelectorChange.bind(n),n.onMouseEnter=n.onMouseEnter.bind(n),n.onMouseLeave=n.onMouseLeave.bind(n),n}return i.inherits(t,e),t.prototype.onSelectorChange=function(e){var t=e.value,r=this.props,n=r.datasource,i=r.onChange;s[t?"selectAll":"cancelAll"](n),i&&i({data:n})},t.prototype.onMouseEnter=function(e){this.setState({expand:!0})},t.prototype.onMouseLeave=function(e){this.setState({expand:!1})},t.prototype.renderSelectedInfo=function(){var e=this.props.datasource,t=e.children&&e.children.length;if(t){var r=e.children.reduce(function(e,t,r){if(t.selected)e++;return e},0);return r===t||0===r?null:o["default"].createElement("span",{className:l().part("info").build()},"("+r+"/"+t+")")}},t.prototype.render=function(){var e=this.props,t=e.datasource,r=e.children;return o["default"].createElement("div",{className:l(this.props).addStates({expand:this.state.expand}).build(),onMouseEnter:r?this.onMouseEnter:null,onMouseLeave:r?this.onMouseLeave:null},o["default"].createElement(a["default"],{label:t.text,id:t.id,checked:t.selected,onChange:this.onSelectorChange}),this.renderSelectedInfo(),r?o["default"].createElement("div",{className:l().part("popup").build()},o["default"].createElement("ul",null,r)):null)},t}(e.Component);exports["default"]=u,u.propTypes={onChange:e.PropTypes.func,disabled:e.PropTypes.bool,datasource:e.PropTypes.object}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', './Selector', './helper', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Selector'), require('./helper'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.Selector, global.helper, global.babelHelpers);
+        global.Province = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _Selector, _helper, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Selector2 = babelHelpers.interopRequireDefault(_Selector);
+
+    var helper = babelHelpers.interopRequireWildcard(_helper);
+
+    /**
+     * @file Region/RegionProvince
+     * @author cxtom(cxtom2010@gmail.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('RegionProvince');
+
+    var RegionProvince = function (_Component) {
+        babelHelpers.inherits(RegionProvince, _Component);
+
+        function RegionProvince(props) {
+            babelHelpers.classCallCheck(this, RegionProvince);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.state = {
+                expand: false
+            };
+
+            _this.onSelectorChange = _this.onSelectorChange.bind(_this);
+            _this.onMouseEnter = _this.onMouseEnter.bind(_this);
+            _this.onMouseLeave = _this.onMouseLeave.bind(_this);
+
+            return _this;
+        }
+
+        RegionProvince.prototype.onSelectorChange = function onSelectorChange(e) {
+            var value = e.value;
+            var _props = this.props;
+            var datasource = _props.datasource;
+            var onChange = _props.onChange;
+
+
+            helper[value ? 'selectAll' : 'cancelAll'](datasource);
+
+            onChange && onChange({
+                data: datasource
+            });
+        };
+
+        RegionProvince.prototype.onMouseEnter = function onMouseEnter(e) {
+            this.setState({ expand: true });
+        };
+
+        RegionProvince.prototype.onMouseLeave = function onMouseLeave(e) {
+            this.setState({ expand: false });
+        };
+
+        RegionProvince.prototype.renderSelectedInfo = function renderSelectedInfo() {
+            var datasource = this.props.datasource;
+
+
+            var total = datasource.children && datasource.children.length;
+
+            if (!total) {
+                return;
+            }
+
+            var num = datasource.children.reduce(function (result, child, index) {
+                if (child.selected) {
+                    result++;
+                }
+                return result;
+            }, 0);
+
+            return num === total || num === 0 ? null : _react2['default'].createElement(
+                'span',
+                { className: cx().part('info').build() },
+                '(' + num + '/' + total + ')'
+            );
+        };
+
+        RegionProvince.prototype.render = function render() {
+            var _props2 = this.props;
+            var datasource = _props2.datasource;
+            var children = _props2.children;
+
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).addStates({ expand: this.state.expand }).build(),
+                    onMouseEnter: children ? this.onMouseEnter : null,
+                    onMouseLeave: children ? this.onMouseLeave : null },
+                _react2['default'].createElement(_Selector2['default'], {
+                    label: datasource.text,
+                    id: datasource.id,
+                    checked: datasource.selected,
+                    onChange: this.onSelectorChange }),
+                this.renderSelectedInfo(),
+                children ? _react2['default'].createElement(
+                    'div',
+                    { className: cx().part('popup').build() },
+                    _react2['default'].createElement(
+                        'ul',
+                        null,
+                        children
+                    )
+                ) : null
+            );
+        };
+
+        return RegionProvince;
+    }(_react.Component);
+
+    exports['default'] = RegionProvince;
+
+
+    RegionProvince.propTypes = {
+        onChange: _react.PropTypes.func,
+        disabled: _react.PropTypes.bool,
+        datasource: _react.PropTypes.object
+    };
+});

@@ -1,2 +1,156 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../Icon","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../Icon"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Icon,e.babelHelpers),e.TreeNode=r.exports}}(this,function(exports,e,t,r,n){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var i=n.interopRequireDefault(e),o=n.interopRequireDefault(r),a=t.create("TreeNode"),s=function(t){function r(e){n.classCallCheck(this,r);var i=n.possibleConstructorReturn(this,t.call(this,e));return i.onClick=i.onClick.bind(i),i.state={expand:e.expand||!1},i}return n.inherits(r,t),r.prototype.shouldComponentUpdate=function(e,t){return t.expand!==this.state.expand},r.prototype.componentWillReceiveProps=function(e){if(e.expand!==this.props.expand)this.setState({expand:e.expand})},r.prototype.onClick=function(e){this.setState({expand:!this.state.expand})},r.prototype.render=function(){var t=this.props,s=t.label,l=n.objectWithoutProperties(t,["label"]),u=this.state.expand,p=u?t.expandIcon||r.ICON[1]:t.unexpandIcon||r.ICON[0],c=t.children,d=void 0,f=void 0;if(t.level){var h=t.level-0;f={paddingLeft:1.2*h+.4+"em"},d={left:.25+1.2*(h-1)+"em"}}if(e.Children.count(c)>0)c=[i["default"].createElement(o["default"],{key:"icon",icon:p,onClick:this.onClick,style:d}),i["default"].createElement("span",{onClick:this.onClick,key:"label","data-role":"tree-node-label",style:f,className:a().part("label").addVariants("parent").addStates({expand:u}).build()},s),i["default"].createElement("ul",{className:a().part("root").addStates({expand:u}).build(),key:"root",ref:"list"},c)];else c=i["default"].createElement("span",{onClick:this.onClick,key:"label","data-role":"tree-node-label",style:f,className:a().part("label").build()},s);return i["default"].createElement("li",n["extends"]({},l,{"data-role":"tree-node",className:a(t).addVariants("level"+t.level).build()}),c)},r}(e.Component);exports["default"]=s,s.propTypes={label:e.PropTypes.oneOfType([e.PropTypes.string,e.PropTypes.element]),expandIcon:e.PropTypes.string,unexpandIcon:e.PropTypes.string,expand:e.PropTypes.bool,selected:e.PropTypes.bool,level:e.PropTypes.number},s.defaultProps={label:"",expand:!1,selected:!1},s.ICON=["chevron-right","expand-more"]});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', '../Icon', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('../Icon'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.Icon, global.babelHelpers);
+        global.TreeNode = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _Icon, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Icon2 = babelHelpers.interopRequireDefault(_Icon);
+
+    /**
+     * @file melon/Tree
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('TreeNode');
+
+    var TreeNode = function (_Component) {
+        babelHelpers.inherits(TreeNode, _Component);
+
+        function TreeNode(props) {
+            babelHelpers.classCallCheck(this, TreeNode);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.onClick = _this.onClick.bind(_this);
+
+            _this.state = {
+                expand: props.expand || false
+            };
+
+            return _this;
+        }
+
+        TreeNode.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+            return nextState.expand !== this.state.expand;
+        };
+
+        TreeNode.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+
+            if (props.expand === this.props.expand) {
+                return;
+            }
+
+            this.setState({ expand: props.expand });
+        };
+
+        TreeNode.prototype.onClick = function onClick(e) {
+            this.setState({ expand: !this.state.expand });
+        };
+
+        TreeNode.prototype.render = function render() {
+
+            var props = this.props;
+            var label = props.label;
+            var others = babelHelpers.objectWithoutProperties(props, ['label']);
+
+            var expand = this.state.expand;
+
+            var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
+
+            var children = props.children;
+
+            var iconStyle = void 0;
+            var labelStyle = void 0;
+
+            if (props.level) {
+                var level = props.level - 0;
+                labelStyle = {
+                    paddingLeft: level * 1.2 + 0.4 + 'em'
+                };
+                iconStyle = {
+                    left: 0.25 + (level - 1) * 1.2 + 'em'
+                };
+            }
+
+            // 是否还有子节点
+            if (_react.Children.count(children) > 0) {
+                children = [_react2['default'].createElement(_Icon2['default'], {
+                    key: 'icon',
+                    icon: icon,
+                    onClick: this.onClick,
+                    style: iconStyle }), _react2['default'].createElement(
+                    'span',
+                    {
+                        onClick: this.onClick,
+                        key: 'label',
+                        'data-role': 'tree-node-label',
+                        style: labelStyle,
+                        className: cx().part('label').addVariants('parent').addStates({ expand: expand }).build() },
+                    label
+                ), _react2['default'].createElement(
+                    'ul',
+                    {
+                        className: cx().part('root').addStates({ expand: expand }).build(),
+                        key: 'root',
+                        ref: 'list' },
+                    children
+                )];
+            } else {
+                children = _react2['default'].createElement(
+                    'span',
+                    {
+                        onClick: this.onClick,
+                        key: 'label',
+                        'data-role': 'tree-node-label',
+                        style: labelStyle,
+                        className: cx().part('label').build() },
+                    label
+                );
+            }
+
+            return _react2['default'].createElement(
+                'li',
+                babelHelpers['extends']({}, others, {
+                    'data-role': 'tree-node',
+                    className: cx(props).addVariants('level' + props.level).build() }),
+                children
+            );
+        };
+
+        return TreeNode;
+    }(_react.Component);
+
+    exports['default'] = TreeNode;
+
+
+    TreeNode.propTypes = {
+        label: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
+        expandIcon: _react.PropTypes.string,
+        unexpandIcon: _react.PropTypes.string,
+        expand: _react.PropTypes.bool,
+        selected: _react.PropTypes.bool,
+        level: _react.PropTypes.number
+    }, TreeNode.defaultProps = {
+        label: '',
+        expand: false,
+        selected: false
+    };
+
+    TreeNode.ICON = ['chevron-right', 'expand-more'];
+});

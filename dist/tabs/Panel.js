@@ -1,2 +1,48 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Panel=r.exports}}(this,function(exports,e,t,r){"use strict";function n(e){var t=e.active,n=r.objectWithoutProperties(e,["active"]);return i["default"].createElement("div",r["extends"]({},n,{className:o(e).addStates({active:t}).build()}))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=n;var i=r.interopRequireDefault(e),o=t.create("TabsPanel");n.displayName="TabsPanel",n.propTypes={active:e.PropTypes.bool},n.defaultProps={active:!1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Panel = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = TabsPanel;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon Tabs Panel
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('TabsPanel');
+
+    function TabsPanel(props) {
+        var active = props.active;
+        var others = babelHelpers.objectWithoutProperties(props, ['active']);
+
+
+        return _react2['default'].createElement('div', babelHelpers['extends']({}, others, { className: cx(props).addStates({ active: active }).build() }));
+    }
+
+    TabsPanel.displayName = 'TabsPanel';
+
+    TabsPanel.propTypes = {
+        active: _react.PropTypes.bool
+    };
+
+    TabsPanel.defaultProps = {
+        active: false
+    };
+});

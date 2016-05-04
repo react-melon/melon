@@ -1,2 +1,74 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","../../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("../../babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.classname=r.exports}}(this,function(exports,e){"use strict";function t(){for(var e=[],r=arguments.length,n=Array(r),a=0;r>a;a++)n[a]=arguments[a];for(var s=0,l=n.length;l>s;s++){var u=n[s];if(u)switch(i.call(u).slice(8,-1)){case"String":case"Number":e.push(u);break;case"Array":e=e.concat(t.apply(null,u));break;case"Object":for(var p in u)if(o.call(u,p)&&u[p])e.push(p)}else;}return e}function r(){return t.apply(void 0,arguments).join(" ")}Object.defineProperty(exports,"__esModule",{value:!0}),exports.createClasses=t,exports.createClassName=r;var i=Object.prototype.toString,o=Object.prototype.hasOwnProperty});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', "../../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("../../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.classname = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.createClasses = createClasses;
+    exports.createClassName = createClassName;
+
+    /**
+     * @file melon 样式相关的小工具
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var toString = Object.prototype.toString;
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+    function createClasses() {
+
+        var classes = [];
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        for (var i = 0, len = args.length; i < len; i++) {
+
+            var arg = args[i];
+
+            if (!arg) {
+                continue;
+            }
+
+            switch (toString.call(arg).slice(8, -1)) {
+
+                case 'String':
+                case 'Number':
+                    classes.push(arg);
+                    break;
+
+                case 'Array':
+                    classes = classes.concat(createClasses.apply(null, arg));
+                    break;
+
+                case 'Object':
+                    for (var key in arg) {
+                        if (hasOwnProperty.call(arg, key) && arg[key]) {
+                            classes.push(key);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        return classes;
+    }
+
+    function createClassName() {
+        return createClasses.apply(undefined, arguments).join(' ');
+    }
+});

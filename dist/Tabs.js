@@ -1,2 +1,167 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./tabs/Tab","./tabs/Panel","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./tabs/Tab"),require("./tabs/Panel"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Tab,e.Panel,e.cxBuilder,e.babelHelpers),e.Tabs=r.exports}}(this,function(exports,e,t,r,o,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=i.interopRequireDefault(e),a=i.interopRequireDefault(t),s=i.interopRequireDefault(r),l=o.create("Tabs"),u=function(t){function r(e){i.classCallCheck(this,r);var o=i.possibleConstructorReturn(this,t.call(this,e)),n=e.selectedIndex;return o.state={selectedIndex:n},o}return i.inherits(r,t),r.prototype.componentWillReceiveProps=function(e){if(e.selectedIndex!==this.state.selectedIndex)this.setState({selectedIndex:e.selectedIndex})},r.prototype.handleTabClick=function(e,t){if(e!==this.state.selectedIndex){var r=this.props,o=r.onBeforeChange,i=r.onChange;if(t.selectedIndex=e,o)if(o(t),t.isDefaultPrevented())return;this.setState({selectedIndex:e},function(){i&&i(t)})}},r.prototype.getTabCount=function(){return e.Children.count(this.props.children)},r.prototype.getSelected=function(e,t){return this.state.selectedIndex===t},r.prototype.render=function(){for(var t=this.props,r=0,o=1/this.getTabCount()*100+"%",a=[],u=[],p=e.Children.toArray(t.children),d=0,c=p.length;c>d;++d){var f=p[d],h=this.getSelected(f,d);if(h)r=d;if(p)a.push(n["default"].createElement(s["default"],{key:d,active:h},f.props.children));u.push(e.cloneElement(f,{key:d,selected:h,tabIndex:d,style:{width:o},onClick:f.props.disabled?null:this.handleTabClick.bind(this,d)}))}var m={width:o,left:"calc("+o+"*"+r+")"};return n["default"].createElement("div",i["extends"]({},t,{className:l(t).build()}),n["default"].createElement("ul",null,u,n["default"].createElement("li",{className:l().part("inkbar").build(),style:m})),a)},r}(e.Component);exports["default"]=u,u.propTypes={selectedIndex:e.PropTypes.number.isRequired,onChange:e.PropTypes.func,onBeforeChange:e.PropTypes.func},u.defaultProps={selectedIndex:0},u.Tab=a["default"]});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './tabs/Tab', './tabs/Panel', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./tabs/Tab'), require('./tabs/Panel'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Tab, global.Panel, global.cxBuilder, global.babelHelpers);
+        global.Tabs = mod.exports;
+    }
+})(this, function (exports, _react, _Tab, _Panel, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Tab2 = babelHelpers.interopRequireDefault(_Tab);
+
+    var _Panel2 = babelHelpers.interopRequireDefault(_Panel);
+
+    /**
+     * @file melon/Tabs
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Tabs');
+
+    var Tabs = function (_Component) {
+        babelHelpers.inherits(Tabs, _Component);
+
+        function Tabs(props) {
+            babelHelpers.classCallCheck(this, Tabs);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            var selectedIndex = props.selectedIndex;
+
+
+            _this.state = {
+                selectedIndex: selectedIndex
+            };
+
+            return _this;
+        }
+
+        Tabs.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+
+            if (nextProps.selectedIndex !== this.state.selectedIndex) {
+                this.setState({
+                    selectedIndex: nextProps.selectedIndex
+                });
+            }
+        };
+
+        Tabs.prototype.handleTabClick = function handleTabClick(index, e) {
+
+            if (index === this.state.selectedIndex) {
+                return;
+            }
+
+            var _props = this.props;
+            var onBeforeChange = _props.onBeforeChange;
+            var onChange = _props.onChange;
+
+
+            e.selectedIndex = index;
+
+            if (onBeforeChange) {
+
+                onBeforeChange(e);
+
+                if (e.isDefaultPrevented()) {
+                    return;
+                }
+            }
+
+            this.setState({ selectedIndex: index }, function () {
+                onChange && onChange(e);
+            });
+        };
+
+        Tabs.prototype.getTabCount = function getTabCount() {
+            return _react.Children.count(this.props.children);
+        };
+
+        Tabs.prototype.getSelected = function getSelected(tab, index) {
+            return this.state.selectedIndex === index;
+        };
+
+        Tabs.prototype.render = function render() {
+
+            var props = this.props;
+            var tabIndex = 0;
+            var percent = 1 / this.getTabCount() * 100 + '%';
+            var tabContents = [];
+            var tabs = [];
+            var children = _react.Children.toArray(props.children);
+
+            for (var i = 0, len = children.length; i < len; ++i) {
+
+                var tab = children[i];
+
+                var selected = this.getSelected(tab, i);
+
+                if (selected) {
+                    tabIndex = i;
+                }
+
+                if (children) {
+                    tabContents.push(_react2['default'].createElement(
+                        _Panel2['default'],
+                        { key: i, active: selected },
+                        tab.props.children
+                    ));
+                }
+
+                tabs.push((0, _react.cloneElement)(tab, {
+                    key: i,
+                    selected: selected,
+                    tabIndex: i,
+                    style: { width: percent },
+                    onClick: tab.props.disabled ? null : this.handleTabClick.bind(this, i)
+                }));
+            }
+
+            var InkBarStyles = {
+                width: percent,
+                left: 'calc(' + percent + '*' + tabIndex + ')'
+            };
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, props, { className: cx(props).build() }),
+                _react2['default'].createElement(
+                    'ul',
+                    null,
+                    tabs,
+                    _react2['default'].createElement('li', { className: cx().part('inkbar').build(), style: InkBarStyles })
+                ),
+                tabContents
+            );
+        };
+
+        return Tabs;
+    }(_react.Component);
+
+    exports['default'] = Tabs;
+
+
+    Tabs.propTypes = {
+        selectedIndex: _react.PropTypes.number.isRequired,
+        onChange: _react.PropTypes.func,
+        onBeforeChange: _react.PropTypes.func
+    };
+
+    Tabs.defaultProps = {
+        selectedIndex: 0
+    };
+
+    Tabs.Tab = _Tab2['default'];
+});

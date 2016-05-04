@@ -1,2 +1,224 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./Button","./Icon","./Progress","./Link","./Validity","./InputComponent","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./Button"),require("./Icon"),require("./Progress"),require("./Link"),require("./Validity"),require("./InputComponent"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Button,e.Icon,e.Progress,e.Link,e.Validity,e.InputComponent,e.cxBuilder,e.babelHelpers),e.Uploader=r.exports}}(this,function(exports,e,t,r,o,i,n,a,s,l){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var u=l.interopRequireDefault(e),p=l.interopRequireDefault(t),d=l.interopRequireDefault(r),c=l.interopRequireDefault(o),f=l.interopRequireDefault(i),h=l.interopRequireDefault(n),m=l.interopRequireDefault(a),y=s.create("Uploader"),b=function(e){function t(r,o){l.classCallCheck(this,t);var i=l.possibleConstructorReturn(this,e.call(this,r,o));return i.state=l["extends"]({},i.state,{isUploading:!1,isUploaded:!!i.props.value}),i}return l.inherits(t,e),t.prototype.onFileChange=function(e){var t=this;this.setUploading(),this.props.upload({target:this,files:e.target.files}).then(function(e){return t.setFile(e)},function(e){return t.clearFile()})},t.prototype.setUploading=function(){this.setState({isUploading:!0})},t.prototype.setFile=function(t){var r=this;this.setState({value:t,isUploaded:!0,isUploading:!1},function(){e.prototype.onChange.call(r,{type:"change",target:r,value:t})})},t.prototype.clearFile=function(){var t=this;this.setState({rawValue:"",isUploaded:!1,isUploading:!1},function(){e.prototype.onChange.call(t,{type:"change",target:t,value:""})})},t.prototype.renderUploadFile=function(){var e=this,t=this.state,r=t.isUploading,o=t.isUploaded;return r||o?null:u["default"].createElement("input",{ref:"file",type:"file",className:y().part("file").build(),onChange:function(t){e.onFileChange(t)},accept:this.props.accept})},t.prototype.renderUploadButton=function(){var e=this,t=this.state,r=t.isUploading,o=t.isUploaded,i=t.value,n=this.props.size;if(r)return u["default"].createElement(c["default"],{size:n,mode:"indeterminate",shape:"circle"});if(o)return u["default"].createElement("div",{className:y().part("uploaded").build()},u["default"].createElement(d["default"],{icon:"done",size:n})," 已上传",u["default"].createElement(f["default"],{size:n,href:i,variants:["button"],target:"_blank"},"查看"),u["default"].createElement(p["default"],{size:n,type:"button",onClick:function(){e.clearFile()}},"重选"));else return u["default"].createElement(p["default"],{type:"button",variants:["raised"],onClick:function(){e.refs.file.click()}},u["default"].createElement(d["default"],{icon:"file-upload"}),"点击上传")},t.prototype.render=function(){var e=this.props,t=e.value,r=e.name;return u["default"].createElement("div",{className:y(e).addStates(this.getStyleStates()).build()},u["default"].createElement("input",{name:r,type:"hidden",value:t}),this.renderUploadFile(),this.renderUploadButton(),u["default"].createElement(h["default"],{validity:this.state.validity}))},t}(m["default"]);exports["default"]=b,b.displayName="Uploader",b.propTypes={multiple:e.PropTypes.bool,accept:e.PropTypes.string,files:e.PropTypes.array,upload:e.PropTypes.func.isRequired},b.defaultProps=l["extends"]({},m["default"].defaultProps,{validateEvents:["change"]})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './Button', './Icon', './Progress', './Link', './Validity', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./Button'), require('./Icon'), require('./Progress'), require('./Link'), require('./Validity'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Button, global.Icon, global.Progress, global.Link, global.Validity, global.InputComponent, global.cxBuilder, global.babelHelpers);
+        global.Uploader = mod.exports;
+    }
+})(this, function (exports, _react, _Button, _Icon, _Progress, _Link, _Validity, _InputComponent2, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Button2 = babelHelpers.interopRequireDefault(_Button);
+
+    var _Icon2 = babelHelpers.interopRequireDefault(_Icon);
+
+    var _Progress2 = babelHelpers.interopRequireDefault(_Progress);
+
+    var _Link2 = babelHelpers.interopRequireDefault(_Link);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    /**
+     * @file melon/Uploader
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('Uploader');
+
+    var Uploader = function (_InputComponent) {
+        babelHelpers.inherits(Uploader, _InputComponent);
+
+        function Uploader(props, context) {
+            babelHelpers.classCallCheck(this, Uploader);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+                isUploading: false,
+                isUploaded: !!_this.props.value
+            });
+
+            return _this;
+        }
+
+        Uploader.prototype.onFileChange = function onFileChange(e) {
+            var _this2 = this;
+
+            this.setUploading();
+
+            this.props.upload({
+                target: this,
+                files: e.target.files
+            }).then(function (result) {
+                return _this2.setFile(result);
+            }, function (error) {
+                return _this2.clearFile();
+            });
+        };
+
+        Uploader.prototype.setUploading = function setUploading() {
+            this.setState({
+                isUploading: true
+            });
+        };
+
+        Uploader.prototype.setFile = function setFile(value) {
+            var _this3 = this;
+
+            this.setState({
+                value: value,
+                isUploaded: true,
+                isUploading: false
+            }, function () {
+                _InputComponent.prototype.onChange.call(_this3, {
+                    type: 'change',
+                    target: _this3,
+                    value: value
+                });
+            });
+        };
+
+        Uploader.prototype.clearFile = function clearFile() {
+            var _this4 = this;
+
+            this.setState({
+                rawValue: '',
+                isUploaded: false,
+                isUploading: false
+            }, function () {
+
+                _InputComponent.prototype.onChange.call(_this4, {
+                    type: 'change',
+                    target: _this4,
+                    value: ''
+                });
+            });
+        };
+
+        Uploader.prototype.renderUploadFile = function renderUploadFile() {
+            var _this5 = this;
+
+            var _state = this.state;
+            var isUploading = _state.isUploading;
+            var isUploaded = _state.isUploaded;
+
+
+            return isUploading || isUploaded ? null : _react2['default'].createElement('input', {
+                ref: 'file',
+                type: 'file',
+                className: cx().part('file').build(),
+                onChange: function onChange(e) {
+                    _this5.onFileChange(e);
+                },
+                accept: this.props.accept });
+        };
+
+        Uploader.prototype.renderUploadButton = function renderUploadButton() {
+            var _this6 = this;
+
+            var _state2 = this.state;
+            var isUploading = _state2.isUploading;
+            var isUploaded = _state2.isUploaded;
+            var value = _state2.value;
+            var size = this.props.size;
+
+
+            if (isUploading) {
+                return _react2['default'].createElement(_Progress2['default'], {
+                    size: size,
+                    mode: 'indeterminate',
+                    shape: 'circle' });
+            }
+
+            if (isUploaded) {
+
+                return _react2['default'].createElement(
+                    'div',
+                    { className: cx().part('uploaded').build() },
+                    _react2['default'].createElement(_Icon2['default'], { icon: 'done', size: size }),
+                    ' 已上传',
+                    _react2['default'].createElement(
+                        _Link2['default'],
+                        {
+                            size: size,
+                            href: value,
+                            variants: ['button'],
+                            target: '_blank' },
+                        '查看'
+                    ),
+                    _react2['default'].createElement(
+                        _Button2['default'],
+                        {
+                            size: size,
+                            type: 'button',
+                            onClick: function onClick() {
+                                _this6.clearFile();
+                            } },
+                        '重选'
+                    )
+                );
+            }
+
+            return _react2['default'].createElement(
+                _Button2['default'],
+                {
+                    type: 'button',
+                    variants: ['raised'],
+                    onClick: function onClick() {
+                        _this6.refs.file.click();
+                    } },
+                _react2['default'].createElement(_Icon2['default'], { icon: 'file-upload' }),
+                '点击上传'
+            );
+        };
+
+        Uploader.prototype.render = function render() {
+
+            var props = this.props;
+            var value = props.value;
+            var name = props.name;
+
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(props).addStates(this.getStyleStates()).build() },
+                _react2['default'].createElement('input', { name: name, type: 'hidden', value: value }),
+                this.renderUploadFile(),
+                this.renderUploadButton(),
+                _react2['default'].createElement(_Validity2['default'], { validity: this.state.validity })
+            );
+        };
+
+        return Uploader;
+    }(_InputComponent3['default']);
+
+    exports['default'] = Uploader;
+
+
+    Uploader.displayName = 'Uploader';
+
+    Uploader.propTypes = {
+        multiple: _react.PropTypes.bool,
+        accept: _react.PropTypes.string,
+        files: _react.PropTypes.array,
+        upload: _react.PropTypes.func.isRequired
+    };
+
+    Uploader.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        validateEvents: ['change']
+    });
+});

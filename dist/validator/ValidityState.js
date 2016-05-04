@@ -1,2 +1,32 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.ValidityState=r.exports}}(this,function(exports,e){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var t=function r(t){var n=t.isValid,i=t.message;e.classCallCheck(this,r),this.isValid=n,this.message=i||""};exports["default"]=t});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports", "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.ValidityState = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var ValidityState = function ValidityState(_ref) {
+        var isValid = _ref.isValid;
+        var message = _ref.message;
+        babelHelpers.classCallCheck(this, ValidityState);
+
+
+        this.isValid = isValid;
+        this.message = message || '';
+    };
+
+    exports["default"] = ValidityState;
+});

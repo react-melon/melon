@@ -47,7 +47,7 @@ exports.getProcessors = function () {
         'default': [
             babel,
             pathMapperProcessor,
-            jsProcessor,
+            // jsProcessor,
             addCopyright
         ]
     };

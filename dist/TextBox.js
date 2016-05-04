@@ -1,2 +1,249 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","./textbox/FloatLabel","./textbox/Input","./Validity","./InputComponent","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("./textbox/FloatLabel"),require("./textbox/Input"),require("./Validity"),require("./InputComponent"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.FloatLabel,e.Input,e.Validity,e.InputComponent,e.cxBuilder,e.babelHelpers),e.TextBox=r.exports}}(this,function(exports,e,t,r,o,i,n,a,s){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var l=s.interopRequireDefault(e),u=s.interopRequireDefault(t),p=s.interopRequireDefault(r),c=s.interopRequireDefault(o),d=s.interopRequireDefault(i),f=s.interopRequireDefault(n),h=a.create("TextBox"),m=function(e){function t(r,o){s.classCallCheck(this,t);var i=s.possibleConstructorReturn(this,e.call(this,r,o)),n=i.state.value;return i.state=s["extends"]({},i.state,{isFloating:!!n,isFocus:!1}),i.onFocus=i.onFocus.bind(i),i.onBlur=i.onBlur.bind(i),i.onChange=i.onChange.bind(i),i}return s.inherits(t,e),t.prototype.componentWillReceiveProps=function(t){var r=t.value;if(t.multiline&&this.state.value!==r)this.syncTextareaHeight();var o=this.state,i=o.isFloating,n=o.isFocus,a=!!r||n;if(i!==a)this.setState({isFloating:a});e.prototype.componentWillReceiveProps.call(this,t)},t.prototype.componentDidMount=function(){if(e.prototype.componentDidMount.call(this),this.props.multiline&&this.state.value)this.syncTextareaHeight()},t.prototype.onFocus=function r(e){this.setState({isFocus:!0,isFloating:!0});var r=this.props.onFocus;if(r)return void r({type:"focus",target:this});if(this.needValidate("focus"))this.validate(this.state.value)},t.prototype.onBlur=function o(e){var t=e.target.value;this.setState({isFloating:!!t,isFocus:!1});var o=this.props.onBlur;if(o)return void o({type:"blur",target:this});if(this.setState({value:t}),this.needValidate("blur"))this.validate(t)},t.prototype.onChange=function(t){e.prototype.onChange.call(this,{type:"change",target:this,value:t.target.value})},t.prototype.syncTextareaHeight=function(){var e=this.input;if(e)e.style.height="auto",e.style.height=e.scrollHeight+"px"},t.prototype.needValidate=function(e){return-1!==this.props.validateEvents.indexOf(e)},t.prototype.renderFloatingLabel=function(e,t,r){if(!e)return null;else return l["default"].createElement(p["default"],{floating:t||r,focused:r,label:e})},t.prototype.render=function(){var e=this,t=this.onFocus,r=this.onBlur,o=this.onChange,i=this.props,n=i.floatingLabel,a=(i.className,s.objectWithoutProperties(i,["floatingLabel","className"])),p=this.state,f=p.validity,m=p.isFocus,y=p.isFloating,b=p.value,v=h(i).addStates({focus:m,floating:y,fulfilled:!!b}).addStates(this.getStyleStates()).build();return l["default"].createElement("div",{className:v},this.renderFloatingLabel(n,y,m),l["default"].createElement(c["default"],s["extends"]({},a,{onFocus:t,onBlur:r,onChange:o,isFocus:m,value:b,ref:function(t){if(t)e.input=u["default"].findDOMNode(t)}})),l["default"].createElement(d["default"],{validity:f}))},t}(f["default"]);exports["default"]=m,m.displayName="TextBox",m.defaultProps=s["extends"]({},f["default"].defaultProps,{validateEvents:["change","blur"]}),m.propTypes=s["extends"]({},f["default"].propTypes,{type:e.PropTypes.oneOf(["text","password"]),placeholder:e.PropTypes.string,floatingLabel:e.PropTypes.string,multiline:e.PropTypes.bool,onFocus:e.PropTypes.func,onBlur:e.PropTypes.func})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', './textbox/FloatLabel', './textbox/Input', './Validity', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('./textbox/FloatLabel'), require('./textbox/Input'), require('./Validity'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.FloatLabel, global.Input, global.Validity, global.InputComponent, global.cxBuilder, global.babelHelpers);
+        global.TextBox = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _FloatLabel, _Input, _Validity, _InputComponent2, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    var _FloatLabel2 = babelHelpers.interopRequireDefault(_FloatLabel);
+
+    var _Input2 = babelHelpers.interopRequireDefault(_Input);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    /**
+     * @file TextBox
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('TextBox');
+
+    var TextBox = function (_InputComponent) {
+        babelHelpers.inherits(TextBox, _InputComponent);
+
+        function TextBox(props, context) {
+            babelHelpers.classCallCheck(this, TextBox);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            var value = _this.state.value;
+
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+                isFloating: !!value,
+                isFocus: false
+            });
+
+            _this.onFocus = _this.onFocus.bind(_this);
+            _this.onBlur = _this.onBlur.bind(_this);
+            _this.onChange = _this.onChange.bind(_this);
+
+            return _this;
+        }
+
+        TextBox.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            var value = nextProps.value;
+
+
+            // 多行文本框应该可以自动更新高度
+            if (nextProps.multiline && this.state.value !== value) {
+                this.syncTextareaHeight();
+            }
+
+            var _state = this.state;
+            var isFloating = _state.isFloating;
+            var isFocus = _state.isFocus;
+
+
+            var nextIsFloating = !!value || isFocus;
+
+            if (isFloating !== nextIsFloating) {
+                this.setState({
+                    isFloating: nextIsFloating
+                });
+            }
+
+            _InputComponent.prototype.componentWillReceiveProps.call(this, nextProps);
+        };
+
+        TextBox.prototype.componentDidMount = function componentDidMount() {
+
+            _InputComponent.prototype.componentDidMount.call(this);
+
+            if (this.props.multiline && this.state.value) {
+                this.syncTextareaHeight();
+            }
+        };
+
+        TextBox.prototype.onFocus = function onFocus(e) {
+
+            this.setState({
+                isFocus: true,
+                isFloating: true
+            });
+
+            var onFocus = this.props.onFocus;
+
+
+            if (onFocus) {
+                onFocus({
+                    type: 'focus',
+                    target: this
+                });
+                return;
+            }
+
+            if (this.needValidate('focus')) {
+                this.validate(this.state.value);
+            }
+        };
+
+        TextBox.prototype.onBlur = function onBlur(e) {
+            var value = e.target.value;
+
+
+            this.setState({
+                isFloating: !!value,
+                isFocus: false
+            });
+
+            var onBlur = this.props.onBlur;
+
+
+            if (onBlur) {
+                onBlur({
+                    type: 'blur',
+                    target: this
+                });
+                return;
+            }
+
+            this.setState({ value: value });
+
+            if (this.needValidate('blur')) {
+                this.validate(value);
+            }
+        };
+
+        TextBox.prototype.onChange = function onChange(e) {
+
+            _InputComponent.prototype.onChange.call(this, {
+                type: 'change',
+                target: this,
+                value: e.target.value
+            });
+        };
+
+        TextBox.prototype.syncTextareaHeight = function syncTextareaHeight() {
+            var input = this.input;
+
+
+            if (input) {
+                input.style.height = 'auto';
+                input.style.height = input.scrollHeight + 'px';
+            }
+        };
+
+        TextBox.prototype.needValidate = function needValidate(eventName) {
+            return this.props.validateEvents.indexOf(eventName) !== -1;
+        };
+
+        TextBox.prototype.renderFloatingLabel = function renderFloatingLabel(floatingLabel, isFloating, isFocus) {
+
+            if (!floatingLabel) {
+                return null;
+            }
+
+            return _react2['default'].createElement(_FloatLabel2['default'], {
+                floating: isFloating || isFocus,
+                focused: isFocus,
+                label: floatingLabel });
+        };
+
+        TextBox.prototype.render = function render() {
+            var _this2 = this;
+
+            var onFocus = this.onFocus;
+            var onBlur = this.onBlur;
+            var onChange = this.onChange;
+            var props = this.props;
+            var floatingLabel = props.floatingLabel;
+            var className = props.className;
+            var rest = babelHelpers.objectWithoutProperties(props, ['floatingLabel', 'className']);
+            var _state2 = this.state;
+            var validity = _state2.validity;
+            var isFocus = _state2.isFocus;
+            var isFloating = _state2.isFloating;
+            var value = _state2.value;
+
+
+            var statefulClassName = cx(props).addStates({
+                focus: isFocus,
+                floating: isFloating,
+                fulfilled: !!value
+            }).addStates(this.getStyleStates()).build();
+
+            return _react2['default'].createElement(
+                'div',
+                { className: statefulClassName },
+                this.renderFloatingLabel(floatingLabel, isFloating, isFocus),
+                _react2['default'].createElement(_Input2['default'], babelHelpers['extends']({}, rest, {
+                    onFocus: onFocus,
+                    onBlur: onBlur,
+                    onChange: onChange,
+                    isFocus: isFocus,
+                    value: value,
+                    ref: function ref(input) {
+                        if (input) {
+                            _this2.input = _reactDom2['default'].findDOMNode(input);
+                        }
+                    } })),
+                _react2['default'].createElement(_Validity2['default'], { validity: validity })
+            );
+        };
+
+        return TextBox;
+    }(_InputComponent3['default']);
+
+    exports['default'] = TextBox;
+
+
+    TextBox.displayName = 'TextBox';
+
+    TextBox.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        validateEvents: ['change', 'blur']
+    });
+
+    TextBox.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+
+        type: _react.PropTypes.oneOf(['text', 'password']),
+
+        placeholder: _react.PropTypes.string,
+        floatingLabel: _react.PropTypes.string,
+
+        multiline: _react.PropTypes.bool,
+
+        onFocus: _react.PropTypes.func,
+        onBlur: _react.PropTypes.func
+
+    });
+});

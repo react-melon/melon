@@ -1,2 +1,105 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Cell=r.exports}}(this,function(exports,e,t,r){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var i=r.interopRequireDefault(e),n=t.create("TableCell"),o=function(e){function t(){return r.classCallCheck(this,t),r.possibleConstructorReturn(this,e.apply(this,arguments))}return r.inherits(t,e),t.prototype.shouldComponentUpdate=function(e){return e!==this.props},t.prototype.render=function(){var e=this.props,t=e.align,r=e.width,o=e.height,a=e.content,s={textAlign:t,width:r,height:o};return i["default"].createElement("div",{className:n(this.props).build()},i["default"].createElement("div",{className:n.getPartClassName("wrap1"),style:s},i["default"].createElement("div",{className:n.getPartClassName("wrap2")},i["default"].createElement("div",{className:n.getPartClassName("wrap3")},a))))},t}(e.Component);exports["default"]=o,o.displayName="TableCell",o.propTypes={part:e.PropTypes.oneOf(["header","body","footer"]),columnData:e.PropTypes.any,rowData:e.PropTypes.any,columnIndex:e.PropTypes.number,rowIndex:e.PropTypes.number,cellData:e.PropTypes.any,cellKey:e.PropTypes.oneOfType([e.PropTypes.string.isRequired,e.PropTypes.number.isRequired]),height:e.PropTypes.number.isRequired,width:e.PropTypes.number.isRequired,minWidth:e.PropTypes.number,maxWidth:e.PropTypes.number,cellRenderer:e.PropTypes.func},o.defaultProps={align:"left"}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Cell = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon/TableCell
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('TableCell');
+
+    var TableCell = function (_Component) {
+        babelHelpers.inherits(TableCell, _Component);
+
+        function TableCell() {
+            babelHelpers.classCallCheck(this, TableCell);
+            return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+        }
+
+        TableCell.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+            return nextProps !== this.props;
+        };
+
+        TableCell.prototype.render = function render() {
+            var _props = this.props;
+            var align = _props.align;
+            var width = _props.width;
+            var height = _props.height;
+            var content = _props.content;
+
+
+            var style = {
+                textAlign: align,
+                width: width,
+                height: height
+            };
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).build() },
+                _react2['default'].createElement(
+                    'div',
+                    { className: cx.getPartClassName('wrap1'), style: style },
+                    _react2['default'].createElement(
+                        'div',
+                        { className: cx.getPartClassName('wrap2') },
+                        _react2['default'].createElement(
+                            'div',
+                            { className: cx.getPartClassName('wrap3') },
+                            content
+                        )
+                    )
+                )
+            );
+        };
+
+        return TableCell;
+    }(_react.Component);
+
+    exports['default'] = TableCell;
+
+
+    TableCell.displayName = 'TableCell';
+
+    TableCell.propTypes = {
+
+        part: _react.PropTypes.oneOf(['header', 'body', 'footer']),
+
+        columnData: _react.PropTypes.any,
+        rowData: _react.PropTypes.any,
+        columnIndex: _react.PropTypes.number,
+        rowIndex: _react.PropTypes.number,
+        cellData: _react.PropTypes.any,
+        cellKey: _react.PropTypes.oneOfType([_react.PropTypes.string.isRequired, _react.PropTypes.number.isRequired]),
+        height: _react.PropTypes.number.isRequired,
+        width: _react.PropTypes.number.isRequired,
+        minWidth: _react.PropTypes.number,
+        maxWidth: _react.PropTypes.number,
+
+        cellRenderer: _react.PropTypes.func
+
+    };
+
+    TableCell.defaultProps = {
+        align: 'left'
+    };
+});

@@ -1,2 +1,320 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./Calendar","./Icon","./Confirm","./calendar/Panel","./Validity","./common/util/cxBuilder","./InputComponent","./common/util/date","./common/util/syncPropsToState","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./Calendar"),require("./Icon"),require("./Confirm"),require("./calendar/Panel"),require("./Validity"),require("./common/util/cxBuilder"),require("./InputComponent"),require("./common/util/date"),require("./common/util/syncPropsToState"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Calendar,e.Icon,e.Confirm,e.Panel,e.Validity,e.cxBuilder,e.InputComponent,e.date,e.syncPropsToState,e.babelHelpers),e.RangeCalendar=r.exports}}(this,function(exports,e,t,r,i,o,n,a,s,l,u,p){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var d=p.interopRequireDefault(e),c=p.interopRequireDefault(t),f=p.interopRequireDefault(r),h=p.interopRequireDefault(i),m=p.interopRequireDefault(o),y=p.interopRequireDefault(n),b=p.interopRequireDefault(s),v=p.interopRequireWildcard(l),x=a.create("RangeCalendar"),g=function(e){function t(r,i){p.classCallCheck(this,t);var o=p.possibleConstructorReturn(this,e.call(this,r,i)),n=r.begin,a=r.end;return o.state=p["extends"]({},o.state,{open:!1,date:o.getNormalizeValue(o.state.value,n,a)}),o.onLabelClick=o.onLabelClick.bind(o),o.onConfirm=o.onConfirm.bind(o),o.onLabelClick=o.onLabelClick.bind(o),o.onCancel=o.onCancel.bind(o),o.onDateChange=o.onDateChange.bind(o),o.formatDate=o.formatDate.bind(o),o}return p.inherits(t,e),t.prototype.componentWillReceiveProps=function(t){var r=t.begin,i=t.end,o=t.value;if(o!==this.state.value)this.setState({date:this.getNormalizeValue(o,r,i)});e.prototype.componentWillReceiveProps.call(this,t)},t.prototype.getSyncUpdates=function(e){var t=e.disabled,r=e.customValidity,i=e.value,o=e.begin,n=e.end,a=i?this.getNormalizeValue(i,o,n):null,s=u.getNextValidity(this,{value:i,disabled:t,customValidity:r});return{date:a,vilidity:s,value:i}},t.prototype.getNormalizeValue=function(e,t,r){if(0===e.length)return e;t=this.parseDate(t),r=this.parseDate(r);var i=this.parseDate(e[0]),o=this.parseDate(e[1]);return e=[i&&v.isAfterDate(t,i)?t:i,o&&v.isBeforeDate(r,o)?r:o]},t.prototype.getValue=function(){var e=this,t=this.props,r=t.begin,i=t.end,o=this.state.value;return this.getNormalizeValue(o,r,i).map(function(t){return e.formatDate(t)})},t.prototype.onLabelClick=function(){var e=this.props,t=e.disabled,r=e.readOnly;if(!t&&!r)this.setState({open:!0})},t.prototype.onCancel=function(){this.setState({open:!1})},t.prototype.onDateChange=function(e,t){var r=t.value,i=[].concat(this.state.date);if(0===i.length)i=[new Date,new Date];i[e]=r,this.setState({date:i,month:i})},t.prototype.onConfirm=function(){var t=this,r=this.state,i=r.date,o=r.value;this.setState({open:!1},function(){if(!v.isEqualDate(i[0],t.parseDate(o[0]))||!v.isEqualDate(i[1],t.parseDate(o[1])))e.prototype.onChange.call(t,{type:"change",target:t,value:i.map(t.formatDate)})})},t.prototype.formatDate=function(e){var t=this.props,r=t.dateFormat,i=t.lang;return v.format(e,r.toLowerCase(),i)},t.prototype.parseDate=function(e){if("string"!=typeof e)return e;var t=this.props.dateFormat.toLowerCase();return v.parse(e,t)},t.prototype.render=function(){var e=this.props,t=e.lang,r=e.disabled,i=e.size,o=(e.dateFormat,e.name),n=e.begin,a=e.end,s=e.validity,l=e.placeholder,u=p.objectWithoutProperties(e,["lang","disabled","size","dateFormat","name","begin","end","validity","placeholder"]),c=this.getValue(),b=this.state,v=b.open,g=b.date;return n=n?this.parseDate(n):null,a=a?this.parseDate(a):null,d["default"].createElement("div",p["extends"]({},u,{className:x(e).addStates({focus:v}).build()}),d["default"].createElement("input",{name:o,ref:"input",type:"hidden",value:c.join(","),disabled:r}),d["default"].createElement("label",{onClick:this.onLabelClick},0===c.length?d["default"].createElement("span",{className:x().part("label-placeholder").build()},l):c[0]+" 至 "+c[1],d["default"].createElement(f["default"],{icon:"expand-more"})),d["default"].createElement(y["default"],{validity:s}),d["default"].createElement(h["default"],{open:v,variants:["calendar"],onConfirm:this.onConfirm,onCancel:this.onCancel,size:i,buttonVariants:["secondery","calendar"]},d["default"].createElement("div",{className:x().part("row").build()},d["default"].createElement(m["default"],{lang:t,date:g[0]||new Date,begin:n,end:g[1]||new Date,onChange:this.onDateChange.bind(this,0)}),d["default"].createElement(m["default"],{lang:t,date:g[1]||new Date,begin:g[0]||new Date,end:a,onChange:this.onDateChange.bind(this,1)}))))},t}(b["default"]);exports["default"]=g,g.displayName="RangeCalendar",g.defaultProps=p["extends"]({},c["default"].defaultProps,{defaultValue:[],placeholder:"请选择"}),g.propTypes=p["extends"]({},c["default"].propTypes,{defaultValue:e.PropTypes.arrayOf(e.PropTypes.string),autoOk:e.PropTypes.bool,dateFormat:e.PropTypes.string,begin:e.PropTypes.oneOfType([e.PropTypes.object,e.PropTypes.string]),end:e.PropTypes.oneOfType([e.PropTypes.object,e.PropTypes.string])})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './Calendar', './Icon', './Confirm', './calendar/Panel', './Validity', './common/util/cxBuilder', './InputComponent', './common/util/date', './common/util/syncPropsToState', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./Calendar'), require('./Icon'), require('./Confirm'), require('./calendar/Panel'), require('./Validity'), require('./common/util/cxBuilder'), require('./InputComponent'), require('./common/util/date'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Calendar, global.Icon, global.Confirm, global.Panel, global.Validity, global.cxBuilder, global.InputComponent, global.date, global.syncPropsToState, global.babelHelpers);
+        global.RangeCalendar = mod.exports;
+    }
+})(this, function (exports, _react, _Calendar, _Icon, _Confirm, _Panel, _Validity, _cxBuilder, _InputComponent2, _date, _syncPropsToState, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Calendar2 = babelHelpers.interopRequireDefault(_Calendar);
+
+    var _Icon2 = babelHelpers.interopRequireDefault(_Icon);
+
+    var _Confirm2 = babelHelpers.interopRequireDefault(_Confirm);
+
+    var _Panel2 = babelHelpers.interopRequireDefault(_Panel);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    var DateTime = babelHelpers.interopRequireWildcard(_date);
+
+    /**
+     * @file melon/RangeCalendar
+     * @author cxtom <cxtom2010@gmail.com>
+     * @author leon <ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('RangeCalendar');
+
+    var RangeCalendar = function (_InputComponent) {
+        babelHelpers.inherits(RangeCalendar, _InputComponent);
+
+        function RangeCalendar(props, context) {
+            babelHelpers.classCallCheck(this, RangeCalendar);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            var begin = props.begin;
+            var end = props.end;
+
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+                open: false,
+                date: _this.getNormalizeValue(_this.state.value, begin, end)
+            });
+
+            _this.onLabelClick = _this.onLabelClick.bind(_this);
+            _this.onConfirm = _this.onConfirm.bind(_this);
+            _this.onLabelClick = _this.onLabelClick.bind(_this);
+            _this.onCancel = _this.onCancel.bind(_this);
+            _this.onDateChange = _this.onDateChange.bind(_this);
+            _this.formatDate = _this.formatDate.bind(_this);
+
+            return _this;
+        }
+
+        RangeCalendar.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            var begin = nextProps.begin;
+            var end = nextProps.end;
+            var value = nextProps.value;
+
+
+            if (value !== this.state.value) {
+                this.setState({
+                    date: this.getNormalizeValue(value, begin, end)
+                });
+            }
+
+            _InputComponent.prototype.componentWillReceiveProps.call(this, nextProps);
+        };
+
+        RangeCalendar.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
+            var disabled = nextProps.disabled;
+            var customValidity = nextProps.customValidity;
+            var value = nextProps.value;
+            var begin = nextProps.begin;
+            var end = nextProps.end;
+
+
+            // 如果有值，那么就试着解析一下；否则设置为 null
+            var date = value ? this.getNormalizeValue(value, begin, end) : null;
+
+            var vilidity = (0, _syncPropsToState.getNextValidity)(this, { value: value, disabled: disabled, customValidity: customValidity });
+
+            return {
+                date: date,
+                vilidity: vilidity,
+                value: value
+            };
+        };
+
+        RangeCalendar.prototype.getNormalizeValue = function getNormalizeValue(value, begin, end) {
+
+            if (value.length === 0) {
+                return value;
+            }
+
+            begin = this.parseDate(begin);
+            end = this.parseDate(end);
+
+            var valueBegin = this.parseDate(value[0]);
+            var valueEnd = this.parseDate(value[1]);
+
+            // 这里我们需要一个全新的 value
+            value = [valueBegin && DateTime.isAfterDate(begin, valueBegin) ? begin : valueBegin, valueEnd && DateTime.isBeforeDate(end, valueEnd) ? end : valueEnd];
+
+            // 下边这种做法是错误的，不能直接修改 props 中的值
+            // value[0] = _.isDate(begin) && DateTime.isAfterDate(begin, value[0]) ? begin : value[0];
+            // value[1] = _.isDate(end) && DateTime.isBeforeDate(end, value[1]) ? end : value[1];
+
+            return value;
+        };
+
+        RangeCalendar.prototype.getValue = function getValue() {
+            var _this2 = this;
+
+            var _props = this.props;
+            var begin = _props.begin;
+            var end = _props.end;
+            var value = this.state.value;
+
+
+            return this.getNormalizeValue(value, begin, end).map(function (date) {
+                return _this2.formatDate(date);
+            });
+        };
+
+        RangeCalendar.prototype.onLabelClick = function onLabelClick() {
+            var _props2 = this.props;
+            var disabled = _props2.disabled;
+            var readOnly = _props2.readOnly;
+
+
+            if (disabled || readOnly) {
+                return;
+            }
+
+            this.setState({ open: true });
+        };
+
+        RangeCalendar.prototype.onCancel = function onCancel() {
+            this.setState({
+                open: false
+            });
+        };
+
+        RangeCalendar.prototype.onDateChange = function onDateChange(index, e) {
+            var value = e.value;
+
+
+            var date = [].concat(this.state.date);
+
+            if (date.length === 0) {
+                date = [new Date(), new Date()];
+            }
+
+            date[index] = value;
+
+            this.setState({
+                date: date,
+                month: date
+            });
+        };
+
+        RangeCalendar.prototype.onConfirm = function onConfirm() {
+            var _this3 = this;
+
+            var _state = this.state;
+            var date = _state.date;
+            var value = _state.value;
+
+
+            // 不管怎么样，先把窗口关了
+            this.setState({
+                open: false
+            }, function () {
+
+                // 如果值发生了变化，那么释放一个 change 事件
+                if (!DateTime.isEqualDate(date[0], _this3.parseDate(value[0])) || !DateTime.isEqualDate(date[1], _this3.parseDate(value[1]))) {
+                    _InputComponent.prototype.onChange.call(_this3, {
+                        type: 'change',
+                        target: _this3,
+                        value: date.map(_this3.formatDate)
+                    });
+                }
+            });
+        };
+
+        RangeCalendar.prototype.formatDate = function formatDate(date) {
+            var _props3 = this.props;
+            var dateFormat = _props3.dateFormat;
+            var lang = _props3.lang;
+
+
+            return DateTime.format(date, dateFormat.toLowerCase(), lang);
+        };
+
+        RangeCalendar.prototype.parseDate = function parseDate(date) {
+
+            if (typeof date !== 'string') {
+                return date;
+            }
+
+            var format = this.props.dateFormat.toLowerCase();
+
+            return DateTime.parse(date, format);
+        };
+
+        RangeCalendar.prototype.render = function render() {
+
+            var props = this.props;
+
+            var lang = props.lang;
+            var disabled = props.disabled;
+            var size = props.size;
+            var dateFormat = props.dateFormat;
+            var name = props.name;
+            var begin = props.begin;
+            var end = props.end;
+            var validity = props.validity;
+            var placeholder = props.placeholder;
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'dateFormat', 'name', 'begin', 'end', 'validity', 'placeholder']);
+
+
+            var value = this.getValue();
+
+            var _state2 = this.state;
+            var open = _state2.open;
+            var date = _state2.date;
+
+
+            begin = begin ? this.parseDate(begin) : null;
+            end = end ? this.parseDate(end) : null;
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, others, {
+                    className: cx(props).addStates({ focus: open }).build() }),
+                _react2['default'].createElement('input', {
+                    name: name,
+                    ref: 'input',
+                    type: 'hidden',
+                    value: value.join(','),
+                    disabled: disabled }),
+                _react2['default'].createElement(
+                    'label',
+                    { onClick: this.onLabelClick },
+                    value.length === 0 ? _react2['default'].createElement(
+                        'span',
+                        { className: cx().part('label-placeholder').build() },
+                        placeholder
+                    ) : value[0] + ' 至 ' + value[1],
+                    _react2['default'].createElement(_Icon2['default'], { icon: 'expand-more' })
+                ),
+                _react2['default'].createElement(_Validity2['default'], { validity: validity }),
+                _react2['default'].createElement(
+                    _Confirm2['default'],
+                    {
+                        open: open,
+                        variants: ['calendar'],
+                        onConfirm: this.onConfirm,
+                        onCancel: this.onCancel,
+                        size: size,
+                        buttonVariants: ['secondery', 'calendar'] },
+                    _react2['default'].createElement(
+                        'div',
+                        { className: cx().part('row').build() },
+                        _react2['default'].createElement(_Panel2['default'], {
+                            lang: lang,
+                            date: date[0] || new Date(),
+                            begin: begin,
+                            end: date[1] || new Date(),
+                            onChange: this.onDateChange.bind(this, 0) }),
+                        _react2['default'].createElement(_Panel2['default'], {
+                            lang: lang,
+                            date: date[1] || new Date(),
+                            begin: date[0] || new Date(),
+                            end: end,
+                            onChange: this.onDateChange.bind(this, 1) })
+                    )
+                )
+            );
+        };
+
+        return RangeCalendar;
+    }(_InputComponent3['default']);
+
+    exports['default'] = RangeCalendar;
+
+
+    RangeCalendar.displayName = 'RangeCalendar';
+
+    RangeCalendar.defaultProps = babelHelpers['extends']({}, _Calendar2['default'].defaultProps, {
+        defaultValue: [],
+        placeholder: '请选择'
+    });
+
+    RangeCalendar.propTypes = babelHelpers['extends']({}, _Calendar2['default'].propTypes, {
+        defaultValue: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        autoOk: _react.PropTypes.bool,
+        dateFormat: _react.PropTypes.string,
+        begin: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]),
+        end: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string])
+    });
+});

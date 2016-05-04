@@ -1,2 +1,205 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","./Mask","./common/util/dom","./dialog/DialogWindow","./common/util/cxBuilder","react-motion","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("./Mask"),require("./common/util/dom"),require("./dialog/DialogWindow"),require("./common/util/cxBuilder"),require("react-motion"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.Mask,e.dom,e.DialogWindow,e.cxBuilder,e.reactMotion,e.babelHelpers),e.Dialog=r.exports}}(this,function(exports,e,t,r,o,n,i,a,s){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var l=s.interopRequireDefault(e),u=s.interopRequireDefault(t),p=s.interopRequireDefault(r),c=s.interopRequireDefault(o),d=s.interopRequireDefault(n),f=i.create("Dialog"),h=function(e){function t(r){s.classCallCheck(this,t);var o=s.possibleConstructorReturn(this,e.call(this,r));return o.originalHTMLBodySize={},o.state={open:o.props.open},o.onShow=o.onShow.bind(o),o.onHide=o.onHide.bind(o),o.onMaskClick=o.onMaskClick.bind(o),o}return s.inherits(t,e),t.prototype.componentDidMount=function(){this.positionDialog()},t.prototype.componentWillUpdate=function(){this.positionDialog()},t.prototype.componentWillReceiveProps=function(e){var t=e.open;if(t!==this.state.open)this.setState({open:t},t?this.onShow:this.onHide)},t.prototype.positionDialog=function(){var e=u["default"].findDOMNode(this.dialogWindow),t=-e.offsetHeight/2,r=c["default"].getClientHeight();t=e.offsetHeight>r?-r/2+16:t,e.style.marginLeft=-e.offsetWidth/2+"px",e.style.marginTop=t+"px"},t.prototype.onMaskClick=function(e){if(this.props.maskClickClose)this.setState({open:!1},this.onHide);else e.stopPropagation()},t.prototype.onShow=function r(){var r=this.props.onShow;if(r)r()},t.prototype.onHide=function o(){var o=this.props.onHide;if(o)o()},t.prototype.renderTitle=function(){var e=this.props.title;return e?l["default"].createElement("h1",{className:f().part("title").build()},e):null},t.prototype.renderAction=function(){var e=this.props.actions;return e?l["default"].createElement("div",{ref:"dialogActions",className:f().part("actions").build()},e):null},t.prototype.render=function(){var e=this,t=this.props,r=this.state,o=t.children,n=s.objectWithoutProperties(t,["children"]),i=r.open,u=this.renderTitle(),c=l["default"].createElement("div",{className:f().part("body").build()},o),h=this.renderAction(),m=f().part("window").build();return l["default"].createElement("div",s["extends"]({},n,{className:f(t).addStates({open:i}).build()}),l["default"].createElement(a.Motion,{style:{y:a.spring(i?0:-80)}},function(t){var r=t.y;return l["default"].createElement(d["default"],{top:Math.round(r),ref:function(t){e.dialogWindow=t},title:u,footer:h,className:m},c)}),l["default"].createElement(p["default"],{show:i,lockScrollingOnShow:!0,onClick:this.onMaskClick}))},t}(e.Component);exports["default"]=h,h.propTypes={actions:e.PropTypes.node,maskClickClose:e.PropTypes.bool,open:e.PropTypes.bool,onHide:e.PropTypes.func,onShow:e.PropTypes.func,title:e.PropTypes.oneOfType([e.PropTypes.string,e.PropTypes.element])},h.defaultProps={maskClickClose:!0,open:!1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', './Mask', './common/util/dom', './dialog/DialogWindow', './common/util/cxBuilder', 'react-motion', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('./Mask'), require('./common/util/dom'), require('./dialog/DialogWindow'), require('./common/util/cxBuilder'), require('react-motion'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.Mask, global.dom, global.DialogWindow, global.cxBuilder, global.reactMotion, global.babelHelpers);
+        global.Dialog = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _Mask, _dom, _DialogWindow, _cxBuilder, _reactMotion, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    var _Mask2 = babelHelpers.interopRequireDefault(_Mask);
+
+    var _dom2 = babelHelpers.interopRequireDefault(_dom);
+
+    var _DialogWindow2 = babelHelpers.interopRequireDefault(_DialogWindow);
+
+    /**
+     * @file melon/Dialog
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Dialog');
+
+    var Dialog = function (_Component) {
+        babelHelpers.inherits(Dialog, _Component);
+
+        function Dialog(props) {
+            babelHelpers.classCallCheck(this, Dialog);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.originalHTMLBodySize = {};
+
+            _this.state = {
+                open: _this.props.open
+            };
+
+            _this.onShow = _this.onShow.bind(_this);
+            _this.onHide = _this.onHide.bind(_this);
+            _this.onMaskClick = _this.onMaskClick.bind(_this);
+
+            return _this;
+        }
+
+        Dialog.prototype.componentDidMount = function componentDidMount() {
+            this.positionDialog();
+        };
+
+        Dialog.prototype.componentWillUpdate = function componentWillUpdate() {
+            this.positionDialog();
+        };
+
+        Dialog.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
+            var open = _ref.open;
+
+
+            if (open === this.state.open) {
+                return;
+            }
+
+            this.setState({ open: open }, open ? this.onShow : this.onHide);
+        };
+
+        Dialog.prototype.positionDialog = function positionDialog() {
+            var dialogWindow = _reactDom2['default'].findDOMNode(this.dialogWindow);
+            var marginTop = -dialogWindow.offsetHeight / 2;
+
+            var windowHeight = _dom2['default'].getClientHeight();
+
+            marginTop = dialogWindow.offsetHeight > windowHeight ? -windowHeight / 2 + 16 : marginTop;
+            dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+            dialogWindow.style.marginTop = marginTop + 'px';
+        };
+
+        Dialog.prototype.onMaskClick = function onMaskClick(e) {
+            if (this.props.maskClickClose) {
+                this.setState({ open: false }, this.onHide);
+            } else {
+                e.stopPropagation();
+            }
+        };
+
+        Dialog.prototype.onShow = function onShow() {
+            var onShow = this.props.onShow;
+
+            if (onShow) {
+                onShow();
+            }
+        };
+
+        Dialog.prototype.onHide = function onHide() {
+            var onHide = this.props.onHide;
+
+            if (onHide) {
+                onHide();
+            }
+        };
+
+        Dialog.prototype.renderTitle = function renderTitle() {
+            var title = this.props.title;
+
+
+            return title ? _react2['default'].createElement(
+                'h1',
+                { className: cx().part('title').build() },
+                title
+            ) : null;
+        };
+
+        Dialog.prototype.renderAction = function renderAction() {
+            var actions = this.props.actions;
+
+
+            return actions ? _react2['default'].createElement(
+                'div',
+                { ref: 'dialogActions', className: cx().part('actions').build() },
+                actions
+            ) : null;
+        };
+
+        Dialog.prototype.render = function render() {
+            var _this2 = this;
+
+            var props = this.props;
+            var state = this.state;
+            var children = props.children;
+            var others = babelHelpers.objectWithoutProperties(props, ['children']);
+            var open = state.open;
+
+
+            var title = this.renderTitle();
+
+            var body = _react2['default'].createElement(
+                'div',
+                { className: cx().part('body').build() },
+                children
+            );
+
+            var footer = this.renderAction();
+
+            var windowPartClassName = cx().part('window').build();
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, others, { className: cx(props).addStates({ open: open }).build() }),
+                _react2['default'].createElement(
+                    _reactMotion.Motion,
+                    { style: { y: (0, _reactMotion.spring)(open ? 0 : -80) } },
+                    function (_ref2) {
+                        var y = _ref2.y;
+                        return _react2['default'].createElement(
+                            _DialogWindow2['default'],
+                            {
+                                top: Math.round(y),
+                                ref: function ref(c) {
+                                    _this2.dialogWindow = c;
+                                },
+                                title: title,
+                                footer: footer,
+                                className: windowPartClassName },
+                            body
+                        );
+                    }
+                ),
+                _react2['default'].createElement(_Mask2['default'], {
+                    show: open,
+                    lockScrollingOnShow: true,
+                    onClick: this.onMaskClick })
+            );
+        };
+
+        return Dialog;
+    }(_react.Component);
+
+    exports['default'] = Dialog;
+
+
+    Dialog.propTypes = {
+        actions: _react.PropTypes.node,
+        maskClickClose: _react.PropTypes.bool,
+        open: _react.PropTypes.bool,
+        onHide: _react.PropTypes.func,
+        onShow: _react.PropTypes.func,
+        title: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element])
+    };
+
+    Dialog.defaultProps = {
+        maskClickClose: true,
+        open: false
+    };
+});

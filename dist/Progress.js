@@ -1,2 +1,266 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Progress=r.exports}}(this,function(exports,e,t,r){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var i=r.interopRequireDefault(e),o=t.create("Progress"),n=function(e){function t(i){r.classCallCheck(this,t);var o=r.possibleConstructorReturn(this,e.call(this,i));return o.timers={},o}return r.inherits(t,e),t.prototype.componentDidMount=function(){var e=this;if(!this.isDeterminate()){var t="circle"===this.props.shape.toLowerCase();if(t)return this.scalePath(this.refs.path),void this.rotateWrapper(this.refs.wrapper);this.barUpdate(0,"bar1",[[-35,100],[100,-90]]),this.timers.bar2=setTimeout(function(){e.barUpdate(0,"bar2",[[-200,100],[107,-8]])},850)}},t.prototype.componentWillUnmount=function(){var e=this;Object.keys(this.timers).forEach(function(t){clearTimeout(e.timers[t]),e.timers[t]=null}),this.timers={}},t.prototype.barUpdate=function(e,t,r){e=e||0,e%=4;var i=this.refs[t];switch(e){case 0:i.style.left=r[0][0]+"%",i.style.right=r[0][1]+"%";break;case 1:i.style.transitionDuration="840ms";break;case 2:i.style.left=r[1][0]+"%",i.style.right=r[1][1]+"%";break;case 3:i.style.transitionDuration="0ms"}this.timers[t]=setTimeout(this.barUpdate.bind(this,e+1,t,r),420)},t.prototype.scalePath=function(e,t){if(t=t||0,t%=3,this.timers.path=setTimeout(this.scalePath.bind(this,e,t+1),t?750:250),0===t)return e.style.strokeDasharray="1, 200",e.style.strokeDashoffset=0,void(e.style.transitionDuration="0ms");if(1===t)return e.style.strokeDasharray="89, 200",e.style.strokeDashoffset=-35,void(e.style.transitionDuration="750ms");else return e.style.strokeDasharray="89, 200",e.style.strokeDashoffset=-124,void(e.style.transitionDuration="850ms")},t.prototype.rotateWrapper=function(e){this.timers.wrapper=setTimeout(this.rotateWrapper.bind(this,e),10050),e.style.transitionDuration="0ms",e.style.transform="rotate(0deg)",this.timers.wrapperUpdater=setTimeout(function(){e.style.transitionDuration="10s",e.style.transform="rotate(1800deg)",e.style.transitionTimingFunction="linear"},50)},t.prototype.getRelativeValue=function(){var e=this.props,t=e.value,r=e.min,i=e.max,o=Math.min(Math.max(r,t),i),n=i-r,a=Math.round(o/n*1e4)/1e4;return 100*a},t.prototype.isDeterminate=function(){return"determinate"===this.props.mode.toLowerCase()},t.prototype.renderLinear=function(){var e=void 0,t=void 0;if(this.isDeterminate())t={width:this.getRelativeValue()+"%"};else e=[i["default"].createElement("div",{ref:"bar1",className:o().part("bar1").build(),key:"bar1"}),i["default"].createElement("div",{ref:"bar2",className:o().part("bar2").build(),key:"bar2"})];return i["default"].createElement("div",{className:o().part("bar").build(),style:t},e)},t.prototype.getZoom=function(){return t.SIZES[this.props.size]||1},t.prototype.renderCircle=function(){var e=this.getZoom(),t=14*e,r=2*e,n=16*e,a={};if(this.isDeterminate()){var s=this.getRelativeValue();a.strokeDasharray=Math.round(1.25*s*e)+","+200*e}return i["default"].createElement("div",{ref:"wrapper",className:o().part("wapper").build()},i["default"].createElement("svg",{className:o().part("svg").build()},i["default"].createElement("circle",{ref:"path",cx:n,cy:n,r:t,className:o().part("path").build(),style:a,fill:"none",strokeWidth:r,strokeMiterlimit:"10"})))},t.prototype.render=function(){var e=this.props,t=e.shape,n=e.mode,a=o(e).addVariants(t,n).build();return i["default"].createElement("div",r["extends"]({},e,{className:a}),"circle"===t?this.renderCircle():this.renderLinear())},t}(e.Component);exports["default"]=n,n.displayName="Progress",n.SIZES={xxs:.75,xs:.875,s:.9375,l:1.125,xl:1.25,xxl:1.375,xxxl:1.5},n.defaultProps={shape:"linear",mode:"determinate",value:0,min:0,max:100},n.propTypes={shape:e.PropTypes.oneOf(["circle","linear"]),mode:e.PropTypes.oneOf(["determinate","indeterminate"]),value:e.PropTypes.number,min:e.PropTypes.number,max:e.PropTypes.number,size:e.PropTypes.oneOf(Object.keys(n.SIZES))}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Progress = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon/Progress
+     * @author cxtom<cxtom2010@gmail.com>
+     * @author leon<ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Progress');
+
+    var Progress = function (_Component) {
+        babelHelpers.inherits(Progress, _Component);
+
+        function Progress(props) {
+            babelHelpers.classCallCheck(this, Progress);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.timers = {};
+            return _this;
+        }
+
+        Progress.prototype.componentDidMount = function componentDidMount() {
+            var _this2 = this;
+
+            if (this.isDeterminate()) {
+                return;
+            }
+
+            var isCircle = this.props.shape.toLowerCase() === 'circle';
+
+            if (isCircle) {
+                this.scalePath(this.refs.path);
+                this.rotateWrapper(this.refs.wrapper);
+                return;
+            }
+
+            this.barUpdate(0, 'bar1', [[-35, 100], [100, -90]]);
+
+            this.timers.bar2 = setTimeout(function () {
+                _this2.barUpdate(0, 'bar2', [[-200, 100], [107, -8]]);
+            }, 850);
+        };
+
+        Progress.prototype.componentWillUnmount = function componentWillUnmount() {
+            var _this3 = this;
+
+            Object.keys(this.timers).forEach(function (name) {
+                clearTimeout(_this3.timers[name]);
+                _this3.timers[name] = null;
+            });
+
+            this.timers = {};
+        };
+
+        Progress.prototype.barUpdate = function barUpdate(step, barName, stepValues) {
+
+            step = step || 0;
+            step %= 4;
+
+            var element = this.refs[barName];
+
+            switch (step) {
+                case 0:
+                    element.style.left = stepValues[0][0] + '%';
+                    element.style.right = stepValues[0][1] + '%';
+                    break;
+                case 1:
+                    element.style.transitionDuration = '840ms';
+                    break;
+                case 2:
+                    element.style.left = stepValues[1][0] + '%';
+                    element.style.right = stepValues[1][1] + '%';
+                    break;
+                case 3:
+                    element.style.transitionDuration = '0ms';
+                    break;
+            }
+
+            this.timers[barName] = setTimeout(this.barUpdate.bind(this, step + 1, barName, stepValues), 420);
+        };
+
+        Progress.prototype.scalePath = function scalePath(path, step) {
+
+            step = step || 0;
+            step %= 3;
+
+            this.timers.path = setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
+
+            if (step === 0) {
+                path.style.strokeDasharray = '1, 200';
+                path.style.strokeDashoffset = 0;
+                path.style.transitionDuration = '0ms';
+                return;
+            }
+
+            if (step === 1) {
+                path.style.strokeDasharray = '89, 200';
+                path.style.strokeDashoffset = -35;
+                path.style.transitionDuration = '750ms';
+                return;
+            }
+
+            path.style.strokeDasharray = '89, 200';
+            path.style.strokeDashoffset = -124;
+            path.style.transitionDuration = '850ms';
+        };
+
+        Progress.prototype.rotateWrapper = function rotateWrapper(wrapper) {
+
+            this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
+
+            wrapper.style.transitionDuration = '0ms';
+            wrapper.style.transform = 'rotate(0deg)';
+
+            this.timers.wrapperUpdater = setTimeout(function () {
+                wrapper.style.transitionDuration = '10s';
+                wrapper.style.transform = 'rotate(1800deg)';
+                wrapper.style.transitionTimingFunction = 'linear';
+            }, 50);
+        };
+
+        Progress.prototype.getRelativeValue = function getRelativeValue() {
+            var _props = this.props;
+            var value = _props.value;
+            var min = _props.min;
+            var max = _props.max;
+
+
+            var clampedValue = Math.min(Math.max(min, value), max);
+            var rangeValue = max - min;
+            var relValue = Math.round(clampedValue / rangeValue * 10000) / 10000;
+
+            return relValue * 100;
+        };
+
+        Progress.prototype.isDeterminate = function isDeterminate() {
+            return this.props.mode.toLowerCase() === 'determinate';
+        };
+
+        Progress.prototype.renderLinear = function renderLinear() {
+
+            var children = void 0;
+            var style = void 0;
+
+            if (this.isDeterminate()) {
+                style = {
+                    width: this.getRelativeValue() + '%'
+                };
+            } else {
+                children = [_react2['default'].createElement('div', { ref: 'bar1', className: cx().part('bar1').build(), key: 'bar1' }), _react2['default'].createElement('div', { ref: 'bar2', className: cx().part('bar2').build(), key: 'bar2' })];
+            }
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx().part('bar').build(), style: style },
+                children
+            );
+        };
+
+        Progress.prototype.getZoom = function getZoom() {
+            return Progress.SIZES[this.props.size] || 1;
+        };
+
+        Progress.prototype.renderCircle = function renderCircle() {
+            var zoom = this.getZoom();
+            var r = 14 * zoom;
+            var strokeWidth = 2 * zoom;
+            var c = 16 * zoom;
+
+            var pathStyle = {};
+
+            if (this.isDeterminate()) {
+                var relVal = this.getRelativeValue();
+                pathStyle.strokeDasharray = Math.round(relVal * 1.25 * zoom) + ',' + 200 * zoom;
+            }
+
+            return _react2['default'].createElement(
+                'div',
+                { ref: 'wrapper', className: cx().part('wapper').build() },
+                _react2['default'].createElement(
+                    'svg',
+                    { className: cx().part('svg').build() },
+                    _react2['default'].createElement('circle', { ref: 'path',
+                        cx: c,
+                        cy: c,
+                        r: r,
+                        className: cx().part('path').build(),
+                        style: pathStyle,
+                        fill: 'none',
+                        strokeWidth: strokeWidth,
+                        strokeMiterlimit: '10' })
+                )
+            );
+        };
+
+        Progress.prototype.render = function render() {
+            var props = this.props;
+            var shape = props.shape;
+            var mode = props.mode;
+
+
+            var className = cx(props).addVariants(shape, mode).build();
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, props, { className: className }),
+                shape === 'circle' ? this.renderCircle() : this.renderLinear()
+            );
+        };
+
+        return Progress;
+    }(_react.Component);
+
+    exports['default'] = Progress;
+
+
+    Progress.displayName = 'Progress';
+
+    Progress.SIZES = {
+        xxs: 0.75,
+        xs: 0.875,
+        s: 0.9375,
+        l: 1.125,
+        xl: 1.25,
+        xxl: 1.375,
+        xxxl: 1.5
+    };
+
+    Progress.defaultProps = {
+        shape: 'linear',
+        mode: 'determinate',
+        value: 0,
+        min: 0,
+        max: 100
+    };
+
+    Progress.propTypes = {
+        shape: _react.PropTypes.oneOf(['circle', 'linear']),
+        mode: _react.PropTypes.oneOf(['determinate', 'indeterminate']),
+        value: _react.PropTypes.number,
+        min: _react.PropTypes.number,
+        max: _react.PropTypes.number,
+        size: _react.PropTypes.oneOf(Object.keys(Progress.SIZES))
+    };
+});

@@ -62,6 +62,9 @@
         color: rgba($-melon-colors.black, .87)
         white-space: normal
 
+        &:first-child
+            padding-left: 1em
+
         &-wrap1
             display: table
             table-layout: fixed
@@ -73,6 +76,9 @@
             display: table-cell
             vertical-align: middle
             padding: 0.5em
+
+        .{$-melon-class-prefix}-select
+            border-bottom-width: 0
 
     .{$-melon-variant-prefix}-table-selector
         width: 1.5em

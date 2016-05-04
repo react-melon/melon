@@ -1,2 +1,56 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.Validity=r.exports}}(this,function(exports,e){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var t=function(){function t(){e.classCallCheck(this,t),this.states=[]}return t.prototype.addState=function(e){this.states.push(e)},t.prototype.isValid=function(){for(var e=0,t=this.states,r=t.length;r>e;++e)if(!t[e].isValid)return!1;return!0},t.prototype.getMessage=function(){for(var e=this.states,t=0,r=e.length;r>t;++t)if(!e[t].isValid)return e[t].message;return""},t}();exports["default"]=t});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports", "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.Validity = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var Validity = function () {
+        function Validity() {
+            babelHelpers.classCallCheck(this, Validity);
+
+            this.states = [];
+        }
+
+        Validity.prototype.addState = function addState(state) {
+            this.states.push(state);
+        };
+
+        Validity.prototype.isValid = function isValid() {
+            for (var i = 0, states = this.states, len = states.length; i < len; ++i) {
+                if (!states[i].isValid) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        Validity.prototype.getMessage = function getMessage() {
+
+            for (var states = this.states, i = 0, len = states.length; i < len; ++i) {
+                if (!states[i].isValid) {
+                    return states[i].message;
+                }
+            }
+
+            return '';
+        };
+
+        return Validity;
+    }();
+
+    exports["default"] = Validity;
+});

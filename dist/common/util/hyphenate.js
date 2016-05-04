@@ -1,2 +1,27 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["module","../../babelHelpers"],t);else if("undefined"!=typeof exports)t(module,require("../../babelHelpers"));else{var r={exports:{}};t(r,e.babelHelpers),e.hyphenate=r.exports}}(this,function(module,e){"use strict";module.exports=function(e){return e.replace(/[A-Z]/g,function(e){return"-"+e}).slice(1).toLowerCase()}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["module", "../../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(module, require("../../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod, global.babelHelpers);
+        global.hyphenate = mod.exports;
+    }
+})(this, function (module, babelHelpers) {
+    "use strict";
+
+    /**
+     * @file 把一个XxxXxx格式的字符串转化成xxx-xxx的格式
+     * @author leon(ludafa@outlook.com)
+     */
+
+    module.exports = function (source) {
+        return source.replace(/[A-Z]/g, function ($0) {
+            return "-" + $0;
+        }).slice(1).toLowerCase();
+    };
+});

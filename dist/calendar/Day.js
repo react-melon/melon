@@ -1,2 +1,75 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../common/util/date","./Item","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../common/util/date"),require("./Item"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.date,e.Item,e.babelHelpers),e.Day=r.exports}}(this,function(exports,e,t,r,o,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=i.interopRequireDefault(e),a=i.interopRequireWildcard(r),s=i.interopRequireDefault(o),l=t.create("CalendarDay"),u=function(e){function t(){return i.classCallCheck(this,t),i.possibleConstructorReturn(this,e.apply(this,arguments))}return i.inherits(t,e),t.prototype.render=function(){var e=this.props,t=e.date,r=e.selected,o=i.objectWithoutProperties(e,["date","selected"]),s=l(this.props).addVariants(a.isEqualDate(t,new Date)?"today":null).addStates({selected:r}).build();return n["default"].createElement("a",i["extends"]({},o,{className:s,href:"#",onClick:this.onClick}),t.getDate())},t}(s["default"]);exports["default"]=u,u.displayName="CalendarDay",u.propTypes={date:e.PropTypes.object.isRequired,onClick:e.PropTypes.func,disabled:e.PropTypes.bool,selected:e.PropTypes.bool}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', '../common/util/date', './Item', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('../common/util/date'), require('./Item'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.date, global.Item, global.babelHelpers);
+        global.Day = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _date, _Item2, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var DateTime = babelHelpers.interopRequireWildcard(_date);
+
+    var _Item3 = babelHelpers.interopRequireDefault(_Item2);
+
+    /**
+     * @file Calendar/CalendarDay
+     * @author cxtom(cxtom2010@gmail.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('CalendarDay');
+
+    var CalendarDay = function (_Item) {
+        babelHelpers.inherits(CalendarDay, _Item);
+
+        function CalendarDay() {
+            babelHelpers.classCallCheck(this, CalendarDay);
+            return babelHelpers.possibleConstructorReturn(this, _Item.apply(this, arguments));
+        }
+
+        CalendarDay.prototype.render = function render() {
+            var _props = this.props;
+            var date = _props.date;
+            var selected = _props.selected;
+            var others = babelHelpers.objectWithoutProperties(_props, ['date', 'selected']);
+
+
+            var className = cx(this.props).addVariants(DateTime.isEqualDate(date, new Date()) ? 'today' : null).addStates({ selected: selected }).build();
+
+            return _react2['default'].createElement(
+                'a',
+                babelHelpers['extends']({}, others, {
+                    className: className,
+                    href: '#',
+                    onClick: this.onClick }),
+                date.getDate()
+            );
+        };
+
+        return CalendarDay;
+    }(_Item3['default']);
+
+    exports['default'] = CalendarDay;
+
+
+    CalendarDay.displayName = 'CalendarDay';
+
+    CalendarDay.propTypes = {
+        date: _react.PropTypes.object.isRequired,
+        onClick: _react.PropTypes.func,
+        disabled: _react.PropTypes.bool,
+        selected: _react.PropTypes.bool
+    };
+});

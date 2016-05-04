@@ -1,2 +1,130 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","./RippleCircle","react-motion","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("./RippleCircle"),require("react-motion"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.RippleCircle,e.reactMotion,e.babelHelpers),e.CenterRipple=r.exports}}(this,function(exports,e,t,r,n,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var o=i.interopRequireDefault(e),a=i.interopRequireDefault(r),s=t.create("CenterRipple"),l=function(e){function t(r){i.classCallCheck(this,t);var n=i.possibleConstructorReturn(this,e.call(this,r));return n.state={now:"t0"},n.willLeave=n.willLeave.bind(n),n}return i.inherits(t,e),t.prototype.animate=function(){this.setState({now:"t"+Date.now()})},t.prototype.componentWillReceiveProps=function(e){if(e.flag===!this.props.flag)this.animate()},t.prototype.willLeave=function(e,t){return i["extends"]({},t,{opacity:n.spring(0,{stiffness:60,damping:15}),scale:n.spring(this.props.scale,{stiffness:60,damping:15})})},t.prototype.render=function(){var e=this.props,t=e.opacity,r=e.children,i=this.state.now,l=[{key:i,style:{opacity:n.spring(t),scale:n.spring(0)}}],u=s(this.props).build(),p=s().part("circle").build();return o["default"].createElement(n.TransitionMotion,{willLeave:this.willLeave,styles:l},function(e){return o["default"].createElement("div",{className:u},e.map(function(e){var t=e.style,r=t.opacity,n=t.scale;return o["default"].createElement(a["default"],{key:e.key,className:p,opacity:r,scale:n})}),r)})},t}(e.Component);exports["default"]=l,l.defaultProps={opacity:.5,scale:2},l.propTypes={opacity:e.PropTypes.number.isRequired,scale:e.PropTypes.number.isRequired,flag:e.PropTypes.bool},l.displayName="CenterRipple"});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', './RippleCircle', 'react-motion', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./RippleCircle'), require('react-motion'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.RippleCircle, global.reactMotion, global.babelHelpers);
+        global.CenterRipple = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _RippleCircle, _reactMotion, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _RippleCircle2 = babelHelpers.interopRequireDefault(_RippleCircle);
+
+    /**
+     * @file melon/CenterRipple
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('CenterRipple');
+
+    var CenterRipple = function (_Component) {
+        babelHelpers.inherits(CenterRipple, _Component);
+
+        function CenterRipple(props) {
+            babelHelpers.classCallCheck(this, CenterRipple);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.state = {
+                now: 't' + 0
+            };
+
+            _this.willLeave = _this.willLeave.bind(_this);
+
+            return _this;
+        }
+
+        CenterRipple.prototype.animate = function animate() {
+            this.setState({
+                now: 't' + Date.now()
+            });
+        };
+
+        CenterRipple.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            if (nextProps.flag === !this.props.flag) {
+                this.animate();
+            }
+        };
+
+        CenterRipple.prototype.willLeave = function willLeave(key, valOfKey) {
+            return babelHelpers['extends']({}, valOfKey, {
+                opacity: (0, _reactMotion.spring)(0, { stiffness: 60, damping: 15 }),
+                scale: (0, _reactMotion.spring)(this.props.scale, { stiffness: 60, damping: 15 })
+            });
+        };
+
+        CenterRipple.prototype.render = function render() {
+            var _props = this.props;
+            var opacity = _props.opacity;
+            var children = _props.children;
+            var now = this.state.now;
+
+
+            var styles = [{
+                key: now,
+                style: {
+                    opacity: (0, _reactMotion.spring)(opacity),
+                    scale: (0, _reactMotion.spring)(0)
+                }
+            }];
+
+            var className = cx(this.props).build();
+            var circleClassName = cx().part('circle').build();
+
+            return _react2['default'].createElement(
+                _reactMotion.TransitionMotion,
+                {
+                    willLeave: this.willLeave,
+                    styles: styles },
+                function (interpolatedStyles) {
+                    return _react2['default'].createElement(
+                        'div',
+                        { className: className },
+                        interpolatedStyles.map(function (config) {
+                            var _config$style = config.style;
+                            var opacity = _config$style.opacity;
+                            var scale = _config$style.scale;
+
+                            return _react2['default'].createElement(_RippleCircle2['default'], {
+                                key: config.key,
+                                className: circleClassName,
+                                opacity: opacity,
+                                scale: scale });
+                        }),
+                        children
+                    );
+                }
+            );
+        };
+
+        return CenterRipple;
+    }(_react.Component);
+
+    exports['default'] = CenterRipple;
+
+
+    CenterRipple.defaultProps = {
+        opacity: 0.5,
+        scale: 2
+    };
+
+    CenterRipple.propTypes = {
+        opacity: _react.PropTypes.number.isRequired,
+        scale: _react.PropTypes.number.isRequired,
+        flag: _react.PropTypes.bool
+    };
+
+    CenterRipple.displayName = 'CenterRipple';
+});

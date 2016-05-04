@@ -1,2 +1,159 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","./RippleCircle","../common/util/dom","../common/util/cxBuilder","react-motion","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("./RippleCircle"),require("../common/util/dom"),require("../common/util/cxBuilder"),require("react-motion"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.RippleCircle,e.dom,e.cxBuilder,e.reactMotion,e.babelHelpers),e.TouchRipple=r.exports}}(this,function(exports,e,t,r,n,i,o,a){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var s=a.interopRequireDefault(e),l=a.interopRequireDefault(t),u=a.interopRequireDefault(r),p=a.interopRequireDefault(n),c=i.create("TouchRipple"),d=function(e){function t(r){a.classCallCheck(this,t);var n=a.possibleConstructorReturn(this,e.call(this,r));return n.state={now:"t0",center:[0,0]},n.onMouseDown=n.onMouseDown.bind(n),n.willLeave=n.willLeave.bind(n),n}return a.inherits(t,e),t.prototype.onMouseDown=function(e){var t=e.pageX,r=e.pageY,n=this.position,i=n.top,o=n.left;this.setState({center:[t-o-this.radius,r-i-this.radius],now:"t"+(new Date).getTime()})},t.prototype.componentDidMount=function(){this.updatePosition()},t.prototype.componentDidUpdate=function(){this.updatePosition()},t.prototype.componentWillUnmount=function(){this.position=this.radius=null},t.prototype.updatePosition=function(){var e=l["default"].findDOMNode(this);this.position=p["default"].getPosition(e),this.radius=Math.max(this.position.width,this.position.height)/2},t.prototype.willLeave=function(e,t){return a["extends"]({},t,{opacity:o.spring(0,{stiffness:60,damping:15}),scale:o.spring(2,{stiffness:60,damping:15})})},t.prototype.render=function(){var e=this,t=this.state,r=t.center,n=r[0],i=r[1],a=t.now,l=[{key:a,style:{opacity:o.spring(this.props.opacity),scale:o.spring(0)}}],p=c().part("circle").build();return s["default"].createElement(o.TransitionMotion,{willLeave:this.willLeave,styles:l},function(t){return s["default"].createElement("div",{onMouseDown:e.onMouseDown,className:c(e.props).build()},t.map(function(t){var r=t.style,o=r.opacity,a=r.scale;return s["default"].createElement(u["default"],{key:t.key,className:p,opacity:o,scale:a,style:{width:2*e.radius||0,height:2*e.radius||0,left:n,top:i}})}))})},t}(e.Component);exports["default"]=d,d.defaultProps={opacity:.3},d.propTypes={opacity:e.PropTypes.number}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', './RippleCircle', '../common/util/dom', '../common/util/cxBuilder', 'react-motion', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('./RippleCircle'), require('../common/util/dom'), require('../common/util/cxBuilder'), require('react-motion'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.RippleCircle, global.dom, global.cxBuilder, global.reactMotion, global.babelHelpers);
+        global.TouchRipple = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _RippleCircle, _dom, _cxBuilder, _reactMotion, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    var _RippleCircle2 = babelHelpers.interopRequireDefault(_RippleCircle);
+
+    var _dom2 = babelHelpers.interopRequireDefault(_dom);
+
+    /**
+     * @file melon/TouchRipple
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('TouchRipple');
+
+    var TouchRipple = function (_Component) {
+        babelHelpers.inherits(TouchRipple, _Component);
+
+        function TouchRipple(props) {
+            babelHelpers.classCallCheck(this, TouchRipple);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.state = {
+                now: 't' + 0,
+                center: [0, 0]
+            };
+
+            _this.onMouseDown = _this.onMouseDown.bind(_this);
+            _this.willLeave = _this.willLeave.bind(_this);
+            return _this;
+        }
+
+        TouchRipple.prototype.onMouseDown = function onMouseDown(_ref) {
+            var pageX = _ref.pageX;
+            var pageY = _ref.pageY;
+            var _position = this.position;
+            var top = _position.top;
+            var left = _position.left;
+
+
+            this.setState({
+                center: [pageX - left - this.radius, pageY - top - this.radius],
+                now: 't' + new Date().getTime()
+            });
+        };
+
+        TouchRipple.prototype.componentDidMount = function componentDidMount() {
+            this.updatePosition();
+        };
+
+        TouchRipple.prototype.componentDidUpdate = function componentDidUpdate() {
+            this.updatePosition();
+        };
+
+        TouchRipple.prototype.componentWillUnmount = function componentWillUnmount() {
+            this.position = this.radius = null;
+        };
+
+        TouchRipple.prototype.updatePosition = function updatePosition() {
+            var main = _reactDom2['default'].findDOMNode(this);
+            this.position = _dom2['default'].getPosition(main);
+            this.radius = Math.max(this.position.width, this.position.height) / 2;
+        };
+
+        TouchRipple.prototype.willLeave = function willLeave(key, valOfKey) {
+            return babelHelpers['extends']({}, valOfKey, {
+                opacity: (0, _reactMotion.spring)(0, { stiffness: 60, damping: 15 }),
+                scale: (0, _reactMotion.spring)(2, { stiffness: 60, damping: 15 })
+            });
+        };
+
+        TouchRipple.prototype.render = function render() {
+            var _this2 = this;
+
+            var _state = this.state;
+            var _state$center = _state.center;
+            var centerX = _state$center[0];
+            var centerY = _state$center[1];
+            var now = _state.now;
+
+
+            var styles = [{
+                key: now,
+                style: {
+                    opacity: (0, _reactMotion.spring)(this.props.opacity),
+                    scale: (0, _reactMotion.spring)(0)
+                }
+            }];
+
+            var circleClassName = cx().part('circle').build();
+
+            return _react2['default'].createElement(
+                _reactMotion.TransitionMotion,
+                {
+                    willLeave: this.willLeave,
+                    styles: styles },
+                function (interpolatedStyles) {
+                    return _react2['default'].createElement(
+                        'div',
+                        {
+                            onMouseDown: _this2.onMouseDown,
+                            className: cx(_this2.props).build() },
+                        interpolatedStyles.map(function (config) {
+                            var _config$style = config.style;
+                            var opacity = _config$style.opacity;
+                            var scale = _config$style.scale;
+
+                            return _react2['default'].createElement(_RippleCircle2['default'], {
+                                key: config.key,
+                                className: circleClassName,
+                                opacity: opacity,
+                                scale: scale,
+                                style: {
+                                    width: _this2.radius * 2 || 0,
+                                    height: _this2.radius * 2 || 0,
+                                    left: centerX,
+                                    top: centerY
+                                } });
+                        })
+                    );
+                }
+            );
+        };
+
+        return TouchRipple;
+    }(_react.Component);
+
+    exports['default'] = TouchRipple;
+
+
+    TouchRipple.defaultProps = {
+        opacity: 0.3
+    };
+
+    TouchRipple.propTypes = {
+        opacity: _react.PropTypes.number
+    };
+});

@@ -1,2 +1,95 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","../../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("../../babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.fn=r.exports}}(this,function(exports,e){"use strict";function t(e,t,r){var n=void 0,i=void 0,o=void 0,a=void 0,s=0;if(!r)r={};var l=function(){if(s=r.leading===!1?0:(new Date).getTime(),n=null,a=e.apply(i,o),!n)i=o=null},u=function(){var u=new Date;if(!s&&r.leading===!1)s=u;var p=t-(u-s);i=this;for(var d=arguments.length,c=Array(d),f=0;d>f;f++)c[f]=arguments[f];if(o=c,0>=p||p>t){if(n)clearTimeout(n),n=null;if(s=u,a=e.apply(i,o),!n)i=o=null}else if(!n&&r.trailing!==!1)n=setTimeout(l,p);return a};return u.cancel=function(){clearTimeout(n),s=0,n=i=o=null},u}Object.defineProperty(exports,"__esModule",{value:!0}),exports.throttle=t});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports", "../../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("../../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.fn = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.throttle = throttle;
+
+    /**
+    * Copyright 2016 Baidu Inc. All rights reserved.
+    *
+    * @file function 相关的小工具
+    * @author leon <ludafa@outlook.com>
+    */
+
+    function throttle(func, wait, options) {
+
+        var timeout = void 0;
+        var context = void 0;
+        var args = void 0;
+        var result = void 0;
+        var previous = 0;
+
+        if (!options) {
+            options = {};
+        }
+
+        var later = function later() {
+
+            previous = options.leading === false ? 0 : new Date().getTime();
+            timeout = null;
+            result = func.apply(context, args);
+
+            if (!timeout) {
+                context = args = null;
+            }
+        };
+
+        var throttled = function throttled() {
+
+            var now = new Date();
+
+            if (!previous && options.leading === false) {
+                previous = now;
+            }
+
+            var remaining = wait - (now - previous);
+
+            context = this;
+
+            for (var _len = arguments.length, argus = Array(_len), _key = 0; _key < _len; _key++) {
+                argus[_key] = arguments[_key];
+            }
+
+            args = argus;
+
+            if (remaining <= 0 || remaining > wait) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                previous = now;
+                result = func.apply(context, args);
+                if (!timeout) {
+                    context = args = null;
+                }
+            } else if (!timeout && options.trailing !== false) {
+                timeout = setTimeout(later, remaining);
+            }
+
+            return result;
+        };
+
+        throttled.cancel = function () {
+            clearTimeout(timeout);
+            previous = 0;
+            timeout = context = args = null;
+        };
+
+        return throttled;
+    }
+});

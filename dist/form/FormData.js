@@ -1,2 +1,173 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["module","../babelHelpers"],t);else if("undefined"!=typeof exports)t(module,require("../babelHelpers"));else{var r={exports:{}};t(r,e.babelHelpers),e.FormData=r.exports}}(this,function(module,e){"use strict";function t(e){if(e)return r(e.getElements());else return void(this.entries=[])}function r(e){for(var r=new t,n=0,i=e.length;i>n;++n){var o=e[n],a=o.tagName,s=o.type,l=o.name,u=o.value,p="radio"===s||"checkbox"===s;if(!(o.disabled||"BUTTON"===a&&"submit"!==s))if("INPUT"!==a||!p||o.checked)if(("INPUT"!==a||"image"!==s)&&l&&u){if("INPUT"===a&&p)u=u||"on";r.append(l,u)}else;else;else;}return r}t.prototype.append=function(e,t){return this.entries.push({name:e,value:t}),this},t.prototype["delete"]=function(e){return this.entries=this.entries.reduce(function(t,r){if(r.name!==e)t.push(r);return t},[]),this},t.prototype.get=function(e){for(var t=this.entries,r=0,n=t.length;n>r;++r)if(e===t[r].name)return t[r].value;return null},t.prototype.getAll=function(e){return this.entries.reduce(function(t,r){if(r.name===e)t.push(r.value);return t},[])},t.prototype.has=function(e){for(var t=this.entries,r=0,n=t.length;n>r;++r)if(e===t[r].name)return!0;return!1},t.prototype.set=function(e,t){return this["delete"](e).append(e,t)},module.exports=t});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['module', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(module, require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod, global.babelHelpers);
+        global.FormData = mod.exports;
+    }
+})(this, function (module, babelHelpers) {
+    'use strict';
+
+    /**
+     * @file FormData
+     * @author leon(ludafa@outlook.com)
+     */
+
+    function FormData(form) {
+
+        if (form) {
+            return construct(form.getElements());
+        }
+
+        /**
+         * 条目们
+         *
+         * @type {Array}
+         */
+        this.entries = [];
+    }
+
+    function construct(elements) {
+
+        var fd = new FormData();
+
+        for (var i = 0, len = elements.length; i < len; ++i) {
+
+            var element = elements[i];
+            var tagName = element.tagName;
+            var type = element.type;
+            var name = element.name;
+            var value = element.value;
+
+            var isBoxGroup = type === 'radio' || type === 'checkbox';
+
+            if (element.disabled || tagName === 'BUTTON' && type !== 'submit') {
+                continue;
+            }
+
+            if (tagName === 'INPUT' && isBoxGroup && !element.checked) {
+                continue;
+            }
+
+            // TODO: add Image Button support
+
+            if (tagName === 'INPUT' && type === 'image' || !name || !value) {
+                continue;
+            }
+
+            // TODO: add file input support
+
+            if (tagName === 'INPUT' && isBoxGroup) {
+                value = value || 'on';
+            }
+
+            fd.append(name, value);
+        }
+
+        return fd;
+    }
+
+    /**
+     * 添加字段
+     *
+     * @param {string} name 字段名
+     * @param {string} value 字段值
+     * @return {module:FormData}
+     */
+    FormData.prototype.append = function (name, value) {
+        this.entries.push({ name: name, value: value });
+        return this;
+    };
+
+    /**
+     * 移除字段
+     *
+     * @param {string} name 字段名
+     * @return {module:FormData}
+     */
+    FormData.prototype['delete'] = function (name) {
+        this.entries = this.entries.reduce(function (result, entry) {
+            if (entry.name !== name) {
+                result.push(entry);
+            }
+            return result;
+        }, []);
+        return this;
+    };
+
+    /**
+     * 获取首个字段值
+     *
+     * return the value of the first entry whose name is name, and null otherwise.
+     *
+     * @param {string} name 字段名
+     * @return {string}
+     */
+    FormData.prototype.get = function (name) {
+        var entries = this.entries;
+        for (var i = 0, len = entries.length; i < len; ++i) {
+            if (name === entries[i].name) {
+                return entries[i].value;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * return the values of all entries whose name is name,
+     * in list order, and the empty sequence otherwise.
+     *
+     * @param {string} name 字段名
+     * @return {Array.string}
+     */
+    FormData.prototype.getAll = function (name) {
+
+        return this.entries.reduce(function (result, entry) {
+            if (entry.name === name) {
+                result.push(entry.value);
+            }
+            return result;
+        }, []);
+    };
+
+    /**
+     * return true if there is an entry whose name is name, and false otherwise.
+     *
+     * @param {string} name 字段名
+     * @return {boolean}
+     */
+    FormData.prototype.has = function (name) {
+        var entries = this.entries;
+        for (var i = 0, len = entries.length; i < len; ++i) {
+            if (name === entries[i].name) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /**
+     * 更新一个字段
+     *
+     * run these steps:
+     * 1. Let entry be a new entry whose name is name, and value is value.
+     * 2. If there are any entries in context object's list of entries whose name is name,
+     *    replace the first such entry with entry and remove the others.
+     * 3. Otherwise, append entry to context object's list of entries.
+     *
+     * @param {string} name 字段名
+     * @param {string} value 字段值
+     * @return {module:FormData}
+     */
+    FormData.prototype.set = function (name, value) {
+        return this['delete'](name).append(name, value);
+    };
+
+    module.exports = FormData;
+});

@@ -1,2 +1,49 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Title=r.exports}}(this,function(exports,e,t,r){"use strict";function o(e){var t=e.level,o=r.objectWithoutProperties(e,["level"]);return i["default"].createElement("h"+t,r["extends"]({},o,{className:n(e).build()}))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=o;var i=r.interopRequireDefault(e),n=t.create("Title");o.propsTypes={level:e.PropTypes.oneOf([1,2,3,4,5,6]).isRequired},o.defaultProps={level:1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Title = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = Title;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon/Title
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('Title');
+
+    /* eslint-disable fecs-prefer-class */
+    function Title(props) {
+        var level = props.level;
+        var rest = babelHelpers.objectWithoutProperties(props, ['level']);
+
+
+        return _react2['default'].createElement('h' + level, babelHelpers['extends']({}, rest, {
+            className: cx(props).build()
+        }));
+    }
+
+    Title.propsTypes = {
+        level: _react.PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired
+    };
+
+    Title.defaultProps = {
+        level: 1
+    };
+});
