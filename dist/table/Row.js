@@ -1,2 +1,136 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","./Cell","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("./Cell"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Cell,e.babelHelpers),e.Row=r.exports}}(this,function(exports,e,t,r,i){"use strict";function n(e,t,r){var n=e.part,s=e.data,l=e.height,u=e.rowIndex,p=t.width,c=t.align,d=t.dataKey,f=t.cellRenderer,h="header"===n||"footer"===n?t[n]:s[d],m={part:n,height:l,width:p,align:c,rowIndex:u,columnData:t,cellData:h,key:d||n,columnIndex:r,rowData:s,cellKey:d},y=h;if("function"==typeof f)y=f(m);else{var b=t[n+"Renderer"];if("function"==typeof b)y=b(m)}return o["default"].createElement(a["default"],i["extends"]({},m,{content:y}))}Object.defineProperty(exports,"__esModule",{value:!0});var o=i.interopRequireDefault(e),a=i.interopRequireDefault(r),s=t.create("TableRow"),l=function(e){function t(){return i.classCallCheck(this,t),i.possibleConstructorReturn(this,e.apply(this,arguments))}return i.inherits(t,e),t.prototype.render=function(){var e=this.props,t=e.columns,r=e.tableWidth;return o["default"].createElement("div",{className:s(e).build(),style:{width:r?r-2:null}},t.map(function(t,r){return n(e,t.props,r)}))},t}(e.Component);exports["default"]=l,l.displayName="TableRow",l.propTypes={index:e.PropTypes.number,part:e.PropTypes.oneOf(["header","footer","body"]).isRequired,data:e.PropTypes.oneOfType([e.PropTypes.object,e.PropTypes.array]),height:e.PropTypes.number.isRequired}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', './Cell', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Cell'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.Cell, global.babelHelpers);
+        global.Row = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _Cell, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Cell2 = babelHelpers.interopRequireDefault(_Cell);
+
+    /**
+     * @file melon/TableRow
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('TableRow');
+
+    function renderCell(props, columnData, index) {
+        var part = props.part;
+        var data = props.data;
+        var height = props.height;
+        var rowIndex = props.rowIndex;
+        var width = columnData.width;
+        var align = columnData.align;
+        var dataKey = columnData.dataKey;
+        var cellRenderer = columnData.cellRenderer;
+
+
+        var cellData = part === 'header' || part === 'footer' ? columnData[part] : data[dataKey];
+
+        var cellProps = {
+            part: part,
+            height: height,
+            width: width,
+            align: align,
+            rowIndex: rowIndex,
+            columnData: columnData,
+            cellData: cellData,
+            key: dataKey || part,
+            columnIndex: index,
+            rowData: data,
+            cellKey: dataKey
+        };
+
+        // 内容默认是 cellData
+        var content = cellData;
+
+        // 如果有 cellRenderer
+        if (typeof cellRenderer === 'function') {
+            content = cellRenderer(cellProps);
+        }
+        // 或者是有局部的 renderer
+        else {
+
+                var partSpecificRenderer = columnData[part + 'Renderer'];
+
+                if (typeof partSpecificRenderer === 'function') {
+                    content = partSpecificRenderer(cellProps);
+                }
+            }
+
+        return _react2['default'].createElement(_Cell2['default'], babelHelpers['extends']({}, cellProps, { content: content }));
+    }
+
+    var TableRow = function (_Component) {
+        babelHelpers.inherits(TableRow, _Component);
+
+        function TableRow() {
+            babelHelpers.classCallCheck(this, TableRow);
+            return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+        }
+
+        TableRow.prototype.render = function render() {
+
+            var props = this.props;
+            var columns = props.columns;
+            var tableWidth = props.tableWidth;
+
+            return _react2['default'].createElement(
+                'div',
+                {
+                    className: cx(props).build(),
+                    style: { width: tableWidth ? tableWidth - 2 : null } },
+                columns.map(function (column, index) {
+                    return renderCell(props, column.props, index);
+                })
+            );
+        };
+
+        return TableRow;
+    }(_react.Component);
+
+    exports['default'] = TableRow;
+
+
+    TableRow.displayName = 'TableRow';
+
+    TableRow.propTypes = {
+
+        index: _react.PropTypes.number,
+
+        /**
+         * 行类型
+         *
+         * @type {string}
+         */
+        part: _react.PropTypes.oneOf(['header', 'footer', 'body']).isRequired,
+
+        /**
+         * 行数据
+         *
+         * @type {(Object | array)}
+         */
+        data: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.array]),
+
+        /**
+         * Height of the row.
+         * @type {number}
+         */
+        height: _react.PropTypes.number.isRequired
+    };
+});

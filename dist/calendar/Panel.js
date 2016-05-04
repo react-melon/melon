@@ -1,2 +1,187 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","./Header","./Selector","./Pager","./Month","../common/util/date","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("./Header"),require("./Selector"),require("./Pager"),require("./Month"),require("../common/util/date"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Header,e.Selector,e.Pager,e.Month,e.date,e.babelHelpers),e.Panel=r.exports}}(this,function(exports,e,t,r,i,o,n,a,s){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var l=s.interopRequireDefault(e),u=s.interopRequireDefault(r),p=s.interopRequireDefault(i),d=s.interopRequireDefault(o),c=s.interopRequireDefault(n),f=s.interopRequireWildcard(a),h=t.create("CalendarPanel"),m=function(e){function t(r){s.classCallCheck(this,t);var i=s.possibleConstructorReturn(this,e.call(this,r));return i.onHeaderClick=i.onHeaderClick.bind(i),i.onSelectorChange=i.onSelectorChange.bind(i),i.onPagerChange=i.onPagerChange.bind(i),i.onDateChange=i.onDateChange.bind(i),i.state={selectorType:"main",month:r.date,date:r.date},i}return s.inherits(t,e),t.prototype.componentWillReceiveProps=function(e){var t=e.date;if(this.props.date!==t)this.setState({date:t,month:t})},t.prototype.onHeaderClick=function(e){var t=this.state.selectorType;this.setState({selectorType:"main"===t?"year":"main"})},t.prototype.onSelectorChange=function(e){var t=e.mode,r=e.date,i=this.props,o=i.end,n=i.begin;if(t="year"===t?"month":"main",n&&f.isBeforeDate(r,n))r=n;else if(o&&f.isAfterDate(r,o))r=o;this.setState({date:r,month:r,selectorType:t})},t.prototype.onPagerChange=function(e){var t=e.month;this.setState({month:t})},t.prototype.onDateChange=function(e){var t=e.date,r=this.state.month,i=f.monthDiff(t,r);if(0!==i)this.setState({month:f.addMonths(r,i)});this.props.onChange({value:t})},t.prototype.render=function(){var e=this.props,t=e.date,r=e.lang,i=e.begin,o=e.end,n=this.state,a=n.selectorType,s=n.month;return l["default"].createElement("div",{className:h(this.props).build()},l["default"].createElement(u["default"],{date:t,onClick:this.onHeaderClick}),l["default"].createElement("div",{className:h().part("main").build()},l["default"].createElement(d["default"],{minDate:i,maxDate:o,onChange:this.onPagerChange,month:s}),l["default"].createElement(c["default"],{minDate:i,maxDate:o,lang:r,month:s,date:t,onChange:this.onDateChange}),l["default"].createElement(p["default"],{style:{display:"main"===a?"none":null},date:t,mode:"year"===a?"year":"month",minDate:i,maxDate:o,onChange:this.onSelectorChange})))},t}(e.Component);exports["default"]=m,m.displayName="CalendarPanel",m.defaultProps={date:new Date},m.propTypes={date:e.PropTypes.instanceOf(Date),begin:e.PropTypes.instanceOf(Date),end:e.PropTypes.instanceOf(Date)}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', './Header', './Selector', './Pager', './Month', '../common/util/date', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Header'), require('./Selector'), require('./Pager'), require('./Month'), require('../common/util/date'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.Header, global.Selector, global.Pager, global.Month, global.date, global.babelHelpers);
+        global.Panel = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _Header, _Selector, _Pager, _Month, _date, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Header2 = babelHelpers.interopRequireDefault(_Header);
+
+    var _Selector2 = babelHelpers.interopRequireDefault(_Selector);
+
+    var _Pager2 = babelHelpers.interopRequireDefault(_Pager);
+
+    var _Month2 = babelHelpers.interopRequireDefault(_Month);
+
+    var DateTime = babelHelpers.interopRequireWildcard(_date);
+
+    /**
+     * @file melon/CalendarPanel
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('CalendarPanel');
+
+    var CalendarPanel = function (_Component) {
+        babelHelpers.inherits(CalendarPanel, _Component);
+
+        function CalendarPanel(props) {
+            babelHelpers.classCallCheck(this, CalendarPanel);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.onHeaderClick = _this.onHeaderClick.bind(_this);
+            _this.onSelectorChange = _this.onSelectorChange.bind(_this);
+            _this.onPagerChange = _this.onPagerChange.bind(_this);
+            _this.onDateChange = _this.onDateChange.bind(_this);
+
+            _this.state = {
+                selectorType: 'main',
+                month: props.date,
+                date: props.date
+            };
+
+            return _this;
+        }
+
+        CalendarPanel.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            var date = nextProps.date;
+
+
+            if (this.props.date !== date) {
+                this.setState({ date: date, month: date });
+            }
+        };
+
+        CalendarPanel.prototype.onHeaderClick = function onHeaderClick(e) {
+            var selectorType = this.state.selectorType;
+
+
+            this.setState({
+                selectorType: selectorType === 'main' ? 'year' : 'main'
+            });
+        };
+
+        CalendarPanel.prototype.onSelectorChange = function onSelectorChange(e) {
+            var mode = e.mode;
+            var date = e.date;
+            var _props = this.props;
+            var end = _props.end;
+            var begin = _props.begin;
+
+
+            mode = mode === 'year' ? 'month' : 'main';
+
+            if (begin && DateTime.isBeforeDate(date, begin)) {
+                date = begin;
+            } else if (end && DateTime.isAfterDate(date, end)) {
+                date = end;
+            }
+
+            this.setState({
+                date: date,
+                month: date,
+                selectorType: mode
+            });
+        };
+
+        CalendarPanel.prototype.onPagerChange = function onPagerChange(_ref) {
+            var month = _ref.month;
+
+
+            this.setState({ month: month });
+        };
+
+        CalendarPanel.prototype.onDateChange = function onDateChange(_ref2) {
+            var date = _ref2.date;
+            var month = this.state.month;
+
+            var monthDiff = DateTime.monthDiff(date, month);
+
+            if (monthDiff !== 0) {
+                this.setState({
+                    month: DateTime.addMonths(month, monthDiff)
+                });
+            }
+
+            this.props.onChange({
+                value: date
+            });
+        };
+
+        CalendarPanel.prototype.render = function render() {
+            var _props2 = this.props;
+            var date = _props2.date;
+            var lang = _props2.lang;
+            var begin = _props2.begin;
+            var end = _props2.end;
+            var _state = this.state;
+            var selectorType = _state.selectorType;
+            var month = _state.month;
+
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).build() },
+                _react2['default'].createElement(_Header2['default'], {
+                    date: date,
+                    onClick: this.onHeaderClick }),
+                _react2['default'].createElement(
+                    'div',
+                    { className: cx().part('main').build() },
+                    _react2['default'].createElement(_Pager2['default'], {
+                        minDate: begin,
+                        maxDate: end,
+                        onChange: this.onPagerChange,
+                        month: month }),
+                    _react2['default'].createElement(_Month2['default'], {
+                        minDate: begin,
+                        maxDate: end,
+                        lang: lang,
+                        month: month,
+                        date: date,
+                        onChange: this.onDateChange }),
+                    _react2['default'].createElement(_Selector2['default'], {
+                        style: { display: selectorType === 'main' ? 'none' : null },
+                        date: date,
+                        mode: selectorType === 'year' ? 'year' : 'month',
+                        minDate: begin,
+                        maxDate: end,
+                        onChange: this.onSelectorChange })
+                )
+            );
+        };
+
+        return CalendarPanel;
+    }(_react.Component);
+
+    exports['default'] = CalendarPanel;
+
+
+    CalendarPanel.displayName = 'CalendarPanel';
+
+    CalendarPanel.defaultProps = {
+        date: new Date()
+    };
+
+    CalendarPanel.propTypes = {
+        date: _react.PropTypes.instanceOf(Date),
+        begin: _react.PropTypes.instanceOf(Date),
+        end: _react.PropTypes.instanceOf(Date)
+    };
+});

@@ -1,2 +1,145 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","./common/util/cxBuilder","./tree/TreeNode","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("./common/util/cxBuilder"),require("./tree/TreeNode"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.cxBuilder,e.TreeNode,e.babelHelpers),e.Tree=r.exports}}(this,function(exports,e,t,r,o,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=i.interopRequireDefault(e),a=i.interopRequireDefault(t),s=i.interopRequireDefault(o),l=r.create("Tree"),u=function(t){function r(e){i.classCallCheck(this,r);var o=i.possibleConstructorReturn(this,t.call(this,e));return o.onTreeNodeClick=o.onTreeNodeClick.bind(o),o}return i.inherits(r,t),r.prototype.onTreeNodeClick=function(e){var t=e.currentTarget,r=a["default"].findDOMNode(this);e.stopPropagation();for(var o=r.querySelectorAll("[data-role=tree-node]"),i=0,n=o.length;n>i;++i)o[i].className=o[i].className.split(" ").filter(function(e){return"state-selected"!==e}).join(" ");t.className+=" state-selected"},r.prototype.renderTreeNode=function(t,r){if(t){var o=this.props.defaultExpandAll;return e.Children.map(t,function(t,i){return e.cloneElement(t,{onClick:this.onTreeNodeClick,key:i,level:r,expand:o},this.renderTreeNode(t.props.children,r+1))},this)}},r.prototype.render=function(){var e=this.props,t=e.children,r=i.objectWithoutProperties(e,["children"]);return n["default"].createElement("ul",i["extends"]({},r,{className:l(this.props).build()}),this.renderTreeNode(t,1))},r}(e.Component);exports["default"]=u,u.TreeNode=s["default"],u.createTreeNodes=function(e,t){if(t=t||1,null==e)return null;if(!Array.isArray(e))e=[e];return e.map(function(e,r){return n["default"].createElement(s["default"],{level:t,label:e.text,key:e.id},u.createTreeNodes(e.children,t+1))})},u.displayName="Tree",u.propTypes={defaultExpandAll:e.PropTypes.bool,datasource:e.PropTypes.oneOfType([e.PropTypes.array,e.PropTypes.object])},u.defaultProps={defaultExpandAll:!1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', './common/util/cxBuilder', './tree/TreeNode', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('./common/util/cxBuilder'), require('./tree/TreeNode'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.cxBuilder, global.TreeNode, global.babelHelpers);
+        global.Tree = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _cxBuilder, _TreeNode, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    var _TreeNode2 = babelHelpers.interopRequireDefault(_TreeNode);
+
+    /**
+     * @file melon/Tree
+     * @author cxtom<cxtom2010@gmail.com>
+     * @author leon<ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Tree');
+
+    var Tree = function (_Component) {
+        babelHelpers.inherits(Tree, _Component);
+
+        function Tree(props) {
+            babelHelpers.classCallCheck(this, Tree);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.onTreeNodeClick = _this.onTreeNodeClick.bind(_this);
+            return _this;
+        }
+
+        Tree.prototype.onTreeNodeClick = function onTreeNodeClick(e) {
+
+            var target = e.currentTarget;
+            var main = _reactDom2['default'].findDOMNode(this);
+
+            e.stopPropagation();
+
+            var elements = main.querySelectorAll('[data-role=tree-node]');
+
+            for (var i = 0, len = elements.length; i < len; ++i) {
+
+                elements[i].className = elements[i].className.split(' ').filter(function (className) {
+                    return className !== 'state-selected';
+                }).join(' ');
+            }
+
+            target.className += ' state-selected';
+        };
+
+        Tree.prototype.renderTreeNode = function renderTreeNode(children, level) {
+
+            if (!children) {
+                return;
+            }
+
+            var expand = this.props.defaultExpandAll;
+
+            return _react.Children.map(children, function (child, index) {
+
+                return (0, _react.cloneElement)(child, {
+                    onClick: this.onTreeNodeClick,
+                    key: index,
+                    level: level,
+                    expand: expand
+                }, this.renderTreeNode(child.props.children, level + 1));
+            }, this);
+        };
+
+        Tree.prototype.render = function render() {
+            var _props = this.props;
+            var children = _props.children;
+            var rest = babelHelpers.objectWithoutProperties(_props, ['children']);
+
+
+            return _react2['default'].createElement(
+                'ul',
+                babelHelpers['extends']({}, rest, { className: cx(this.props).build() }),
+                this.renderTreeNode(children, 1)
+            );
+        };
+
+        return Tree;
+    }(_react.Component);
+
+    exports['default'] = Tree;
+
+
+    Tree.TreeNode = _TreeNode2['default'];
+
+    Tree.createTreeNodes = function (datasource, level) {
+
+        level = level || 1;
+
+        if (datasource == null) {
+            return null;
+        }
+
+        if (!Array.isArray(datasource)) {
+            datasource = [datasource];
+        }
+
+        return datasource.map(function (item, index) {
+
+            return _react2['default'].createElement(
+                _TreeNode2['default'],
+                {
+                    level: level,
+                    label: item.text,
+                    key: item.id },
+                Tree.createTreeNodes(item.children, level + 1)
+            );
+        });
+    };
+
+    Tree.displayName = 'Tree';
+
+    Tree.propTypes = {
+        defaultExpandAll: _react.PropTypes.bool,
+        datasource: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.object])
+    }, Tree.defaultProps = {
+
+        /**
+         * 默认展开树
+         * @type {Boolean}
+         */
+        defaultExpandAll: false
+
+    };
+});

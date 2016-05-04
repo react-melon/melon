@@ -1,2 +1,236 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","./common/util/dom","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("./common/util/dom"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.dom,e.cxBuilder,e.babelHelpers),e.Tooltip=r.exports}}(this,function(exports,e,t,r,o,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=i.interopRequireDefault(e),a=i.interopRequireDefault(t),s=i.interopRequireDefault(r),l=o.create("Tooltip"),u=function(e){function t(r){i.classCallCheck(this,t);var o=i.possibleConstructorReturn(this,e.call(this,r));return o.onClick=o.onClick.bind(o),o.onMouseEnter=o.onMouseEnter.bind(o),o.onMouseLeave=o.onMouseLeave.bind(o),o.state={isShown:!1},o}return i.inherits(t,e),t.prototype.componentDidMount=function(){var e=this.popup=t.createPopup();this.renderPopup(e,this.props.content)},t.prototype.componentWillUnmount=function(){t.destroyPopup(this.popup),this.popup=null},t.prototype.componentDidUpdate=function(){this.renderPopup(this.popup,this.props.content)},t.prototype.onClick=function(e){this.toggle()},t.prototype.onMouseEnter=function(e){this.show()},t.prototype.onMouseLeave=function(e){this.hide()},t.prototype.isShown=function(){return this.state.isShown},t.prototype.toggle=function(){this.isShown()?this.hide():this.show()},t.prototype.show=function(){this.setState({isShown:!0})},t.prototype.hide=function(){this.setState({isShown:!1})},t.prototype.getPosition=function(){var e=this.main;if(!this.isShown()||!e)return{left:-1e4,top:0,opacity:0,width:"auto",height:"auto"};var t=this.props,r=t.direction,o=t.offsetX,i=t.offsetY,n=this.popup.childNodes[0],a=s["default"].getPosition(e),l=n.offsetWidth,u=n.offsetHeight,p={opacity:1};switch(r){case"top":p.left=a.left+(a.width-l)/2,p.top=a.top-u-i;break;case"bottom":p.left=(a.width-l)/2+a.left,p.top=a.top+a.height+i;break;case"left":p.top=(a.height-u)/2+a.top,p.left=a.left-l-i;break;case"right":p.top=(a.height-u)/2+a.top,p.left=a.left+a.width+o}return p},t.prototype.renderPopup=function(e,t){a["default"].render(n["default"].createElement("div",{className:l().part("popup").build(),style:this.getPosition()},t),e)},t.prototype.render=function(){var e=this,t=this.props,r=t.mode,o=t.children,a=t.direction,s="click"===r?this.onClick:null,u="over"===r?this.onMouseEnter:null,p="over"===r?this.onMouseLeave:null;return n["default"].createElement("div",i["extends"]({},t,{ref:function(t){if(t)e.main=t},className:l(t).addStates({direction:a}).build(),onClick:s,onMouseEnter:u,onMouseLeave:p}),o)},t}(e.Component);exports["default"]=u,u.displayName="Tooltip",u.propTypes={arrow:e.PropTypes.bool.isRequired,direction:e.PropTypes.oneOf(["top","bottom","left","right"]).isRequired,mode:e.PropTypes.oneOf(["over","click"])},u.defaultProps={arrow:!0,direction:"bottom",mode:"over",offsetX:14,offsetY:14},function(){var e=void 0;u.createPopup=function(){if(!e)e=document.createElement("div"),e.className=l().part("container").build(),document.body.appendChild(e);var t=document.createElement("div");return e.appendChild(t),t},u.destroyPopup=function(t){a["default"].unmountComponentAtNode(t),e.removeChild(t)}}()});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', './common/util/dom', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require('./common/util/dom'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.dom, global.cxBuilder, global.babelHelpers);
+        global.Tooltip = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, _dom, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    var _dom2 = babelHelpers.interopRequireDefault(_dom);
+
+    /**
+     * @file melon/Tooltip
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('Tooltip');
+
+    var Tooltip = function (_Component) {
+        babelHelpers.inherits(Tooltip, _Component);
+
+        function Tooltip(props) {
+            babelHelpers.classCallCheck(this, Tooltip);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            _this.onClick = _this.onClick.bind(_this);
+            _this.onMouseEnter = _this.onMouseEnter.bind(_this);
+            _this.onMouseLeave = _this.onMouseLeave.bind(_this);
+
+            _this.state = {
+                isShown: false
+            };
+
+            return _this;
+        }
+
+        Tooltip.prototype.componentDidMount = function componentDidMount() {
+            var popup = this.popup = Tooltip.createPopup();
+            this.renderPopup(popup, this.props.content);
+        };
+
+        Tooltip.prototype.componentWillUnmount = function componentWillUnmount() {
+            Tooltip.destroyPopup(this.popup);
+            this.popup = null;
+        };
+
+        Tooltip.prototype.componentDidUpdate = function componentDidUpdate() {
+            this.renderPopup(this.popup, this.props.content);
+        };
+
+        Tooltip.prototype.onClick = function onClick(e) {
+            this.toggle();
+        };
+
+        Tooltip.prototype.onMouseEnter = function onMouseEnter(e) {
+            this.show();
+        };
+
+        Tooltip.prototype.onMouseLeave = function onMouseLeave(e) {
+            this.hide();
+        };
+
+        Tooltip.prototype.isShown = function isShown() {
+            return this.state.isShown;
+        };
+
+        Tooltip.prototype.toggle = function toggle() {
+            this.isShown() ? this.hide() : this.show();
+        };
+
+        Tooltip.prototype.show = function show() {
+            this.setState({ isShown: true });
+        };
+
+        Tooltip.prototype.hide = function hide() {
+            this.setState({ isShown: false });
+        };
+
+        Tooltip.prototype.getPosition = function getPosition() {
+            var main = this.main;
+
+
+            if (!this.isShown() || !main) {
+                return {
+                    left: -10000,
+                    top: 0,
+                    opacity: 0,
+                    width: 'auto',
+                    height: 'auto'
+                };
+            }
+
+            var props = this.props;
+
+            var direction = props.direction;
+            var offsetX = props.offsetX;
+            var offsetY = props.offsetY;
+
+
+            var popup = this.popup.childNodes[0];
+
+            var position = _dom2['default'].getPosition(main);
+
+            var offsetWidth = popup.offsetWidth;
+            var offsetHeight = popup.offsetHeight;
+
+
+            var styles = { opacity: 1 };
+
+            switch (direction) {
+                case 'top':
+                    styles.left = position.left + (position.width - offsetWidth) / 2;
+                    styles.top = position.top - offsetHeight - offsetY;
+                    break;
+                case 'bottom':
+                    styles.left = (position.width - offsetWidth) / 2 + position.left;
+                    styles.top = position.top + position.height + offsetY;
+                    break;
+                case 'left':
+                    styles.top = (position.height - offsetHeight) / 2 + position.top;
+                    styles.left = position.left - offsetWidth - offsetY;
+                    break;
+                case 'right':
+                    styles.top = (position.height - offsetHeight) / 2 + position.top;
+                    styles.left = position.left + position.width + offsetX;
+                    break;
+            }
+
+            return styles;
+        };
+
+        Tooltip.prototype.renderPopup = function renderPopup(target, content) {
+
+            _reactDom2['default'].render(_react2['default'].createElement(
+                'div',
+                {
+                    className: cx().part('popup').build(),
+                    style: this.getPosition() },
+                content
+            ), target);
+        };
+
+        Tooltip.prototype.render = function render() {
+            var _this2 = this;
+
+            var props = this.props;
+
+            var mode = props.mode;
+            var direction = props.direction;
+            var children = props.children;
+
+
+            var onClick = mode === 'click' ? this.onClick : null;
+            var onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
+            var onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
+
+            return _react2['default'].createElement(
+                'div',
+                {
+                    ref: function ref(main) {
+                        if (main) {
+                            _this2.main = main;
+                        }
+                    },
+                    className: cx(props).addStates({ direction: direction }).build(),
+                    onClick: onClick,
+                    onMouseEnter: onMouseEnter,
+                    onMouseLeave: onMouseLeave },
+                children
+            );
+        };
+
+        return Tooltip;
+    }(_react.Component);
+
+    exports['default'] = Tooltip;
+
+
+    Tooltip.displayName = 'Tooltip';
+
+    Tooltip.propTypes = {
+        arrow: _react.PropTypes.bool.isRequired,
+        direction: _react.PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
+        mode: _react.PropTypes.oneOf(['over', 'click']),
+        content: _react.PropTypes.string.isRequired
+    };
+
+    Tooltip.defaultProps = {
+        arrow: true,
+        direction: 'bottom',
+        mode: 'over',
+        offsetX: 14,
+        offsetY: 14
+    };
+
+    (function () {
+
+        var container = void 0;
+
+        Tooltip.createPopup = function () {
+
+            if (!container) {
+                container = document.createElement('div');
+                container.className = cx().part('container').build();
+                document.body.appendChild(container);
+            }
+
+            var popup = document.createElement('div');
+
+            container.appendChild(popup);
+
+            return popup;
+        };
+
+        Tooltip.destroyPopup = function (popup) {
+            _reactDom2['default'].unmountComponentAtNode(popup);
+            container.removeChild(popup);
+        };
+    })();
+});

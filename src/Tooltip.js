@@ -140,8 +140,8 @@ export default class Tooltip extends Component {
 
         const {
             mode,
-            children,
-            direction
+            direction,
+            children
         } = props;
 
         const onClick = mode === 'click' ? this.onClick : null;
@@ -149,7 +149,7 @@ export default class Tooltip extends Component {
         const onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
 
         return (
-            <div {...props}
+            <div
                 ref={main => {
                     if (main) {
                         this.main = main;
@@ -171,7 +171,8 @@ Tooltip.displayName = 'Tooltip';
 Tooltip.propTypes = {
     arrow: PropTypes.bool.isRequired,
     direction: PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
-    mode: PropTypes.oneOf(['over', 'click'])
+    mode: PropTypes.oneOf(['over', 'click']),
+    content: PropTypes.string.isRequired
 };
 
 Tooltip.defaultProps = {

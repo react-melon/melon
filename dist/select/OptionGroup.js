@@ -1,2 +1,70 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./Option","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./Option"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Option,e.cxBuilder,e.babelHelpers),e.OptionGroup=r.exports}}(this,function(exports,e,t,r,n){"use strict";function i(t){var r=t.children,i=t.disabled,l=t.label,u=t.onClick;return o["default"].createElement("div",{className:s(t).build()},o["default"].createElement("h4",{className:s().part("title").build()},l),o["default"].createElement("div",{className:s().part("list").build()},e.Children.map(r,function(e,t){if("option"!==e.type)return null;else return o["default"].createElement(a["default"],n["extends"]({},e.props,{key:e.props.value,disabled:e.props.disabled||i,onClick:u}))})))}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var o=n.interopRequireDefault(e),a=n.interopRequireDefault(t),s=r.create("SelectOptionGroup");i.propTypes={disabled:e.PropTypes.bool,label:e.PropTypes.string.isRequired}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './Option', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./Option'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Option, global.cxBuilder, global.babelHelpers);
+        global.OptionGroup = mod.exports;
+    }
+})(this, function (exports, _react, _Option, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = SelectOptionGroup;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Option2 = babelHelpers.interopRequireDefault(_Option);
+
+    /**
+     * @file 下拉框选项组
+     * @author leon <ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('SelectOptionGroup');
+
+    function SelectOptionGroup(props) {
+        var children = props.children;
+        var disabled = props.disabled;
+        var label = props.label;
+        var onClick = props.onClick;
+
+
+        return _react2['default'].createElement(
+            'div',
+            { className: cx(props).build() },
+            _react2['default'].createElement(
+                'h4',
+                { className: cx().part('title').build() },
+                label
+            ),
+            _react2['default'].createElement(
+                'div',
+                { className: cx().part('list').build() },
+                _react.Children.map(children, function (child, index) {
+
+                    if (child.type !== 'option') {
+                        return null;
+                    }
+
+                    return _react2['default'].createElement(_Option2['default'], babelHelpers['extends']({}, child.props, {
+                        key: child.props.value,
+                        disabled: child.props.disabled || disabled,
+                        onClick: onClick }));
+                })
+            )
+        );
+    }
+
+    SelectOptionGroup.propTypes = {
+        disabled: _react.PropTypes.bool,
+        label: _react.PropTypes.string.isRequired
+    };
+});

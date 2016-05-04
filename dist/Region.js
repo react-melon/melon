@@ -1,2 +1,185 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./region/Selector","./region/Area","./region/helper","./InputComponent","./common/util/cxBuilder","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./region/Selector"),require("./region/Area"),require("./region/helper"),require("./InputComponent"),require("./common/util/cxBuilder"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Selector,e.Area,e.helper,e.InputComponent,e.cxBuilder,e.babelHelpers),e.Region=r.exports}}(this,function(exports,e,t,r,i,o,n,a){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var s=a.interopRequireDefault(e),l=a.interopRequireDefault(t),u=a.interopRequireDefault(r),p=a.interopRequireWildcard(i),d=a.interopRequireDefault(o),c=n.create("Region"),f=function(e){function t(r,i){a.classCallCheck(this,t);var o=a.possibleConstructorReturn(this,e.call(this,r,i));return o.state=a["extends"]({},o.state,{datasource:o.props.datasource}),o.onChange=o.onChange.bind(o),o.onSelectorChange=o.onSelectorChange.bind(o),o}return a.inherits(t,e),t.prototype.onChange=function(t){e.prototype.onChange.call(this,{type:"change",target:this,value:this.stringifyValue(t)})},t.prototype.onAreaChange=function(e,t,r){var i=r.data,o=this.state.datasource;p.isAllSelected(i),o[t].children[e]=i,p.isAllSelected(o[t]),this.setState({datasource:o},function(){this.onChange(o)})},t.prototype.onSelectorChange=function(e,t){var r=t.value,i=this.state.datasource;p[r?"selectAll":"cancelAll"](i[e]),this.setState({datasource:i},function(){this.onChange(i)})},t.prototype.parseValue=function(e){return e=e.split(","),this.props.datasource.map(p.parse.bind(this,e))},t.prototype.stringifyValue=function(e){var t=this;return e?e.reduce(function(){return t.format.apply(t,arguments)},[]).join(","):""},t.prototype.format=function(e,t,r){var i=this;if(t.selected)e.push(t.id);return t.children?t.children.reduce(function(){return i.format.apply(i,arguments)},e):e},t.prototype.renderCountry=function(e,t){var r=this;return s["default"].createElement("div",{className:c().part("country").build(),key:t},s["default"].createElement("h1",null,s["default"].createElement(l["default"],{label:e.text,id:e.id,index:t,checked:e.selected,onChange:function(e){r.onSelectorChange(t,e)}})),this.renderArea(e.children,t))},t.prototype.renderArea=function(e,t){var r=this;return Array.isArray(e)&&e.length>0?s["default"].createElement("ul",null,e.map(function(e,i){return s["default"].createElement(u["default"],{key:i,variants:i%2?["even"]:[],datasource:e,onChange:function(e){r.onAreaChange(i,t,e)}})})):null},t.prototype.render=function(){var e=this,t=this.state.datasource;return s["default"].createElement("div",{className:c(this.props).build()},t.map(function(){return e.renderCountry.apply(e,arguments)}))},t}(d["default"]);exports["default"]=f,f.defaultProps=a["extends"]({},d["default"].defaultProps,{datasource:[]}),f.propTypes=a["extends"]({},d["default"].propTypes,{selected:e.PropTypes.bool,datasource:e.PropTypes.arrayOf(e.PropTypes.object)})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './region/Selector', './region/Area', './region/helper', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./region/Selector'), require('./region/Area'), require('./region/helper'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Selector, global.Area, global.helper, global.InputComponent, global.cxBuilder, global.babelHelpers);
+        global.Region = mod.exports;
+    }
+})(this, function (exports, _react, _Selector, _Area, _helper, _InputComponent2, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Selector2 = babelHelpers.interopRequireDefault(_Selector);
+
+    var _Area2 = babelHelpers.interopRequireDefault(_Area);
+
+    var helper = babelHelpers.interopRequireWildcard(_helper);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    /**
+     * @file melon/Region
+     * @author cxtom(cxtom2010@gmail.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('Region');
+
+    var Region = function (_InputComponent) {
+        babelHelpers.inherits(Region, _InputComponent);
+
+        function Region(props, context) {
+            babelHelpers.classCallCheck(this, Region);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+                datasource: _this.props.datasource
+            });
+
+            _this.onChange = _this.onChange.bind(_this);
+            _this.onSelectorChange = _this.onSelectorChange.bind(_this);
+
+            return _this;
+        }
+
+        Region.prototype.onChange = function onChange(rawValue) {
+
+            _InputComponent.prototype.onChange.call(this, {
+                type: 'change',
+                target: this,
+                value: this.stringifyValue(rawValue)
+            });
+        };
+
+        Region.prototype.onAreaChange = function onAreaChange(index, cIndex, e) {
+
+            var data = e.data;
+            var datasource = this.state.datasource;
+
+            helper.isAllSelected(data);
+            datasource[cIndex].children[index] = data;
+            helper.isAllSelected(datasource[cIndex]);
+
+            this.setState({ datasource: datasource }, function () {
+                this.onChange(datasource);
+            });
+        };
+
+        Region.prototype.onSelectorChange = function onSelectorChange(index, e) {
+            var value = e.value;
+            var datasource = this.state.datasource;
+
+
+            helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
+
+            this.setState({ datasource: datasource }, function () {
+                this.onChange(datasource);
+            });
+        };
+
+        Region.prototype.parseValue = function parseValue(value) {
+            value = value.split(',');
+            return this.props.datasource.map(helper.parse.bind(this, value));
+        };
+
+        Region.prototype.stringifyValue = function stringifyValue(datasource) {
+            var _this2 = this;
+
+            return datasource ? datasource.reduce(function () {
+                return _this2.format.apply(_this2, arguments);
+            }, []).join(',') : '';
+        };
+
+        Region.prototype.format = function format(result, child, index) {
+            var _this3 = this;
+
+            if (child.selected) {
+                result.push(child.id);
+            }
+
+            return child.children ? child.children.reduce(function () {
+                return _this3.format.apply(_this3, arguments);
+            }, result) : result;
+        };
+
+        Region.prototype.renderCountry = function renderCountry(country, index) {
+            var _this4 = this;
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx().part('country').build(), key: index },
+                _react2['default'].createElement(
+                    'h1',
+                    null,
+                    _react2['default'].createElement(_Selector2['default'], {
+                        label: country.text,
+                        id: country.id,
+                        index: index,
+                        checked: country.selected,
+                        onChange: function onChange(e) {
+                            _this4.onSelectorChange(index, e);
+                        } })
+                ),
+                this.renderArea(country.children, index)
+            );
+        };
+
+        Region.prototype.renderArea = function renderArea(area, cIndex) {
+            var _this5 = this;
+
+            return Array.isArray(area) && area.length > 0 ? _react2['default'].createElement(
+                'ul',
+                null,
+                area.map(function (a, index) {
+                    return _react2['default'].createElement(_Area2['default'], {
+                        key: index,
+                        variants: index % 2 ? ['even'] : [],
+                        datasource: a,
+                        onChange: function onChange(e) {
+                            _this5.onAreaChange(index, cIndex, e);
+                        } });
+                })
+            ) : null;
+        };
+
+        Region.prototype.render = function render() {
+            var _this6 = this;
+
+            var datasource = this.state.datasource;
+
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).build() },
+                datasource.map(function () {
+                    return _this6.renderCountry.apply(_this6, arguments);
+                })
+            );
+        };
+
+        return Region;
+    }(_InputComponent3['default']);
+
+    exports['default'] = Region;
+
+
+    Region.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        datasource: []
+    });
+
+    Region.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+        selected: _react.PropTypes.bool,
+        datasource: _react.PropTypes.arrayOf(_react.PropTypes.object)
+    });
+});

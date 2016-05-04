@@ -1,2 +1,288 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./InputComponent","./common/util/cxBuilder","./Icon","./Confirm","./calendar/Panel","./common/util/date","./Validity","./common/util/syncPropsToState","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./InputComponent"),require("./common/util/cxBuilder"),require("./Icon"),require("./Confirm"),require("./calendar/Panel"),require("./common/util/date"),require("./Validity"),require("./common/util/syncPropsToState"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.InputComponent,e.cxBuilder,e.Icon,e.Confirm,e.Panel,e.date,e.Validity,e.syncPropsToState,e.babelHelpers),e.Calendar=r.exports}}(this,function(exports,e,t,r,n,i,o,a,s,l,u){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var p=u.interopRequireDefault(e),d=u.interopRequireDefault(t),c=u.interopRequireDefault(n),f=u.interopRequireDefault(i),h=u.interopRequireDefault(o),m=u.interopRequireWildcard(a),y=u.interopRequireDefault(s),b=r.create("Calendar"),v=function(e){function t(r,n){u.classCallCheck(this,t);var i=u.possibleConstructorReturn(this,e.call(this,r,n)),o=i.state.value;return i.onLabelClick=i.onLabelClick.bind(i),i.onConfirm=i.onConfirm.bind(i),i.onLabelClick=i.onLabelClick.bind(i),i.onCancel=i.onCancel.bind(i),i.onDateChange=i.onDateChange.bind(i),i.state=u["extends"]({},i.state,{date:o?i.parseDate(o):new Date,open:!1}),i}return u.inherits(t,e),t.prototype.getSyncUpdates=function(e){var t=e.disabled,r=e.customValidity,n=e.value,i=n?this.parseValue(n):null;i=!i||isNaN(i.getTime())?new Date:i;var o=l.getNextValidity(this,{value:n,disabled:t,customValidity:r});return{date:i,vilidity:o,value:this.stringifyValue(i)}},t.prototype.parseValue=function(e){return this.parseDate(e)},t.prototype.stringifyValue=function(e){if(!m.isDate(e))return e;var t=this.props,r=t.dateFormat,n=t.lang;return m.format(e,r.toLowerCase(),n)},t.prototype.parseDate=function(e){if("string"!=typeof e)return e;var t=this.props.dateFormat.toLowerCase();return m.parse(e,t)},t.prototype.getValue=function(){return this.stringifyValue(this.state.value)},t.prototype.onLabelClick=function(){var e=this.props,t=e.disabled,r=e.readOnly;if(!t&&!r)this.setState({open:!0})},t.prototype.onConfirm=function(){var t=this,r=this.state,n=r.value,i=r.date;if(n=this.parseDate(n),m.isEqualDate(i,this.parseDate(n)))return void this.setState({open:!1});else return void this.setState({open:!1},function(){e.prototype.onChange.call(t,{type:"change",target:t,value:t.stringifyValue(i)})})},t.prototype.onCancel=function(){this.setState({open:!1})},t.prototype.onDateChange=function(e){var t=this,r=e.value,n=this.props.autoConfirm;this.setState({date:this.parseDate(r)},n?function(){return t.onConfirm()}:null)},t.prototype.render=function(){var e=this.state,t=this.props,r=t.lang,n=t.disabled,i=t.size,o=t.name,a=t.dateFormat,s=t.placeholder,l=u.objectWithoutProperties(t,["lang","disabled","size","name","dateFormat","placeholder"]),d=e.value,v=e.validity,x=t.begin,g=t.end;x=x?this.parseDate(x):null,g=g?this.parseDate(g):null;var C=e.open,q=e.date,P=b(t).addStates({focus:C}).addStates(this.getStyleStates()).build();return p["default"].createElement("div",u["extends"]({},l,{className:P}),p["default"].createElement("input",{name:o,ref:"input",type:"hidden",value:d,disabled:n,size:i}),p["default"].createElement("label",{onClick:this.onLabelClick},d?m.format(this.parseDate(d),a.toLowerCase(),r):p["default"].createElement("span",{className:b().part("label-placeholder").build()},s),p["default"].createElement(c["default"],{icon:"expand-more"})),p["default"].createElement(y["default"],{validity:v}),p["default"].createElement(f["default"],{open:C,variants:["calendar"],onConfirm:this.onConfirm,onCancel:this.onCancel,size:i,buttonVariants:["secondery","calendar"]},p["default"].createElement(h["default"],{date:q,begin:x,end:g,lang:r,onChange:this.onDateChange})))},t}(d["default"]);exports["default"]=v,v.displayName="Calendar",v.LANG={week:"周",days:"日,一,二,三,四,五,六"},v.defaultProps=u["extends"]({},d["default"].defaultProps,{defaultValue:"",dateFormat:"yyyy-MM-dd",lang:v.LANG,placeholder:"请选择"}),v.propTypes=u["extends"]({},d["default"].propTypes,{value:e.PropTypes.string,autoConfirm:e.PropTypes.bool,dateFormat:e.PropTypes.string,end:e.PropTypes.oneOfType([e.PropTypes.object,e.PropTypes.string]),begin:e.PropTypes.oneOfType([e.PropTypes.object,e.PropTypes.string]),lang:e.PropTypes.shape({week:e.PropTypes.string,days:e.PropTypes.string})})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './InputComponent', './common/util/cxBuilder', './Icon', './Confirm', './calendar/Panel', './common/util/date', './Validity', './common/util/syncPropsToState', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./InputComponent'), require('./common/util/cxBuilder'), require('./Icon'), require('./Confirm'), require('./calendar/Panel'), require('./common/util/date'), require('./Validity'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.InputComponent, global.cxBuilder, global.Icon, global.Confirm, global.Panel, global.date, global.Validity, global.syncPropsToState, global.babelHelpers);
+        global.Calendar = mod.exports;
+    }
+})(this, function (exports, _react, _InputComponent2, _cxBuilder, _Icon, _Confirm, _Panel, _date, _Validity, _syncPropsToState, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    var _Icon2 = babelHelpers.interopRequireDefault(_Icon);
+
+    var _Confirm2 = babelHelpers.interopRequireDefault(_Confirm);
+
+    var _Panel2 = babelHelpers.interopRequireDefault(_Panel);
+
+    var DateTime = babelHelpers.interopRequireWildcard(_date);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    /**
+     * @file melon/Calendar
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Calendar');
+
+    var Calendar = function (_InputComponent) {
+        babelHelpers.inherits(Calendar, _InputComponent);
+
+        function Calendar(props, context) {
+            babelHelpers.classCallCheck(this, Calendar);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            var value = _this.state.value;
+
+
+            _this.onLabelClick = _this.onLabelClick.bind(_this);
+            _this.onConfirm = _this.onConfirm.bind(_this);
+            _this.onLabelClick = _this.onLabelClick.bind(_this);
+            _this.onCancel = _this.onCancel.bind(_this);
+            _this.onDateChange = _this.onDateChange.bind(_this);
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+
+                // 缓存用户在 confirm 前的选中值
+                date: value ? _this.parseDate(value) : new Date(),
+
+                // 是否打开选择窗
+                open: false
+
+            });
+
+            return _this;
+        }
+
+        Calendar.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
+            var disabled = nextProps.disabled;
+            var customValidity = nextProps.customValidity;
+            var value = nextProps.value;
+
+
+            // 如果有值，那么就试着解析一下；否则设置为 null
+            var date = value ? this.parseValue(value) : null;
+
+            // 如果 date 为 null 或者是 invalid date，那么就用上默认值；
+            // 否则就用解析出来的这个值
+            date = !date || isNaN(date.getTime()) ? new Date() : date;
+
+            var vilidity = (0, _syncPropsToState.getNextValidity)(this, { value: value, disabled: disabled, customValidity: customValidity });
+
+            return {
+                date: date,
+                vilidity: vilidity,
+                value: this.stringifyValue(date)
+            };
+        };
+
+        Calendar.prototype.parseValue = function parseValue(value) {
+            return this.parseDate(value);
+        };
+
+        Calendar.prototype.stringifyValue = function stringifyValue(rawValue) {
+
+            if (!DateTime.isDate(rawValue)) {
+                return rawValue;
+            }
+
+            var _props = this.props;
+            var dateFormat = _props.dateFormat;
+            var lang = _props.lang;
+
+
+            return DateTime.format(rawValue, dateFormat.toLowerCase(), lang);
+        };
+
+        Calendar.prototype.parseDate = function parseDate(date) {
+
+            if (typeof date !== 'string') {
+                return date;
+            }
+
+            var format = this.props.dateFormat.toLowerCase();
+
+            return DateTime.parse(date, format);
+        };
+
+        Calendar.prototype.getValue = function getValue() {
+            return this.stringifyValue(this.state.value);
+        };
+
+        Calendar.prototype.onLabelClick = function onLabelClick() {
+            var _props2 = this.props;
+            var disabled = _props2.disabled;
+            var readOnly = _props2.readOnly;
+
+
+            if (disabled || readOnly) {
+                return;
+            }
+
+            this.setState({ open: true });
+        };
+
+        Calendar.prototype.onConfirm = function onConfirm() {
+            var _this2 = this;
+
+            var _state = this.state;
+            var value = _state.value;
+            var date = _state.date;
+
+
+            value = this.parseDate(value);
+
+            if (DateTime.isEqualDate(date, this.parseDate(value))) {
+                this.setState({ open: false });
+                return;
+            }
+
+            this.setState({ open: false }, function () {
+
+                _InputComponent.prototype.onChange.call(_this2, {
+                    type: 'change',
+                    target: _this2,
+                    value: _this2.stringifyValue(date)
+                });
+            });
+        };
+
+        Calendar.prototype.onCancel = function onCancel() {
+            this.setState({ open: false });
+        };
+
+        Calendar.prototype.onDateChange = function onDateChange(e) {
+            var _this3 = this;
+
+            var value = e.value;
+            var autoConfirm = this.props.autoConfirm;
+
+
+            this.setState({ date: this.parseDate(value) }, autoConfirm ? function () {
+                return _this3.onConfirm();
+            } : null);
+        };
+
+        Calendar.prototype.render = function render() {
+            var state = this.state;
+            var props = this.props;
+            var lang = props.lang;
+            var disabled = props.disabled;
+            var size = props.size;
+            var name = props.name;
+            var dateFormat = props.dateFormat;
+            var placeholder = props.placeholder;
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'dateFormat', 'placeholder']);
+            var value = state.value;
+            var validity = state.validity;
+            var begin = props.begin;
+            var end = props.end;
+
+
+            begin = begin ? this.parseDate(begin) : null;
+            end = end ? this.parseDate(end) : null;
+
+            var open = state.open;
+            var date = state.date;
+
+            var className = cx(props).addStates({ focus: open }).addStates(this.getStyleStates()).build();
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, others, { className: className }),
+                _react2['default'].createElement('input', {
+                    name: name,
+                    ref: 'input',
+                    type: 'hidden',
+                    value: value,
+                    disabled: disabled,
+                    size: size }),
+                _react2['default'].createElement(
+                    'label',
+                    { onClick: this.onLabelClick },
+                    value ? DateTime.format(this.parseDate(value), dateFormat.toLowerCase(), lang) : _react2['default'].createElement(
+                        'span',
+                        { className: cx().part('label-placeholder').build() },
+                        placeholder
+                    ),
+                    _react2['default'].createElement(_Icon2['default'], { icon: 'expand-more' })
+                ),
+                _react2['default'].createElement(_Validity2['default'], { validity: validity }),
+                _react2['default'].createElement(
+                    _Confirm2['default'],
+                    {
+                        open: open,
+                        variants: ['calendar'],
+                        onConfirm: this.onConfirm,
+                        onCancel: this.onCancel,
+                        size: size,
+                        buttonVariants: ['secondery', 'calendar'] },
+                    _react2['default'].createElement(_Panel2['default'], {
+                        date: date,
+                        begin: begin,
+                        end: end,
+                        lang: lang,
+                        onChange: this.onDateChange })
+                )
+            );
+        };
+
+        return Calendar;
+    }(_InputComponent3['default']);
+
+    exports['default'] = Calendar;
+
+
+    Calendar.displayName = 'Calendar';
+
+    Calendar.LANG = {
+
+        // 对于 '周' 的称呼
+        week: '周',
+
+        // 星期对应的顺序表示
+        days: '日,一,二,三,四,五,六'
+
+    };
+
+    Calendar.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        defaultValue: '',
+        dateFormat: 'yyyy-MM-dd',
+        lang: Calendar.LANG,
+        placeholder: '请选择'
+    });
+
+    Calendar.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+
+        value: _react.PropTypes.string,
+
+        autoConfirm: _react.PropTypes.bool,
+
+        dateFormat: _react.PropTypes.string,
+
+        end: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]),
+
+        begin: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]),
+
+        lang: _react.PropTypes.shape({
+            week: _react.PropTypes.string,
+            days: _react.PropTypes.string
+        })
+
+    });
+});

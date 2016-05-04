@@ -1,2 +1,123 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./InputComponent","./common/util/cxBuilder","./ripples/CenterRipple","./Validity","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./InputComponent"),require("./common/util/cxBuilder"),require("./ripples/CenterRipple"),require("./Validity"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.InputComponent,e.cxBuilder,e.CenterRipple,e.Validity,e.babelHelpers),e.Toggle=r.exports}}(this,function(exports,e,t,r,i,o,n){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var a=n.interopRequireDefault(e),s=n.interopRequireDefault(t),l=n.interopRequireDefault(i),u=n.interopRequireDefault(o),p=r.create("Toggle"),d=function(e){function t(r,i){n.classCallCheck(this,t);var o=n.possibleConstructorReturn(this,e.call(this,r,i));return o.onChange=o.onChange.bind(o),o}return n.inherits(t,e),t.prototype.onChange=function(t){var r=this.props,i=r.disabled,o=r.readOnly,n=r.trueValue,a=r.falseValue;if(!i&&!o)e.prototype.onChange.call(this,{type:"change",target:this,value:t.target.checked?n:a})},t.prototype.render=function(){var e=this.props,t=this.state,r=this.onChange,i=t.value,o=t.validity,n=e.name,s=e.trueValue,d=e.disabled,c=i===s;return a["default"].createElement("label",{className:p(e).addStates({checked:c}).build()},a["default"].createElement("input",{type:"checkbox",name:n,value:i,onChange:r,checked:c}),a["default"].createElement("div",{className:p().part("bar-container").build()},a["default"].createElement("div",{className:p().part("bar").build()}),a["default"].createElement("div",{className:p().part("circle").build()},d?null:a["default"].createElement(l["default"],{flag:c,scale:2.5,opacity:.3}))),a["default"].createElement(u["default"],{validity:o}))},t}(s["default"]);exports["default"]=d,d.displayName="Toggle",d.defaultProps=n["extends"]({},s["default"].defaultProps,{trueValue:"on",falseValue:"",defaultValue:""}),d.propTypes=n["extends"]({},s["default"].propTypes,{trueValue:e.PropTypes.string.isRequired,falseValue:e.PropTypes.string})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './InputComponent', './common/util/cxBuilder', './ripples/CenterRipple', './Validity', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./InputComponent'), require('./common/util/cxBuilder'), require('./ripples/CenterRipple'), require('./Validity'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.InputComponent, global.cxBuilder, global.CenterRipple, global.Validity, global.babelHelpers);
+        global.Toggle = mod.exports;
+    }
+})(this, function (exports, _react, _InputComponent2, _cxBuilder, _CenterRipple, _Validity, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    var _CenterRipple2 = babelHelpers.interopRequireDefault(_CenterRipple);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    /**
+     * @file melon/Toggle
+     * @author cxtom<cxtom2010@gmail.com>
+     * @author leon<ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('Toggle');
+
+    var Toggle = function (_InputComponent) {
+        babelHelpers.inherits(Toggle, _InputComponent);
+
+        function Toggle(props, context) {
+            babelHelpers.classCallCheck(this, Toggle);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            _this.onChange = _this.onChange.bind(_this);
+
+            return _this;
+        }
+
+        Toggle.prototype.onChange = function onChange(e) {
+            var _props = this.props;
+            var disabled = _props.disabled;
+            var readOnly = _props.readOnly;
+            var trueValue = _props.trueValue;
+            var falseValue = _props.falseValue;
+
+
+            if (disabled || readOnly) {
+                return;
+            }
+
+            _InputComponent.prototype.onChange.call(this, {
+                type: 'change',
+                target: this,
+                value: e.target.checked ? trueValue : falseValue
+            });
+        };
+
+        Toggle.prototype.render = function render() {
+            var props = this.props;
+            var state = this.state;
+            var onChange = this.onChange;
+            var value = state.value;
+            var validity = state.validity;
+            var name = props.name;
+            var trueValue = props.trueValue;
+            var disabled = props.disabled;
+
+
+            var checked = value === trueValue;
+
+            return _react2['default'].createElement(
+                'label',
+                { className: cx(props).addStates({ checked: checked }).build() },
+                _react2['default'].createElement('input', {
+                    type: 'checkbox',
+                    name: name,
+                    value: value,
+                    onChange: onChange,
+                    checked: checked }),
+                _react2['default'].createElement(
+                    'div',
+                    { className: cx().part('bar-container').build() },
+                    _react2['default'].createElement('div', { className: cx().part('bar').build() }),
+                    _react2['default'].createElement(
+                        'div',
+                        { className: cx().part('circle').build() },
+                        disabled ? null : _react2['default'].createElement(_CenterRipple2['default'], { flag: checked, scale: 2.5, opacity: 0.3 })
+                    )
+                ),
+                _react2['default'].createElement(_Validity2['default'], { validity: validity })
+            );
+        };
+
+        return Toggle;
+    }(_InputComponent3['default']);
+
+    exports['default'] = Toggle;
+
+
+    Toggle.displayName = 'Toggle';
+
+    Toggle.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        trueValue: 'on',
+        falseValue: '',
+        defaultValue: ''
+    });
+
+    Toggle.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+        trueValue: _react.PropTypes.string.isRequired,
+        falseValue: _react.PropTypes.string
+    });
+});

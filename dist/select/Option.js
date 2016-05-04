@@ -1,2 +1,72 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Option=r.exports}}(this,function(exports,e,t,r){"use strict";function n(e){var t=e.children,r=e.label,n=e.disabled,a=e.selected,s=e.value,l=e.onClick,u=o(e).addStates({selected:a,disabled:n}).build();return i["default"].createElement("div",{className:u,key:s,"data-value":s,"data-role":"option",title:r||t,onClick:!n&&l?function(){return l({value:s})}:null},r||t)}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=n;var i=r.interopRequireDefault(e),o=t.create("SelectOption");n.displayName="SelectOption",n.propTypes={disabled:e.PropTypes.bool,value:e.PropTypes.string.isRequired,selected:e.PropTypes.bool,label:e.PropTypes.string},n.defaultProps={disabled:!1,selected:!1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Option = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = SelectOption;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file Select/Option
+     * @author leon <ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('SelectOption');
+
+    function SelectOption(props) {
+        var children = props.children;
+        var label = props.label;
+        var disabled = props.disabled;
+        var selected = props.selected;
+        var value = props.value;
+        var onClick = props.onClick;
+
+
+        var className = cx(props).addStates({
+            selected: selected,
+            disabled: disabled
+        }).build();
+
+        return _react2['default'].createElement(
+            'div',
+            { className: className,
+                key: value,
+                'data-value': value,
+                'data-role': 'option',
+                title: label || children,
+                onClick: !disabled && onClick ? function () {
+                    return onClick({ value: value });
+                } : null },
+            label || children
+        );
+    }
+
+    SelectOption.displayName = 'SelectOption';
+
+    SelectOption.propTypes = {
+        disabled: _react.PropTypes.bool,
+        value: _react.PropTypes.string.isRequired,
+        selected: _react.PropTypes.bool,
+        label: _react.PropTypes.string
+    };
+
+    SelectOption.defaultProps = {
+        disabled: false,
+        selected: false
+    };
+});

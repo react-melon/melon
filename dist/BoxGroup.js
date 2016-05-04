@@ -1,2 +1,180 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./boxgroup/Option","./common/util/cxBuilder","./InputComponent","./Validity","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./boxgroup/Option"),require("./common/util/cxBuilder"),require("./InputComponent"),require("./Validity"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Option,e.cxBuilder,e.InputComponent,e.Validity,e.babelHelpers),e.BoxGroup=r.exports}}(this,function(exports,e,t,r,n,o,i){"use strict";function a(e){return e.map(function(e,t){var r=e.name,n=e.value,o=e.disabled;return s["default"].createElement("option",{key:n,disabled:!!o,label:r,value:n})})}Object.defineProperty(exports,"__esModule",{value:!0}),exports.createOptions=a;var s=i.interopRequireDefault(e),l=i.interopRequireDefault(t),u=i.interopRequireDefault(n),p=i.interopRequireDefault(o),c=r.create("BoxGroup"),d=function(t){function r(e,n){i.classCallCheck(this,r);var o=i.possibleConstructorReturn(this,t.call(this,e,n)),a=o.state.value;return o.state=i["extends"]({},o.state,{value:Array.isArray(a)?a:[a]}),o.onChange=o.onChange.bind(o),o.renderOption=o.renderOption.bind(o),o}return i.inherits(r,t),r.prototype.onChange=function(e){var r=e.target.value,n=this.getValue(),o=this.props.boxModel,i=void 0;if("radio"===o)i=[r];else{var a=n.indexOf(r);i=a>-1?[].concat(n.slice(0,a),n.slice(a+1)):[].concat(n,[r])}t.prototype.onChange.call(this,{type:"change",target:this,value:i})},r.prototype.getValue=function(){var t=this.state.value;return e.Children.toArray(this.props.children).reduce(function(e,r){if(r&&r.props){var n=r.props,o=n.disabled,i=n.value;if(!o&&t.indexOf(i)>-1)e.push(i)}return e},[])},r.prototype.renderOption=function(e){var t=e.type,r=e.props;if("option"!==t)return e;var n=this.props.boxModel,o=r.value,i=r.children,a=r.label;return s["default"].createElement(l["default"],{key:o,boxModel:n,label:a||i,value:o,checked:this.state.value.indexOf(o)>-1,disabled:this.props.disabled||r.disabled,onChange:this.onChange})},r.prototype.render=function(){return s["default"].createElement("div",{className:c(this.props).addStates(this.getStyleStates()).build()},e.Children.map(this.props.children,this.renderOption),s["default"].createElement(p["default"],{validity:this.state.validity}))},r}(u["default"]);exports["default"]=d,d.displayName="BoxGroup",d.propTypes=i["extends"]({},u["default"].propTypes,{boxModel:e.PropTypes.oneOf(["radio","checkbox"]).isRequired,value:e.PropTypes.arrayOf(e.PropTypes.string),children:e.PropTypes.node.isRequired}),d.defaultProps=i["extends"]({},u["default"].defaultProps,{boxModel:"checkbox",defaultValue:[]}),d.createOptions=a});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './boxgroup/Option', './common/util/cxBuilder', './InputComponent', './Validity', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./boxgroup/Option'), require('./common/util/cxBuilder'), require('./InputComponent'), require('./Validity'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Option, global.cxBuilder, global.InputComponent, global.Validity, global.babelHelpers);
+        global.BoxGroup = mod.exports;
+    }
+})(this, function (exports, _react, _Option, _cxBuilder, _InputComponent2, _Validity, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.createOptions = createOptions;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Option2 = babelHelpers.interopRequireDefault(_Option);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    /**
+     * @file melon/BoxGroup
+     * @author cxtom<cxtom2010@gmail.com>
+     * @author leon<ludafa@outlook.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('BoxGroup');
+
+    var BoxGroup = function (_InputComponent) {
+        babelHelpers.inherits(BoxGroup, _InputComponent);
+
+        function BoxGroup(props, context) {
+            babelHelpers.classCallCheck(this, BoxGroup);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
+
+            var value = _this.state.value;
+
+
+            _this.state = babelHelpers['extends']({}, _this.state, {
+                value: Array.isArray(value) ? value : [value]
+            });
+
+            _this.onChange = _this.onChange.bind(_this);
+            _this.renderOption = _this.renderOption.bind(_this);
+
+            return _this;
+        }
+
+        BoxGroup.prototype.onChange = function onChange(e) {
+
+            var optionValue = e.target.value;
+            var value = this.getValue();
+
+            var boxModel = this.props.boxModel;
+
+
+            var nextValue = void 0;
+
+            // 计算 radio 的值
+            if (boxModel === 'radio') {
+                nextValue = [optionValue];
+            }
+            // 计算 checkbox 的值
+            else {
+
+                    var index = value.indexOf(optionValue);
+
+                    nextValue = index > -1 ? [].concat(value.slice(0, index), value.slice(index + 1)) : [].concat(value, [optionValue]);
+                }
+
+            _InputComponent.prototype.onChange.call(this, {
+                type: 'change',
+                target: this,
+                value: nextValue
+            });
+        };
+
+        BoxGroup.prototype.getValue = function getValue() {
+
+            var currentValue = this.state.value;
+
+            return _react.Children.toArray(this.props.children).reduce(function (result, option) {
+
+                if (option && option.props) {
+                    var _option$props = option.props;
+                    var disabled = _option$props.disabled;
+                    var value = _option$props.value;
+
+
+                    if (!disabled && currentValue.indexOf(value) > -1) {
+                        result.push(value);
+                    }
+                }
+
+                return result;
+            }, []);
+        };
+
+        BoxGroup.prototype.renderOption = function renderOption(option) {
+            var type = option.type;
+            var props = option.props;
+
+
+            // 如果 child 不是一个 <Option> 那么直接返回它
+            if (type !== 'option') {
+                return option;
+            }
+
+            var boxModel = this.props.boxModel;
+            var value = props.value;
+            var children = props.children;
+            var label = props.label;
+
+
+            return _react2['default'].createElement(_Option2['default'], {
+                key: value,
+                boxModel: boxModel,
+                label: label || children,
+                value: value,
+                checked: this.state.value.indexOf(value) > -1,
+                disabled: this.props.disabled || props.disabled,
+                onChange: this.onChange });
+        };
+
+        BoxGroup.prototype.render = function render() {
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).addStates(this.getStyleStates()).build() },
+                _react.Children.map(this.props.children, this.renderOption),
+                _react2['default'].createElement(_Validity2['default'], { validity: this.state.validity })
+            );
+        };
+
+        return BoxGroup;
+    }(_InputComponent3['default']);
+
+    exports['default'] = BoxGroup;
+
+
+    BoxGroup.displayName = 'BoxGroup';
+
+    BoxGroup.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+        boxModel: _react.PropTypes.oneOf(['radio', 'checkbox']).isRequired,
+        value: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        children: _react.PropTypes.node.isRequired
+    });
+
+    BoxGroup.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        boxModel: 'checkbox',
+        defaultValue: []
+    });
+
+    function createOptions(datasource) {
+
+        return datasource.map(function (option, index) {
+            var name = option.name;
+            var value = option.value;
+            var disabled = option.disabled;
+
+
+            return _react2['default'].createElement('option', {
+                key: value,
+                disabled: !!disabled,
+                label: name,
+                value: value });
+        });
+    }
+
+    BoxGroup.createOptions = createOptions;
+});

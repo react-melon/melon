@@ -1,2 +1,78 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.DialogWindow=r.exports}}(this,function(exports,e,t,r){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=r.interopRequireDefault(e),i=t.create("DialogWindow"),o=function(e){function t(){return r.classCallCheck(this,t),r.possibleConstructorReturn(this,e.apply(this,arguments))}return r.inherits(t,e),t.prototype.shouldComponentUpdate=function(e){return e.top!==this.props.top||e.footer!==this.props.footer||e.title!==this.props.title},t.prototype.render=function(){var e=this.props,t=e.children,o=e.top,a=e.title,s=e.footer,l=r.objectWithoutProperties(e,["children","top","title","footer"]),u={transform:"translate(0, "+o+"px)",WebkitTransform:"translate(0, "+o+"px)",msTransform:"translate(0, "+o+"px)",MozTransform:"translate(0, "+o+"px)"};return n["default"].createElement("div",r["extends"]({},l,{style:u,className:i(this.props).build()}),a,t,s)},t}(e.Component);exports["default"]=o,o.propTypes={top:e.PropTypes.number.isRequired,footer:e.PropTypes.element,title:e.PropTypes.element}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.DialogWindow = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon/Dialog/DialogWindow
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('DialogWindow');
+
+    var DialogWindow = function (_Component) {
+        babelHelpers.inherits(DialogWindow, _Component);
+
+        function DialogWindow() {
+            babelHelpers.classCallCheck(this, DialogWindow);
+            return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+        }
+
+        DialogWindow.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+            return nextProps.top !== this.props.top || nextProps.footer !== this.props.footer || nextProps.title !== this.props.title;
+        };
+
+        DialogWindow.prototype.render = function render() {
+            var _props = this.props;
+            var children = _props.children;
+            var top = _props.top;
+            var title = _props.title;
+            var footer = _props.footer;
+            var others = babelHelpers.objectWithoutProperties(_props, ['children', 'top', 'title', 'footer']);
+
+
+            var style = {
+                transform: 'translate(0, ' + top + 'px)',
+                WebkitTransform: 'translate(0, ' + top + 'px)',
+                msTransform: 'translate(0, ' + top + 'px)',
+                MozTransform: 'translate(0, ' + top + 'px)'
+            };
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, others, { style: style, className: cx(this.props).build() }),
+                title,
+                children,
+                footer
+            );
+        };
+
+        return DialogWindow;
+    }(_react.Component);
+
+    exports['default'] = DialogWindow;
+
+
+    DialogWindow.propTypes = {
+        top: _react.PropTypes.number.isRequired,
+        footer: _react.PropTypes.element,
+        title: _react.PropTypes.element
+    };
+});

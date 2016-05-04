@@ -1,2 +1,103 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","./validator/Validity","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("./validator/Validity"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.Validity,e.babelHelpers),e.Validator=r.exports}}(this,function(exports,e,t){"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.Validator=void 0;var r=t.interopRequireDefault(e),o=exports.Validator=function(){function e(){t.classCallCheck(this,e),this.rules=[]}return e.prototype.addRule=function(e){return this.rules.push(e),this},e.prototype.resolveCheckers=function(){var e=arguments.length<=0||void 0===arguments[0]?{}:arguments[0],t=this.rules;return t.reduce(function(t,r){var o=r.name,i=r.check;if(o in e)t.push({name:o,check:i,value:e[o]});return t},[])},e.prototype.validate=function(e,t){return this.resolveCheckers(t.props.rules).reduce(function(r,o){var i=o.check,n=i(e,t);return r.addState(n),r},new r["default"])},e.prototype.createCustomValidity=function(e){var t=new r["default"];return t.addState({isValid:!1,message:e}),t},e}(),i=new o;exports["default"]=i,i.create=function(){return new o},i.addRule({name:"required",check:function(e,t){var r=t.props.rules.requiredErrorMessage,o=Array.isArray(e)?!!e.length:"string"==typeof e?""!==e:null!=e;return{isValid:o,message:r||"请填写此字段"}}})});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', './validator/Validity', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('./validator/Validity'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.Validity, global.babelHelpers);
+        global.Validator = mod.exports;
+    }
+})(this, function (exports, _Validity, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.Validator = undefined;
+
+    var _Validity2 = babelHelpers.interopRequireDefault(_Validity);
+
+    var Validator = exports.Validator = function () {
+        function Validator() {
+            babelHelpers.classCallCheck(this, Validator);
+
+            this.rules = [];
+        }
+
+        Validator.prototype.addRule = function addRule(rule) {
+            this.rules.push(rule);
+            return this;
+        };
+
+        Validator.prototype.resolveCheckers = function resolveCheckers() {
+            var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+            var rules = this.rules;
+
+
+            return rules.reduce(function (activeCheckers, checker) {
+                var name = checker.name;
+                var check = checker.check;
+
+
+                if (name in config) {
+                    activeCheckers.push({
+                        name: name,
+                        check: check,
+                        value: config[name]
+                    });
+                }
+
+                return activeCheckers;
+            }, []);
+        };
+
+        Validator.prototype.validate = function validate(value, component) {
+
+            return this.resolveCheckers(component.props.rules).reduce(function (validity, checker) {
+                var check = checker.check;
+
+                var state = check(value, component);
+                validity.addState(state);
+                return validity;
+            }, new _Validity2['default']());
+        };
+
+        Validator.prototype.createCustomValidity = function createCustomValidity(customValidity) {
+            var validity = new _Validity2['default']();
+            validity.addState({
+                isValid: false,
+                message: customValidity
+            });
+            return validity;
+        };
+
+        return Validator;
+    }();
+
+    var validator = new Validator();
+    exports['default'] = validator;
+
+
+    validator.create = function () {
+        return new Validator();
+    };
+
+    validator.addRule({
+        name: 'required',
+        check: function check(value, component) {
+            var requiredErrorMessage = component.props.rules.requiredErrorMessage;
+
+
+            var isValid = Array.isArray(value) ? !!value.length : typeof value === 'string' ? value !== '' : value != null;
+
+            return {
+                isValid: isValid,
+                message: requiredErrorMessage || '请填写此字段'
+            };
+        }
+    });
+});

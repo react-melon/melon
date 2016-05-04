@@ -1,2 +1,37 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.babelHelpers),e.config=r.exports}}(this,function(exports,e){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var t=exports.COMPONENT_SIZES=["xxs","xs","s","m","l","xl","xxl","xxxl"],r=exports.COMPONENT_CLASS_PREFIX="ui",n=exports.COMPONENT_VARIANT_PREFIX="variant",i=exports.COMPONENT_STATE_PREFIX="state";exports["default"]={COMPONENT_SIZES:t,COMPONENT_CLASS_PREFIX:r,COMPONENT_VARIANT_PREFIX:n,COMPONENT_STATE_PREFIX:i}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.babelHelpers);
+        global.config = mod.exports;
+    }
+})(this, function (exports, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    /**
+     * @file melon/common/config
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var COMPONENT_SIZES = exports.COMPONENT_SIZES = ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl'];
+    var COMPONENT_CLASS_PREFIX = exports.COMPONENT_CLASS_PREFIX = 'ui';
+    var COMPONENT_VARIANT_PREFIX = exports.COMPONENT_VARIANT_PREFIX = 'variant';
+    var COMPONENT_STATE_PREFIX = exports.COMPONENT_STATE_PREFIX = 'state';
+
+    exports['default'] = {
+        COMPONENT_SIZES: COMPONENT_SIZES,
+        COMPONENT_CLASS_PREFIX: COMPONENT_CLASS_PREFIX,
+        COMPONENT_VARIANT_PREFIX: COMPONENT_VARIANT_PREFIX,
+        COMPONENT_STATE_PREFIX: COMPONENT_STATE_PREFIX
+    };
+});

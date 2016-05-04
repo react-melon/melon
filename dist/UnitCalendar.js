@@ -1,2 +1,252 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./BoxGroup","./common/util/date","./common/util/cxBuilder","./InputComponent","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./BoxGroup"),require("./common/util/date"),require("./common/util/cxBuilder"),require("./InputComponent"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.BoxGroup,e.date,e.cxBuilder,e.InputComponent,e.babelHelpers),e.UnitCalendar=r.exports}}(this,function(exports,e,t,r,o,i,n){"use strict";function a(e,t){if(e=new Date(e),"week"===t)e.setDate(e.getDate()-e.getDay()+1);else if("month"===t)e.setDate(1);else e.setMonth(0),e.setDate(1);return e}function s(e,t){if(e=a(e,t),"week"===t)e.setDate(e.getDate()+7);else if("month"===t)e.setMonth(e.getMonth()+1);else e.setFullYear(e.getFullYear()+1);return e}function l(e,t,r){e=a(e,r);for(var o=[];t>e;)if(o.push(new Date(e)),"week"===r)e.setDate(e.getDate()+7);else if("month"===r)e.setMonth(e.getMonth()+1);else e.setFullYear(e.getFullYear()+1);return o}Object.defineProperty(exports,"__esModule",{value:!0}),exports.normalize=a,exports.getNextTime=s,exports.getContinuousFragments=l;var u=n.interopRequireDefault(e),p=n.interopRequireDefault(t),c=n.interopRequireWildcard(r),d=n.interopRequireDefault(i),f=o.create("UnitCalendar"),h=function(e){function t(r){n.classCallCheck(this,t);var o=n.possibleConstructorReturn(this,e.call(this,r));return o.onChange=o.onChange.bind(o),o}return n.inherits(t,e),t.prototype.onChange=function(e){var t=e.value,r=this.props,o=r.continuous,i=r.value;this.props.onChange({target:this,value:o?this.calculate(i,t).map(this.parse):i})},t.prototype.calculate=function(e,t){e=e.map(this.format).sort(),t=t.sort();var r=e.length,o=t.length,i=this.props.unit;if(r===o)return e;if(!r||!o)return t;if(o>r){var n=new Date(t[0]),a=new Date(e[0]);if(a>n)return l(n,a,i).map(this.format).concat(e);var s=new Date(t[o-1]);s.setDate(s.getDate()+1);var u=new Date(e[r-1]);return e.concat(l(u,s,i).slice(1).map(this.format))}for(var p=0;o>p;++p)if(e[p]<t[p])if(0===p)return e.slice(1);else return e.slice(0,p);return e.slice(0,-1)},t.prototype.parse=function(e){return new Date(e)},t.prototype.format=function(e){return c.format(e,"yyyy-mm-dd")},t.prototype.parseValue=function(){var e=arguments.length<=0||void 0===arguments[0]?"":arguments[0];return e.split(",").map(function(e){return this.parse(e)})},t.prototype.stringifyValue=function(){var e=arguments.length<=0||void 0===arguments[0]?[]:arguments[0];return e.map(function(e){return this.format(e)}).join(",")},t.prototype.render=function(){var e=this,t=this.props,r=t.begin,o=t.end,i=t.unit,d=t.value,h=t.format,m=n.objectWithoutProperties(t,["begin","end","unit","value","format"]),y=this.onChange;d=d.map(function(e){return c.format(a(e,i),h)}).sort();var b=l(r,o,i).map(function(t){var r=e.format(t),o=s(t,i);return o.setDate(o.getDate()-1),o=e.format(o),u["default"].createElement("option",{key:r,value:r,label:r+" ~ "+o})});return u["default"].createElement("div",{className:f(this.props).build()},u["default"].createElement(p["default"],n["extends"]({},m,{boxModel:"checkbox",onChange:y,value:d}),b))},t}(d["default"]);exports["default"]=h,h.propTypes={begin:e.PropTypes.instanceOf(Date),end:e.PropTypes.instanceOf(Date),unit:e.PropTypes.oneOf(["week","month","year"]).isRequired,value:e.PropTypes.arrayOf(e.PropTypes.instanceOf(Date)),continuous:e.PropTypes.bool.isRequired,defaultValue:e.PropTypes.arrayOf(e.PropTypes.string)},h.defaultProps={continuous:!0,value:[],defaultValue:[],format:"yyyy-mm-dd"}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './BoxGroup', './common/util/date', './common/util/cxBuilder', './InputComponent', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./BoxGroup'), require('./common/util/date'), require('./common/util/cxBuilder'), require('./InputComponent'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.BoxGroup, global.date, global.cxBuilder, global.InputComponent, global.babelHelpers);
+        global.UnitCalendar = mod.exports;
+    }
+})(this, function (exports, _react, _BoxGroup, _date, _cxBuilder, _InputComponent2, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.normalize = normalize;
+    exports.getNextTime = getNextTime;
+    exports.getContinuousFragments = getContinuousFragments;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _BoxGroup2 = babelHelpers.interopRequireDefault(_BoxGroup);
+
+    var date = babelHelpers.interopRequireWildcard(_date);
+
+    var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
+
+    /**
+     * @file UnitCalendar
+     * @author leon(ludafa@outlook.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('UnitCalendar');
+
+    var UnitCalendar = function (_InputComponent) {
+        babelHelpers.inherits(UnitCalendar, _InputComponent);
+
+        function UnitCalendar(props) {
+            babelHelpers.classCallCheck(this, UnitCalendar);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props));
+
+            _this.onChange = _this.onChange.bind(_this);
+            return _this;
+        }
+
+        UnitCalendar.prototype.onChange = function onChange(e) {
+
+            var nextValue = e.value;
+
+            var _props = this.props;
+            var continuous = _props.continuous;
+            var value = _props.value;
+
+
+            this.props.onChange({
+
+                target: this,
+
+                // 如果是连续的，这里需要算一下，不是连续的就以新值为主
+                value: continuous ? this.calculate(value, nextValue).map(this.parse) : value
+            });
+        };
+
+        UnitCalendar.prototype.calculate = function calculate(current, next) {
+
+            current = current.map(this.format).sort();
+
+            next = next.sort();
+
+            var cLength = current.length;
+            var nLength = next.length;
+            var unit = this.props.unit;
+
+
+            if (cLength === nLength) {
+                return current;
+            }
+
+            if (!cLength || !nLength) {
+                return next;
+            }
+
+            // fill
+            if (cLength < nLength) {
+
+                var firtNext = new Date(next[0]);
+                var firstCurrent = new Date(current[0]);
+
+                if (firtNext < firstCurrent) {
+                    return getContinuousFragments(firtNext, firstCurrent, unit).map(this.format).concat(current);
+                }
+
+                var lastNext = new Date(next[nLength - 1]);
+                lastNext.setDate(lastNext.getDate() + 1);
+                var lastCurrent = new Date(current[cLength - 1]);
+
+                return current.concat(getContinuousFragments(lastCurrent, lastNext, unit).slice(1).map(this.format));
+            }
+
+            // cut
+            for (var i = 0; i < nLength; ++i) {
+                if (current[i] < next[i]) {
+                    if (i === 0) {
+                        return current.slice(1);
+                    }
+                    return current.slice(0, i);
+                }
+            }
+
+            return current.slice(0, -1);
+        };
+
+        UnitCalendar.prototype.parse = function parse(time) {
+            return new Date(time);
+        };
+
+        UnitCalendar.prototype.format = function format(time) {
+            return date.format(time, 'yyyy-mm-dd');
+        };
+
+        UnitCalendar.prototype.parseValue = function parseValue() {
+            var value = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+
+            return value.split(',').map(function (date) {
+                return this.parse(date);
+            });
+        };
+
+        UnitCalendar.prototype.stringifyValue = function stringifyValue() {
+            var value = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+            return value.map(function (term) {
+                return this.format(term);
+            }).join(',');
+        };
+
+        UnitCalendar.prototype.render = function render() {
+            var _this2 = this;
+
+            var _props2 = this.props;
+            var begin = _props2.begin;
+            var end = _props2.end;
+            var unit = _props2.unit;
+            var value = _props2.value;
+            var format = _props2.format;
+            var rest = babelHelpers.objectWithoutProperties(_props2, ['begin', 'end', 'unit', 'value', 'format']);
+            var onChange = this.onChange;
+
+
+            value = value.map(function (fragment) {
+                return date.format(normalize(fragment, unit), format);
+            }).sort();
+
+            var options = getContinuousFragments(begin, end, unit).map(function (fragment) {
+                var begin = _this2.format(fragment);
+                var end = getNextTime(fragment, unit);
+                end.setDate(end.getDate() - 1);
+                end = _this2.format(end);
+                return _react2['default'].createElement('option', { key: begin, value: begin, label: begin + ' ~ ' + end });
+            });
+
+            return _react2['default'].createElement(
+                'div',
+                { className: cx(this.props).build() },
+                _react2['default'].createElement(
+                    _BoxGroup2['default'],
+                    babelHelpers['extends']({}, rest, {
+                        boxModel: 'checkbox',
+                        onChange: onChange,
+                        value: value }),
+                    options
+                )
+            );
+        };
+
+        return UnitCalendar;
+    }(_InputComponent3['default']);
+
+    exports['default'] = UnitCalendar;
+
+
+    UnitCalendar.propTypes = {
+        begin: _react.PropTypes.instanceOf(Date),
+        end: _react.PropTypes.instanceOf(Date),
+        unit: _react.PropTypes.oneOf(['week', 'month', 'year']).isRequired,
+        value: _react.PropTypes.arrayOf(_react.PropTypes.instanceOf(Date)),
+        continuous: _react.PropTypes.bool.isRequired,
+        defaultValue: _react.PropTypes.arrayOf(_react.PropTypes.string)
+    };
+
+    UnitCalendar.defaultProps = {
+        continuous: true,
+        value: [],
+        defaultValue: [],
+        format: 'yyyy-mm-dd'
+    };
+
+    function normalize(time, unit) {
+        time = new Date(time);
+        // 得到周一
+        if (unit === 'week') {
+            time.setDate(time.getDate() - time.getDay() + 1);
+        }
+        // 得到1日
+        else if (unit === 'month') {
+                time.setDate(1);
+            }
+            // 得到1月1日
+            else {
+                    time.setMonth(0);
+                    time.setDate(1);
+                }
+        return time;
+    }
+
+    function getNextTime(time, unit) {
+        time = normalize(time, unit);
+        if (unit === 'week') {
+            time.setDate(time.getDate() + 7);
+        } else if (unit === 'month') {
+            time.setMonth(time.getMonth() + 1);
+        } else {
+            time.setFullYear(time.getFullYear() + 1);
+        }
+        return time;
+    }
+
+    function getContinuousFragments(begin, end, unit) {
+
+        begin = normalize(begin, unit);
+
+        var result = [];
+
+        while (begin < end) {
+            result.push(new Date(begin));
+            if (unit === 'week') {
+                begin.setDate(begin.getDate() + 7);
+            } else if (unit === 'month') {
+                begin.setMonth(begin.getMonth() + 1);
+            } else {
+                begin.setFullYear(begin.getFullYear() + 1);
+            }
+        }
+
+        return result;
+    }
+});

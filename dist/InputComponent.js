@@ -1,2 +1,224 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","./Validator","./common/util/syncPropsToState","./babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("./Validator"),require("./common/util/syncPropsToState"),require("./babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.Validator,e.syncPropsToState,e.babelHelpers),e.InputComponent=r.exports}}(this,function(exports,e,t,r,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var o=i.interopRequireDefault(t),n=i.interopRequireDefault(r),a=function(e){function t(r){var n=arguments.length<=1||void 0===arguments[1]?{}:arguments[1];i.classCallCheck(this,t);var a=i.possibleConstructorReturn(this,e.call(this,r)),s=r.name,l=r.value,u=r.defaultValue;a.validator=r.validator||n.validator||o["default"];var p=n.pointer;return a.pointer=null!=s&&p?""+p+s:null,a.state={value:null!=l?l:u},a}return i.inherits(t,e),t.prototype.getChildContext=function(){var e=this.pointer;return{pointer:e?e+"/":null}},t.prototype.componentDidMount=function(){var e=this.context.attachForm;if(e)e(this)},t.prototype.componentWillReceiveProps=function(e){var t=this.getSyncUpdates(e);if(t)this.setState(t)},t.prototype.getSyncUpdates=function(e){return n["default"](this,e)},t.prototype.componentWillUnmount=function(){var e=this.context.detachForm;if(e)e(this)},t.prototype.validate=function(e){var t=this.checkValidity(e);return this.setState({validity:t}),t},t.prototype.checkValidity=function(e){return this.validator.validate(e,this)},t.prototype.onChange=function r(e){var t=this.props,r=t.onChange,i=t.customValidity;if(r)return void r(e);var o=e.value;if(o!==this.state.value){var n=i?this.validator.createCustomValidity(i):this.checkValidity(o);this.setState({value:o,validity:n})}},t.prototype.isDisabled=function(){return this.props.disabled},t.prototype.isReadOnly=function(){return this.props.readOnly},t.prototype.getValue=function(){return this.state.value},t.prototype.getStyleStates=function(){var e={"read-only":this.isReadOnly()},t=this.state.validity;if(t){var r=t.isValid();e.valid=r,e.invalid=!r}return e},t}(e.Component);exports["default"]=a,a.displayName="InputComponent",a.propTypes={name:e.PropTypes.string,readOnly:e.PropTypes.bool,pointer:e.PropTypes.string,custormValidity:e.PropTypes.string,onChange:e.PropTypes.func,validate:e.PropTypes.func,renderErrorMessage:e.PropTypes.func,validator:e.PropTypes.shape({validate:e.PropTypes.func.isRequired})},a.defaultProps={defaultValue:"",readOnly:!1,validateEvents:["change"]},a.contextTypes={pointer:e.PropTypes.string,validator:e.PropTypes.shape({validate:e.PropTypes.func.isRequired}),attachForm:e.PropTypes.func,detachForm:e.PropTypes.func},a.childContextTypes={pointer:e.PropTypes.string}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', './Validator', './common/util/syncPropsToState', "./babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('./Validator'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.Validator, global.syncPropsToState, global.babelHelpers);
+        global.InputComponent = mod.exports;
+    }
+})(this, function (exports, _react, _Validator, _syncPropsToState, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _Validator2 = babelHelpers.interopRequireDefault(_Validator);
+
+    var _syncPropsToState2 = babelHelpers.interopRequireDefault(_syncPropsToState);
+
+    var InputComponent = function (_Component) {
+        babelHelpers.inherits(InputComponent, _Component);
+
+        function InputComponent(props) {
+            var context = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+            babelHelpers.classCallCheck(this, InputComponent);
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+
+            var name = props.name;
+            var value = props.value;
+            var defaultValue = props.defaultValue;
+
+
+            // 这里 validator 有两种来源 #=-= 略多，提供了丰富的可能性，比如一个表单里混合使用两种校验规则
+            // 1. 来自 props 这种最高优先，因为是手动指定的
+            // 2. 来自 contenxt 这种是继承自 form 提供的 validator
+            // 3. 最后，这一种情况是一个孤立 input component 在自己战斗，使用默认的 LiteValidator
+            _this.validator = props.validator || context.validator || _Validator2['default'];
+
+            var pointer = context.pointer;
+
+
+            /**
+             * @property {string} pointer 输入控件在表单中的位置
+             *
+             * ### 格式
+             *
+             * 举例：/aaa/bbb/0/ddd
+             * [json pointer](https://tools.ietf.org/html/rfc6901)
+             * 这货是个规范啊，不要小看人家，类似 XPath 在 XML 中的定位
+             *
+             * ### 使用规则
+             *
+             * 1. 只通过 contenxt 传递
+             * 2. 只在当组件有 name 属性时有效
+             * 3. 如果这货的父级 input component 没有 pointer，那么它也没有 pointer
+             *
+             * 其实就是说，这个 /aaa/bbb/0/ddd 的字符串中，不能出现 undefined / null
+             * 只要有任意一级断开了，其所有子级都是无效的
+             */
+            _this.pointer = name != null && pointer ? '' + pointer + name : null;
+
+            _this.state = { value: value != null ? value : defaultValue };
+
+            return _this;
+        }
+
+        InputComponent.prototype.getChildContext = function getChildContext() {
+            var pointer = this.pointer;
+
+
+            return {
+                pointer: pointer ? pointer + '/' : null
+            };
+        };
+
+        InputComponent.prototype.componentDidMount = function componentDidMount() {
+            var attachForm = this.context.attachForm;
+
+
+            if (attachForm) {
+                attachForm(this);
+            }
+        };
+
+        InputComponent.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+
+            var updates = this.getSyncUpdates(nextProps);
+
+            if (updates) {
+                this.setState(updates);
+            }
+        };
+
+        InputComponent.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
+            return (0, _syncPropsToState2['default'])(this, nextProps);
+        };
+
+        InputComponent.prototype.componentWillUnmount = function componentWillUnmount() {
+            var detachForm = this.context.detachForm;
+
+
+            if (detachForm) {
+                detachForm(this);
+            }
+        };
+
+        InputComponent.prototype.validate = function validate(value) {
+
+            var validity = this.checkValidity(value);
+
+            this.setState({ validity: validity });
+
+            return validity;
+        };
+
+        InputComponent.prototype.checkValidity = function checkValidity(value) {
+            return this.validator.validate(value, this);
+        };
+
+        InputComponent.prototype.onChange = function onChange(e) {
+            var _props = this.props;
+            var onChange = _props.onChange;
+            var customValidity = _props.customValidity;
+
+
+            // 这种对应着 controlled 组件逻辑
+            if (onChange) {
+                onChange(e);
+                return;
+            }
+
+            var value = e.value;
+
+
+            if (value === this.state.value) {
+                return;
+            }
+
+            var validity = customValidity ? this.validator.createCustomValidity(customValidity) : this.checkValidity(value);
+
+            // 这种对应非控制逻辑
+            this.setState({ value: value, validity: validity });
+        };
+
+        InputComponent.prototype.isDisabled = function isDisabled() {
+            return this.props.disabled;
+        };
+
+        InputComponent.prototype.isReadOnly = function isReadOnly() {
+            return this.props.readOnly;
+        };
+
+        InputComponent.prototype.getValue = function getValue() {
+            return this.state.value;
+        };
+
+        InputComponent.prototype.getStyleStates = function getStyleStates() {
+
+            var states = {
+                'read-only': this.isReadOnly()
+            };
+
+            var validity = this.state.validity;
+
+
+            if (validity) {
+                var valid = validity.isValid();
+                states.valid = valid;
+                states.invalid = !valid;
+            }
+
+            return states;
+        };
+
+        return InputComponent;
+    }(_react.Component);
+
+    exports['default'] = InputComponent;
+
+
+    InputComponent.displayName = 'InputComponent';
+
+    InputComponent.propTypes = {
+
+        name: _react.PropTypes.string,
+        readOnly: _react.PropTypes.bool,
+        pointer: _react.PropTypes.string,
+
+        custormValidity: _react.PropTypes.string,
+        onChange: _react.PropTypes.func,
+
+        validate: _react.PropTypes.func,
+        renderErrorMessage: _react.PropTypes.func,
+        validator: _react.PropTypes.shape({
+            validate: _react.PropTypes.func.isRequired
+        })
+
+    };
+
+    InputComponent.defaultProps = {
+        defaultValue: '',
+        readOnly: false,
+        validateEvents: ['change']
+    };
+
+    InputComponent.contextTypes = {
+        pointer: _react.PropTypes.string,
+        validator: _react.PropTypes.shape({
+            validate: _react.PropTypes.func.isRequired
+        }),
+        attachForm: _react.PropTypes.func,
+        detachForm: _react.PropTypes.func
+    };
+
+    InputComponent.childContextTypes = {
+        pointer: _react.PropTypes.string
+    };
+});

@@ -1,2 +1,55 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","react-dom","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("react-dom"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.reactDom,e.babelHelpers),e.commander=r.exports}}(this,function(exports,e,t,r){"use strict";function n(e){return function(t){if(!a)a=document.createElement("div"),a.className="melon-seperate-dialog-container",document.body.appendChild(a);var n=document.createElement("div");return a.appendChild(n),o["default"].render(i["default"].createElement(e,r["extends"]({},t,{open:!0})),n),function(){o["default"].unmountComponentAtNode(n),a.removeChild(n),n=null}}}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=n;var i=r.interopRequireDefault(e),o=r.interopRequireDefault(t),a=null});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', 'react-dom', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('react-dom'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.reactDom, global.babelHelpers);
+        global.commander = mod.exports;
+    }
+})(this, function (exports, _react, _reactDom, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = createDialogCommand;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
+
+    /**
+     * @file 命令式窗口管理
+     * @author leon <ludafa@baidu.com>
+     */
+
+    var container = null;
+
+    function createDialogCommand(Dialog) {
+
+        return function (options) {
+
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'melon-seperate-dialog-container';
+                document.body.appendChild(container);
+            }
+
+            var element = document.createElement('div');
+            container.appendChild(element);
+
+            _reactDom2['default'].render(_react2['default'].createElement(Dialog, babelHelpers['extends']({}, options, { open: true })), element);
+
+            return function () {
+                _reactDom2['default'].unmountComponentAtNode(element);
+                container.removeChild(element);
+                element = null;
+            };
+        };
+    }
+});

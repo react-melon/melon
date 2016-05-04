@@ -1,2 +1,83 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","./Item","../common/util/date","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("./Item"),require("../common/util/date"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.Item,e.date,e.babelHelpers),e.SelectorItem=r.exports}}(this,function(exports,e,t,r,o,i){"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var n=i.interopRequireDefault(e),a=i.interopRequireDefault(r),s=i.interopRequireWildcard(o),l=t.create("CalendarSelectorItem"),u=function(e){function t(){return i.classCallCheck(this,t),i.possibleConstructorReturn(this,e.apply(this,arguments))}return i.inherits(t,e),t.prototype.render=function(){var e=this.props,t=e.date,r=e.mode,o=e.disabled,a=e.selected,u=i.objectWithoutProperties(e,["date","mode","disabled","selected"]);return n["default"].createElement("li",i["extends"]({},u,{"data-mode":r,"data-value":t,onClick:o?null:this.onClick,className:l(e).addStates({selected:a}).build()}),n["default"].createElement("span",null,"year"===r?t.getFullYear():s.getShortMonth(t)))},t}(a["default"]);exports["default"]=u,u.displayName="CalendarSelectorItem",u.propTypes={date:e.PropTypes.object.isRequired,onClick:e.PropTypes.func,disabled:e.PropTypes.bool,selected:e.PropTypes.bool,mode:e.PropTypes.oneOf(["month","year"])}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', './Item', '../common/util/date', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Item'), require('../common/util/date'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.Item, global.date, global.babelHelpers);
+        global.SelectorItem = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, _Item2, _date, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Item3 = babelHelpers.interopRequireDefault(_Item2);
+
+    var DateTime = babelHelpers.interopRequireWildcard(_date);
+
+    /**
+     * @file Calendar/CalendarSelectorItem
+     * @author cxtom(cxtom2010@gmail.com)
+     */
+
+    var cx = (0, _cxBuilder.create)('CalendarSelectorItem');
+
+    var CalendarSelectorItem = function (_Item) {
+        babelHelpers.inherits(CalendarSelectorItem, _Item);
+
+        function CalendarSelectorItem() {
+            babelHelpers.classCallCheck(this, CalendarSelectorItem);
+            return babelHelpers.possibleConstructorReturn(this, _Item.apply(this, arguments));
+        }
+
+        CalendarSelectorItem.prototype.render = function render() {
+
+            var props = this.props;
+
+            var date = props.date;
+            var mode = props.mode;
+            var disabled = props.disabled;
+            var selected = props.selected;
+            var others = babelHelpers.objectWithoutProperties(props, ['date', 'mode', 'disabled', 'selected']);
+
+
+            return _react2['default'].createElement(
+                'li',
+                babelHelpers['extends']({}, others, {
+                    'data-mode': mode,
+                    'data-value': date,
+                    onClick: disabled ? null : this.onClick,
+                    className: cx(props).addStates({ selected: selected }).build() }),
+                _react2['default'].createElement(
+                    'span',
+                    null,
+                    mode === 'year' ? date.getFullYear() : DateTime.getShortMonth(date)
+                )
+            );
+        };
+
+        return CalendarSelectorItem;
+    }(_Item3['default']);
+
+    exports['default'] = CalendarSelectorItem;
+
+
+    CalendarSelectorItem.displayName = 'CalendarSelectorItem';
+
+    CalendarSelectorItem.propTypes = {
+        date: _react.PropTypes.object.isRequired,
+        onClick: _react.PropTypes.func,
+        disabled: _react.PropTypes.bool,
+        selected: _react.PropTypes.bool,
+        mode: _react.PropTypes.oneOf(['month', 'year'])
+    };
+});

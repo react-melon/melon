@@ -1,2 +1,58 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
-!function(e,t){if("function"==typeof define&&define.amd)define(["exports","react","../common/util/cxBuilder","../babelHelpers"],t);else if("undefined"!=typeof exports)t(exports,require("react"),require("../common/util/cxBuilder"),require("../babelHelpers"));else{var r={exports:{}};t(r.exports,e.react,e.cxBuilder,e.babelHelpers),e.Tab=r.exports}}(this,function(exports,e,t,r){"use strict";function i(e){var t=e.selected,i=e.disabled,a=e.label,s=r.objectWithoutProperties(e,["selected","disabled","label"]),l=o(e).addStates({selected:t,disabled:i}).build();return n["default"].createElement("li",r["extends"]({},s,{className:l}),a)}Object.defineProperty(exports,"__esModule",{value:!0}),exports["default"]=i;var n=r.interopRequireDefault(e),o=t.create("TabsItem");i.propTypes={label:e.PropTypes.node,disabled:e.PropTypes.bool,selected:e.PropTypes.bool},i.defaultProps={disabled:!1,selected:!1}});
+(function (global, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        global.Tab = mod.exports;
+    }
+})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = Tab;
+
+    var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    /**
+     * @file melon Tabs Tab
+     * @author cxtom<cxtom2010@gmail.com>
+     */
+
+    var cx = (0, _cxBuilder.create)('TabsItem');
+
+    /* eslint-disable fecs-prefer-class */
+    function Tab(props) {
+        var selected = props.selected;
+        var disabled = props.disabled;
+        var label = props.label;
+        var others = babelHelpers.objectWithoutProperties(props, ['selected', 'disabled', 'label']);
+
+
+        var className = cx(props).addStates({ selected: selected, disabled: disabled }).build();
+
+        return _react2['default'].createElement(
+            'li',
+            babelHelpers['extends']({}, others, { className: className }),
+            label
+        );
+    }
+
+    Tab.propTypes = {
+        label: _react.PropTypes.node,
+        disabled: _react.PropTypes.bool,
+        selected: _react.PropTypes.bool
+    };
+
+    Tab.defaultProps = {
+        disabled: false,
+        selected: false
+    };
+});
