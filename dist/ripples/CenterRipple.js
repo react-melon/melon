@@ -42,7 +42,6 @@
             };
 
             _this.willLeave = _this.willLeave.bind(_this);
-
             return _this;
         }
 
@@ -56,6 +55,10 @@
             if (nextProps.flag === !this.props.flag) {
                 this.animate();
             }
+        };
+
+        CenterRipple.prototype.shouldCompoenntUpdate = function shouldCompoenntUpdate(nextProps, nextState) {
+            return this.props.opacity !== nextProps.opacity || this.props.scale !== nextProps.scale || this.props.flag !== nextProps.flag || this.state.now !== nextState.now;
         };
 
         CenterRipple.prototype.willLeave = function willLeave(key, valOfKey) {

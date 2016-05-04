@@ -54,33 +54,30 @@
         TouchRipple.prototype.onMouseDown = function onMouseDown(_ref) {
             var pageX = _ref.pageX;
             var pageY = _ref.pageY;
-            var _position = this.position;
-            var top = _position.top;
-            var left = _position.left;
 
 
             this.setState({
-                center: [pageX - left - this.radius, pageY - top - this.radius],
+                center: this.getCenter(pageX, pageY),
                 now: 't' + new Date().getTime()
             });
         };
 
-        TouchRipple.prototype.componentDidMount = function componentDidMount() {
-            this.updatePosition();
+        TouchRipple.prototype.sholdComponentUpdate = function sholdComponentUpdate(nextProps, nextState) {
+            var props = this.props;
+            var state = this.state;
+
+            return props.opacity !== nextProps.opacity || state.now !== nextState.now;
         };
 
-        TouchRipple.prototype.componentDidUpdate = function componentDidUpdate() {
-            this.updatePosition();
-        };
+        TouchRipple.prototype.getCenter = function getCenter(pageX, pageY) {
 
-        TouchRipple.prototype.componentWillUnmount = function componentWillUnmount() {
-            this.position = this.radius = null;
-        };
-
-        TouchRipple.prototype.updatePosition = function updatePosition() {
             var main = _reactDom2['default'].findDOMNode(this);
-            this.position = _dom2['default'].getPosition(main);
-            this.radius = Math.max(this.position.width, this.position.height) / 2;
+            var position = _dom2['default'].getPosition(main);
+            var radius = Math.max(position.width, position.height) / 2;
+
+            this.radius = radius;
+
+            return [pageX - position.left - radius, pageY - position.top - radius];
         };
 
         TouchRipple.prototype.willLeave = function willLeave(key, valOfKey) {
