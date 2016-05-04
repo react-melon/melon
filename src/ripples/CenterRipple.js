@@ -22,7 +22,6 @@ export default class CenterRipple extends Component {
         };
 
         this.willLeave = this.willLeave.bind(this);
-
     }
 
     animate() {
@@ -35,6 +34,13 @@ export default class CenterRipple extends Component {
         if (nextProps.flag === !this.props.flag) {
             this.animate();
         }
+    }
+
+    shouldCompoenntUpdate(nextProps, nextState) {
+        return this.props.opacity !== nextProps.opacity
+            || this.props.scale !== nextProps.scale
+            || this.props.flag !== nextProps.flag
+            || this.state.now !== nextState.now;
     }
 
     willLeave(key, valOfKey) {
