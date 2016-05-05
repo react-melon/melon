@@ -31,6 +31,7 @@
     function stopWindowScrolling(name) {
 
         var element = document.getElementsByTagName(name)[0];
+
         var lockNum = element.getAttribute('data-lock') || '0';
         lockNum = parseInt(lockNum, 10);
 
@@ -44,7 +45,10 @@
             };
             element.style.width = '100%';
             element.style.height = '100%';
-            element.style.overflow = 'hidden';
+
+            if (name !== 'html') {
+                element.style.overflow = 'hidden';
+            }
         }
 
         return element;
@@ -63,7 +67,10 @@
             var size = originalHTMLBodySize[name];
             element.style.width = size.width;
             element.style.height = size.height;
-            element.style.overflow = size.overflow;
+
+            if (name !== 'html') {
+                element.style.overflow = size.overflow;
+            }
             delete originalHTMLBodySize[name];
         }
 

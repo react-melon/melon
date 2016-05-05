@@ -9,6 +9,7 @@ const originalHTMLBodySize = {};
 function stopWindowScrolling(name) {
 
     const element = document.getElementsByTagName(name)[0];
+
     let lockNum = element.getAttribute('data-lock') || '0';
     lockNum = parseInt(lockNum, 10);
 
@@ -22,7 +23,10 @@ function stopWindowScrolling(name) {
         };
         element.style.width = '100%';
         element.style.height = '100%';
-        element.style.overflow = 'hidden';
+
+        if (name !== 'html') {
+            element.style.overflow = 'hidden';
+        }
     }
 
     return element;
@@ -42,7 +46,10 @@ function restoreWindowScrolling(name) {
         const size = originalHTMLBodySize[name];
         element.style.width = size.width;
         element.style.height = size.height;
-        element.style.overflow = size.overflow;
+
+        if (name !== 'html') {
+            element.style.overflow = size.overflow;
+        }
         delete originalHTMLBodySize[name];
     }
 
