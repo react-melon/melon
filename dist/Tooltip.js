@@ -198,7 +198,7 @@
         arrow: _react.PropTypes.bool.isRequired,
         direction: _react.PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
         mode: _react.PropTypes.oneOf(['over', 'click']),
-        content: _react.PropTypes.string.isRequired
+        content: _react.PropTypes.node.isRequired
     };
 
     Tooltip.defaultProps = {
