@@ -172,7 +172,7 @@ Tooltip.propTypes = {
     arrow: PropTypes.bool.isRequired,
     direction: PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
     mode: PropTypes.oneOf(['over', 'click']),
-    content: PropTypes.string.isRequired
+    content: PropTypes.node.isRequired
 };
 
 Tooltip.defaultProps = {
