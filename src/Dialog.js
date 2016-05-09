@@ -74,14 +74,14 @@ export default class Dialog extends Component {
     }
 
     onShow() {
-        const {onShow} = this.props;
+        const onShow = this.props.onShow;
         if (onShow) {
             onShow();
         }
     }
 
     onHide() {
-        const {onHide} = this.props;
+        const onHide = this.props.onHide;
         if (onHide) {
             onHide();
         }
@@ -89,7 +89,7 @@ export default class Dialog extends Component {
 
     renderTitle() {
 
-        const {title} = this.props;
+        const title = this.props.title;
 
         return title
             ? <h1 className={cx().part('title').build()}>{title}</h1>
@@ -99,7 +99,7 @@ export default class Dialog extends Component {
 
     renderAction() {
 
-        const {actions} = this.props;
+        const actions = this.props.actions;
 
         return actions
             ? (
@@ -117,10 +117,11 @@ export default class Dialog extends Component {
 
         const {
             children,
+            width,
             ...others
         } = props;
 
-        const {open} = state;
+        const open = state.open;
 
         const title = this.renderTitle();
 
@@ -132,7 +133,10 @@ export default class Dialog extends Component {
 
         const footer = this.renderAction();
 
-        const windowPartClassName = cx().part('window').build();
+        const windowPartClassName = cx()
+            .part('window')
+            .addVariants(width === 'adaptive' ? 'adaptive' : undefined)
+            .build();
 
         return (
             <div {...others} className={cx(props).addStates({open}).build()}>
@@ -143,6 +147,7 @@ export default class Dialog extends Component {
                             ref={c => {
                                 this.dialogWindow = c;
                             }}
+                            width={width}
                             title={title}
                             footer={footer}
                             className={windowPartClassName}>
@@ -170,6 +175,10 @@ Dialog.propTypes = {
     title: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.element
+    ]),
+    width: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
     ])
 };
 
