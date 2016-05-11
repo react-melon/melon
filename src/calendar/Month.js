@@ -15,6 +15,8 @@ export default class CalendarMonth extends Component {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
+        this.renderWeek = this.renderWeek.bind(this);
+        this.renderDay = this.renderDay.bind(this);
     }
 
     onClick(e) {
@@ -33,52 +35,31 @@ export default class CalendarMonth extends Component {
         return (
             <div className={cx().part('weekheader').build()}>
                 {days.map(function (day, index) {
-                    return <span key={day}>{day}</span>;
+                    return <span key={index}>{day}</span>;
                 })}
             </div>
         );
     }
 
     renderDates() {
-        const props = this.props;
-        const month = props.month;
+
+        const month = this.props.month;
 
         const weekArray = DateTime.getFullWeekArray(month);
 
-        const weeks = [];
-        const len = weekArray.length;
-
-        weeks.push(
-            this.renderDay(weekArray[0], ['pre-month'])
-        );
-        weeks[0] = weeks[0].concat(
-            this.renderDay(weekArray[1], [])
-        );
-
-        for (let i = 2; i < len - 1; i++) {
-            weeks.push(
-                this.renderDay(weekArray[i], [])
-            );
-        }
-
-        weeks[len - 3] = weeks[len - 3].concat(
-            this.renderDay(weekArray[len - 1], ['next-month'])
-        );
-
-        return (<ul>{weeks.map(this.renderWeek)}</ul>);
+        return (<ul>{weekArray.map(this.renderWeek)}</ul>);
     }
 
     renderWeek(week, index) {
 
         return (
             <li key={index} className={cx().part('week').build()}>
-                {week}
+                {week.map(this.renderDay)}
             </li>
         );
-
     }
 
-    renderDay(arr, variants) {
+    renderDay(day, index) {
 
         const {
             date,
@@ -86,22 +67,19 @@ export default class CalendarMonth extends Component {
             maxDate
         } = this.props;
 
-        return arr.map((day, index) => {
+        const selected = DateTime.isEqualDate(day.date, date);
+        const disabled = (DateTime.isDate(minDate) && DateTime.isBeforeDate(day.date, minDate))
+                        || (DateTime.isDate(maxDate) && DateTime.isAfterDate(day.date, maxDate));
 
-            const selected = DateTime.isEqualDate(day, date);
-            const disabled = (DateTime.isDate(minDate) && DateTime.isBeforeDate(day, minDate))
-                            || (DateTime.isDate(maxDate) && DateTime.isAfterDate(day, maxDate));
-
-            return (
-                <Day
-                    key={day}
-                    date={day}
-                    variants={variants}
-                    disabled={disabled}
-                    selected={selected}
-                    onClick={this.onClick} />
-            );
-        });
+        return (
+            <Day
+                key={day.date}
+                date={day.date}
+                variants={day.variants}
+                disabled={disabled}
+                selected={selected}
+                onClick={this.onClick} />
+        );
 
     }
 
@@ -127,7 +105,6 @@ CalendarMonth.propTypes = {
     onChange: PropTypes.func,
     lang: PropTypes.shape({
         week: PropTypes.string,
-        days: PropTypes.string,
-        title: PropTypes.string
+        days: PropTypes.string
     }).isRequired
 };

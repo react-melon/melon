@@ -69,25 +69,11 @@
             return _this;
         }
 
-        RangeCalendar.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var begin = nextProps.begin;
-            var end = nextProps.end;
-            var value = nextProps.value;
-
-
-            if (value !== this.state.value) {
-                this.setState({
-                    date: this.getNormalizeValue(value, begin, end)
-                });
-            }
-
-            _InputComponent.prototype.componentWillReceiveProps.call(this, nextProps);
-        };
-
         RangeCalendar.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
             var disabled = nextProps.disabled;
             var customValidity = nextProps.customValidity;
-            var value = nextProps.value;
+            var _nextProps$value = nextProps.value;
+            var value = _nextProps$value === undefined ? nextProps.defaultValue : _nextProps$value;
             var begin = nextProps.begin;
             var end = nextProps.end;
 
@@ -132,8 +118,8 @@
             var _props = this.props;
             var begin = _props.begin;
             var end = _props.end;
-            var value = this.state.value;
 
+            var value = this.state.value;
 
             return this.getNormalizeValue(value, begin, end).map(function (date) {
                 return _this2.formatDate(date);
@@ -159,8 +145,8 @@
             });
         };
 
-        RangeCalendar.prototype.onDateChange = function onDateChange(index, e) {
-            var value = e.value;
+        RangeCalendar.prototype.onDateChange = function onDateChange(index, _ref) {
+            var value = _ref.value;
 
 
             var date = [].concat(this.state.date);
@@ -202,12 +188,8 @@
         };
 
         RangeCalendar.prototype.formatDate = function formatDate(date) {
-            var _props3 = this.props;
-            var dateFormat = _props3.dateFormat;
-            var lang = _props3.lang;
 
-
-            return DateTime.format(date, dateFormat.toLowerCase(), lang);
+            return DateTime.format(date, this.props.dateFormat);
         };
 
         RangeCalendar.prototype.parseDate = function parseDate(date) {
@@ -216,7 +198,7 @@
                 return date;
             }
 
-            var format = this.props.dateFormat.toLowerCase();
+            var format = this.props.dateFormat;
 
             return DateTime.parse(date, format);
         };
@@ -228,13 +210,12 @@
             var lang = props.lang;
             var disabled = props.disabled;
             var size = props.size;
-            var dateFormat = props.dateFormat;
             var name = props.name;
             var begin = props.begin;
             var end = props.end;
             var validity = props.validity;
             var placeholder = props.placeholder;
-            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'dateFormat', 'name', 'begin', 'end', 'validity', 'placeholder']);
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'begin', 'end', 'validity', 'placeholder']);
 
 
             var value = this.getValue();

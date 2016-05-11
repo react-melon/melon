@@ -111,7 +111,7 @@ class View extends React.Component {
                         <Title level={5}>日期区间</Title>
                         <UnitCalendar
                             size="xxs"
-                            value={this.state.monthRange}
+                            defaultValue={this.state.monthRange}
                             begin={new Date(2014, 10, 1)}
                             end={new Date(2015, 11, 1)}
                             unit="month" />
@@ -120,7 +120,7 @@ class View extends React.Component {
                         <Title level={5}>日期区间</Title>
                         <UnitCalendar
                             size="xxs"
-                            value={this.state.yearRange}
+                            defaultValue={this.state.yearRange}
                             begin={new Date(2012, 0, 1)}
                             end={new Date(2020, 4, 1)}
                             unit="year" />

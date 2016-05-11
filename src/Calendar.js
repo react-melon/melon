@@ -21,7 +21,7 @@ export default class Calendar extends InputComponent {
 
         super(props, context);
 
-        const {value} = this.state;
+        const value = this.state.value;
 
         this.onLabelClick = this.onLabelClick.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -89,13 +89,9 @@ export default class Calendar extends InputComponent {
             return rawValue;
         }
 
-        const {dateFormat, lang} = this.props;
+        const dateFormat = this.props.dateFormat;
 
-        return DateTime.format(
-            rawValue,
-            dateFormat.toLowerCase(),
-            lang
-        );
+        return DateTime.format(rawValue, dateFormat);
 
     }
 
@@ -105,7 +101,7 @@ export default class Calendar extends InputComponent {
             return date;
         }
 
-        let format = this.props.dateFormat.toLowerCase();
+        let format = this.props.dateFormat;
 
         return DateTime.parse(date, format);
     }
@@ -163,14 +159,11 @@ export default class Calendar extends InputComponent {
         this.setState({open: false});
     }
 
-    onDateChange(e) {
-
-        const {value} = e;
-        const {autoConfirm} = this.props;
+    onDateChange({value}) {
 
         this.setState(
             {date: this.parseDate(value)},
-            autoConfirm ? () => this.onConfirm() : null
+            this.props.autoConfirm ? () => this.onConfirm() : null
         );
 
     }
@@ -217,8 +210,7 @@ export default class Calendar extends InputComponent {
                 <label onClick={this.onLabelClick}>
                     {value ? DateTime.format(
                         this.parseDate(value),
-                        dateFormat.toLowerCase(),
-                        lang
+                        dateFormat
                     ) : (
                         <span className={cx().part('label-placeholder').build()}>
                             {placeholder}
@@ -263,7 +255,7 @@ Calendar.LANG = {
 Calendar.defaultProps = {
     ...InputComponent.defaultProps,
     defaultValue: '',
-    dateFormat: 'yyyy-MM-dd',
+    dateFormat: 'YYYY-MM-DD',
     lang: Calendar.LANG,
     placeholder: '请选择'
 };

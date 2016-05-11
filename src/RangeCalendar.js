@@ -40,25 +40,14 @@ export default class RangeCalendar extends InputComponent {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-
-        const {begin, end, value} = nextProps;
-
-        if (value !== this.state.value) {
-            this.setState({
-                date: this.getNormalizeValue(value, begin, end)
-            });
-        }
-
-        super.componentWillReceiveProps(nextProps);
-
-    }
-
     getSyncUpdates(nextProps) {
 
         const {
-            disabled, customValidity,
-            value, begin, end
+            disabled,
+            customValidity,
+            value = nextProps.defaultValue,
+            begin,
+            end
         } = nextProps;
 
         // 如果有值，那么就试着解析一下；否则设置为 null
@@ -103,13 +92,11 @@ export default class RangeCalendar extends InputComponent {
     getValue() {
 
         const {begin, end} = this.props;
-        const {value} = this.state;
+        const value = this.state.value;
 
         return this
             .getNormalizeValue(value, begin, end)
-            .map(date => {
-                return this.formatDate(date);
-            });
+            .map(date => this.formatDate(date));
 
     }
 
@@ -144,9 +131,7 @@ export default class RangeCalendar extends InputComponent {
         });
     }
 
-    onDateChange(index, e) {
-
-        const {value} = e;
+    onDateChange(index, {value}) {
 
         let date = [...this.state.date];
 
@@ -196,12 +181,9 @@ export default class RangeCalendar extends InputComponent {
      */
     formatDate(date) {
 
-        const {dateFormat, lang} = this.props;
-
         return DateTime.format(
             date,
-            dateFormat.toLowerCase(),
-            lang
+            this.props.dateFormat
         );
 
     }
@@ -212,7 +194,7 @@ export default class RangeCalendar extends InputComponent {
             return date;
         }
 
-        let format = this.props.dateFormat.toLowerCase();
+        let format = this.props.dateFormat;
 
         return DateTime.parse(date, format);
     }
@@ -225,7 +207,6 @@ export default class RangeCalendar extends InputComponent {
             lang,
             disabled,
             size,
-            dateFormat,
             name,
             begin,
             end,
