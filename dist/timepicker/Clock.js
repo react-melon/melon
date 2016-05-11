@@ -44,7 +44,18 @@
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
             _this.onTimeChange = _this.onTimeChange.bind(_this);
-            _this.onMouseChange = _this.onMouseChange.bind(_this);
+            _this.onMouseDown = _this.onMouseDown.bind(_this);
+            _this.onMouseUp = _this.onMouseUp.bind(_this);
+
+            _this.onMouseChange = function () {
+
+                var handler = _this.onMouseChange;
+
+                return function (e) {
+                    clearTimeout(_this.mouseChangeTimer);
+                    _this.mouseChangeTimer = setTimeout(handler.bind(_this, e), 5);
+                };
+            }();
             return _this;
         }
 
@@ -59,10 +70,36 @@
             return !(0, _moment2['default'])(time).isSame(nextProps.time) || mode !== nextProps.mode || !(0, _moment2['default'])(begin).isSame(nextProps.begin) || !(0, _moment2['default'])(end).isSame(nextProps.end);
         };
 
+        TimePickerClock.prototype.componentWillUnmount = function componentWillUnmount() {
+            clearTimeout(this.mouseChangeTimer);
+            this.mouseChangeTimer = null;
+        };
+
         TimePickerClock.prototype.onTimeChange = function onTimeChange(_ref) {
             var time = _ref.time;
 
             this.props.onChange({ time: time });
+        };
+
+        TimePickerClock.prototype.onMouseDown = function onMouseDown(e) {
+
+            if (this.props.mode === 'minute') {
+                (0, _dom.on)(this.refs.main, 'mousemove', this.onMouseChange);
+                (0, _dom.on)(document, 'mouseup', this.onMouseUp);
+            } else {
+                (0, _dom.on)(this.refs.main, 'mouseup', this.onMouseChange);
+            }
+        };
+
+        TimePickerClock.prototype.onMouseUp = function onMouseUp(e) {
+
+            if (this.props.mode === 'minute') {
+                this.onMouseChange(e);
+                (0, _dom.off)(this.refs.main, 'mousemove', this.onMouseChange);
+                (0, _dom.off)(document, 'mouseup', this.onMouseUp);
+            } else {
+                (0, _dom.off)(this.refs.main, 'mouseup', this.onMouseChange);
+            }
         };
 
         TimePickerClock.prototype.onMouseChange = function onMouseChange(_ref2) {
@@ -103,6 +140,10 @@
             number = mode === 'hour' && number === 0 ? 12 : number;
             number = mode === 'hour' && time.getHours() > 12 ? number + 12 : number;
 
+            if ((0, _moment2['default'])(time)[mode](number).isSame(time)) {
+                return;
+            }
+
             this.onTimeChange({
                 time: (0, _moment2['default'])(time)[mode](number).toDate()
             });
@@ -121,10 +162,10 @@
             return items.map(function (number) {
 
                 var timeMoment = void 0;
-
                 var selected = false;
                 if (mode === 'hour') {
                     var hour = (0, _moment2['default'])(time).hour();
+                    hour = hour === 0 ? 12 : hour;
                     selected = (hour > 12 ? hour - 12 : hour) === number;
                     var itemHour = hour > 12 ? number + 12 : number;
                     timeMoment = (0, _moment2['default'])(time).hour(itemHour);
@@ -162,7 +203,7 @@
                     {
                         className: cx().part('main').build(),
                         ref: 'main',
-                        onMouseUp: this.onMouseChange },
+                        onMouseDown: this.onMouseDown },
                     _react2['default'].createElement(_ClockHand2['default'], {
                         time: time,
                         mode: mode,

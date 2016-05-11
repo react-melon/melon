@@ -39,11 +39,11 @@ export default class TimePickerPanel extends Component {
         this.setState({mode});
     }
 
-    onTimeChange({time}) {
+    onTimeChange({time, isModeChange = false}) {
 
         let nextState = {time};
 
-        if (this.props.mode === 'hour') {
+        if (this.props.mode === 'hour' && isModeChange) {
             nextState.mode = 'minute';
         }
 
