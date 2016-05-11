@@ -8,7 +8,11 @@ import moment from 'moment';
 
 import {create} from '../common/util/cxBuilder';
 import {range} from '../common/util/array';
-import {getPosition} from '../common/util/dom';
+import {
+    getPosition,
+    on,
+    off
+} from '../common/util/dom';
 
 import ClockItem from './ClockItem';
 import ClockHand from './ClockHand';
@@ -25,7 +29,19 @@ export default class TimePickerClock extends Component {
         super(props);
 
         this.onTimeChange = this.onTimeChange.bind(this);
-        this.onMouseChange = this.onMouseChange.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+
+        this.onMouseChange = (() => {
+
+            let handler = this.onMouseChange;
+
+            return e => {
+                clearTimeout(this.mouseChangeTimer);
+                this.mouseChangeTimer = setTimeout(handler.bind(this, e), 5);
+            };
+
+        })();
     }
 
     shouldComponentUpdate(nextProps) {
@@ -43,8 +59,36 @@ export default class TimePickerClock extends Component {
             || !moment(end).isSame(nextProps.end);
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.mouseChangeTimer);
+        this.mouseChangeTimer = null;
+    }
+
     onTimeChange({time}) {
         this.props.onChange({time});
+    }
+
+    onMouseDown(e) {
+
+        if (this.props.mode === 'minute') {
+            on(this.refs.main, 'mousemove', this.onMouseChange);
+            on(document, 'mouseup', this.onMouseUp);
+        }
+        else {
+            on(this.refs.main, 'mouseup', this.onMouseChange);
+        }
+    }
+
+    onMouseUp(e) {
+
+        if (this.props.mode === 'minute') {
+            this.onMouseChange(e);
+            off(this.refs.main, 'mousemove', this.onMouseChange);
+            off(document, 'mouseup', this.onMouseUp);
+        }
+        else {
+            off(this.refs.main, 'mouseup', this.onMouseChange);
+        }
     }
 
     onMouseChange({clientX, clientY}) {
@@ -85,6 +129,10 @@ export default class TimePickerClock extends Component {
         number = mode === 'hour' && number === 0 ? 12 : number;
         number = mode === 'hour' && time.getHours() > 12 ? number + 12 : number;
 
+        if (moment(time)[mode](number).isSame(time)) {
+            return;
+        }
+
         this.onTimeChange({
             time: moment(time)[mode](number).toDate()
         });
@@ -107,10 +155,10 @@ export default class TimePickerClock extends Component {
         return items.map(number => {
 
             let timeMoment;
-
             let selected = false;
             if (mode === 'hour') {
-                const hour = moment(time).hour();
+                let hour = moment(time).hour();
+                hour = hour === 0 ? 12 : hour;
                 selected = (hour > 12 ? (hour - 12) : hour) === number;
                 const itemHour = hour > 12 ? (number + 12) : number;
                 timeMoment = moment(time).hour(itemHour);
@@ -152,7 +200,7 @@ export default class TimePickerClock extends Component {
                 <div
                     className={cx().part('main').build()}
                     ref="main"
-                    onMouseUp={this.onMouseChange}>
+                    onMouseDown={this.onMouseDown}>
                     <ClockHand
                         time={time}
                         mode={mode}

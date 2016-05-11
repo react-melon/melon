@@ -68,11 +68,13 @@
             var _this2 = this;
 
             var time = _ref2.time;
+            var _ref2$isModeChange = _ref2.isModeChange;
+            var isModeChange = _ref2$isModeChange === undefined ? false : _ref2$isModeChange;
 
 
             var nextState = { time: time };
 
-            if (this.props.mode === 'hour') {
+            if (this.props.mode === 'hour' && isModeChange) {
                 nextState.mode = 'minute';
             }
 

@@ -83,7 +83,7 @@
                     'span',
                     {
                         onClick: !isAfternoon && props.onChange ? null : function () {
-                            props.onChange({ time: (0, _moment2['default'])(time).subtract(12, 'h').toDate() });
+                            props.onChange({ time: (0, _moment2['default'])(time).subtract(12, 'h').toDate(), isModeChange: false });
                         },
                         className: cx().part('apm-am').addStates({ selected: !isAfternoon }).build() },
                     'AM'
@@ -92,7 +92,7 @@
                     'span',
                     {
                         onClick: isAfternoon && props.onChange ? null : function () {
-                            props.onChange({ time: (0, _moment2['default'])(time).add(12, 'h').toDate() });
+                            props.onChange({ time: (0, _moment2['default'])(time).add(12, 'h').toDate(), isModeChange: false });
                         },
                         className: cx().part('apm-pm').addStates({ selected: isAfternoon }).build() },
                     'PM'

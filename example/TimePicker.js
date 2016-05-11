@@ -33,6 +33,20 @@ class View extends React.Component {
                         <TimePicker />
                     </div>
                     <div className="melon-column melon-column-6">
+                        <Title level={5}>有默认值</Title>
+                        <TimePicker defaultValue="00:00" size="s" />
+                    </div>
+                </div>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={5}>有限制 0:00 - 11:00</Title>
+                        <TimePicker
+                            defaultValue="01:00"
+                            begin="00:00"
+                            end="11:00" />
+                    </div>
+                    <div className="melon-column melon-column-6">
                     </div>
                 </div>
             </div>
