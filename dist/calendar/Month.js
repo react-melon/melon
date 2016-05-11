@@ -40,6 +40,8 @@
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
             _this.onClick = _this.onClick.bind(_this);
+            _this.renderWeek = _this.renderWeek.bind(_this);
+            _this.renderDay = _this.renderDay.bind(_this);
             return _this;
         }
 
@@ -62,7 +64,7 @@
                 days.map(function (day, index) {
                     return _react2['default'].createElement(
                         'span',
-                        { key: day },
+                        { key: index },
                         day
                     );
                 })
@@ -70,27 +72,15 @@
         };
 
         CalendarMonth.prototype.renderDates = function renderDates() {
-            var props = this.props;
-            var month = props.month;
+
+            var month = this.props.month;
 
             var weekArray = DateTime.getFullWeekArray(month);
-
-            var weeks = [];
-            var len = weekArray.length;
-
-            weeks.push(this.renderDay(weekArray[0], ['pre-month']));
-            weeks[0] = weeks[0].concat(this.renderDay(weekArray[1], []));
-
-            for (var i = 2; i < len - 1; i++) {
-                weeks.push(this.renderDay(weekArray[i], []));
-            }
-
-            weeks[len - 3] = weeks[len - 3].concat(this.renderDay(weekArray[len - 1], ['next-month']));
 
             return _react2['default'].createElement(
                 'ul',
                 null,
-                weeks.map(this.renderWeek)
+                weekArray.map(this.renderWeek)
             );
         };
 
@@ -99,32 +89,27 @@
             return _react2['default'].createElement(
                 'li',
                 { key: index, className: cx().part('week').build() },
-                week
+                week.map(this.renderDay)
             );
         };
 
-        CalendarMonth.prototype.renderDay = function renderDay(arr, variants) {
-            var _this2 = this;
-
+        CalendarMonth.prototype.renderDay = function renderDay(day, index) {
             var _props = this.props;
             var date = _props.date;
             var minDate = _props.minDate;
             var maxDate = _props.maxDate;
 
 
-            return arr.map(function (day, index) {
+            var selected = DateTime.isEqualDate(day.date, date);
+            var disabled = DateTime.isDate(minDate) && DateTime.isBeforeDate(day.date, minDate) || DateTime.isDate(maxDate) && DateTime.isAfterDate(day.date, maxDate);
 
-                var selected = DateTime.isEqualDate(day, date);
-                var disabled = DateTime.isDate(minDate) && DateTime.isBeforeDate(day, minDate) || DateTime.isDate(maxDate) && DateTime.isAfterDate(day, maxDate);
-
-                return _react2['default'].createElement(_Day2['default'], {
-                    key: day,
-                    date: day,
-                    variants: variants,
-                    disabled: disabled,
-                    selected: selected,
-                    onClick: _this2.onClick });
-            });
+            return _react2['default'].createElement(_Day2['default'], {
+                key: day.date,
+                date: day.date,
+                variants: day.variants,
+                disabled: disabled,
+                selected: selected,
+                onClick: this.onClick });
         };
 
         CalendarMonth.prototype.render = function render() {
@@ -153,8 +138,7 @@
         onChange: _react.PropTypes.func,
         lang: _react.PropTypes.shape({
             week: _react.PropTypes.string,
-            days: _react.PropTypes.string,
-            title: _react.PropTypes.string
+            days: _react.PropTypes.string
         }).isRequired
     };
 });

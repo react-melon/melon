@@ -16,20 +16,22 @@ export default class UnitCalendar extends InputComponent {
     constructor(props) {
         super(props);
         this.onChange = this.onChange.bind(this);
+        this.parse = this.parse.bind(this);
+        this.format = this.format.bind(this);
     }
 
     onChange(e) {
 
         const nextValue = e.value;
 
-        const {continuous, value} = this.props;
+        const value = this.state.value;
 
-        this.props.onChange({
+        super.onChange({
 
             target: this,
 
             // 如果是连续的，这里需要算一下，不是连续的就以新值为主
-            value: continuous
+            value: this.props.continuous
                 ? this.calculate(value, nextValue).map(this.parse)
                 : value
         });
@@ -44,7 +46,7 @@ export default class UnitCalendar extends InputComponent {
 
         let cLength = current.length;
         let nLength = next.length;
-        let {unit} = this.props;
+        let unit = this.props.unit;
 
         if (cLength === nLength) {
             return current;
@@ -87,11 +89,11 @@ export default class UnitCalendar extends InputComponent {
     }
 
     parse(time) {
-        return new Date(time);
+        return date.parse(time, this.props.format);
     }
 
     format(time) {
-        return date.format(time, 'yyyy-mm-dd');
+        return date.format(time, this.props.format);
     }
 
     parseValue(value = '') {
@@ -112,8 +114,9 @@ export default class UnitCalendar extends InputComponent {
 
     render() {
 
-        let {begin, end, unit, value, format, ...rest} = this.props;
-        let {onChange} = this;
+        let {begin, end, unit, format, ...rest} = this.props;
+
+        let value = this.state.value;
 
         value = value
             .map(function (fragment) {
@@ -134,7 +137,7 @@ export default class UnitCalendar extends InputComponent {
                 <BoxGroup
                     {...rest}
                     boxModel="checkbox"
-                    onChange={onChange}
+                    onChange={this.onChange}
                     value={value}>
                     {options}
                 </BoxGroup>
@@ -147,19 +150,20 @@ export default class UnitCalendar extends InputComponent {
 }
 
 UnitCalendar.propTypes = {
+    ...InputComponent.propTypes,
     begin: PropTypes.instanceOf(Date),
     end: PropTypes.instanceOf(Date),
     unit: PropTypes.oneOf(['week', 'month', 'year']).isRequired,
-    value: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+    value: PropTypes.arrayOf(PropTypes.string),
     continuous: PropTypes.bool.isRequired,
     defaultValue: PropTypes.arrayOf(PropTypes.string)
 };
 
 UnitCalendar.defaultProps = {
+    ...InputComponent.defaultProps,
     continuous: true,
-    value: [],
     defaultValue: [],
-    format: 'yyyy-mm-dd'
+    format: 'YYYY-MM-DD'
 };
 
 export function normalize(time, unit) {

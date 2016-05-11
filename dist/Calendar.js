@@ -49,7 +49,6 @@
 
             var value = _this.state.value;
 
-
             _this.onLabelClick = _this.onLabelClick.bind(_this);
             _this.onConfirm = _this.onConfirm.bind(_this);
             _this.onLabelClick = _this.onLabelClick.bind(_this);
@@ -101,12 +100,9 @@
                 return rawValue;
             }
 
-            var _props = this.props;
-            var dateFormat = _props.dateFormat;
-            var lang = _props.lang;
+            var dateFormat = this.props.dateFormat;
 
-
-            return DateTime.format(rawValue, dateFormat.toLowerCase(), lang);
+            return DateTime.format(rawValue, dateFormat);
         };
 
         Calendar.prototype.parseDate = function parseDate(date) {
@@ -115,7 +111,7 @@
                 return date;
             }
 
-            var format = this.props.dateFormat.toLowerCase();
+            var format = this.props.dateFormat;
 
             return DateTime.parse(date, format);
         };
@@ -125,9 +121,9 @@
         };
 
         Calendar.prototype.onLabelClick = function onLabelClick() {
-            var _props2 = this.props;
-            var disabled = _props2.disabled;
-            var readOnly = _props2.readOnly;
+            var _props = this.props;
+            var disabled = _props.disabled;
+            var readOnly = _props.readOnly;
 
 
             if (disabled || readOnly) {
@@ -166,14 +162,13 @@
             this.setState({ open: false });
         };
 
-        Calendar.prototype.onDateChange = function onDateChange(e) {
+        Calendar.prototype.onDateChange = function onDateChange(_ref) {
             var _this3 = this;
 
-            var value = e.value;
-            var autoConfirm = this.props.autoConfirm;
+            var value = _ref.value;
 
 
-            this.setState({ date: this.parseDate(value) }, autoConfirm ? function () {
+            this.setState({ date: this.parseDate(value) }, this.props.autoConfirm ? function () {
                 return _this3.onConfirm();
             } : null);
         };
@@ -215,7 +210,7 @@
                 _react2['default'].createElement(
                     'label',
                     { onClick: this.onLabelClick },
-                    value ? DateTime.format(this.parseDate(value), dateFormat.toLowerCase(), lang) : _react2['default'].createElement(
+                    value ? DateTime.format(this.parseDate(value), dateFormat) : _react2['default'].createElement(
                         'span',
                         { className: cx().part('label-placeholder').build() },
                         placeholder
@@ -262,7 +257,7 @@
 
     Calendar.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
         defaultValue: '',
-        dateFormat: 'yyyy-MM-dd',
+        dateFormat: 'YYYY-MM-DD',
         lang: Calendar.LANG,
         placeholder: '请选择'
     });
