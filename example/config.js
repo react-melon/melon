@@ -19,6 +19,7 @@ module.exports = {
         'Region',
         'ScrollView',
         'Select',
+        'Slider',
         'SnackBar',
         'Table',
         'Tabs',
