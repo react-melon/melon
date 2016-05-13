@@ -109,7 +109,7 @@ export default class Uploader extends InputComponent {
     renderUploadButton() {
 
         const {isUploading, isUploaded, value} = this.state;
-        const {size} = this.props;
+        const {size, btnText} = this.props;
 
         if (isUploading) {
             return (
@@ -152,7 +152,7 @@ export default class Uploader extends InputComponent {
                     this.refs.file.click();
                 }}>
                 <Icon icon="file-upload" />
-                点击上传
+                {btnText}
             </Button>
         );
 
@@ -161,11 +161,12 @@ export default class Uploader extends InputComponent {
     render() {
 
         const props = this.props;
-        const {value, name} = props;
+        const {value, name, label} = props;
 
         return (
             <div className={cx(props).addStates(this.getStyleStates()).build()}>
                 <input name={name} type="hidden" value={value} />
+                {label ? <label className={cx().part('label').build()}>{label}</label> : null}
                 {this.renderUploadFile()}
                 {this.renderUploadButton()}
                 <Validity validity={this.state.validity} />
@@ -182,10 +183,13 @@ Uploader.propTypes = {
     multiple: PropTypes.bool,
     accept: PropTypes.string,
     files: PropTypes.array,
-    upload: PropTypes.func.isRequired
+    upload: PropTypes.func.isRequired,
+    btnText: PropTypes.string,
+    label: PropTypes.string
 };
 
 Uploader.defaultProps = {
     ...InputComponent.defaultProps,
+    btnText: '点击上传',
     validateEvents: ['change']
 };
