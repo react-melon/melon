@@ -34,7 +34,7 @@ export default class Calendar extends InputComponent {
             ...this.state,
 
             // 缓存用户在 confirm 前的选中值
-            date: value ? this.parseDate(value) : new Date(),
+            date: value ? this.parseDate(value) : undefined,
 
             // 是否打开选择窗
             open: false
@@ -45,7 +45,9 @@ export default class Calendar extends InputComponent {
 
     getSyncUpdates(nextProps) {
 
-        const {disabled, customValidity, value} = nextProps;
+        const {disabled, readOnly, customValidity, defaultValue} = nextProps;
+
+        let value = nextProps.value ? nextProps.value : defaultValue;
 
         // 如果有值，那么就试着解析一下；否则设置为 null
         let date = value ? this.parseValue(value) : null;
@@ -59,7 +61,7 @@ export default class Calendar extends InputComponent {
         return {
             date,
             vilidity,
-            value: this.stringifyValue(date)
+            value: (disabled || readOnly || !value) ? value : this.stringifyValue(date)
         };
 
     }
@@ -180,7 +182,6 @@ export default class Calendar extends InputComponent {
             disabled,
             size,
             name,
-            dateFormat,
             placeholder,
             ...others
         } = props;
@@ -208,10 +209,7 @@ export default class Calendar extends InputComponent {
                     disabled={disabled}
                     size={size} />
                 <label onClick={this.onLabelClick}>
-                    {value ? DateTime.format(
-                        this.parseDate(value),
-                        dateFormat
-                    ) : (
+                    {value ? value : (
                         <span className={cx().part('label-placeholder').build()}>
                             {placeholder}
                         </span>

@@ -186,7 +186,7 @@
         begin: _react.PropTypes.instanceOf(Date),
         end: _react.PropTypes.instanceOf(Date),
         unit: _react.PropTypes.oneOf(['week', 'month', 'year']).isRequired,
-        value: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        value: _react.PropTypes.arrayOf(Date),
         continuous: _react.PropTypes.bool.isRequired,
         defaultValue: _react.PropTypes.arrayOf(_react.PropTypes.string)
     });

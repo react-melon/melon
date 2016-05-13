@@ -198,6 +198,12 @@ export function isAfterDate(d1, d2) {
     return moment(d1).isAfter(d2, 'date');
 }
 
+export function isEqualMonth(d1, d2) {
+    return moment(d1).isSame(d2, 'month')
+        && moment(d1).isSame(d2, 'year');
+}
+
+
 export function isBeforeMonth(d1, d2) {
     return moment(d1).isBefore(d2, 'month');
 }
