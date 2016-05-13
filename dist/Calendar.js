@@ -58,7 +58,7 @@
             _this.state = babelHelpers['extends']({}, _this.state, {
 
                 // 缓存用户在 confirm 前的选中值
-                date: value ? _this.parseDate(value) : new Date(),
+                date: value ? _this.parseDate(value) : undefined,
 
                 // 是否打开选择窗
                 open: false
@@ -70,9 +70,12 @@
 
         Calendar.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
             var disabled = nextProps.disabled;
+            var readOnly = nextProps.readOnly;
             var customValidity = nextProps.customValidity;
-            var value = nextProps.value;
+            var defaultValue = nextProps.defaultValue;
 
+
+            var value = nextProps.value ? nextProps.value : defaultValue;
 
             // 如果有值，那么就试着解析一下；否则设置为 null
             var date = value ? this.parseValue(value) : null;
@@ -86,7 +89,7 @@
             return {
                 date: date,
                 vilidity: vilidity,
-                value: this.stringifyValue(date)
+                value: disabled || readOnly || !value ? value : this.stringifyValue(date)
             };
         };
 
@@ -180,9 +183,8 @@
             var disabled = props.disabled;
             var size = props.size;
             var name = props.name;
-            var dateFormat = props.dateFormat;
             var placeholder = props.placeholder;
-            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'dateFormat', 'placeholder']);
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'placeholder']);
             var value = state.value;
             var validity = state.validity;
             var begin = props.begin;
@@ -210,7 +212,7 @@
                 _react2['default'].createElement(
                     'label',
                     { onClick: this.onLabelClick },
-                    value ? DateTime.format(this.parseDate(value), dateFormat) : _react2['default'].createElement(
+                    value ? value : _react2['default'].createElement(
                         'span',
                         { className: cx().part('label-placeholder').build() },
                         placeholder

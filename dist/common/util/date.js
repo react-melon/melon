@@ -31,6 +31,7 @@
     exports.isEqualDate = isEqualDate;
     exports.isBeforeDate = isBeforeDate;
     exports.isAfterDate = isAfterDate;
+    exports.isEqualMonth = isEqualMonth;
     exports.isBeforeMonth = isBeforeMonth;
     exports.isAfterMonth = isAfterMonth;
     exports.monthDiff = monthDiff;
@@ -232,6 +233,10 @@
      */
     function isAfterDate(d1, d2) {
         return (0, _moment2['default'])(d1).isAfter(d2, 'date');
+    }
+
+    function isEqualMonth(d1, d2) {
+        return (0, _moment2['default'])(d1).isSame(d2, 'month') && (0, _moment2['default'])(d1).isSame(d2, 'year');
     }
 
     function isBeforeMonth(d1, d2) {

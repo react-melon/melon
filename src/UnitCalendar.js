@@ -154,7 +154,7 @@ UnitCalendar.propTypes = {
     begin: PropTypes.instanceOf(Date),
     end: PropTypes.instanceOf(Date),
     unit: PropTypes.oneOf(['week', 'month', 'year']).isRequired,
-    value: PropTypes.arrayOf(PropTypes.string),
+    value: PropTypes.arrayOf(Date),
     continuous: PropTypes.bool.isRequired,
     defaultValue: PropTypes.arrayOf(PropTypes.string)
 };
