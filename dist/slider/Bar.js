@@ -17,7 +17,6 @@
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.default = SliderBar;
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
 
@@ -28,35 +27,85 @@
 
     var cx = (0, _cxBuilder.create)('SliderBar');
 
-    function SliderBar(props) {
-        var height = props.height;
-        var max = props.max;
-        var min = props.min;
-        var value = props.value;
+    var SliderBar = function (_Component) {
+        babelHelpers.inherits(SliderBar, _Component);
+
+        function SliderBar() {
+            babelHelpers.classCallCheck(this, SliderBar);
+            return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+        }
+
+        SliderBar.prototype.render = function render() {
+            var _props = this.props;
+            var height = _props.height;
+            var max = _props.max;
+            var min = _props.min;
+            var value = _props.value;
+            var disableFocusRipple = _props.disableFocusRipple;
+            var pointerSize = _props.pointerSize;
+            var active = _props.active;
+            var rest = babelHelpers.objectWithoutProperties(_props, ['height', 'max', 'min', 'value', 'disableFocusRipple', 'pointerSize', 'active']);
 
 
-        var percent = (value - min) / (max - min) * 100 + '%';
+            var percent = (value - min) / (max - min) * 100 + '%';
 
-        var activeStyle = {
-            width: percent
+            var activeStyle = {
+                width: percent
+            };
+
+            var pointerStyle = {};
+            var outerPointerStyle = {};
+
+            if (pointerSize) {
+                pointerStyle.width = pointerStyle.height = pointerSize;
+
+                if (typeof pointerSize === 'string') {
+                    var unit = pointerSize.replace(/\d(\.)?\d*/, '');
+                    var _value = parseFloat(pointerSize);
+                    outerPointerStyle.width = outerPointerStyle.height = _value * 2 + unit;
+                    outerPointerStyle.marginTop = -_value + unit;
+                    pointerStyle.marginTop = -_value / 2 + unit;
+                } else {
+                    outerPointerStyle.width = outerPointerStyle.height = pointerSize * 2;
+                    outerPointerStyle.marginTop = -pointerSize;
+                    pointerStyle.marginTop = -pointerSize / 2;
+                }
+            }
+
+            return _react2['default'].createElement(
+                'div',
+                babelHelpers['extends']({}, rest, { className: cx().part('wrapper').addStates({ active: active }).build() }),
+                _react2['default'].createElement(
+                    'div',
+                    { style: { height: height }, className: cx(this.props).build() },
+                    _react2['default'].createElement('div', { style: activeStyle, className: cx().part('active').build() }),
+                    _react2['default'].createElement('div', { style: babelHelpers['extends']({ left: percent }, pointerStyle), className: cx().part('pointer').build() }),
+                    disableFocusRipple ? null : _react2['default'].createElement('div', {
+                        style: babelHelpers['extends']({ left: percent }, outerPointerStyle),
+                        className: cx().part('pointer-outer').build() })
+                )
+            );
         };
 
-        var pointerStyle = {
-            left: percent
-        };
+        return SliderBar;
+    }(_react.Component);
 
-        return _react2['default'].createElement(
-            'div',
-            { style: { height: height }, className: cx(props).build() },
-            _react2['default'].createElement('div', { style: activeStyle, className: cx().part('active').build() }),
-            _react2['default'].createElement('div', { style: pointerStyle, className: cx().part('pointer').build() }),
-            _react2['default'].createElement('div', { style: pointerStyle, className: cx().part('pointer-outer').build() })
-        );
-    }
+    exports['default'] = SliderBar;
+
 
     SliderBar.displayName = 'SliderBar';
 
     SliderBar.propTypes = {
-        height: _react.PropTypes.number
+        width: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
+        height: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
+        max: _react.PropTypes.number,
+        min: _react.PropTypes.number,
+        disableFocusRipple: _react.PropTypes.bool
+    };
+
+    SliderBar.defaultProps = {
+        height: 2,
+        width: '100%',
+        disableFocusRipple: false
     };
 });

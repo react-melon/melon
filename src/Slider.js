@@ -4,6 +4,7 @@
  */
 
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 
 import InputComponent from './InputComponent';
 import Validity from './Validity';
@@ -11,6 +12,7 @@ import {create} from './common/util/cxBuilder';
 import domUtil from './common/util/dom';
 
 import SliderBar from './slider/Bar';
+import getNewValue from './slider/getNewValue';
 
 const cx = create('Slider');
 
@@ -30,43 +32,52 @@ export default class Slider extends InputComponent {
         };
     }
 
+    componentWillUnmount() {
+        this.slider = null;
+    }
+
     onMouseUp() {
-        const main = this.refs.main;
-        domUtil.off(main, 'mouseup', this.onMouseUp);
-        domUtil.off(main, 'mousemove', this.onMouseChange);
+        domUtil.off(window, 'mouseup', this.onMouseUp);
+        domUtil.off(window, 'mousemove', this.onMouseChange);
         this.setState({active: false});
     }
 
     onMouseChange({clientX}) {
 
-        const main = this.refs.main;
-        const position = domUtil.getPosition(main);
-
         const {max, min, step} = this.props;
         const value = this.state.value;
 
-        const percent = (clientX - position.left) / position.width;
-        let newValue = min + (max - min) * percent;
-        newValue = Math.round(newValue / step) * step;
+        const newValue = getNewValue(this.slider, clientX, max, min, step);
 
         if (value === newValue || newValue > max || newValue < min) {
             return;
         }
 
+        this.onSliderChange(newValue);
+    }
+
+    onSliderChange(newValue) {
         super.onChange({
             type: 'change',
             target: this,
-            value: newValue + ''
+            value: this.stringifyValue(newValue)
         });
     }
 
     onMouseDown(e) {
-        const main = this.refs.main;
-        domUtil.on(main, 'mouseup', this.onMouseUp);
-        domUtil.on(main, 'mousemove', this.onMouseChange);
+        domUtil.on(window, 'mouseup', this.onMouseUp);
+        domUtil.on(window, 'mousemove', this.onMouseChange);
         this.onMouseChange(e);
 
         this.setState({active: true});
+    }
+
+    stringifyValue(value) {
+        return value + '';
+    }
+
+    getSliderValue() {
+        return +this.state.value;
     }
 
     renderHiddenInput() {
@@ -82,12 +93,15 @@ export default class Slider extends InputComponent {
 
     renderBar() {
 
-        const value = +this.state.value;
-
         return (
             <SliderBar
                 {...this.props}
-                value={value} />
+                ref={slider => {
+                    this.slider = ReactDOM.findDOMNode(slider);
+                }}
+                active={this.state.active}
+                onMouseDown={this.onMouseDown}
+                value={this.getSliderValue()} />
         );
     }
 
@@ -102,17 +116,11 @@ export default class Slider extends InputComponent {
             style = {}
         } = this.props;
 
-        const active = this.state.active;
-
-        const className = cx(this.props)
-            .addStates({active})
-            .build();
+        const className = cx(this.props).build();
 
         return (
             <div
-                ref="main"
                 style={{...style, width}}
-                onMouseDown={this.onMouseDown}
                 className={className}>
                 {this.renderHiddenInput()}
                 {this.renderBar()}
@@ -140,5 +148,6 @@ Slider.propTypes = {
     max: PropTypes.number,
     min: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    pointerSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
