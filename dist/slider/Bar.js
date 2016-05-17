@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', '../common/util/cxBuilder', "../babelHelpers"], factory);
+        define(['exports', 'react', '../common/util/cxBuilder', '../Tooltip', "../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../common/util/cxBuilder'), require("../babelHelpers"));
+        factory(exports, require('react'), require('../common/util/cxBuilder'), require('../Tooltip'), require("../babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.cxBuilder, global.babelHelpers);
+        factory(mod.exports, global.react, global.cxBuilder, global.Tooltip, global.babelHelpers);
         global.Bar = mod.exports;
     }
-})(this, function (exports, _react, _cxBuilder, babelHelpers) {
+})(this, function (exports, _react, _cxBuilder, _Tooltip, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -19,6 +19,8 @@
     });
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _Tooltip2 = babelHelpers.interopRequireDefault(_Tooltip);
 
     /**
      * @file Slider/SliderBar
@@ -79,7 +81,10 @@
                     'div',
                     { style: { height: height }, className: cx(this.props).build() },
                     _react2['default'].createElement('div', { style: activeStyle, className: cx().part('active').build() }),
-                    _react2['default'].createElement('div', { style: babelHelpers['extends']({ left: percent }, pointerStyle), className: cx().part('pointer').build() }),
+                    _react2['default'].createElement(_Tooltip2['default'], {
+                        content: value,
+                        style: babelHelpers['extends']({ left: percent }, pointerStyle),
+                        className: cx().part('pointer').build() }),
                     disableFocusRipple ? null : _react2['default'].createElement('div', {
                         style: babelHelpers['extends']({ left: percent }, outerPointerStyle),
                         className: cx().part('pointer-outer').build() })

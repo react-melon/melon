@@ -26,7 +26,8 @@ export default class Zippy extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            size: props.size
+            size: props.size,
+            first: true
         };
         this.main = null;
     }
@@ -34,7 +35,10 @@ export default class Zippy extends React.Component {
     componentDidMount() {
         const {isAdaptive, horizontal} = this.props;
         if (isAdaptive && !this.state.size) {
-            this.setState({size: getPosition(this.main)[horizontal ? 'width' : 'height']});
+            this.setState({
+                size: getPosition(this.main)[horizontal ? 'width' : 'height'],
+                first: false
+            });
         }
     }
 
@@ -50,10 +54,16 @@ export default class Zippy extends React.Component {
             expand,
             horizontal,
             style,
+            isAdaptive,
             ...others
         } = props;
 
-        const size = this.state.size || 0;
+        /* eslint-disable fecs-min-vars-per-destructure */
+
+        const {
+            size = 0,
+            first
+        } = this.state;
 
         const me = this;
 
@@ -66,8 +76,20 @@ export default class Zippy extends React.Component {
 
         const className = cx(props).addStates({expand}).build();
 
+        // 刚开始没有动画
+        if (isAdaptive && !size && expand && first) {
+            return (
+                <div
+                    {...others}
+                    className={className}
+                    style={style}>
+                    {children}
+                </div>
+            );
+        }
+
         return (
-            <Motion style={{value: spring(expand ? size : 0, {stiffness: 60, damping: 15})}}>
+            <Motion style={{value: spring(expand ? size : 0)}}>
                 {({value}) =>
                     <div
                         {...others}
