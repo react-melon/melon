@@ -24,7 +24,7 @@ export default class Dialog extends Component {
         this.originalHTMLBodySize = {};
 
         this.state = {
-            open: this.props.open
+            open: props.open
         };
 
         this.onShow = this.onShow.bind(this);

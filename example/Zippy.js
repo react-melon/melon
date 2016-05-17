@@ -14,7 +14,8 @@ class View extends React.Component {
         super(props);
         this.state = {
             example1: false,
-            example2: false
+            example2: false,
+            example3: false
         };
     }
 
@@ -66,6 +67,32 @@ class View extends React.Component {
                         <p>人迢迢、紫塞千里，算是不曾相忆。</p>
                         <p>倘有情、早合归来，休寄一纸无聊相思字！</p>
                         <p>——王国维《西河》</p>
+                    </div>
+                </Zippy>
+                <Title level={4}>自适应</Title>
+                <Button
+                    variants={['raised', 'primary']}
+                    onClick={() => this.setState({example3: !this.state.example3})}>
+                    打开
+                </Button>
+                <Zippy expand={this.state.example3} isAdaptive>
+                    <div style={{width: 800, lineHeight: '25px'}}>
+                        <p>如何让你遇见我</p>
+                        <p>在我最美丽的时刻为这</p>
+                        <p>我已在佛前求了五百年</p>
+                        <p>求他让我们结一段尘缘</p>
+                        <p>佛于是把我化作一棵树</p>
+                        <p>长在你必经的路旁</p>
+                        <p>阳光下慎重地开满了花</p>
+                        <p>朵朵都是我前世的盼望</p>
+                        <p>当你走近请你细听</p>
+                        <p>那颤抖的叶是我等待的热情</p>
+                        <p>而当你终于无视地走过</p>
+                        <p>在你身后落了一地的</p>
+                        <p>朋友啊那不是花瓣</p>
+                        <p>是我凋零的心</p>
+                        <p>只缘感君一回顾，使我思君暮与朝</p>
+                        <p>——席慕容《古乐府》</p>
                     </div>
                 </Zippy>
             </div>

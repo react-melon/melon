@@ -60,7 +60,7 @@ export default class Slider extends InputComponent {
         super.onChange({
             type: 'change',
             target: this,
-            value: this.stringifyValue(newValue)
+            value: newValue
         });
     }
 
@@ -72,12 +72,8 @@ export default class Slider extends InputComponent {
         this.setState({active: true});
     }
 
-    stringifyValue(value) {
-        return value + '';
-    }
-
     getSliderValue() {
-        return +this.state.value;
+        return this.state.value;
     }
 
     renderHiddenInput() {
@@ -135,7 +131,7 @@ Slider.displayName = 'Slider';
 
 Slider.defaultProps = {
     ...InputComponent.defaultProps,
-    defaultValue: '0',
+    defaultValue: 0,
     max: 100,
     min: 0,
     step: 1,
@@ -145,6 +141,8 @@ Slider.defaultProps = {
 
 Slider.propTypes = {
     ...InputComponent.propTypes,
+    defaultValue: PropTypes.number,
+    value: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

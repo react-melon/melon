@@ -89,7 +89,7 @@
             _InputComponent.prototype.onChange.call(this, {
                 type: 'change',
                 target: this,
-                value: this.stringifyValue(newValue)
+                value: newValue
             });
         };
 
@@ -101,12 +101,8 @@
             this.setState({ active: true });
         };
 
-        Slider.prototype.stringifyValue = function stringifyValue(value) {
-            return value + '';
-        };
-
         Slider.prototype.getSliderValue = function getSliderValue() {
-            return +this.state.value;
+            return this.state.value;
         };
 
         Slider.prototype.renderHiddenInput = function renderHiddenInput() {
@@ -164,7 +160,7 @@
     Slider.displayName = 'Slider';
 
     Slider.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
-        defaultValue: '0',
+        defaultValue: 0,
         max: 100,
         min: 0,
         step: 1,
@@ -173,6 +169,8 @@
     });
 
     Slider.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
+        defaultValue: _react.PropTypes.number,
+        value: _react.PropTypes.number,
         max: _react.PropTypes.number,
         min: _react.PropTypes.number,
         width: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
