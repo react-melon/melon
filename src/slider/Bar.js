@@ -6,6 +6,8 @@
 import React, {PropTypes, Component} from 'react';
 import {create} from '../common/util/cxBuilder';
 
+import Tooltip from '../Tooltip';
+
 const cx = create('SliderBar');
 
 export default class SliderBar extends Component {
@@ -53,7 +55,10 @@ export default class SliderBar extends Component {
             <div {...rest} className={cx().part('wrapper').addStates({active}).build()}>
                 <div style={{height}} className={cx(this.props).build()}>
                     <div style={activeStyle} className={cx().part('active').build()} />
-                    <div style={{left: percent, ...pointerStyle}} className={cx().part('pointer').build()} />
+                    <Tooltip
+                        content={value}
+                        style={{left: percent, ...pointerStyle}}
+                        className={cx().part('pointer').build()} />
                     {disableFocusRipple
                         ? null
                         : <div

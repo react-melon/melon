@@ -93,8 +93,8 @@
         };
 
         Tooltip.prototype.getPosition = function getPosition() {
-            var main = this.main;
 
+            var main = this.main;
 
             if (!this.isShown() || !main) {
                 return {
@@ -164,6 +164,7 @@
             var mode = props.mode;
             var direction = props.direction;
             var children = props.children;
+            var style = props.style;
 
 
             var onClick = mode === 'click' ? this.onClick : null;
@@ -178,6 +179,7 @@
                             _this2.main = main;
                         }
                     },
+                    style: style,
                     className: cx(props).addStates({ direction: direction }).build(),
                     onClick: onClick,
                     onMouseEnter: onMouseEnter,

@@ -44,7 +44,8 @@
             var _this = babelHelpers.possibleConstructorReturn(this, _React$Component.call(this, props));
 
             _this.state = {
-                size: props.size
+                size: props.size,
+                first: true
             };
             _this.main = null;
             return _this;
@@ -56,7 +57,10 @@
             var horizontal = _props.horizontal;
 
             if (isAdaptive && !this.state.size) {
-                this.setState({ size: (0, _dom.getPosition)(this.main)[horizontal ? 'width' : 'height'] });
+                this.setState({
+                    size: (0, _dom.getPosition)(this.main)[horizontal ? 'width' : 'height'],
+                    first: false
+                });
             }
         };
 
@@ -71,10 +75,17 @@
             var expand = props.expand;
             var horizontal = props.horizontal;
             var style = props.style;
-            var others = babelHelpers.objectWithoutProperties(props, ['expand', 'horizontal', 'style']);
+            var isAdaptive = props.isAdaptive;
+            var others = babelHelpers.objectWithoutProperties(props, ['expand', 'horizontal', 'style', 'isAdaptive']);
+            var _state = this.state;
+            var _state$size = _state.size;
+            var
 
+            /* eslint-disable fecs-min-vars-per-destructure */
 
-            var size = this.state.size || 0;
+            size = _state$size === undefined ? 0 : _state$size;
+            var first = _state.first;
+
 
             var me = this;
 
@@ -87,9 +98,20 @@
 
             var className = cx(props).addStates({ expand: expand }).build();
 
+            // 刚开始没有动画
+            if (isAdaptive && !size && expand && first) {
+                return _react2['default'].createElement(
+                    'div',
+                    babelHelpers['extends']({}, others, {
+                        className: className,
+                        style: style }),
+                    children
+                );
+            }
+
             return _react2['default'].createElement(
                 _reactMotion.Motion,
-                { style: { value: (0, _reactMotion.spring)(expand ? size : 0, { stiffness: 60, damping: 15 }) } },
+                { style: { value: (0, _reactMotion.spring)(expand ? size : 0) } },
                 function (_ref2) {
                     var value = _ref2.value;
                     return _react2['default'].createElement(

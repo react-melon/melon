@@ -15,7 +15,7 @@ class View extends React.Component {
         this.state = {
             example1: false,
             example2: false,
-            example3: false
+            example3: true
         };
     }
 
