@@ -4,8 +4,11 @@
  */
 
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import {Motion, spring} from 'react-motion';
 import {create} from './common/util/cxBuilder';
+
+import {getPosition} from './common/util/dom';
 
 const cx = create('Zippy');
 
@@ -20,19 +23,46 @@ function getStyle(horizontal, value) {
 
 export default class Zippy extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            size: props.size
+        };
+        this.main = null;
+    }
+
+    componentDidMount() {
+        const {isAdaptive, horizontal} = this.props;
+        if (isAdaptive && !this.state.size) {
+            this.setState({size: getPosition(this.main)[horizontal ? 'width' : 'height']});
+        }
+    }
+
+    componentWillUnmount() {
+        this.main = null;
+    }
+
     render() {
 
         const props = this.props;
 
         const {
             expand,
-            size,
-            children,
             horizontal,
-            value,
             style,
             ...others
         } = props;
+
+        const size = this.state.size || 0;
+
+        const me = this;
+
+        let children = React.Children.only(props.children);
+        children = React.cloneElement(children, {
+            ref(main) {
+                me.main = ReactDOM.findDOMNode(main);
+            }
+        });
 
         const className = cx(props).addStates({expand}).build();
 
@@ -59,12 +89,14 @@ export default class Zippy extends React.Component {
 Zippy.displayName = 'Zippy';
 
 Zippy.propTypes = {
-    size: PropTypes.number.isRequired,
+    size: PropTypes.number,
     horizontal: PropTypes.bool,
-    expand: PropTypes.bool
+    expand: PropTypes.bool,
+    isAdaptive: PropTypes.bool
 };
 
 Zippy.defaultProps = {
     horizontal: false,
-    expand: false
+    expand: false,
+    isAdaptive: false
 };

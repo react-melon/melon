@@ -60,6 +60,10 @@
                 style.width = width + 'px';
             }
 
+            if (top === 0) {
+                style = {};
+            }
+
             return _react2['default'].createElement(
                 'div',
                 babelHelpers['extends']({}, others, { style: style, className: cx(this.props).build() }),

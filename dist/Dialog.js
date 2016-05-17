@@ -46,7 +46,7 @@
             _this.originalHTMLBodySize = {};
 
             _this.state = {
-                open: _this.props.open
+                open: props.open
             };
 
             _this.onShow = _this.onShow.bind(_this);

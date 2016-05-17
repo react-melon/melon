@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-motion', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', 'react-motion', './common/util/cxBuilder', './common/util/dom', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-motion'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('react-motion'), require('./common/util/cxBuilder'), require('./common/util/dom'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.reactMotion, global.cxBuilder, global.babelHelpers);
+        factory(mod.exports, global.react, global.reactDom, global.reactMotion, global.cxBuilder, global.dom, global.babelHelpers);
         global.Zippy = mod.exports;
     }
-})(this, function (exports, _react, _reactMotion, _cxBuilder, babelHelpers) {
+})(this, function (exports, _react, _reactDom, _reactMotion, _cxBuilder, _dom, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -19,6 +19,8 @@
     });
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
 
     /**
      * @file Zippy
@@ -36,23 +38,52 @@
     var Zippy = function (_React$Component) {
         babelHelpers.inherits(Zippy, _React$Component);
 
-        function Zippy() {
+        function Zippy(props) {
             babelHelpers.classCallCheck(this, Zippy);
-            return babelHelpers.possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+
+            var _this = babelHelpers.possibleConstructorReturn(this, _React$Component.call(this, props));
+
+            _this.state = {
+                size: props.size
+            };
+            _this.main = null;
+            return _this;
         }
+
+        Zippy.prototype.componentDidMount = function componentDidMount() {
+            var _props = this.props;
+            var isAdaptive = _props.isAdaptive;
+            var horizontal = _props.horizontal;
+
+            if (isAdaptive && !this.state.size) {
+                this.setState({ size: (0, _dom.getPosition)(this.main)[horizontal ? 'width' : 'height'] });
+            }
+        };
+
+        Zippy.prototype.componentWillUnmount = function componentWillUnmount() {
+            this.main = null;
+        };
 
         Zippy.prototype.render = function render() {
 
             var props = this.props;
 
             var expand = props.expand;
-            var size = props.size;
-            var children = props.children;
             var horizontal = props.horizontal;
-            var value = props.value;
             var style = props.style;
-            var others = babelHelpers.objectWithoutProperties(props, ['expand', 'size', 'children', 'horizontal', 'value', 'style']);
+            var others = babelHelpers.objectWithoutProperties(props, ['expand', 'horizontal', 'style']);
 
+
+            var size = this.state.size || 0;
+
+            var me = this;
+
+            var children = _react2['default'].Children.only(props.children);
+            children = _react2['default'].cloneElement(children, {
+                ref: function ref(main) {
+                    me.main = _reactDom2['default'].findDOMNode(main);
+                }
+            });
 
             var className = cx(props).addStates({ expand: expand }).build();
 
@@ -81,13 +112,15 @@
     Zippy.displayName = 'Zippy';
 
     Zippy.propTypes = {
-        size: _react.PropTypes.number.isRequired,
+        size: _react.PropTypes.number,
         horizontal: _react.PropTypes.bool,
-        expand: _react.PropTypes.bool
+        expand: _react.PropTypes.bool,
+        isAdaptive: _react.PropTypes.bool
     };
 
     Zippy.defaultProps = {
         horizontal: false,
-        expand: false
+        expand: false,
+        isAdaptive: false
     };
 });
