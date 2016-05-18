@@ -1,5 +1,6 @@
 @require 'nib'
 @require '../src/css/mixin.styl'
+@require '../src/css/theme/default'
 
 global-reset()
 
@@ -48,8 +49,27 @@ melon-generate-grid()
 .row
     padding: 10px 0
 
-@import '../src/css/theme/default'
-@import '../src/css/Card.styl'
+.line
+    float: left
+    box-sizing: border-box
+    width: 25%
+    padding: 10px
+    text-align center
+
+    .cell
+        margin: 10px 0
+        height: 120px
+        font-size: 16px
+
+        &:hover
+            color: $-melon-colors.teal500
+
+        >label
+            display: block
+            height: 30px
+            line-height 30px
+
+@require '../src/css/Card.styl'
 @require 'BoxGroup.styl'
 @require 'Breadcrumb.styl'
 @require 'Button.styl'
@@ -58,7 +78,6 @@ melon-generate-grid()
 @require 'Drawer.styl'
 @require 'Form.styl'
 @require 'Grid.styl'
-@require 'Icon.styl'
 @require 'Pager.styl'
 @require 'Progress.styl'
 @require 'Region.styl'
