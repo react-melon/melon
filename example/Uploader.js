@@ -19,9 +19,9 @@ class View extends React.Component {
             <div>
                 <Title level={3}>文件上传</Title>
                 <Title level={4}>待选择</Title>
-                <Uploader upload={this.upload}/>
+                <Uploader btnText="图片上传" upload={this.upload}/>
                 <Title level={4}>已选择</Title>
-                <Uploader upload={this.upload} value="https://www.baidu.com/img/bd_logo1.png" />
+                <Uploader label="背景图片上传" upload={this.upload} value="https://www.baidu.com/img/bd_logo1.png" />
             </div>
         );
     }

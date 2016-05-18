@@ -36,7 +36,7 @@
         }
 
         DialogWindow.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
-            return nextProps.top !== this.props.top || nextProps.footer !== this.props.footer || nextProps.title !== this.props.title;
+            return nextProps.top !== this.props.top || nextProps.width !== this.props.width || nextProps.footer !== this.props.footer || nextProps.title !== this.props.title;
         };
 
         DialogWindow.prototype.render = function render() {
@@ -45,7 +45,8 @@
             var top = _props.top;
             var title = _props.title;
             var footer = _props.footer;
-            var others = babelHelpers.objectWithoutProperties(_props, ['children', 'top', 'title', 'footer']);
+            var width = _props.width;
+            var others = babelHelpers.objectWithoutProperties(_props, ['children', 'top', 'title', 'footer', 'width']);
 
 
             var style = {
@@ -54,6 +55,14 @@
                 msTransform: 'translate(0, ' + top + 'px)',
                 MozTransform: 'translate(0, ' + top + 'px)'
             };
+
+            if (typeof width === 'number' || !isNaN(+width)) {
+                style.width = width + 'px';
+            }
+
+            if (top === 0) {
+                style = {};
+            }
 
             return _react2['default'].createElement(
                 'div',

@@ -12,20 +12,36 @@ export default class DialogWindow extends Component {
 
     shouldComponentUpdate(nextProps) {
         return nextProps.top !== this.props.top
+            || nextProps.width !== this.props.width
             || nextProps.footer !== this.props.footer
             || nextProps.title !== this.props.title;
     }
 
     render() {
 
-        const {children, top, title, footer, ...others} = this.props;
+        const {
+            children,
+            top,
+            title,
+            footer,
+            width,
+            ...others
+        } = this.props;
 
-        const style = {
+        let style = {
             transform: 'translate(0, ' + top + 'px)',
             WebkitTransform: 'translate(0, ' + top + 'px)',
             msTransform: 'translate(0, ' + top + 'px)',
             MozTransform: 'translate(0, ' + top + 'px)'
         };
+
+        if (typeof width === 'number' || !isNaN(+width)) {
+            style.width = `${width}px`;
+        }
+
+        if (top === 0) {
+            style = {};
+        }
 
         return (
             <div {...others} style={style} className={cx(this.props).build()}>

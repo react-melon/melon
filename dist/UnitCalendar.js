@@ -45,6 +45,8 @@
             var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props));
 
             _this.onChange = _this.onChange.bind(_this);
+            _this.parse = _this.parse.bind(_this);
+            _this.format = _this.format.bind(_this);
             return _this;
         }
 
@@ -52,17 +54,14 @@
 
             var nextValue = e.value;
 
-            var _props = this.props;
-            var continuous = _props.continuous;
-            var value = _props.value;
+            var value = this.state.value;
 
-
-            this.props.onChange({
+            _InputComponent.prototype.onChange.call(this, {
 
                 target: this,
 
                 // 如果是连续的，这里需要算一下，不是连续的就以新值为主
-                value: continuous ? this.calculate(value, nextValue).map(this.parse) : value
+                value: this.props.continuous ? this.calculate(value, nextValue).map(this.parse) : value
             });
         };
 
@@ -75,7 +74,6 @@
             var cLength = current.length;
             var nLength = next.length;
             var unit = this.props.unit;
-
 
             if (cLength === nLength) {
                 return current;
@@ -116,11 +114,11 @@
         };
 
         UnitCalendar.prototype.parse = function parse(time) {
-            return new Date(time);
+            return date.parse(time, this.props.format);
         };
 
         UnitCalendar.prototype.format = function format(time) {
-            return date.format(time, 'yyyy-mm-dd');
+            return date.format(time, this.props.format);
         };
 
         UnitCalendar.prototype.parseValue = function parseValue() {
@@ -142,15 +140,15 @@
         UnitCalendar.prototype.render = function render() {
             var _this2 = this;
 
-            var _props2 = this.props;
-            var begin = _props2.begin;
-            var end = _props2.end;
-            var unit = _props2.unit;
-            var value = _props2.value;
-            var format = _props2.format;
-            var rest = babelHelpers.objectWithoutProperties(_props2, ['begin', 'end', 'unit', 'value', 'format']);
-            var onChange = this.onChange;
+            var _props = this.props;
+            var begin = _props.begin;
+            var end = _props.end;
+            var unit = _props.unit;
+            var format = _props.format;
+            var rest = babelHelpers.objectWithoutProperties(_props, ['begin', 'end', 'unit', 'format']);
 
+
+            var value = this.state.value;
 
             value = value.map(function (fragment) {
                 return date.format(normalize(fragment, unit), format);
@@ -171,7 +169,7 @@
                     _BoxGroup2['default'],
                     babelHelpers['extends']({}, rest, {
                         boxModel: 'checkbox',
-                        onChange: onChange,
+                        onChange: this.onChange,
                         value: value }),
                     options
                 )
@@ -184,21 +182,20 @@
     exports['default'] = UnitCalendar;
 
 
-    UnitCalendar.propTypes = {
+    UnitCalendar.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
         begin: _react.PropTypes.instanceOf(Date),
         end: _react.PropTypes.instanceOf(Date),
         unit: _react.PropTypes.oneOf(['week', 'month', 'year']).isRequired,
-        value: _react.PropTypes.arrayOf(_react.PropTypes.instanceOf(Date)),
+        value: _react.PropTypes.arrayOf(Date),
         continuous: _react.PropTypes.bool.isRequired,
         defaultValue: _react.PropTypes.arrayOf(_react.PropTypes.string)
-    };
+    });
 
-    UnitCalendar.defaultProps = {
+    UnitCalendar.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
         continuous: true,
-        value: [],
         defaultValue: [],
-        format: 'yyyy-mm-dd'
-    };
+        format: 'YYYY-MM-DD'
+    });
 
     function normalize(time, unit) {
         time = new Date(time);

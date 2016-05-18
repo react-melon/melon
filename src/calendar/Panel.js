@@ -36,17 +36,29 @@ export default class CalendarPanel extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        const {date} = nextProps;
+        const date = nextProps.date;
 
-        if (this.props.date !== date) {
+        if (!DateTime.isEqualDate(date, this.props.date)) {
             this.setState({date, month: date});
         }
 
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return !DateTime.isEqualDate(nextState.date, this.state.date)
+            || !DateTime.isEqualMonth(nextState.month, this.state.month)
+            || nextState.selectorType !== this.state.selectorType
+            || (nextProps.begin && this.props.begin && !DateTime.isEqualMonth(nextProps.begin, this.props.begin))
+            || (nextProps.end && this.props.end && !DateTime.isEqualMonth(nextProps.end, this.props.end))
+            || (!nextProps.begin && this.props.begin)
+            || (!nextProps.end && this.props.end)
+            || (nextProps.begin && !this.props.begin)
+            || (nextProps.end && !this.props.end);
+    }
+
     onHeaderClick(e) {
 
-        const {selectorType} = this.state;
+        const selectorType = this.state.selectorType;
 
         this.setState({
             selectorType: selectorType === 'main' ? 'year' : 'main'
@@ -91,7 +103,7 @@ export default class CalendarPanel extends Component {
 
     onDateChange({date}) {
 
-        const {month} = this.state;
+        const month = this.state.month;
         const monthDiff = DateTime.monthDiff(date, month);
 
         if (monthDiff !== 0) {

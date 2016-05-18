@@ -1,0 +1,65 @@
+@require './base.styl'
+
+.{$-melon-class-prefix}-slider
+    margin: 1em 0
+    height: 2em
+    position: relative
+    user-select: none
+    cursor: pointer
+
+
+.{$-melon-class-prefix}-slider-bar
+    width: 100%
+    background-color: $-melon-colors.grey200
+    position: absolute
+    top: 50%
+    left: 0
+    box-sizing: content-box
+    cursor: pointer
+
+    &-wrapper
+        height: 100%
+        position: relative
+
+        &.state-active
+            .{$-melon-class-prefix}-slider-bar-pointer
+                transform: translate(-50%, 0) scale(1.6) !important
+            .{$-melon-class-prefix}-slider-bar-pointer-outer
+                transform: translate(-50%, 0) scale(0) !important
+
+        &:hover
+            .{$-melon-class-prefix}-slider-bar-pointer-outer
+                transform: translate(-50%, 0) scale(1)
+
+    &-active
+        background-color: $-melon-colors.cyan500
+        height: 100%
+        position: absolute
+        left: 0
+        top: 0
+        bottom: 0
+
+    &-pointer
+        size(0.8em)
+        border-radius: 100em
+        background-color: $-melon-colors.cyan500
+        position: absolute
+        top: 50%
+        margin-top: -0.4em
+        transform: translate(-50%, 0)
+        z-index: 1
+        transform-origin: 50% 50%
+        transition: transform 0.3s ease
+
+        &-outer
+            size(1.6em)
+            border-radius: 100em
+            background-color: $-melon-colors.cyan100
+            position: absolute
+            opacity: 0.5
+            top: 50%
+            margin-top: -0.8em
+            transform: translate(-50%, 0) scale(0)
+            transition: transform 0.1s ease-out
+            z-index: 0
+

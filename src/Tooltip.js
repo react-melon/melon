@@ -70,7 +70,7 @@ export default class Tooltip extends Component {
 
     getPosition() {
 
-        const {main} = this;
+        const main = this.main;
 
         if (!this.isShown() || !main) {
             return {
@@ -141,7 +141,8 @@ export default class Tooltip extends Component {
         const {
             mode,
             direction,
-            children
+            children,
+            style
         } = props;
 
         const onClick = mode === 'click' ? this.onClick : null;
@@ -155,6 +156,7 @@ export default class Tooltip extends Component {
                         this.main = main;
                     }
                 }}
+                style={style}
                 className={cx(props).addStates({direction}).build()}
                 onClick={onClick}
                 onMouseEnter={onMouseEnter}

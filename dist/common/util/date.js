@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', './array', "../../babelHelpers"], factory);
+        define(['exports', 'moment', "../../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('./array'), require("../../babelHelpers"));
+        factory(exports, require('moment'), require("../../babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.array, global.babelHelpers);
+        factory(mod.exports, global.moment, global.babelHelpers);
         global.date = mod.exports;
     }
-})(this, function (exports, _array, babelHelpers) {
+})(this, function (exports, _moment, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -21,29 +21,23 @@
     exports.addDays = addDays;
     exports.addMonths = addMonths;
     exports.addYears = addYears;
-    exports.clone = clone;
-    exports.cloneAsDate = cloneAsDate;
     exports.getDaysInMonth = getDaysInMonth;
     exports.getFirstDayOfMonth = getFirstDayOfMonth;
-    exports.getLastDayOfMonth = getLastDayOfMonth;
     exports.getShortMonth = getShortMonth;
     exports.getDayOfWeek = getDayOfWeek;
     exports.getFullWeekArray = getFullWeekArray;
-    exports.getWeekArray = getWeekArray;
     exports.parse = parse;
     exports.format = format;
-    exports.datePad = datePad;
     exports.isEqualDate = isEqualDate;
-    exports.isEqualMonth = isEqualMonth;
     exports.isBeforeDate = isBeforeDate;
     exports.isAfterDate = isAfterDate;
+    exports.isEqualMonth = isEqualMonth;
     exports.isBeforeMonth = isBeforeMonth;
     exports.isAfterMonth = isAfterMonth;
-    exports.isBetweenDates = isBetweenDates;
-    exports.isDateObject = isDateObject;
     exports.monthDiff = monthDiff;
     exports.yearDiff = yearDiff;
 
+    var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
     /**
      * 是否为 Date 实例
@@ -69,9 +63,10 @@
      * @return {Date}   修改后的日期
      */
     function addDays(d, days) {
-        var newDate = this.clone(d);
-        newDate.setDate(d.getDate() + days);
-        return newDate;
+        if (days === 0) {
+            return d;
+        }
+        return (0, _moment2['default'])(d).add(days, 'days').toDate();
     }
 
     /**
@@ -82,9 +77,7 @@
      * @return {Date}   修改后的日期对象
      */
     function addMonths(d, months) {
-        var newDate = this.clone(d);
-        newDate.setMonth(d.getMonth() + months);
-        return newDate;
+        return (0, _moment2['default'])(d).add(months, 'months').toDate();
     }
 
     /**
@@ -95,31 +88,7 @@
      * @return {Date}   修改后的日期对象
      */
     function addYears(d, years) {
-        var newDate = this.clone(d);
-        newDate.setFullYear(d.getFullYear() + years);
-        return newDate;
-    }
-
-    /**
-     * Date对象的深复制
-     *
-     * @param  {Date} d Date对象
-     * @return {Date}   复制
-     */
-    function clone(d) {
-        return new Date(d.getTime());
-    }
-
-    /**
-     * Date对象的深复制，并把时间清零
-     *
-     * @param  {Date} d Date对象
-     * @return {Date}   复制
-     */
-    function cloneAsDate(d) {
-        var clonedDate = this.clone(d);
-        clonedDate.setHours(0, 0, 0, 0);
-        return clonedDate;
+        return (0, _moment2['default'])(d).add(years, 'years').toDate();
     }
 
     /**
@@ -144,18 +113,7 @@
      * @return {Date}   当月第一天日期
      */
     function getFirstDayOfMonth(d) {
-        return new Date(d.getFullYear(), d.getMonth(), 1);
-    }
-
-    /**
-     * 获取某月最后一天的日期对象
-     *
-     * @param  {Date} d Date对象
-     * @return {Date}   当月最后一天日期
-     */
-    function getLastDayOfMonth(d) {
-        var date = new Date(d.getFullYear(), d.getMonth() + 1, 1);
-        return this.addDays(date, -1);
+        return (0, _moment2['default'])(d).date(1).toDate();
     }
 
     function getShortMonth(d) {
@@ -178,62 +136,48 @@
      */
     function getFullWeekArray(d) {
 
-        var weekArray = this.getWeekArray(d);
-        var firstWeek = weekArray[0] = (0, _array.compact)(weekArray[0]);
-        var lastWeek = weekArray[weekArray.length - 1];
-        var preArray = [];
-        var lastArray = [];
-
-        var i = 0;
-        var len = 7 - firstWeek.length;
-        for (; i < len; i++) {
-            preArray.push(this.addDays(firstWeek[0], i - len));
-        }
-
-        len = 7 - lastWeek.length;
-        for (i = 1; i <= len; i++) {
-            lastArray.push(this.addDays(lastWeek[lastWeek.length - 1], i));
-        }
-
-        return [].concat([preArray], weekArray, [lastArray]);
-    }
-
-    /**
-     * 得到某一月所有天数按周组成若干个数组
-     *
-     * @param  {Date} d 日期
-     * @return {Array}  数据
-     */
-    function getWeekArray(d) {
-
-        var dayArray = [];
         var daysInMonth = this.getDaysInMonth(d);
-        var weekArray = [];
+        var firstDay = this.getFirstDayOfMonth(d);
 
-        var week = void 0;
-        var firstDayOfWeek = void 0;
-        var emptyDays = void 0;
-        var daysInWeek = void 0;
+        var firstDayOfWeek = (0, _moment2['default'])(firstDay).day();
+
+        var days = [];
         var i = void 0;
 
-        for (i = 1; i <= daysInMonth; i++) {
-            dayArray.push(new Date(d.getFullYear(), d.getMonth(), i));
-        }
-
-        while (dayArray.length) {
-            firstDayOfWeek = dayArray[0].getDay();
-            daysInWeek = 7 - firstDayOfWeek;
-            emptyDays = 7 - daysInWeek;
-            week = dayArray.splice(0, daysInWeek);
-
-            for (i = 0; i < emptyDays; i++) {
-                week.unshift(null);
+        if (firstDayOfWeek > 1) {
+            for (i = firstDayOfWeek - 1; i >= 0; i--) {
+                days.push({
+                    date: this.addDays(firstDay, -(i + 1)),
+                    variants: 'pre-month'
+                });
             }
-
-            weekArray.push(week);
         }
 
-        return weekArray;
+        for (i = 0; i < daysInMonth; i++) {
+            days.push({
+                date: this.addDays(firstDay, i)
+            });
+        }
+
+        var lastDay = days[days.length - 1].date;
+        var lastDayOfWeek = (0, _moment2['default'])(lastDay).day();
+
+        if (lastDayOfWeek < 7) {
+            for (i = 0; i < 6 - lastDayOfWeek; i++) {
+                days.push({
+                    date: this.addDays(lastDay, i + 1),
+                    variants: 'next-month'
+                });
+            }
+        }
+
+        var weeks = [];
+
+        for (i = 0; i < days.length / 7; i++) {
+            weeks.push(days.slice(i * 7, (i + 1) * 7));
+        }
+
+        return weeks;
     }
 
     /**
@@ -244,24 +188,7 @@
      * @return {Date}          Date对象
      */
     function parse(value, format) {
-
-        format = format.split(/[^yMdW]+/i);
-        value = value.split(/\D+/);
-
-        var map = {};
-
-        for (var i = 0, l = format.length; i < l; i++) {
-            if (format[i] && value[i] && (format[i].length > 1 && value[i].length === format[i].length || format[i].length === 1)) {
-                map[format[i]] = value[i];
-            }
-        }
-
-        var year = map.yyyy || map.y || (map.yy < 50 ? '20' : '19') + map.yy;
-
-        var month = (map.m || map.mm) | 0;
-        var date = (map.d || map.dd) | 0;
-
-        return new Date(year | 0, month - 1, date);
+        return (0, _moment2['default'])(value, format).toDate();
     }
 
     /**
@@ -269,47 +196,10 @@
      *
      * @param  {Date}   date   日期
      * @param  {string} format 转换格式
-     * @param  {Object} lang   [description]
-     * @return {string}        [description]
+     * @return {string}        转换以后的日期
      */
-    function format(date, format, lang) {
-
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        var day = date.getDate();
-
-        var week = date.getDay();
-
-        if (lang && lang.days) {
-            week = lang.days.split(',')[week];
-        }
-
-        var map = {
-            yyyy: year,
-            yy: year % 100,
-            y: year,
-            mm: this.datePad(month),
-            m: month,
-            dd: this.datePad(day),
-            d: day,
-            w: week,
-            ww: lang ? lang.week + week : ''
-        };
-
-        return format.replace(/y+|M+|d+|W+/gi, function ($0) {
-            return map[$0] || '';
-        });
-    }
-
-    /**
-     * 日期补零
-     *
-     * @param  {number} num 月/日
-     * @return {string}     补零以后
-     */
-    function datePad(num) {
-        num = num < 10 ? '0' + num : num;
-        return num;
+    function format(date, format) {
+        return (0, _moment2['default'])(date).format(format);
     }
 
     /**
@@ -320,18 +210,7 @@
      * @return {boolean}  是否为同一天
      */
     function isEqualDate(d1, d2) {
-        return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-    }
-
-    /**
-     * 判断两个日期对象是否为同一月
-     *
-     * @param  {Date}  d1 日期1
-     * @param  {Date}  d2 日期2
-     * @return {boolean}  是否为同一月
-     */
-    function isEqualMonth(d1, d2) {
-        return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
+        return (0, _moment2['default'])(d1).isSame(d2, 'date') && (0, _moment2['default'])(d1).isSame(d2, 'month') && (0, _moment2['default'])(d1).isSame(d2, 'year');
     }
 
     /**
@@ -342,10 +221,7 @@
      * @return {boolean}  d1 < d2
      */
     function isBeforeDate(d1, d2) {
-        var date1 = this.cloneAsDate(d1);
-        var date2 = this.cloneAsDate(d2);
-
-        return date1.getTime() < date2.getTime();
+        return (0, _moment2['default'])(d1).isBefore(d2, 'date');
     }
 
     /**
@@ -356,46 +232,19 @@
      * @return {boolean}  d1 > d2
      */
     function isAfterDate(d1, d2) {
-        var date1 = this.cloneAsDate(d1);
-        var date2 = this.cloneAsDate(d2);
+        return (0, _moment2['default'])(d1).isAfter(d2, 'date');
+    }
 
-        return date1.getTime() > date2.getTime();
+    function isEqualMonth(d1, d2) {
+        return (0, _moment2['default'])(d1).isSame(d2, 'month') && (0, _moment2['default'])(d1).isSame(d2, 'year');
     }
 
     function isBeforeMonth(d1, d2) {
-        var date1 = this.cloneAsDate(d1);
-        var date2 = this.cloneAsDate(d2);
-
-        return date1.getFullYear() <= date2.getFullYear() && date1.getMonth() < date2.getMonth();
+        return (0, _moment2['default'])(d1).isBefore(d2, 'month');
     }
 
     function isAfterMonth(d1, d2) {
-        var date1 = this.cloneAsDate(d1);
-        var date2 = this.cloneAsDate(d2);
-
-        return date1.getFullYear() >= date2.getFullYear() && date1.getMonth() > date2.getMonth();
-    }
-
-    /**
-     * 判断日期是否在两个日期之间
-     *
-     * @param  {Date} dateToCheck 待判断的日期
-     * @param  {Date}  startDate   开始日期
-     * @param  {Date}  endDate     结束日期
-     * @return {boolean}           是否在startDate和endDate之间
-     */
-    function isBetweenDates(dateToCheck, startDate, endDate) {
-        return !this.isBeforeDate(dateToCheck, startDate) && !this.isAfterDate(dateToCheck, endDate);
-    }
-
-    /**
-     * 判断是否为Date对象
-     *
-     * @param  {Date}  d 日期1
-     * @return {boolean}
-     */
-    function isDateObject(d) {
-        return d instanceof Date;
+        return (0, _moment2['default'])(d1).isAfter(d2, 'month');
     }
 
     /**
