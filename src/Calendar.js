@@ -21,7 +21,7 @@ export default class Calendar extends InputComponent {
 
         super(props, context);
 
-        const {value} = this.state;
+        const value = this.state.value;
 
         this.onLabelClick = this.onLabelClick.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -34,7 +34,7 @@ export default class Calendar extends InputComponent {
             ...this.state,
 
             // 缓存用户在 confirm 前的选中值
-            date: value ? this.parseDate(value) : new Date(),
+            date: value ? this.parseDate(value) : undefined,
 
             // 是否打开选择窗
             open: false
@@ -45,7 +45,9 @@ export default class Calendar extends InputComponent {
 
     getSyncUpdates(nextProps) {
 
-        const {disabled, customValidity, value} = nextProps;
+        const {disabled, readOnly, customValidity, defaultValue} = nextProps;
+
+        let value = nextProps.value ? nextProps.value : defaultValue;
 
         // 如果有值，那么就试着解析一下；否则设置为 null
         let date = value ? this.parseValue(value) : null;
@@ -59,7 +61,7 @@ export default class Calendar extends InputComponent {
         return {
             date,
             vilidity,
-            value: this.stringifyValue(date)
+            value: (disabled || readOnly || !value) ? value : this.stringifyValue(date)
         };
 
     }
@@ -89,13 +91,9 @@ export default class Calendar extends InputComponent {
             return rawValue;
         }
 
-        const {dateFormat, lang} = this.props;
+        const dateFormat = this.props.dateFormat;
 
-        return DateTime.format(
-            rawValue,
-            dateFormat.toLowerCase(),
-            lang
-        );
+        return DateTime.format(rawValue, dateFormat);
 
     }
 
@@ -105,7 +103,7 @@ export default class Calendar extends InputComponent {
             return date;
         }
 
-        let format = this.props.dateFormat.toLowerCase();
+        let format = this.props.dateFormat;
 
         return DateTime.parse(date, format);
     }
@@ -163,14 +161,11 @@ export default class Calendar extends InputComponent {
         this.setState({open: false});
     }
 
-    onDateChange(e) {
-
-        const {value} = e;
-        const {autoConfirm} = this.props;
+    onDateChange({value}) {
 
         this.setState(
             {date: this.parseDate(value)},
-            autoConfirm ? () => this.onConfirm() : null
+            this.props.autoConfirm ? () => this.onConfirm() : null
         );
 
     }
@@ -187,7 +182,6 @@ export default class Calendar extends InputComponent {
             disabled,
             size,
             name,
-            dateFormat,
             placeholder,
             ...others
         } = props;
@@ -215,11 +209,7 @@ export default class Calendar extends InputComponent {
                     disabled={disabled}
                     size={size} />
                 <label onClick={this.onLabelClick}>
-                    {value ? DateTime.format(
-                        this.parseDate(value),
-                        dateFormat.toLowerCase(),
-                        lang
-                    ) : (
+                    {value ? value : (
                         <span className={cx().part('label-placeholder').build()}>
                             {placeholder}
                         </span>
@@ -263,7 +253,7 @@ Calendar.LANG = {
 Calendar.defaultProps = {
     ...InputComponent.defaultProps,
     defaultValue: '',
-    dateFormat: 'yyyy-MM-dd',
+    dateFormat: 'YYYY-MM-DD',
     lang: Calendar.LANG,
     placeholder: '请选择'
 };

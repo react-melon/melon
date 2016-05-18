@@ -46,7 +46,7 @@
             _this.originalHTMLBodySize = {};
 
             _this.state = {
-                open: _this.props.open
+                open: props.open
             };
 
             _this.onShow = _this.onShow.bind(_this);
@@ -96,7 +96,6 @@
 
         Dialog.prototype.onShow = function onShow() {
             var onShow = this.props.onShow;
-
             if (onShow) {
                 onShow();
             }
@@ -104,15 +103,14 @@
 
         Dialog.prototype.onHide = function onHide() {
             var onHide = this.props.onHide;
-
             if (onHide) {
                 onHide();
             }
         };
 
         Dialog.prototype.renderTitle = function renderTitle() {
-            var title = this.props.title;
 
+            var title = this.props.title;
 
             return title ? _react2['default'].createElement(
                 'h1',
@@ -122,8 +120,8 @@
         };
 
         Dialog.prototype.renderAction = function renderAction() {
-            var actions = this.props.actions;
 
+            var actions = this.props.actions;
 
             return actions ? _react2['default'].createElement(
                 'div',
@@ -138,9 +136,11 @@
             var props = this.props;
             var state = this.state;
             var children = props.children;
-            var others = babelHelpers.objectWithoutProperties(props, ['children']);
-            var open = state.open;
+            var width = props.width;
+            var others = babelHelpers.objectWithoutProperties(props, ['children', 'width']);
 
+
+            var open = state.open;
 
             var title = this.renderTitle();
 
@@ -152,7 +152,7 @@
 
             var footer = this.renderAction();
 
-            var windowPartClassName = cx().part('window').build();
+            var windowPartClassName = cx().part('window').addVariants(width === 'adaptive' ? 'adaptive' : undefined).build();
 
             return _react2['default'].createElement(
                 'div',
@@ -169,6 +169,7 @@
                                 ref: function ref(c) {
                                     _this2.dialogWindow = c;
                                 },
+                                width: width,
                                 title: title,
                                 footer: footer,
                                 className: windowPartClassName },
@@ -195,7 +196,8 @@
         open: _react.PropTypes.bool,
         onHide: _react.PropTypes.func,
         onShow: _react.PropTypes.func,
-        title: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element])
+        title: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
+        width: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number])
     };
 
     Dialog.defaultProps = {

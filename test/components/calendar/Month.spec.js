@@ -41,10 +41,10 @@ describe('CalendarMonth', function () {
 
         const daysInMonth = days.reduce((result, day) => {
 
-            let {variants} = day.props;
+            let variants = day.props.variants;
 
-            if (variants.length > 0) {
-                result[variants[0] === 'next-month' ? 'next' : 'pre'].push(day);
+            if (variants) {
+                result[variants === 'next-month' ? 'next' : 'pre'].push(day);
             }
 
             return result;
@@ -75,7 +75,8 @@ describe('CalendarMonth', function () {
         const daysInMonth = days.reduce((result, day) => {
 
             let {
-                disabled, selected
+                disabled,
+                selected
             } = day.props;
 
             if (disabled) {

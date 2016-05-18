@@ -134,7 +134,9 @@
             var isUploading = _state2.isUploading;
             var isUploaded = _state2.isUploaded;
             var value = _state2.value;
-            var size = this.props.size;
+            var _props = this.props;
+            var size = _props.size;
+            var btnText = _props.btnText;
 
 
             if (isUploading) {
@@ -182,7 +184,7 @@
                         _this6.refs.file.click();
                     } },
                 _react2['default'].createElement(_Icon2['default'], { icon: 'file-upload' }),
-                '点击上传'
+                btnText
             );
         };
 
@@ -191,12 +193,18 @@
             var props = this.props;
             var value = props.value;
             var name = props.name;
+            var label = props.label;
 
 
             return _react2['default'].createElement(
                 'div',
                 { className: cx(props).addStates(this.getStyleStates()).build() },
                 _react2['default'].createElement('input', { name: name, type: 'hidden', value: value }),
+                label ? _react2['default'].createElement(
+                    'label',
+                    { className: cx().part('label').build() },
+                    label
+                ) : null,
                 this.renderUploadFile(),
                 this.renderUploadButton(),
                 _react2['default'].createElement(_Validity2['default'], { validity: this.state.validity })
@@ -215,10 +223,13 @@
         multiple: _react.PropTypes.bool,
         accept: _react.PropTypes.string,
         files: _react.PropTypes.array,
-        upload: _react.PropTypes.func.isRequired
+        upload: _react.PropTypes.func.isRequired,
+        btnText: _react.PropTypes.string,
+        label: _react.PropTypes.string
     };
 
     Uploader.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
+        btnText: '点击上传',
         validateEvents: ['change']
     });
 });

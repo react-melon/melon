@@ -60,17 +60,21 @@
         }
 
         CalendarPanel.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+
             var date = nextProps.date;
 
-
-            if (this.props.date !== date) {
+            if (!DateTime.isEqualDate(date, this.props.date)) {
                 this.setState({ date: date, month: date });
             }
         };
 
-        CalendarPanel.prototype.onHeaderClick = function onHeaderClick(e) {
-            var selectorType = this.state.selectorType;
+        CalendarPanel.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+            return !DateTime.isEqualDate(nextState.date, this.state.date) || !DateTime.isEqualMonth(nextState.month, this.state.month) || nextState.selectorType !== this.state.selectorType || nextProps.begin && this.props.begin && !DateTime.isEqualMonth(nextProps.begin, this.props.begin) || nextProps.end && this.props.end && !DateTime.isEqualMonth(nextProps.end, this.props.end) || !nextProps.begin && this.props.begin || !nextProps.end && this.props.end || nextProps.begin && !this.props.begin || nextProps.end && !this.props.end;
+        };
 
+        CalendarPanel.prototype.onHeaderClick = function onHeaderClick(e) {
+
+            var selectorType = this.state.selectorType;
 
             this.setState({
                 selectorType: selectorType === 'main' ? 'year' : 'main'
@@ -109,8 +113,9 @@
 
         CalendarPanel.prototype.onDateChange = function onDateChange(_ref2) {
             var date = _ref2.date;
-            var month = this.state.month;
 
+
+            var month = this.state.month;
             var monthDiff = DateTime.monthDiff(date, month);
 
             if (monthDiff !== 0) {
