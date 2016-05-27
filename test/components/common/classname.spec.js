@@ -18,7 +18,7 @@ describe('classname', function () {
 
     it('array', function () {
         expect(createClasses(['a', null, 'b'])).toEqual(['a', 'b']);
-        expect(createClasses(['a', null, 1])).toEqual(['a', '1']);
+        expect(createClasses(['a', null, 1])).toEqual(['a', 1]);
     });
 
     it('null/undefined/0/false', function () {
