@@ -1,0 +1,19 @@
+@require './base.styl'
+
+.{$-melon-class-prefix}-zippy
+
+    &.variant-vertical
+        transition: height 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms
+        &.state-close
+            transition: height 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms linear 0.5s
+            height: 0
+            overflow-y: hidden
+            visibility: hidden
+
+    &.variant-horizontal
+        transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms
+        &.state-close
+            transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms, visibility 0ms linear 0.5s
+            width: 0
+            overflow-x: hidden
+            visibility: hidden
