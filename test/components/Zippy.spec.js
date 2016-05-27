@@ -24,24 +24,23 @@ describe('Zippy', () => {
     it('work', () => {
 
         component = TestUtils.renderIntoDocument(
-            <Zippy size={100}><p>test</p></Zippy>
+            <Zippy><p>test</p></Zippy>
         );
 
         expect(TestUtils.isCompositeComponent(component)).toBe(true);
-
+        expect(ReactDOM.findDOMNode(component).className).toContain('variant-vertical');
     });
 
     it('horizontal', () => {
 
         component = TestUtils.renderIntoDocument(
-            <Zippy size={100} horizontal>
+            <Zippy horizontal>
                 <p>test</p>
             </Zippy>
         );
 
-        expect(TestUtils.isCompositeComponent(component)).toBe(true);
-        expect(ReactDOM.findDOMNode(component).style.width).toBe('0px');
-
+        expect(ReactDOM.findDOMNode(component).className).toInclude('variant-horizontal');
+        expect(ReactDOM.findDOMNode(component).className).toInclude('state-close');
     });
 
     it('expand', done => {
@@ -68,22 +67,12 @@ describe('Zippy', () => {
 
         const zippy = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-zippy');
         expect(TestUtils.isDOMComponent(zippy)).toBe(true);
-        expect(zippy.style.height).toBe('0px');
 
         component.setState({expand: true});
 
         then(() => {
-
-            expect(zippy.className).toInclude('state-expand');
-
-            waitFor(
-                () => {
-                    return zippy.style.height === '10px';
-                },
-                'the animate faild',
-                done,
-                1500
-            );
+            expect(zippy.className).toExclude('state-close');
+            done();
         });
 
     });
