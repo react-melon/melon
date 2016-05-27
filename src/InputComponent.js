@@ -145,6 +145,17 @@ export default class InputComponent extends Component {
     }
 
     /**
+     * 设置自定义校验错误信息
+     *
+     * @param {string} customValidity 自定义校验错误信息
+     */
+    setCustomValidity(customValidity) {
+        this.setState({
+            validity: this.validator.createCustomValidity(customValidity)
+        });
+    }
+
+    /**
      * 值变化处理函数
      *
      * @param  {Object} e 值变化事件

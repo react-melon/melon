@@ -123,6 +123,12 @@
             return this.validator.validate(value, this);
         };
 
+        InputComponent.prototype.setCustomValidity = function setCustomValidity(customValidity) {
+            this.setState({
+                validity: this.validator.createCustomValidity(customValidity)
+            });
+        };
+
         InputComponent.prototype.onChange = function onChange(e) {
             var _props = this.props;
             var onChange = _props.onChange;
