@@ -16,8 +16,8 @@ export default class SliderBar extends Component {
 
         const {
             height,
-            max,
-            min,
+            maximum,
+            minimum,
             value,
             disableFocusRipple,
             pointerSize,
@@ -25,7 +25,7 @@ export default class SliderBar extends Component {
             ...rest
         } = this.props;
 
-        const percent = ((value - min) / (max - min) * 100) + '%';
+        const percent = ((value - minimum) / (maximum - minimum) * 100) + '%';
 
         const activeStyle = {
             width: percent
@@ -77,8 +77,8 @@ SliderBar.displayName = 'SliderBar';
 SliderBar.propTypes = {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    max: PropTypes.number,
-    min: PropTypes.number,
+    maximum: PropTypes.number,
+    minimum: PropTypes.number,
     disableFocusRipple: PropTypes.bool
 };
 
