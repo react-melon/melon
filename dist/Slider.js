@@ -70,15 +70,15 @@
         Slider.prototype.onMouseChange = function onMouseChange(_ref) {
             var clientX = _ref.clientX;
             var _props = this.props;
-            var max = _props.max;
-            var min = _props.min;
+            var maximum = _props.maximum;
+            var minimum = _props.minimum;
             var step = _props.step;
 
             var value = this.state.value;
 
-            var newValue = (0, _getNewValue2['default'])(this.slider, clientX, max, min, step);
+            var newValue = (0, _getNewValue2['default'])(this.slider, clientX, maximum, minimum, step);
 
-            if (value === newValue || newValue > max || newValue < min) {
+            if (value === newValue || newValue > maximum || newValue < minimum) {
                 return;
             }
 
@@ -130,7 +130,7 @@
 
             var validity = this.state.validity;
 
-            /* eslint-disable fecs-min-vars-per-destructure */
+            /* eslint-disable fecs-minimum-vars-per-destructure */
 
             var _props2 = this.props;
             var width = _props2.width;
@@ -161,8 +161,8 @@
 
     Slider.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
         defaultValue: 0,
-        max: 100,
-        min: 0,
+        maximum: 100,
+        minimum: 0,
         step: 1,
         width: '100%',
         height: 2
@@ -171,8 +171,8 @@
     Slider.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
         defaultValue: _react.PropTypes.number,
         value: _react.PropTypes.number,
-        max: _react.PropTypes.number,
-        min: _react.PropTypes.number,
+        maximum: _react.PropTypes.number,
+        minimum: _react.PropTypes.number,
         width: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
         height: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
         pointerSize: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string])

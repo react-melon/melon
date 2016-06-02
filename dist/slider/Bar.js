@@ -40,16 +40,16 @@
         SliderBar.prototype.render = function render() {
             var _props = this.props;
             var height = _props.height;
-            var max = _props.max;
-            var min = _props.min;
+            var maximum = _props.maximum;
+            var minimum = _props.minimum;
             var value = _props.value;
             var disableFocusRipple = _props.disableFocusRipple;
             var pointerSize = _props.pointerSize;
             var active = _props.active;
-            var rest = babelHelpers.objectWithoutProperties(_props, ['height', 'max', 'min', 'value', 'disableFocusRipple', 'pointerSize', 'active']);
+            var rest = babelHelpers.objectWithoutProperties(_props, ['height', 'maximum', 'minimum', 'value', 'disableFocusRipple', 'pointerSize', 'active']);
 
 
-            var percent = (value - min) / (max - min) * 100 + '%';
+            var percent = (value - minimum) / (maximum - minimum) * 100 + '%';
 
             var activeStyle = {
                 width: percent
@@ -103,8 +103,8 @@
     SliderBar.propTypes = {
         width: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
         height: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]),
-        max: _react.PropTypes.number,
-        min: _react.PropTypes.number,
+        maximum: _react.PropTypes.number,
+        minimum: _react.PropTypes.number,
         disableFocusRipple: _react.PropTypes.bool
     };
 

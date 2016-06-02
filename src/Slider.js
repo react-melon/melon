@@ -44,12 +44,12 @@ export default class Slider extends InputComponent {
 
     onMouseChange({clientX}) {
 
-        const {max, min, step} = this.props;
+        const {maximum, minimum, step} = this.props;
         const value = this.state.value;
 
-        const newValue = getNewValue(this.slider, clientX, max, min, step);
+        const newValue = getNewValue(this.slider, clientX, maximum, minimum, step);
 
-        if (value === newValue || newValue > max || newValue < min) {
+        if (value === newValue || newValue > maximum || newValue < minimum) {
             return;
         }
 
@@ -105,7 +105,7 @@ export default class Slider extends InputComponent {
 
         const validity = this.state.validity;
 
-        /* eslint-disable fecs-min-vars-per-destructure */
+        /* eslint-disable fecs-minimum-vars-per-destructure */
 
         const {
             width,
@@ -132,8 +132,8 @@ Slider.displayName = 'Slider';
 Slider.defaultProps = {
     ...InputComponent.defaultProps,
     defaultValue: 0,
-    max: 100,
-    min: 0,
+    maximum: 100,
+    minimum: 0,
     step: 1,
     width: '100%',
     height: 2
@@ -143,8 +143,8 @@ Slider.propTypes = {
     ...InputComponent.propTypes,
     defaultValue: PropTypes.number,
     value: PropTypes.number,
-    max: PropTypes.number,
-    min: PropTypes.number,
+    maximum: PropTypes.number,
+    minimum: PropTypes.number,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     pointerSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
