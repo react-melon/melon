@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 
-import waitFor from '../waitFor';
 import then from '../then';
 
 import Zippy from '../../src/Zippy';
@@ -16,10 +15,6 @@ import Zippy from '../../src/Zippy';
 describe('Zippy', () => {
 
     let component;
-
-    beforeEach(() => {
-        waitFor.clear();
-    });
 
     it('work', () => {
 
