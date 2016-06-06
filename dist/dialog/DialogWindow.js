@@ -56,12 +56,12 @@
                 MozTransform: 'translate(0, ' + top + 'px)'
             };
 
-            if (typeof width === 'number' || !isNaN(+width)) {
-                style.width = width + 'px';
-            }
-
             if (top === 0) {
                 style = {};
+            }
+
+            if (typeof width === 'number' || !isNaN(+width)) {
+                style.width = width + 'px';
             }
 
             return _react2['default'].createElement(
