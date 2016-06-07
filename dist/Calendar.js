@@ -146,17 +146,19 @@
 
             value = this.parseDate(value);
 
-            if (DateTime.isEqualDate(date, this.parseDate(value))) {
+            if (value && DateTime.isEqualDate(date, this.parseDate(value))) {
                 this.setState({ open: false });
                 return;
             }
 
-            this.setState({ open: false }, function () {
+            var newDate = date ? date : new Date();
+
+            this.setState({ open: false, date: newDate }, function () {
 
                 _InputComponent.prototype.onChange.call(_this2, {
                     type: 'change',
                     target: _this2,
-                    value: _this2.stringifyValue(date)
+                    value: _this2.stringifyValue(newDate)
                 });
             });
         };

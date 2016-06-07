@@ -5,6 +5,7 @@
 
 import React, {PropTypes} from 'react';
 import moment from 'moment';
+import ReactDOM from 'react-dom';
 
 import InputComponent from './InputComponent';
 import {create} from './common/util/cxBuilder';
@@ -41,6 +42,67 @@ export default class TimePicker extends InputComponent {
             open: false
         };
 
+    }
+
+    componentDidMount() {
+
+        super.componentDidMount();
+
+        let container = this.container = document.createElement('div');
+
+        container.className = cx().part('popup').build();
+
+        document.body.appendChild(container);
+        this.renderPopup(this.props);
+    }
+
+    componentDidUpdate() {
+        this.renderPopup(this.props);
+    }
+
+    renderPopup(props) {
+
+        const {
+            size,
+            timeFormat
+        } = props;
+
+        let {begin, end} = props;
+
+        begin = begin ? this.parseValue(begin) : null;
+        end = end ? this.parseValue(end) : null;
+
+        this.popup = ReactDOM.render(
+            <Confirm
+                open={this.state.open}
+                variants={['timepicker']}
+                onConfirm={this.onConfirm}
+                onCancel={this.onCancel}
+                onShow={this.props.onFocus}
+                onHide={this.props.onBlur}
+                size={size}
+                width="adaptive"
+                buttonVariants={['secondery', 'timepicker']} >
+                <Panel
+                    time={this.state.time}
+                    begin={begin}
+                    end={end}
+                    format={timeFormat}
+                    onChange={this.onTimeChange} />
+            </Confirm>,
+            this.container
+        );
+    }
+
+    componentWillUnmount() {
+
+        let container = this.container;
+
+        if (container) {
+            ReactDOM.unmountComponentAtNode(container);
+            container.parentElement.removeChild(container);
+            this.container = container = null;
+        }
     }
 
     getSyncUpdates(nextProps) {
@@ -160,7 +222,6 @@ export default class TimePicker extends InputComponent {
 
         const {
             disabled,
-            size,
             name,
             placeholder,
             timeFormat,
@@ -170,12 +231,7 @@ export default class TimePicker extends InputComponent {
 
         const {value, validity} = state;
 
-        let {begin, end} = props;
-
-        begin = begin ? this.parseValue(begin) : null;
-        end = end ? this.parseValue(end) : null;
-
-        const {open, time} = state;
+        const open = state.open;
         const className = cx(props)
             .addStates({focus: open})
             .build();
@@ -197,23 +253,6 @@ export default class TimePicker extends InputComponent {
                     <Icon icon='expand-more' />
                 </label>
                 <Validity validity={validity} />
-                <Confirm
-                    open={open}
-                    variants={['timepicker']}
-                    onConfirm={this.onConfirm}
-                    onCancel={this.onCancel}
-                    onShow={this.props.onFocus}
-                    onHide={this.props.onBlur}
-                    size={size}
-                    width="adaptive"
-                    buttonVariants={['secondery', 'timepicker']} >
-                    <Panel
-                        time={time}
-                        begin={begin}
-                        end={end}
-                        format={timeFormat}
-                        onChange={this.onTimeChange} />
-                </Confirm>
             </div>
         );
 
