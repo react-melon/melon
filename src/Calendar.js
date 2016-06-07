@@ -140,17 +140,19 @@ export default class Calendar extends InputComponent {
 
         value = this.parseDate(value);
 
-        if (DateTime.isEqualDate(date, this.parseDate(value))) {
+        if (value && DateTime.isEqualDate(date, this.parseDate(value))) {
             this.setState({open: false});
             return;
         }
 
-        this.setState({open: false}, () => {
+        const newDate = date ? date : new Date();
+
+        this.setState({open: false, date: newDate}, () => {
 
             super.onChange({
                 type: 'change',
                 target: this,
-                value: this.stringifyValue(date)
+                value: this.stringifyValue(newDate)
             });
 
         });

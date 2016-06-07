@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'moment', './InputComponent', './common/util/cxBuilder', './Icon', './Confirm', './timepicker/Panel', './Validity', './common/util/syncPropsToState', "./babelHelpers"], factory);
+        define(['exports', 'react', 'moment', 'react-dom', './InputComponent', './common/util/cxBuilder', './Icon', './Confirm', './timepicker/Panel', './Validity', './common/util/syncPropsToState', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('moment'), require('./InputComponent'), require('./common/util/cxBuilder'), require('./Icon'), require('./Confirm'), require('./timepicker/Panel'), require('./Validity'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
+        factory(exports, require('react'), require('moment'), require('react-dom'), require('./InputComponent'), require('./common/util/cxBuilder'), require('./Icon'), require('./Confirm'), require('./timepicker/Panel'), require('./Validity'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.moment, global.InputComponent, global.cxBuilder, global.Icon, global.Confirm, global.Panel, global.Validity, global.syncPropsToState, global.babelHelpers);
+        factory(mod.exports, global.react, global.moment, global.reactDom, global.InputComponent, global.cxBuilder, global.Icon, global.Confirm, global.Panel, global.Validity, global.syncPropsToState, global.babelHelpers);
         global.TimePicker = mod.exports;
     }
-})(this, function (exports, _react, _moment, _InputComponent2, _cxBuilder, _Icon, _Confirm, _Panel, _Validity, _syncPropsToState, babelHelpers) {
+})(this, function (exports, _react, _moment, _reactDom, _InputComponent2, _cxBuilder, _Icon, _Confirm, _Panel, _Validity, _syncPropsToState, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -21,6 +21,8 @@
     var _react2 = babelHelpers.interopRequireDefault(_react);
 
     var _moment2 = babelHelpers.interopRequireDefault(_moment);
+
+    var _reactDom2 = babelHelpers.interopRequireDefault(_reactDom);
 
     var _InputComponent3 = babelHelpers.interopRequireDefault(_InputComponent2);
 
@@ -65,6 +67,64 @@
 
             return _this;
         }
+
+        TimePicker.prototype.componentDidMount = function componentDidMount() {
+
+            _InputComponent.prototype.componentDidMount.call(this);
+
+            var container = this.container = document.createElement('div');
+
+            container.className = cx().part('popup').build();
+
+            document.body.appendChild(container);
+            this.renderPopup(this.props);
+        };
+
+        TimePicker.prototype.componentDidUpdate = function componentDidUpdate() {
+            this.renderPopup(this.props);
+        };
+
+        TimePicker.prototype.renderPopup = function renderPopup(props) {
+            var size = props.size;
+            var timeFormat = props.timeFormat;
+            var begin = props.begin;
+            var end = props.end;
+
+
+            begin = begin ? this.parseValue(begin) : null;
+            end = end ? this.parseValue(end) : null;
+
+            this.popup = _reactDom2['default'].render(_react2['default'].createElement(
+                _Confirm2['default'],
+                {
+                    open: this.state.open,
+                    variants: ['timepicker'],
+                    onConfirm: this.onConfirm,
+                    onCancel: this.onCancel,
+                    onShow: this.props.onFocus,
+                    onHide: this.props.onBlur,
+                    size: size,
+                    width: 'adaptive',
+                    buttonVariants: ['secondery', 'timepicker'] },
+                _react2['default'].createElement(_Panel2['default'], {
+                    time: this.state.time,
+                    begin: begin,
+                    end: end,
+                    format: timeFormat,
+                    onChange: this.onTimeChange })
+            ), this.container);
+        };
+
+        TimePicker.prototype.componentWillUnmount = function componentWillUnmount() {
+
+            var container = this.container;
+
+            if (container) {
+                _reactDom2['default'].unmountComponentAtNode(container);
+                container.parentElement.removeChild(container);
+                this.container = container = null;
+            }
+        };
 
         TimePicker.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
             var disabled = nextProps.disabled;
@@ -162,24 +222,16 @@
             var state = this.state;
             var props = this.props;
             var disabled = props.disabled;
-            var size = props.size;
             var name = props.name;
             var placeholder = props.placeholder;
             var timeFormat = props.timeFormat;
             var labelFormat = props.labelFormat;
-            var others = babelHelpers.objectWithoutProperties(props, ['disabled', 'size', 'name', 'placeholder', 'timeFormat', 'labelFormat']);
+            var others = babelHelpers.objectWithoutProperties(props, ['disabled', 'name', 'placeholder', 'timeFormat', 'labelFormat']);
             var value = state.value;
             var validity = state.validity;
-            var begin = props.begin;
-            var end = props.end;
 
-
-            begin = begin ? this.parseValue(begin) : null;
-            end = end ? this.parseValue(end) : null;
 
             var open = state.open;
-            var time = state.time;
-
             var className = cx(props).addStates({ focus: open }).build();
 
             return _react2['default'].createElement(
@@ -201,26 +253,7 @@
                     ),
                     _react2['default'].createElement(_Icon2['default'], { icon: 'expand-more' })
                 ),
-                _react2['default'].createElement(_Validity2['default'], { validity: validity }),
-                _react2['default'].createElement(
-                    _Confirm2['default'],
-                    {
-                        open: open,
-                        variants: ['timepicker'],
-                        onConfirm: this.onConfirm,
-                        onCancel: this.onCancel,
-                        onShow: this.props.onFocus,
-                        onHide: this.props.onBlur,
-                        size: size,
-                        width: 'adaptive',
-                        buttonVariants: ['secondery', 'timepicker'] },
-                    _react2['default'].createElement(_Panel2['default'], {
-                        time: time,
-                        begin: begin,
-                        end: end,
-                        format: timeFormat,
-                        onChange: this.onTimeChange })
-                )
+                _react2['default'].createElement(_Validity2['default'], { validity: validity })
             );
         };
 
