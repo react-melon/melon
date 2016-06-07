@@ -103,15 +103,16 @@
         };
 
         TimePickerClock.prototype.onMouseChange = function onMouseChange(_ref2) {
-            var clientX = _ref2.clientX;
-            var clientY = _ref2.clientY;
+            var pageX = _ref2.pageX;
+            var pageY = _ref2.pageY;
 
 
             var mainPosition = (0, _dom.getPosition)(this.refs.main);
             var radius = mainPosition.width / 2;
+
             var pos = {
-                x: clientX - mainPosition.left - radius,
-                y: clientY - mainPosition.top - radius
+                x: pageX - mainPosition.left - radius,
+                y: pageY - mainPosition.top - radius
             };
 
             var deg = void 0;

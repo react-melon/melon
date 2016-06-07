@@ -59,7 +59,7 @@
             _this.state = babelHelpers['extends']({}, _this.state, {
 
                 // 缓存用户在 confirm 前的选中值
-                time: value ? _this.parseValue(value) : new Date(),
+                time: value ? _this.parseValue(value) : undefined,
 
                 // 是否打开选择窗
                 open: false
@@ -128,6 +128,7 @@
 
         TimePicker.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
             var disabled = nextProps.disabled;
+            var readOnly = nextProps.readOnly;
             var customValidity = nextProps.customValidity;
             var value = nextProps.value;
 
@@ -144,7 +145,7 @@
             return {
                 time: time,
                 vilidity: vilidity,
-                value: this.stringifyValue(time)
+                value: disabled || readOnly || !value ? value : this.stringifyValue(time)
             };
         };
 

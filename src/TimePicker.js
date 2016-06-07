@@ -36,7 +36,7 @@ export default class TimePicker extends InputComponent {
             ...this.state,
 
             // 缓存用户在 confirm 前的选中值
-            time: value ? this.parseValue(value) : new Date(),
+            time: value ? this.parseValue(value) : undefined,
 
             // 是否打开选择窗
             open: false
@@ -107,7 +107,7 @@ export default class TimePicker extends InputComponent {
 
     getSyncUpdates(nextProps) {
 
-        const {disabled, customValidity, value} = nextProps;
+        const {disabled, readOnly, customValidity, value} = nextProps;
 
         // 如果有值，那么就试着解析一下；否则设置为 null
         let time = value ? this.parseValue(value) : null;
@@ -121,7 +121,7 @@ export default class TimePicker extends InputComponent {
         return {
             time,
             vilidity,
-            value: this.stringifyValue(time)
+            value: disabled || readOnly || !value ? value : this.stringifyValue(time)
         };
 
     }
