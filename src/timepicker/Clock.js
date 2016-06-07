@@ -91,13 +91,14 @@ export default class TimePickerClock extends Component {
         }
     }
 
-    onMouseChange({clientX, clientY}) {
+    onMouseChange({pageX, pageY}) {
 
         const mainPosition = getPosition(this.refs.main);
         const radius = mainPosition.width / 2;
+
         const pos = {
-            x: clientX - mainPosition.left - radius,
-            y: clientY - mainPosition.top - radius
+            x: pageX - mainPosition.left - radius,
+            y: pageY - mainPosition.top - radius
         };
 
         let deg;

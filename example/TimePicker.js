@@ -13,8 +13,9 @@ class View extends React.Component {
     constructor() {
         super();
         this.state = {
-            value: '20:30'
+            value: undefined
         };
+        this.onChange = this.onChange.bind(this);
     }
 
     onChange(e) {
@@ -43,6 +44,19 @@ class View extends React.Component {
                         <Title level={5}>有限制 0:00 - 11:00</Title>
                         <TimePicker
                             defaultValue="01:00"
+                            begin="00:00"
+                            end="11:00" />
+                    </div>
+                    <div className="melon-column melon-column-6">
+                    </div>
+                </div>
+
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={5}>Controlled</Title>
+                        <TimePicker
+                            value={this.state.value}
+                            onChange={this.onChange}
                             begin="00:00"
                             end="11:00" />
                     </div>
