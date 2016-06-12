@@ -130,8 +130,10 @@
             var disabled = nextProps.disabled;
             var readOnly = nextProps.readOnly;
             var customValidity = nextProps.customValidity;
-            var value = nextProps.value;
+            var defaultValue = nextProps.defaultValue;
 
+
+            var value = nextProps.value == null ? defaultValue : nextProps.value;
 
             // 如果有值，那么就试着解析一下；否则设置为 null
             var time = value ? this.parseValue(value) : null;

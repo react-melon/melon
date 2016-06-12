@@ -25,10 +25,12 @@ export default class RangeCalendar extends InputComponent {
 
         const {begin, end} = props;
 
+        const value = this.state.value;
+
         this.state = {
             ...this.state,
             open: false,
-            date: this.getNormalizeValue(this.state.value, begin, end)
+            date: this.getNormalizeValue(value, begin, end)
         };
 
         this.onLabelClick = this.onLabelClick.bind(this);
@@ -36,7 +38,6 @@ export default class RangeCalendar extends InputComponent {
         this.onLabelClick = this.onLabelClick.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onDateChange = this.onDateChange.bind(this);
-        this.formatDate = this.formatDate.bind(this);
 
     }
 
@@ -45,6 +46,7 @@ export default class RangeCalendar extends InputComponent {
         const {
             disabled,
             customValidity,
+            readOnly,
             value = nextProps.defaultValue,
             begin,
             end
@@ -58,7 +60,7 @@ export default class RangeCalendar extends InputComponent {
         return {
             date,
             vilidity,
-            value
+            value: (disabled || readOnly || !value.length) ? value : this.stringifyValue(date)
         };
 
     }
@@ -66,7 +68,7 @@ export default class RangeCalendar extends InputComponent {
     getNormalizeValue(value, begin, end) {
 
         if (value.length === 0) {
-            return value;
+            return [new Date(), new Date()];
         }
 
         begin = this.parseDate(begin);
@@ -81,23 +83,12 @@ export default class RangeCalendar extends InputComponent {
             valueEnd && DateTime.isBeforeDate(end, valueEnd) ? end : valueEnd
         ];
 
-        // 下边这种做法是错误的，不能直接修改 props 中的值
-        // value[0] = _.isDate(begin) && DateTime.isAfterDate(begin, value[0]) ? begin : value[0];
-        // value[1] = _.isDate(end) && DateTime.isBeforeDate(end, value[1]) ? end : value[1];
-
         return value;
 
     }
 
-    getValue() {
-
-        const {begin, end} = this.props;
-        const value = this.state.value;
-
-        return this
-            .getNormalizeValue(value, begin, end)
-            .map(date => this.formatDate(date));
-
+    stringifyValue(date) {
+        return date.map(date => this.formatDate(date));
     }
 
     /**
@@ -133,19 +124,13 @@ export default class RangeCalendar extends InputComponent {
 
     onDateChange(index, {value}) {
 
-        let date = [...this.state.date];
-
-        if (date.length === 0) {
-            date = [new Date(), new Date()];
-        }
+        let date = [].concat(this.state.date);
 
         date[index] = value;
 
         this.setState({
-            date: date,
-            month: date
+            date
         });
-
     }
 
     onConfirm() {
@@ -165,7 +150,7 @@ export default class RangeCalendar extends InputComponent {
                 super.onChange({
                     type: 'change',
                     target: this,
-                    value: date.map(this.formatDate)
+                    value: date.map(this.formatDate, this)
                 });
             }
 
@@ -215,9 +200,7 @@ export default class RangeCalendar extends InputComponent {
             ...others
         } = props;
 
-        const value = this.getValue();
-
-        const {open, date} = this.state;
+        const {open, date, value} = this.state;
 
         begin = begin ? this.parseDate(begin) : null;
         end = end ? this.parseDate(end) : null;
@@ -253,13 +236,13 @@ export default class RangeCalendar extends InputComponent {
                     <div className={cx().part('row').build()}>
                         <Panel
                             lang={lang}
-                            date={date[0] || new Date()}
+                            date={date[0]}
                             begin={begin}
                             end={date[1] || new Date()}
                             onChange={this.onDateChange.bind(this, 0)} />
                         <Panel
                             lang={lang}
-                            date={date[1] || new Date()}
+                            date={date[1]}
                             begin={date[0] || new Date()}
                             end={end}
                             onChange={this.onDateChange.bind(this, 1)} />

@@ -48,8 +48,8 @@ export default class CalendarPanel extends Component {
         return !DateTime.isEqualDate(nextState.date, this.state.date)
             || !DateTime.isEqualMonth(nextState.month, this.state.month)
             || nextState.selectorType !== this.state.selectorType
-            || (nextProps.begin && this.props.begin && !DateTime.isEqualMonth(nextProps.begin, this.props.begin))
-            || (nextProps.end && this.props.end && !DateTime.isEqualMonth(nextProps.end, this.props.end))
+            || (nextProps.begin && this.props.begin && !DateTime.isEqualDate(nextProps.begin, this.props.begin))
+            || (nextProps.end && this.props.end && !DateTime.isEqualDate(nextProps.end, this.props.end))
             || (!nextProps.begin && this.props.begin)
             || (!nextProps.end && this.props.end)
             || (nextProps.begin && !this.props.begin)

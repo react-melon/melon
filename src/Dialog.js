@@ -34,11 +34,15 @@ export default class Dialog extends Component {
     }
 
     componentDidMount() {
-        this.positionDialog();
+        if (this.state.open) {
+            this.positionDialog();
+        }
     }
 
-    componentWillUpdate() {
-        this.positionDialog();
+    componentWillUpdate(nextProps, nextState) {
+        if (nextState.open) {
+            this.positionDialog();
+        }
     }
 
     componentWillReceiveProps({open}) {

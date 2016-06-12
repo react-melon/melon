@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', '../common/util/cxBuilder', './Header', './Clock', "../babelHelpers"], factory);
+        define(['exports', 'react', 'moment', '../common/util/cxBuilder', './Header', './Clock', "../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Header'), require('./Clock'), require("../babelHelpers"));
+        factory(exports, require('react'), require('moment'), require('../common/util/cxBuilder'), require('./Header'), require('./Clock'), require("../babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.cxBuilder, global.Header, global.Clock, global.babelHelpers);
+        factory(mod.exports, global.react, global.moment, global.cxBuilder, global.Header, global.Clock, global.babelHelpers);
         global.Panel = mod.exports;
     }
-})(this, function (exports, _react, _cxBuilder, _Header, _Clock, babelHelpers) {
+})(this, function (exports, _react, _moment, _cxBuilder, _Header, _Clock, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -19,6 +19,8 @@
     });
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
+
+    var _moment2 = babelHelpers.interopRequireDefault(_moment);
 
     var _Header2 = babelHelpers.interopRequireDefault(_Header);
 
@@ -56,6 +58,10 @@
             if (this.props.time !== time) {
                 this.setState({ time: time });
             }
+        };
+
+        TimePickerPanel.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+            return !(0, _moment2['default'])(nextState.time).isSame(this.state.time, 'minute') || nextState.mode !== this.state.mode;
         };
 
         TimePickerPanel.prototype.onModeChange = function onModeChange(_ref) {

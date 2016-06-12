@@ -107,7 +107,9 @@ export default class TimePicker extends InputComponent {
 
     getSyncUpdates(nextProps) {
 
-        const {disabled, readOnly, customValidity, value} = nextProps;
+        const {disabled, readOnly, customValidity, defaultValue} = nextProps;
+
+        let value = nextProps.value == null ? defaultValue : nextProps.value;
 
         // 如果有值，那么就试着解析一下；否则设置为 null
         let time = value ? this.parseValue(value) : null;
