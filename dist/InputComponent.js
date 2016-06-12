@@ -44,7 +44,6 @@
 
             var pointer = context.pointer;
 
-
             /**
              * @property {string} pointer 输入控件在表单中的位置
              *
@@ -71,8 +70,8 @@
         }
 
         InputComponent.prototype.getChildContext = function getChildContext() {
-            var pointer = this.pointer;
 
+            var pointer = this.pointer;
 
             return {
                 pointer: pointer ? pointer + '/' : null
@@ -80,8 +79,8 @@
         };
 
         InputComponent.prototype.componentDidMount = function componentDidMount() {
-            var attachForm = this.context.attachForm;
 
+            var attachForm = this.context.attachForm;
 
             if (attachForm) {
                 attachForm(this);
@@ -102,8 +101,8 @@
         };
 
         InputComponent.prototype.componentWillUnmount = function componentWillUnmount() {
-            var detachForm = this.context.detachForm;
 
+            var detachForm = this.context.detachForm;
 
             if (detachForm) {
                 detachForm(this);
@@ -143,7 +142,6 @@
 
             var value = e.value;
 
-
             if (value === this.state.value) {
                 return;
             }
@@ -173,7 +171,6 @@
             };
 
             var validity = this.state.validity;
-
 
             if (validity) {
                 var valid = validity.isValid();

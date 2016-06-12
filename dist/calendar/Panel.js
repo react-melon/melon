@@ -69,7 +69,7 @@
         };
 
         CalendarPanel.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
-            return !DateTime.isEqualDate(nextState.date, this.state.date) || !DateTime.isEqualMonth(nextState.month, this.state.month) || nextState.selectorType !== this.state.selectorType || nextProps.begin && this.props.begin && !DateTime.isEqualMonth(nextProps.begin, this.props.begin) || nextProps.end && this.props.end && !DateTime.isEqualMonth(nextProps.end, this.props.end) || !nextProps.begin && this.props.begin || !nextProps.end && this.props.end || nextProps.begin && !this.props.begin || nextProps.end && !this.props.end;
+            return !DateTime.isEqualDate(nextState.date, this.state.date) || !DateTime.isEqualMonth(nextState.month, this.state.month) || nextState.selectorType !== this.state.selectorType || nextProps.begin && this.props.begin && !DateTime.isEqualDate(nextProps.begin, this.props.begin) || nextProps.end && this.props.end && !DateTime.isEqualDate(nextProps.end, this.props.end) || !nextProps.begin && this.props.begin || !nextProps.end && this.props.end || nextProps.begin && !this.props.begin || nextProps.end && !this.props.end;
         };
 
         CalendarPanel.prototype.onHeaderClick = function onHeaderClick(e) {

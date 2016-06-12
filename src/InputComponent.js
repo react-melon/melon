@@ -23,7 +23,7 @@ export default class InputComponent extends Component {
         // 3. 最后，这一种情况是一个孤立 input component 在自己战斗，使用默认的 LiteValidator
         this.validator = props.validator || context.validator || defaultValidator;
 
-        const {pointer} = context;
+        const pointer = context.pointer;
 
         /**
          * @property {string} pointer 输入控件在表单中的位置
@@ -51,7 +51,7 @@ export default class InputComponent extends Component {
 
     getChildContext() {
 
-        const {pointer} = this;
+        const pointer = this.pointer;
 
         return {
             pointer: pointer ? `${pointer}/` : null
@@ -64,7 +64,7 @@ export default class InputComponent extends Component {
      */
     componentDidMount() {
 
-        const {attachForm} = this.context;
+        const attachForm = this.context.attachForm;
 
         if (attachForm) {
             attachForm(this);
@@ -110,7 +110,7 @@ export default class InputComponent extends Component {
 
     componentWillUnmount() {
 
-        const {detachForm} = this.context;
+        const detachForm = this.context.detachForm;
 
         if (detachForm) {
             detachForm(this);
@@ -174,7 +174,7 @@ export default class InputComponent extends Component {
             return;
         }
 
-        const {value} = e;
+        const value = e.value;
 
         if (value === this.state.value) {
             return;
@@ -207,7 +207,7 @@ export default class InputComponent extends Component {
             'read-only': this.isReadOnly()
         };
 
-        const {validity} = this.state;
+        const validity = this.state.validity;
 
         if (validity) {
             const valid = validity.isValid();

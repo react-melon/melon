@@ -54,9 +54,11 @@
             var end = props.end;
 
 
+            var value = _this.state.value;
+
             _this.state = babelHelpers['extends']({}, _this.state, {
                 open: false,
-                date: _this.getNormalizeValue(_this.state.value, begin, end)
+                date: _this.getNormalizeValue(value, begin, end)
             });
 
             _this.onLabelClick = _this.onLabelClick.bind(_this);
@@ -64,7 +66,6 @@
             _this.onLabelClick = _this.onLabelClick.bind(_this);
             _this.onCancel = _this.onCancel.bind(_this);
             _this.onDateChange = _this.onDateChange.bind(_this);
-            _this.formatDate = _this.formatDate.bind(_this);
 
             return _this;
         }
@@ -72,6 +73,7 @@
         RangeCalendar.prototype.getSyncUpdates = function getSyncUpdates(nextProps) {
             var disabled = nextProps.disabled;
             var customValidity = nextProps.customValidity;
+            var readOnly = nextProps.readOnly;
             var _nextProps$value = nextProps.value;
             var value = _nextProps$value === undefined ? nextProps.defaultValue : _nextProps$value;
             var begin = nextProps.begin;
@@ -86,14 +88,14 @@
             return {
                 date: date,
                 vilidity: vilidity,
-                value: value
+                value: disabled || readOnly || !value.length ? value : this.stringifyValue(date)
             };
         };
 
         RangeCalendar.prototype.getNormalizeValue = function getNormalizeValue(value, begin, end) {
 
             if (value.length === 0) {
-                return value;
+                return [new Date(), new Date()];
             }
 
             begin = this.parseDate(begin);
@@ -105,31 +107,21 @@
             // 这里我们需要一个全新的 value
             value = [valueBegin && DateTime.isAfterDate(begin, valueBegin) ? begin : valueBegin, valueEnd && DateTime.isBeforeDate(end, valueEnd) ? end : valueEnd];
 
-            // 下边这种做法是错误的，不能直接修改 props 中的值
-            // value[0] = _.isDate(begin) && DateTime.isAfterDate(begin, value[0]) ? begin : value[0];
-            // value[1] = _.isDate(end) && DateTime.isBeforeDate(end, value[1]) ? end : value[1];
-
             return value;
         };
 
-        RangeCalendar.prototype.getValue = function getValue() {
+        RangeCalendar.prototype.stringifyValue = function stringifyValue(date) {
             var _this2 = this;
 
-            var _props = this.props;
-            var begin = _props.begin;
-            var end = _props.end;
-
-            var value = this.state.value;
-
-            return this.getNormalizeValue(value, begin, end).map(function (date) {
+            return date.map(function (date) {
                 return _this2.formatDate(date);
             });
         };
 
         RangeCalendar.prototype.onLabelClick = function onLabelClick() {
-            var _props2 = this.props;
-            var disabled = _props2.disabled;
-            var readOnly = _props2.readOnly;
+            var _props = this.props;
+            var disabled = _props.disabled;
+            var readOnly = _props.readOnly;
 
 
             if (disabled || readOnly) {
@@ -151,15 +143,10 @@
 
             var date = [].concat(this.state.date);
 
-            if (date.length === 0) {
-                date = [new Date(), new Date()];
-            }
-
             date[index] = value;
 
             this.setState({
-                date: date,
-                month: date
+                date: date
             });
         };
 
@@ -181,7 +168,7 @@
                     _InputComponent.prototype.onChange.call(_this3, {
                         type: 'change',
                         target: _this3,
-                        value: date.map(_this3.formatDate)
+                        value: date.map(_this3.formatDate, _this3)
                     });
                 }
             });
@@ -216,13 +203,10 @@
             var validity = props.validity;
             var placeholder = props.placeholder;
             var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'begin', 'end', 'validity', 'placeholder']);
-
-
-            var value = this.getValue();
-
             var _state2 = this.state;
             var open = _state2.open;
             var date = _state2.date;
+            var value = _state2.value;
 
 
             begin = begin ? this.parseDate(begin) : null;
@@ -263,13 +247,13 @@
                         { className: cx().part('row').build() },
                         _react2['default'].createElement(_Panel2['default'], {
                             lang: lang,
-                            date: date[0] || new Date(),
+                            date: date[0],
                             begin: begin,
                             end: date[1] || new Date(),
                             onChange: this.onDateChange.bind(this, 0) }),
                         _react2['default'].createElement(_Panel2['default'], {
                             lang: lang,
-                            date: date[1] || new Date(),
+                            date: date[1],
                             begin: date[0] || new Date(),
                             end: end,
                             onChange: this.onDateChange.bind(this, 1) })

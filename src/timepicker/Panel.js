@@ -4,6 +4,8 @@
  */
 
 import React, {Component, PropTypes} from 'react';
+import moment from 'moment';
+
 import {create} from '../common/util/cxBuilder';
 
 import Header from './Header';
@@ -33,6 +35,11 @@ export default class TimePickerPanel extends Component {
         if (this.props.time !== time) {
             this.setState({time});
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !moment(nextState.time).isSame(this.state.time, 'minute')
+            || nextState.mode !== this.state.mode;
     }
 
     onModeChange({mode}) {

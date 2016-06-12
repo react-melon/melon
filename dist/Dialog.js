@@ -57,11 +57,15 @@
         }
 
         Dialog.prototype.componentDidMount = function componentDidMount() {
-            this.positionDialog();
+            if (this.state.open) {
+                this.positionDialog();
+            }
         };
 
-        Dialog.prototype.componentWillUpdate = function componentWillUpdate() {
-            this.positionDialog();
+        Dialog.prototype.componentWillUpdate = function componentWillUpdate(nextProps, nextState) {
+            if (nextState.open) {
+                this.positionDialog();
+            }
         };
 
         Dialog.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
