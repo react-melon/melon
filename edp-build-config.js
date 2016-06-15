@@ -43,6 +43,9 @@ exports.getProcessors = function () {
             to: function ($all, $1) {
                 return '<script src="' + $1 + '"></script>';
             }
+        }, {
+            from: 'waitSeconds: 5,',
+            to: ''
         }]
     });
 
