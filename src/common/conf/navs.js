@@ -3,6 +3,8 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
+import components from './components';
+
 export default [{
     text: 'Melon',
     children: [{
@@ -12,79 +14,15 @@ export default [{
     }]
 }, {
     text: 'Components',
-    children: [{
-        text: 'Button',
-        pathname: '/components',
-        query: {
-            name: 'Button'
-        }
-    }, {
-        text: 'Calendar',
-        pathname: '/components',
-        query: {
-            name: 'Calendar'
-        }
-    }, {
-        text: 'Drawer',
-        pathname: '/components',
-        query: {
-            name: 'Drawer'
-        }
-    }, {
-        text: 'Dialog',
-        pathname: '/components',
-        query: {
-            name: 'Dialog'
-        }
-    }, {
-        text: 'Pager',
-        pathname: '/components',
-        query: {
-            name: 'Pager'
-        }
-    }, {
-        text: 'Progress',
-        pathname: '/components',
-        query: {
-            name: 'Progress'
-        }
-    }, {
-        text: 'ScrollView',
-        pathname: '/components',
-        query: {
-            name: 'ScrollView'
-        }
-    }, {
-        text: 'Slider',
-        pathname: '/components',
-        query: {
-            name: 'Slider'
-        }
-    }, {
-        text: 'SnackBar',
-        pathname: '/components',
-        query: {
-            name: 'SnackBar'
-        }
-    }, {
-        text: 'Tabs',
-        pathname: '/components',
-        query: {
-            name: 'Tabs'
-        }
-    }, {
-        text: 'TextBox',
-        pathname: '/components',
-        query: {
-            name: 'TextBox'
-        }
-    }, {
-        text: 'TimePicker',
-        pathname: '/components',
-        query: {
-            name: 'TimePicker'
-        }
-    }]
+    children: components.map(name => {
+        return {
+            text: name,
+            pathname: '/components',
+            query: {
+                name
+            }
+        };
+    })
 }, {
     text: 'Style',
     children: [{

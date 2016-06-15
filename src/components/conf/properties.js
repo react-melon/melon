@@ -3,26 +3,26 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
-import tabs from './properties/tabs';
-import pager from './properties/pager';
-import progress from './properties/progress';
-import snackbar from './properties/snackbar';
-import drawer from './properties/drawer';
-import scrollview from './properties/scrollview';
-import textbox from './properties/textbox';
+import components from '../../common/conf/components';
 
-module.exports = {
-    ...tabs,
-    ...progress,
-    ...pager,
-    ...snackbar,
-    ...drawer,
-    ...scrollview,
-    ...textbox,
+import './properties/button';
+import './properties/calendar';
+import './properties/dialog';
+import './properties/drawer';
+import './properties/pager';
+import './properties/progress';
+import './properties/scrollview';
+import './properties/select';
+import './properties/slider';
+import './properties/snackbar';
+import './properties/tabs';
+import './properties/textbox';
+import './properties/timepicker';
 
-    ...require('./properties/calendar'),
-    ...require('./properties/button'),
-    ...require('./properties/dialog'),
-    ...require('./properties/timepicker'),
-    ...require('./properties/slider')
-};
+module.exports = components.reduce((result, name) => {
+
+    result[name] = require('./properties/' + name.toLowerCase());
+
+    return result;
+
+}, {});

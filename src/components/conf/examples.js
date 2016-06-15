@@ -69,6 +69,16 @@ module.exports = {
         name: 'ScrollView'
     }],
 
+    Select: [{
+        title: 'UnControlled Select',
+        brief: '支持 option 和 optgroup',
+        name: 'SelectUnControlled'
+    }, {
+        title: 'Controlled Select',
+        brief: '支持 option 和 optgroup',
+        name: 'SelectControlled'
+    }],
+
     Slider: [{
         title: '普通',
         brief: '滑动选择数值',

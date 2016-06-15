@@ -118,22 +118,13 @@ exports.getProcessors = function () {
             '!dep/**/index.html'
         ],
         resolve: function (file, url) {
-            if (url.indexOf('/dep/') !== -1) {
-                return false;
-            }
             if (url.indexOf('favicon.png') !== -1) {
                 return false;
             }
-            // 以feRoot开头的本地资源，我们把它映射到本地资源
-            if (/^{%\$tplData\.feRoot(\|escape:html)?%}(.+?)$/.exec(url)) {
-                return RegExp.$2.slice(1);
-            }
             // 绝对地址
             if (
-                // 这种是由smarty直接输出的绝对地址
-                /^{%[\$\.\|:\w]+%}(.*?)$/.test(url)
                 // 这个是以http开头的直接引用
-                || /^http/.test(url)
+                /^http/.test(url)
                 // 这货是etpl的语法。。。
                 || /^\$\{.+\}$/.test(url)
             ) {
