@@ -61,7 +61,7 @@ export default React.createClass({
                         <Icon icon={'unfold-more'} />
                     </Button>
                 </ToolBar>
-                <Zippy size={300} expand={this.state.expand}>
+                <Zippy style={{height: 300}} expand={this.state.expand}>
                     <Code>
                         {code}
                     </Code>

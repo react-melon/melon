@@ -20,8 +20,9 @@
     "es6-promise": "~3.0.2",
     "numen": "~0.1.2",
     "react": "~0.14.3",
-    "melon": "^0.2.9",
+    "melon": "^0.2.29",
     "highlight": "~9.0.0",
-    "react-motion": "https://npmcdn.com/react-motion/bower.zip"
+    "react-motion": "https://npmcdn.com/react-motion/bower.zip",
+    "moment": "^2.13.0"
   }
 }

@@ -72,6 +72,12 @@ export default [{
         query: {
             name: 'TextBox'
         }
+    }, {
+        text: 'TimePicker',
+        pathname: '/components',
+        query: {
+            name: 'TimePicker'
+        }
     }]
 }, {
     text: 'Style',

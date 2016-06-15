@@ -105,5 +105,11 @@ module.exports = {
         title: '被控制的输入框',
         brief: '被控制的输入框的值不会随着用户输入而变化。它只会响应value值的变化。当value和onChange同时被设定时，TextBox就会进入被控制的状态。即value不是undefined或null，onChange是一个函数',
         name: 'TextBoxControlled'
+    }],
+
+    TimePicker: [{
+        title: '普通的TimePicker',
+        brief: '这是一个时间选择器',
+        name: 'TimePicker1'
     }]
 };

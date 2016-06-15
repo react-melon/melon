@@ -22,5 +22,6 @@ module.exports = {
 
     ...require('./properties/calendar'),
     ...require('./properties/button'),
-    ...require('./properties/dialog')
+    ...require('./properties/dialog'),
+    ...require('./properties/timepicker')
 };
