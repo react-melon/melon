@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Melon</title>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="./asset/main.37218dc6.css">
+    <link rel="stylesheet" href="./src/main.styl">
     <link rel="shortcut icon" href="favicon.png" type="image/x-png">
 </head>
 <body>
@@ -14,29 +14,30 @@
         <div class="ball ball-anim"></div>
     </div>
 </div>
-<script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-1-2/esl.js"></script>
-<script src="./asset/bundle/inf.d967e00b.js"></script>
-<script src="./asset/main.f1ed9949.js"></script>
+<script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-1-4/esl.js"></script>
+<!--embedbundle:./src/bundle/inf.js-->
+<!--embedbundle:./src/main.js-->
 <script>
 require.config({
-        'baseUrl': './asset',
-        'paths': {
-            'react': '../dep/react/react',
-            'react-motion': '../dep/react-motion/build/react-motion',
-            'react-dom': '../dep/react/react-dom',
-            'es6-promise': '../dep/es6-promise/promise',
-            'numen': '../dep/numen/dist',
-            'melon': '../dep/melon/dist',
-            'underscore': '../dep/underscore/underscore',
-            'hljs': '../dep/highlight/highlight.pack'
-        },
-        'packages': [{
-                'name': 'ei',
-                'location': '../dep/ei/dist',
-                'main': 'main'
-            }],
-        'waitSeconds': 5
-    });
+    baseUrl: './src',
+    paths: {
+        'react': '../dep/react/react',
+        'react-motion': '../dep/react-motion/build/react-motion',
+        'react-dom': '../dep/react/react-dom',
+        'es6-promise': '../dep/es6-promise/promise',
+        'numen': '../dep/numen/dist',
+        'melon': '../dep/melon/dist',
+        'underscore': '../dep/underscore/underscore',
+        'hljs': '../dep/highlight/highlight.pack',
+        'moment': '../dep/moment/moment'
+    },
+    packages: [{
+        name: 'ei',
+        location: '../dep/ei/dist',
+        main: 'main'
+    }],
+    waitSeconds: 5
+});
 require(['main'], function (main) {
     main.init();
 });
