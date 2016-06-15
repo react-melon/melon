@@ -29,7 +29,7 @@ a img{border:none}
 .ui-touch-ripple-circle{background-color:rgba(0,0,0,.87);position:absolute;top:0;left:0;-webkit-border-radius:100em;border-radius:100em}
 .ui-center-ripple{position:absolute;top:0;left:0;height:100%;width:100%}
 .ui-center-ripple-circle{width:100%;height:100%;background-color:rgba(0,0,0,.87);position:absolute;-webkit-border-radius:100em;border-radius:100em;top:0;left:0;z-index:-1}
-@font-face{font-family:melon;src:url(../dep/melon/dist/font/melon.eot?4d6t69);src:url(../dep/melon/dist/font/melon.eot?#iefix4d6t69) format('embedded-opentype'),url(../dep/melon/dist/font/melon.ttf?4d6t69) format('truetype'),url(../dep/melon/dist/font/melon.woff?4d6t69) format('woff'),url(../dep/melon/dist/font/melon.svg?4d6t69#melon) format('svg');font-weight:400;font-style:normal}
+@font-face{font-family:melon;src:url(../dep/melon/dist/font/melon.6d236614.eot?4d6t69);src:url(../dep/melon/dist/font/melon.6d236614.eot?#iefix4d6t69) format('embedded-opentype'),url(../dep/melon/dist/font/melon.c1b39478.ttf?4d6t69) format('truetype'),url(../dep/melon/dist/font/melon.c154cbd8.woff?4d6t69) format('woff'),url(../dep/melon/dist/font/melon.289c520e.svg?4d6t69#melon) format('svg');font-weight:400;font-style:normal}
 .ui-icon{font-family:melon;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 [data-icon='3d-rotation']:before{content:"\e900"}
 [data-icon=ac-unit]:before{content:"\e901"}
