@@ -1,0 +1,13 @@
+
+import React from 'react';
+import Slider from 'melon/Slider';
+
+function View(props) {
+
+    return (
+        <div>
+            <Slider />
+            <Slider defaultValue={28} maximum={50} minimum={10} step={2} />
+        </div>
+    );
+}

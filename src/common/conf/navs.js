@@ -55,6 +55,12 @@ export default [{
             name: 'ScrollView'
         }
     }, {
+        text: 'Slider',
+        pathname: '/components',
+        query: {
+            name: 'Slider'
+        }
+    }, {
         text: 'SnackBar',
         pathname: '/components',
         query: {

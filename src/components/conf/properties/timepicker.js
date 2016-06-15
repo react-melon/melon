@@ -29,6 +29,10 @@ module.exports = {
             type: 'string',
             defaultValue: 'HH:mm',
             description: '显示时间的格式'
+        }, {
+            name: 'onChange',
+            type: 'function',
+            description: '数值改变时的事件'
         }]
     }]
 };

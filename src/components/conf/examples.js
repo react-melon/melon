@@ -69,6 +69,12 @@ module.exports = {
         name: 'ScrollView'
     }],
 
+    Slider: [{
+        title: '普通',
+        brief: '滑动选择数值',
+        name: 'Slider'
+    }],
+
     SnackBar: [{
         title: '提示框',
         brief: '提示框组件，可以设定显示的位置，可以设定显示以后自动消失',
