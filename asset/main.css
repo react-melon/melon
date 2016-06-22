@@ -1363,6 +1363,9 @@ a{text-decoration:none;color:#d32f2f}
 .ui-homeview-header p{font-size:22px;line-height:1.5em;font-weight:200}
 .ui-homeview-header .ui-title{font-size:56px;font-weight:300}
 .ui-homeview-header .ui-button{margin-top:40px}
+.ui-homeview-install{margin:0 auto;min-width:600px;text-align:center;background-color:#eceff1}
+.ui-homeview-install .ui-title{display:inline-block;width:10%}
+.ui-homeview-install div{display:inline-block;width:40%;background-color:#cfd8dc;line-height:44px;height:44px}
 .ui-homeview-info{padding:48px 24px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;background-color:#eceff1}
 .ui-homeview-info p{max-width:580px;margin:0 auto;color:rgba(0,0,0,.87);font-size:18px;line-height:1.5em}
 .ui-homeview-info p .ui-link{display:inline-block;margin:0 2px;text-decoration:none;color:#f06292}
