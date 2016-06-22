@@ -33,6 +33,10 @@ class HomeView extends React.Component {
                         设计的组件库。
                     </p>
                 </div>
+                <div className={cx().part('install').build()}>
+                    <Title level={2}>安装</Title>
+                    <div>$ bower install melon --save</div>
+                </div>
                 <div className={cx().part('github').build()}>
                     <p>请在github上关注我们的项目</p>
                     <Button
