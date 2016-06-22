@@ -1,6 +1,5 @@
-@require "./base.styl"
 @require "nib"
-
+@require "./base.styl"
 
 
 .{$-melon-class-prefix}-time-picker
@@ -8,6 +7,12 @@
     font-size: $-melon-medium-font-size
     display: inline-block
     position: relative
+
+    &.state-invalid
+        border-bottom-color: $-melon-colors.red500
+
+    &.state-disabled &-label
+        cursor: not-allowed
 
     &-label-placeholder
         color: $-melon-colors.grey500

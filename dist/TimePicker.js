@@ -225,17 +225,18 @@
             var state = this.state;
             var props = this.props;
             var disabled = props.disabled;
+            var readOnly = props.readOnly;
             var name = props.name;
             var placeholder = props.placeholder;
             var timeFormat = props.timeFormat;
             var labelFormat = props.labelFormat;
-            var others = babelHelpers.objectWithoutProperties(props, ['disabled', 'name', 'placeholder', 'timeFormat', 'labelFormat']);
+            var others = babelHelpers.objectWithoutProperties(props, ['disabled', 'readOnly', 'name', 'placeholder', 'timeFormat', 'labelFormat']);
             var value = state.value;
             var validity = state.validity;
 
 
             var open = state.open;
-            var className = cx(props).addStates({ focus: open }).build();
+            var className = cx(props).addStates({ focus: open }).addStates(this.getStyleStates()).build();
 
             return _react2['default'].createElement(
                 'div',
@@ -248,7 +249,9 @@
                     disabled: disabled }),
                 _react2['default'].createElement(
                     'label',
-                    { onClick: this.onLabelClick, className: cx().part('label').build() },
+                    {
+                        onClick: disabled || readOnly ? null : this.onLabelClick,
+                        className: cx().part('label').build() },
                     value ? (0, _moment2['default'])(value, timeFormat).format(labelFormat) : _react2['default'].createElement(
                         'span',
                         { className: cx().part('label-placeholder').build() },

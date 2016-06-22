@@ -18,7 +18,7 @@ export default class BoxGroup extends InputComponent {
 
         super(props, context);
 
-        const {value} = this.state;
+        const value = this.state.value;
 
         this.state = {
             ...this.state,
@@ -35,7 +35,7 @@ export default class BoxGroup extends InputComponent {
         const optionValue = e.target.value;
         const value = this.getValue();
 
-        const {boxModel} = this.props;
+        const boxModel = this.props.boxModel;
 
         let nextValue;
 
@@ -105,7 +105,7 @@ export default class BoxGroup extends InputComponent {
             return option;
         }
 
-        const {boxModel} = this.props;
+        const boxModel = this.props.boxModel;
         const {value, children, label} = props;
 
         return (
@@ -116,6 +116,7 @@ export default class BoxGroup extends InputComponent {
                 value={value}
                 checked={this.state.value.indexOf(value) > -1}
                 disabled={this.props.disabled || props.disabled}
+                readOnly={this.props.readOnly}
                 onChange={this.onChange} />
         );
 

@@ -45,7 +45,6 @@
 
             var value = _this.state.value;
 
-
             _this.state = babelHelpers['extends']({}, _this.state, {
                 value: Array.isArray(value) ? value : [value]
             });
@@ -62,7 +61,6 @@
             var value = this.getValue();
 
             var boxModel = this.props.boxModel;
-
 
             var nextValue = void 0;
 
@@ -129,6 +127,7 @@
                 value: value,
                 checked: this.state.value.indexOf(value) > -1,
                 disabled: this.props.disabled || props.disabled,
+                readOnly: this.props.readOnly,
                 onChange: this.onChange });
         };
 

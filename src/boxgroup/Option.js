@@ -32,7 +32,8 @@ export default class BoxGroupOption extends Component {
         const {
             boxModel,
             checked,
-            disabled
+            disabled,
+            readOnly
         } = props;
 
 
@@ -40,17 +41,18 @@ export default class BoxGroupOption extends Component {
         const icon = this.getIcon(boxModel, checked);
 
         return (
-            <label className={className} onClick={disabled ? null : this.onClick}>
+            <label className={className} onClick={disabled || readOnly ? null : this.onClick}>
                 <input
                     disabled={disabled}
                     checked={checked}
                     type={props.boxModel}
                     value={props.value}
+                    readOnly={readOnly}
                     name={props.name}
-                    onChange={props.onChange} />
+                    onChange={readOnly ? null : props.onChange} />
                 <Icon icon={icon} />
                 {props.label}
-                {disabled ? null : <CenterRipple ref="ripple" />}
+                {disabled || readOnly ? null : <CenterRipple ref="ripple" />}
             </label>
         );
 

@@ -28,8 +28,17 @@ export default class Zippy extends React.Component {
             .addStates({close: !expand})
             .build();
 
+        let style = this.props.style;
+
+        if (!expand) {
+            style = {
+                ...style,
+                [horizontal ? 'width' : 'height']: 0
+            };
+        }
+
         return (
-            <div {...others} className={className} />
+            <div {...others} style={style} className={className} />
         );
 
     }

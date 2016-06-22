@@ -66,9 +66,11 @@
         TreeNode.prototype.render = function render() {
 
             var props = this.props;
+            /* eslint-disable fecs-min-vars-per-destructure */
             var label = props.label;
             var others = babelHelpers.objectWithoutProperties(props, ['label']);
 
+            /* eslint-enable fecs-min-vars-per-destructure */
             var expand = this.state.expand;
 
             var icon = expand ? props.expandIcon || TreeNode.ICON[1] : props.unexpandIcon || TreeNode.ICON[0];
@@ -152,5 +154,5 @@
         selected: false
     };
 
-    TreeNode.ICON = ['chevron-right', 'expand-more'];
+    TreeNode.ICON = ['expand-less', 'expand-more'];
 });

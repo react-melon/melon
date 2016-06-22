@@ -26,6 +26,12 @@ export default class Slider extends InputComponent {
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onMouseChange = this.onMouseChange.bind(this);
 
+        const {maximum, minimum} = props;
+        const value = this.state.value;
+
+        this.state.value = value > maximum ? maximum : value;
+        this.state.value = value < minimum ? minimum : value;
+
         this.state = {
             ...this.state,
             active: false
@@ -65,6 +71,11 @@ export default class Slider extends InputComponent {
     }
 
     onMouseDown(e) {
+
+        if (this.props.disable || this.props.readOnly) {
+            return;
+        }
+
         domUtil.on(window, 'mouseup', this.onMouseUp);
         domUtil.on(window, 'mousemove', this.onMouseChange);
         this.onMouseChange(e);
@@ -112,7 +123,9 @@ export default class Slider extends InputComponent {
             style = {}
         } = this.props;
 
-        const className = cx(this.props).build();
+        const className = cx(this.props)
+            .addStates(this.getStyleStates())
+            .build();
 
         return (
             <div
