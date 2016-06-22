@@ -82,8 +82,8 @@
         };
 
         Select.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var children = nextProps.children;
 
+            var children = nextProps.children;
 
             if (children !== this.props.children) {
                 this.popup = _reactDom2['default'].render(_react2['default'].createElement(
@@ -100,8 +100,8 @@
         };
 
         Select.prototype.componentWillUnmount = function componentWillUnmount() {
-            var container = this.container;
 
+            var container = this.container;
 
             if (container) {
                 _reactDom2['default'].unmountComponentAtNode(container);
@@ -212,6 +212,7 @@
         };
 
         Select.prototype.renderLabel = function renderLabel() {
+
             var value = this.state.value;
             var _props3 = this.props;
             var children = _props3.children;
@@ -289,9 +290,7 @@
     Select.displayName = 'Select';
 
     Select.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
-        validateEvents: ['change'],
         placeholder: '请选择',
-        open: false,
         defaultValue: ''
     });
 

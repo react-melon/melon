@@ -28,6 +28,10 @@ const datasource = [
     {value: '5', name: 'Weekly', disabled: true}
 ];
 
+const noop = function () {};
+
+/* eslint-disable max-nested-callbacks */
+
 describe('BoxGroup', function () {
 
     it('Option', () => {
@@ -40,18 +44,19 @@ describe('BoxGroup', function () {
                 checked={true}
                 name={'test'}
                 disabled={false}
-                onChange={() => {}} />
+                onChange={noop} />
         );
         const actualElement = renderer.getRenderOutput();
         const expectedElement = (
-            <label className={'ui-box-group-option state-checked'} onClick={() => {}}>
+            <label className={'ui-box-group-option state-checked'} onClick={noop}>
                 <input
                     disabled={false}
                     checked={true}
                     type={'checkbox'}
                     value={'a'}
                     name={'test'}
-                    onChange={() => {}} />
+                    readOnly={undefined}
+                    onChange={noop} />
                 <Icon icon={BoxGroupOption.Icons.checkbox.checked} />
                 test
                 <CenterRipple ref="ripple" />

@@ -58,6 +58,7 @@
             var boxModel = props.boxModel;
             var checked = props.checked;
             var disabled = props.disabled;
+            var readOnly = props.readOnly;
 
 
             var className = cx(props).addStates({ checked: checked }).build();
@@ -65,17 +66,18 @@
 
             return _react2['default'].createElement(
                 'label',
-                { className: className, onClick: disabled ? null : this.onClick },
+                { className: className, onClick: disabled || readOnly ? null : this.onClick },
                 _react2['default'].createElement('input', {
                     disabled: disabled,
                     checked: checked,
                     type: props.boxModel,
                     value: props.value,
+                    readOnly: readOnly,
                     name: props.name,
-                    onChange: props.onChange }),
+                    onChange: readOnly ? null : props.onChange }),
                 _react2['default'].createElement(_Icon2['default'], { icon: icon }),
                 props.label,
-                disabled ? null : _react2['default'].createElement(_CenterRipple2['default'], { ref: 'ripple' })
+                disabled || readOnly ? null : _react2['default'].createElement(_CenterRipple2['default'], { ref: 'ripple' })
             );
         };
 

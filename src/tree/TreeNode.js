@@ -43,7 +43,9 @@ export default class TreeNode extends Component {
     render() {
 
         const props = this.props;
+        /* eslint-disable fecs-min-vars-per-destructure */
         const {label, ...others} = props;
+        /* eslint-enable fecs-min-vars-per-destructure */
         const expand = this.state.expand;
 
         const icon = expand
@@ -134,6 +136,6 @@ TreeNode.defaultProps = {
 };
 
 TreeNode.ICON = [
-    'chevron-right',
+    'expand-less',
     'expand-more'
 ];

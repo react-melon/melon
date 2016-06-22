@@ -60,7 +60,7 @@ export default class Select extends InputComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        const {children} = nextProps;
+        const children = nextProps.children;
 
         if (children !== this.props.children) {
             this.popup = ReactDOM.render(
@@ -84,7 +84,7 @@ export default class Select extends InputComponent {
 
     componentWillUnmount() {
 
-        let {container} = this;
+        let container = this.container;
 
         if (container) {
             ReactDOM.unmountComponentAtNode(container);
@@ -222,7 +222,7 @@ export default class Select extends InputComponent {
      */
     renderLabel() {
 
-        const {value} = this.state;
+        const value = this.state.value;
         const {children, placeholder} = this.props;
 
         const option = this.findOption(value, children);
@@ -297,9 +297,7 @@ Select.displayName = 'Select';
 
 Select.defaultProps = {
     ...InputComponent.defaultProps,
-    validateEvents: ['change'],
     placeholder: '请选择',
-    open: false,
     defaultValue: ''
 };
 

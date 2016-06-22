@@ -48,7 +48,15 @@
 
             var className = cx(props).addVariants(horizontal ? 'horizontal' : 'vertical').addStates({ close: !expand }).build();
 
-            return _react2['default'].createElement('div', babelHelpers['extends']({}, others, { className: className }));
+            var style = this.props.style;
+
+            if (!expand) {
+                var _babelHelpers$extends;
+
+                style = babelHelpers['extends']({}, style, (_babelHelpers$extends = {}, _babelHelpers$extends[horizontal ? 'width' : 'height'] = 0, _babelHelpers$extends));
+            }
+
+            return _react2['default'].createElement('div', babelHelpers['extends']({}, others, { style: style, className: className }));
         };
 
         return Zippy;

@@ -182,6 +182,7 @@ export default class Calendar extends InputComponent {
         const {
             lang,
             disabled,
+            readOnly,
             size,
             name,
             placeholder,
@@ -210,7 +211,7 @@ export default class Calendar extends InputComponent {
                     value={value}
                     disabled={disabled}
                     size={size} />
-                <label onClick={this.onLabelClick}>
+                <label onClick={(disabled || readOnly) ? null : this.onLabelClick}>
                     {value ? value : (
                         <span className={cx().part('label-placeholder').build()}>
                             {placeholder}

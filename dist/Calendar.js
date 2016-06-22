@@ -183,10 +183,11 @@
             var props = this.props;
             var lang = props.lang;
             var disabled = props.disabled;
+            var readOnly = props.readOnly;
             var size = props.size;
             var name = props.name;
             var placeholder = props.placeholder;
-            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'placeholder']);
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'readOnly', 'size', 'name', 'placeholder']);
             var value = state.value;
             var validity = state.validity;
             var begin = props.begin;
@@ -213,7 +214,7 @@
                     size: size }),
                 _react2['default'].createElement(
                     'label',
-                    { onClick: this.onLabelClick },
+                    { onClick: disabled || readOnly ? null : this.onLabelClick },
                     value ? value : _react2['default'].createElement(
                         'span',
                         { className: cx().part('label-placeholder').build() },

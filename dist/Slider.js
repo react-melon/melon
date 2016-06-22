@@ -51,6 +51,14 @@
             _this.onMouseUp = _this.onMouseUp.bind(_this);
             _this.onMouseChange = _this.onMouseChange.bind(_this);
 
+            var maximum = props.maximum;
+            var minimum = props.minimum;
+
+            var value = _this.state.value;
+
+            _this.state.value = value > maximum ? maximum : value;
+            _this.state.value = value < minimum ? minimum : value;
+
             _this.state = babelHelpers['extends']({}, _this.state, {
                 active: false
             });
@@ -94,6 +102,11 @@
         };
 
         Slider.prototype.onMouseDown = function onMouseDown(e) {
+
+            if (this.props.disable || this.props.readOnly) {
+                return;
+            }
+
             _dom2['default'].on(window, 'mouseup', this.onMouseUp);
             _dom2['default'].on(window, 'mousemove', this.onMouseChange);
             this.onMouseChange(e);
@@ -138,7 +151,7 @@
             var style = _props2$style === undefined ? {} : _props2$style;
 
 
-            var className = cx(this.props).build();
+            var className = cx(this.props).addStates(this.getStyleStates()).build();
 
             return _react2['default'].createElement(
                 'div',

@@ -224,6 +224,7 @@ export default class TimePicker extends InputComponent {
 
         const {
             disabled,
+            readOnly,
             name,
             placeholder,
             timeFormat,
@@ -236,6 +237,7 @@ export default class TimePicker extends InputComponent {
         const open = state.open;
         const className = cx(props)
             .addStates({focus: open})
+            .addStates(this.getStyleStates())
             .build();
 
         return (
@@ -246,7 +248,9 @@ export default class TimePicker extends InputComponent {
                     type="hidden"
                     value={value}
                     disabled={disabled} />
-                <label onClick={this.onLabelClick} className={cx().part('label').build()}>
+                <label
+                    onClick={(disabled || readOnly) ? null : this.onLabelClick}
+                    className={cx().part('label').build()}>
                     {value ? moment(value, timeFormat).format(labelFormat) : (
                         <span className={cx().part('label-placeholder').build()}>
                             {placeholder}

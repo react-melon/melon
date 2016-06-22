@@ -9,6 +9,7 @@ import {Component, PropTypes} from 'react';
 import defaultValidator from './Validator';
 import getUpdates from './common/util/syncPropsToState';
 
+
 export default class InputComponent extends Component {
 
     constructor(props, context = {}) {
