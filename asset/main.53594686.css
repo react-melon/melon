@@ -28,7 +28,7 @@ a img{border:none}
 .ui-touch-ripple{height:100%;width:100%;position:absolute;top:0;left:0;overflow:hidden;z-index:1}
 .ui-touch-ripple-circle{background-color:rgba(0,0,0,.87);position:absolute;top:0;left:0;-webkit-border-radius:100em;border-radius:100em}
 .ui-center-ripple{position:absolute;top:0;left:0;height:100%;width:100%}
-.ui-center-ripple-circle{width:100%;height:100%;background-color:rgba(0,0,0,.87);position:absolute;-webkit-border-radius:100em;border-radius:100em;top:0;left:0;z-index:-1}
+.ui-center-ripple-circle{width:100%;height:100%;background-color:rgba(0,0,0,.87);position:absolute;-webkit-border-radius:100em;border-radius:100em;top:0;left:0}
 @font-face{font-family:melon;src:url(../dep/melon/dist/font/melon.6d236614.eot?4d6t69);src:url(../dep/melon/dist/font/melon.6d236614.eot?#iefix4d6t69) format('embedded-opentype'),url(../dep/melon/dist/font/melon.c1b39478.ttf?4d6t69) format('truetype'),url(../dep/melon/dist/font/melon.c154cbd8.woff?4d6t69) format('woff'),url(../dep/melon/dist/font/melon.289c520e.svg?4d6t69#melon) format('svg');font-weight:400;font-style:normal}
 .ui-icon{font-family:melon;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 [data-icon='3d-rotation']:before{content:"\e900"}
@@ -880,7 +880,7 @@ a img{border:none}
 .ui-box-group-option{display:block;line-height:2em;color:rgba(0,0,0,.54);cursor:pointer;position:relative}
 .ui-box-group-option>input{display:none}
 .ui-box-group-option>.ui-icon{margin-right:.5em;font-size:18px;color:rgba(0,0,0,.54);vertical-align:middle;-webkit-transition:all 450ms cubic-bezier(.23,1,.32,1) 0ms;-moz-transition:all 450ms cubic-bezier(.23,1,.32,1) 0ms;-o-transition:all 450ms cubic-bezier(.23,1,.32,1) 0ms;-ms-transition:all 450ms cubic-bezier(.23,1,.32,1) 0ms;transition:all 450ms cubic-bezier(.23,1,.32,1) 0ms;position:relative;z-index:1}
-.ui-box-group-option .ui-center-ripple-circle{height:18px;width:18px;top:50%;margin-top:-7px}
+.ui-box-group-option .ui-center-ripple-circle{height:18px;width:18px;top:50%;margin-top:-9px;left:-1px}
 .ui-box-group-option>span{vertical-align:middle}
 .ui-box-group-option.state-checked>.ui-icon{color:#009688}
 .ui-box-group-option.state-disabled{color:rgba(0,0,0,.26);cursor:not-allowed}
