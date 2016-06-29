@@ -195,12 +195,11 @@ export default class RangeCalendar extends InputComponent {
             name,
             begin,
             end,
-            validity,
             placeholder,
             ...others
         } = props;
 
-        const {open, date, value} = this.state;
+        const {open, date, value, validity} = this.state;
 
         begin = begin ? this.parseDate(begin) : null;
         end = end ? this.parseDate(end) : null;

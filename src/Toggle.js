@@ -71,14 +71,14 @@ export default class Toggle extends InputComponent {
                     value={value}
                     onChange={onChange}
                     checked={checked} />
-                    <div className={cx().part('bar-container').build()}>
-                        <div className={cx().part('bar').build()} />
-                        <div className={cx().part('circle').build()}>
-                            {disabled
-                                ? null
-                                : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
-                        </div>
+                <div className={cx().part('bar-container').build()}>
+                    <div className={cx().part('bar').build()} />
+                    <div className={cx().part('circle').build()}>
+                        {disabled
+                            ? null
+                            : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
                     </div>
+                </div>
                 <Validity validity={validity} />
             </label>
         );
