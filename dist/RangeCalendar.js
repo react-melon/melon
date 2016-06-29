@@ -200,13 +200,13 @@
             var name = props.name;
             var begin = props.begin;
             var end = props.end;
-            var validity = props.validity;
             var placeholder = props.placeholder;
-            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'begin', 'end', 'validity', 'placeholder']);
+            var others = babelHelpers.objectWithoutProperties(props, ['lang', 'disabled', 'size', 'name', 'begin', 'end', 'placeholder']);
             var _state2 = this.state;
             var open = _state2.open;
             var date = _state2.date;
             var value = _state2.value;
+            var validity = _state2.validity;
 
 
             begin = begin ? this.parseDate(begin) : null;

@@ -56,23 +56,20 @@ export default class Uploader extends InputComponent {
     setFile(value) {
 
         this.setState({
-            value,
             isUploaded: true,
             isUploading: false
         }, () => {
             super.onChange({
                 type: 'change',
                 target: this,
-                value: value
+                value
             });
         });
-
     }
 
     clearFile() {
 
         this.setState({
-            rawValue: '',
             isUploaded: false,
             isUploading: false
         }, () => {
@@ -82,7 +79,6 @@ export default class Uploader extends InputComponent {
                 target: this,
                 value: ''
             });
-
         });
 
     }
@@ -180,6 +176,7 @@ export default class Uploader extends InputComponent {
 Uploader.displayName = 'Uploader';
 
 Uploader.propTypes = {
+    ...InputComponent.propTypes,
     multiple: PropTypes.bool,
     accept: PropTypes.string,
     files: PropTypes.array,
@@ -190,6 +187,5 @@ Uploader.propTypes = {
 
 Uploader.defaultProps = {
     ...InputComponent.defaultProps,
-    btnText: '点击上传',
-    validateEvents: ['change']
+    btnText: '点击上传'
 };

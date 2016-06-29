@@ -80,7 +80,6 @@
             var _this3 = this;
 
             this.setState({
-                value: value,
                 isUploaded: true,
                 isUploading: false
             }, function () {
@@ -96,7 +95,6 @@
             var _this4 = this;
 
             this.setState({
-                rawValue: '',
                 isUploaded: false,
                 isUploading: false
             }, function () {
@@ -219,17 +217,16 @@
 
     Uploader.displayName = 'Uploader';
 
-    Uploader.propTypes = {
+    Uploader.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
         multiple: _react.PropTypes.bool,
         accept: _react.PropTypes.string,
         files: _react.PropTypes.array,
         upload: _react.PropTypes.func.isRequired,
         btnText: _react.PropTypes.string,
         label: _react.PropTypes.string
-    };
+    });
 
     Uploader.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
-        btnText: '点击上传',
-        validateEvents: ['change']
+        btnText: '点击上传'
     });
 });
