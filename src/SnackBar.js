@@ -8,7 +8,7 @@ import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 import Button from './Button';
 import * as dom from './common/util/dom';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('SnackBar');
 

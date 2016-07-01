@@ -6,8 +6,8 @@
 import React, {PropTypes} from 'react';
 import BoxGroup from './BoxGroup';
 import * as date from './common/util/date';
-import {create} from './common/util/cxBuilder';
-import InputComponent from './InputComponent';
+import {create} from 'melon-core/classname/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
 
 const cx = create('UnitCalendar');
 

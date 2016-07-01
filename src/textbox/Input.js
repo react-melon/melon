@@ -4,7 +4,7 @@
  */
 
 import {Component, createElement, PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TextBoxInput');
 
@@ -16,7 +16,6 @@ export default class TextBoxInput extends Component {
 
         const {
             multiline,
-            className,
             rows,
             isFocus,
             ...rest

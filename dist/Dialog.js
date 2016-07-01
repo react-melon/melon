@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-dom', './Mask', './common/util/dom', './dialog/DialogWindow', './common/util/cxBuilder', 'react-motion', "./babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', './Mask', './common/util/dom', './dialog/DialogWindow', 'melon-core/classname/cxBuilder', 'react-motion', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-dom'), require('./Mask'), require('./common/util/dom'), require('./dialog/DialogWindow'), require('./common/util/cxBuilder'), require('react-motion'), require("./babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('./Mask'), require('./common/util/dom'), require('./dialog/DialogWindow'), require('melon-core/classname/cxBuilder'), require('react-motion'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}

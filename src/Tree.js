@@ -6,7 +6,7 @@
 
 import React, {Component, PropTypes, cloneElement, Children} from 'react';
 import ReactDOM from 'react-dom';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import TreeNode from './tree/TreeNode';
 
 const cx = create('Tree');

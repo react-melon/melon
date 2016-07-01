@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', '../common/util/cxBuilder', './Header', './Selector', './Pager', './Month', '../common/util/date', "../babelHelpers"], factory);
+        define(['exports', 'react', 'melon-core/classname/cxBuilder', './Header', './Selector', './Pager', './Month', '../common/util/date', "../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Header'), require('./Selector'), require('./Pager'), require('./Month'), require('../common/util/date'), require("../babelHelpers"));
+        factory(exports, require('react'), require('melon-core/classname/cxBuilder'), require('./Header'), require('./Selector'), require('./Pager'), require('./Month'), require('../common/util/date'), require("../babelHelpers"));
     } else {
         var mod = {
             exports: {}

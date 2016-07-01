@@ -5,12 +5,11 @@
  */
 
 
-
 import React, {PropTypes} from 'react';
-import InputComponent from './InputComponent';
-import {create} from './common/util/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import {create} from 'melon-core/classname/cxBuilder';
 import CenterRipple from './ripples/CenterRipple';
-import Validity from './Validity';
+import Validity from 'melon-core/Validity';
 
 const cx = create('Toggle');
 

@@ -5,7 +5,7 @@
 
 
 import React, {Component, PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import RippleCircle from './RippleCircle';
 import {spring, TransitionMotion} from 'react-motion';
 

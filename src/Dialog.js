@@ -9,7 +9,7 @@ import Mask from './Mask';
 import dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
 
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 import {Motion, spring} from 'react-motion';
 

@@ -6,7 +6,7 @@
 import React, {PropTypes, Component} from 'react';
 import moment from 'moment';
 
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TimePickerClockHand');
 

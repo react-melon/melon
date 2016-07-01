@@ -9,11 +9,11 @@ import Calendar from './Calendar';
 import Icon from './Icon';
 import Confirm from './Confirm';
 import Panel from './calendar/Panel';
-import Validity from './Validity';
-import {create} from './common/util/cxBuilder';
-import InputComponent from './InputComponent';
+import Validity from 'melon-core/Validity';
+import {create} from 'melon-core/classname/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
 import * as DateTime from './common/util/date';
-import {getNextValidity} from './common/util/syncPropsToState';
+import {getNextValidity} from 'melon-core/util/syncPropsToState';
 
 const cx = create('RangeCalendar');
 

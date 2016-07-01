@@ -7,7 +7,7 @@ import React, {Component, PropTypes} from 'react';
 import {Motion, spring} from 'react-motion';
 import domUtil from '../common/util/dom';
 
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('SeparatePopup');
 

@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './Icon', './common/util/cxBuilder', './common/util/array', "./babelHelpers"], factory);
+        define(['exports', 'react', './Icon', 'melon-core/classname/cxBuilder', './common/util/array', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./Icon'), require('./common/util/cxBuilder'), require('./common/util/array'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./Icon'), require('melon-core/classname/cxBuilder'), require('./common/util/array'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -37,9 +37,7 @@
 
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
-            var _props$page = props.page;
-            var page = _props$page === undefined ? 0 : _props$page;
-
+            var page = props.page;
 
             _this.state = { page: page };
 
@@ -48,10 +46,10 @@
             return _this;
         }
 
-        Pager.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+        Pager.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
+            var page = _ref.page;
+            var total = _ref.total;
 
-            var page = nextProps.page;
-            var total = nextProps.total;
 
             if (page < 0) {
                 page = 0;
@@ -65,20 +63,12 @@
         };
 
         Pager.prototype.onMainClick = function onMainClick(e) {
-            var _this2 = this;
+
+            e.preventDefault();
 
             var currentTarget = e.currentTarget;
             var target = e.target;
 
-
-            e.preventDefault();
-
-            // 不加这个React会报错 ISSUE#4865
-            if (e.stopPropagation) {
-                e.stopPropagation();
-            } else {
-                e.cancelBubble = true;
-            }
 
             var role = target.getAttribute('data-role');
 
@@ -104,9 +94,16 @@
                 return;
             }
 
-            this.setState({ page: page }, onChange ? function () {
-                return onChange({ target: _this2, page: page });
-            } : null);
+            // 被控制的
+            if (onChange) {
+                onChange({
+                    target: this,
+                    page: page
+                });
+                return;
+            }
+
+            this.setState({ page: page });
         };
 
         Pager.prototype.range = function range(start, stop, paddingLeft, paddingRight) {
@@ -126,7 +123,7 @@
 
             var pageText = void 0;
 
-            if (!useLang && part) {
+            if (!useLang && part && part !== 'ellipsis') {
                 pageText = _react2['default'].createElement(_Icon2['default'], { icon: Pager.ICONS[part] });
             } else {
                 pageText = lang[part] || page + 1;
@@ -139,16 +136,12 @@
                     key: part + page,
                     'data-role': 'pager-item',
                     'data-page': page },
-                _react2['default'].createElement(
-                    'a',
-                    { href: '#' },
-                    pageText
-                )
+                pageText
             );
         };
 
         Pager.prototype.render = function render() {
-            var _this3 = this;
+            var _this2 = this;
 
             var props = this.props;
             var state = this.state;
@@ -157,14 +150,21 @@
             var padding = props.padding;
             var showCount = props.showCount;
             var useLang = props.useLang;
-            var lang = props.lang;
             var showAlways = props.showAlways;
-            var others = babelHelpers.objectWithoutProperties(props, ['total', 'first', 'padding', 'showCount', 'useLang', 'lang', 'showAlways']);
-            var page = state.page;
+            var others = babelHelpers.objectWithoutProperties(props, ['total', 'first', 'padding', 'showCount', 'useLang', 'showAlways']);
 
+
+            var page = state.page;
 
             showCount = showCount > total ? total : showCount;
             page = page - first;
+
+            var className = cx(props).addVariants(useLang ? 'lang' : null).build();
+
+            if (!showAlways && total <= 1) {
+                return _react2['default'].createElement('ul', babelHelpers['extends']({}, others, {
+                    className: className }));
+            }
 
             var wing = Math.floor(showCount / 2);
 
@@ -227,13 +227,13 @@
                     };
                 }
 
-                return _this3.renderItem(conf);
+                return _this2.renderItem(conf);
             });
 
             return _react2['default'].createElement(
                 'ul',
                 babelHelpers['extends']({}, others, {
-                    className: cx(props).addVariants(useLang ? 'lang' : null).build(),
+                    className: className,
                     onClick: this.onMainClick }),
                 result
             );
@@ -305,7 +305,6 @@
 
     Pager.ICONS = {
         prev: 'navigate-before',
-        next: 'navigate-next',
-        ellipsis: 'keyboard-control'
+        next: 'navigate-next'
     };
 });

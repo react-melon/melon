@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './Calendar', './Icon', './Confirm', './calendar/Panel', './Validity', './common/util/cxBuilder', './InputComponent', './common/util/date', './common/util/syncPropsToState', "./babelHelpers"], factory);
+        define(['exports', 'react', './Calendar', './Icon', './Confirm', './calendar/Panel', 'melon-core/Validity', 'melon-core/classname/cxBuilder', 'melon-core/InputComponent', './common/util/date', 'melon-core/util/syncPropsToState', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./Calendar'), require('./Icon'), require('./Confirm'), require('./calendar/Panel'), require('./Validity'), require('./common/util/cxBuilder'), require('./InputComponent'), require('./common/util/date'), require('./common/util/syncPropsToState'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./Calendar'), require('./Icon'), require('./Confirm'), require('./calendar/Panel'), require('melon-core/Validity'), require('melon-core/classname/cxBuilder'), require('melon-core/InputComponent'), require('./common/util/date'), require('melon-core/util/syncPropsToState'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}

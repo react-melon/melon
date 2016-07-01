@@ -269,6 +269,6 @@
      * @return {number} 相差的年数
      */
     function yearDiff(d1, d2) {
-        return ~ ~(this.monthDiff(d1, d2) / 12);
+        return ~~(this.monthDiff(d1, d2) / 12);
     }
 });
