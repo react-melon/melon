@@ -26,7 +26,6 @@
     "lodash": "^3.10.1",
     "mime": "^1.3.4",
     "mocha": "^2.2.5",
-    "moment": "^2.13.0",
     "nib": "^1.1.0",
     "react-addons-test-utils": "^0.14.3",
     "stylus": "^0.54.2",
@@ -65,6 +64,8 @@
     "dependencies": {}
   },
   "dependencies": {
+    "melon-core": "^0.3.1",
+    "moment": "^2.13.0",
     "react": "^0.14.8",
     "react-dom": "0.14.8",
     "react-motion": "^0.4.2"
