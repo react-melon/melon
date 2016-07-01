@@ -4,14 +4,14 @@
  */
 
 import React, {PropTypes} from 'react';
-import InputComponent from './InputComponent';
-import {create} from './common/util/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import {create} from 'melon-core/classname/cxBuilder';
 import Icon  from './Icon';
 import Confirm from './Confirm';
 import Panel from './calendar/Panel';
 import * as DateTime from './common/util/date';
-import Validity from './Validity';
-import {getNextValidity} from './common/util/syncPropsToState';
+import Validity from 'melon-core/Validity';
+import {getNextValidity} from 'melon-core/util/syncPropsToState';
 
 const cx = create('Calendar');
 

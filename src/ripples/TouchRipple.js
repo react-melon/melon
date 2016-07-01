@@ -7,7 +7,7 @@ import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 import RippleCircle from './RippleCircle';
 import dom from '../common/util/dom';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import {spring, TransitionMotion} from 'react-motion';
 
 const cx = create('TouchRipple');

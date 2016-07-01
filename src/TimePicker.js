@@ -7,13 +7,13 @@ import React, {PropTypes} from 'react';
 import moment from 'moment';
 import ReactDOM from 'react-dom';
 
-import InputComponent from './InputComponent';
-import {create} from './common/util/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import {create} from 'melon-core/classname/cxBuilder';
 import Icon  from './Icon';
 import Confirm from './Confirm';
 import Panel from './timepicker/Panel';
-import Validity from './Validity';
-import {getNextValidity} from './common/util/syncPropsToState';
+import Validity from 'melon-core/Validity';
+import {getNextValidity} from 'melon-core/util/syncPropsToState';
 
 
 const cx = create('TimePicker');

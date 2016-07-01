@@ -4,7 +4,7 @@
  */
 
 import React, {PropTypes, Component} from 'react';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import * as windowScrollHelper from './dialog/windowScrollHelper';
 
 const cx = create('Mask');

@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-dom', './Icon', './select/SeparatePopup', './Validity', './InputComponent', './select/OptionGroup', './select/Option', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', './Icon', './select/SeparatePopup', 'melon-core/Validity', 'melon-core/InputComponent', './select/OptionGroup', './select/Option', 'melon-core/classname/cxBuilder', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-dom'), require('./Icon'), require('./select/SeparatePopup'), require('./Validity'), require('./InputComponent'), require('./select/OptionGroup'), require('./select/Option'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('./Icon'), require('./select/SeparatePopup'), require('melon-core/Validity'), require('melon-core/InputComponent'), require('./select/OptionGroup'), require('./select/Option'), require('melon-core/classname/cxBuilder'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}

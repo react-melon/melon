@@ -5,7 +5,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import Bar from './scrollview/Bar';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('scrollview');
 

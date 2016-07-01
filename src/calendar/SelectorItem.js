@@ -4,7 +4,7 @@
  */
 
 import React, {PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Item from './Item';
 import * as DateTime from '../common/util/date';
 

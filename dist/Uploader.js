@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './Button', './Icon', './Progress', './Link', './Validity', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', './Button', './Icon', './Progress', './Link', 'melon-core/Validity', 'melon-core/InputComponent', 'melon-core/classname/cxBuilder', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./Button'), require('./Icon'), require('./Progress'), require('./Link'), require('./Validity'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./Button'), require('./Icon'), require('./Progress'), require('./Link'), require('melon-core/Validity'), require('melon-core/InputComponent'), require('melon-core/classname/cxBuilder'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}

@@ -25,15 +25,17 @@ class View extends React.Component {
 
                 <Title level={5}>图标</Title>
 
-                <Pager total={10} page={1} onChange={this.onChange.bind(this, 1)} />
+                <Pager total={10} page={this.state.page1} onChange={this.onChange.bind(this, 1)} />
 
                 {this.getCurrentPage(1)}
 
                 <Title level={5}>文字</Title>
 
-                <Pager total={10} page={1} first={1} useLang onChange={this.onChange.bind(this, 2)} />
+                <Pager total={10} page={this.state.page2} first={1} useLang onChange={this.onChange.bind(this, 2)} />
 
                 {this.getCurrentPage(2)}
+
+                <Pager total={1} showAlways={false} useLang />
 
             </div>
         );

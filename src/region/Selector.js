@@ -5,7 +5,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import Icon from '../Icon';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('RegionSelector');
 

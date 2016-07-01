@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import TouchRipple from './ripples/TouchRipple';
 
 const cx = create('Button');

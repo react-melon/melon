@@ -5,7 +5,7 @@
 
 import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Item from './SelectorItem';
 import * as DateTime from '../common/util/date';
 import {range} from '../common/util/array';

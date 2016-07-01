@@ -11,7 +11,6 @@ module.exports = {
         'Calendar',
         'Dialog',
         'Drawer',
-        'Form',
         'Grid',
         'Icon',
         'Pager',

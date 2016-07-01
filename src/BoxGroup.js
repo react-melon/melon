@@ -6,9 +6,9 @@
 
 import React, {PropTypes, Children} from 'react';
 import Option from './boxgroup/Option';
-import {create} from './common/util/cxBuilder';
-import InputComponent from './InputComponent';
-import Validity from './Validity';
+import {create} from 'melon-core/classname/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import Validity from 'melon-core/Validity';
 
 const cx = create('BoxGroup');
 

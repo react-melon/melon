@@ -29,7 +29,7 @@ class View extends React.Component {
                     onClick={() => this.setState({example1: !this.state.example1})}>
                     打开
                 </Button>
-                <Zippy expand={this.state.example1} size={25 * 16}>
+                <Zippy expand={this.state.example1} style={{height: 25 * 16}}>
                     <div style={{width: 800, lineHeight: '25px'}}>
                         <p>如何让你遇见我</p>
                         <p>在我最美丽的时刻为这</p>
@@ -55,7 +55,7 @@ class View extends React.Component {
                     onClick={() => this.setState({example2: !this.state.example2})}>
                     打开
                 </Button>
-                <Zippy expand={this.state.example2} size={300} horizontal>
+                <Zippy expand={this.state.example2} style={{width: 300}} horizontal>
                     <div style={{width: 300, backgroundColor: '#fbfbfb', lineHeight: '25px'}}>
                         <p>垂柳里，兰舟当日曾系。</p>
                         <p>千帆过尽，只伊人不随书至。</p>

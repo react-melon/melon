@@ -4,7 +4,7 @@
  */
 
 import React, {PropTypes, Component} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Selector from './Selector';
 import Province from './Province';
 import City from './City';
