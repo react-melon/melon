@@ -5,7 +5,7 @@
 
 let waitsInProgress = [];
 
-const waitFor = (test, message, done, timeLeft) => {
+export default function waitFor(test, message, done, timeLeft) {
     timeLeft = timeLeft === undefined ? 100 : timeLeft;
     waitsInProgress.push(setTimeout(() => {
         if (timeLeft <= 0) {
@@ -18,8 +18,6 @@ const waitFor = (test, message, done, timeLeft) => {
             waitFor(test, message, done, timeLeft - 10);
         }
     }, 10));
-};
+}
 
 waitFor.clear = () => waitsInProgress.map(clearTimeout); // optionally call this in the beforeEach to ensure rogue tests are not still waiting
-
-export default waitFor;
