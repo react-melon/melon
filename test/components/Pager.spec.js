@@ -60,6 +60,23 @@ describe('Pager', () => {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
+    it('showAlays', () => {
+        const renderer = TestUtils.createRenderer();
+        renderer.render(
+            <Pager total={1} page={0} showAlways={false} />
+        );
+        let actualElement = renderer.getRenderOutput();
+        let expectedElement = (
+            <ul
+                className="ui-pager"
+                page={0}
+                disabled={false}
+                lang={{ellipsis: '...', next: '下一页', prev: '上一页'}}>
+            </ul>
+        );
+        expect(actualElement).toEqualJSX(expectedElement);
+    });
+
     describe('click', () => {
 
         let component;
@@ -120,6 +137,52 @@ describe('Pager', () => {
 
             then(() => {
                 expect(component.state.page).toBe(2);
+                done();
+            });
+        });
+
+    });
+
+
+    describe('controlled', () => {
+
+        it('click', done => {
+            const spy = expect.createSpy();
+            let pager;
+
+            class TestComponent extends React.Component {
+
+                constructor(props) {
+                    super(props);
+                    this.state = {page: 0};
+                }
+
+                render() {
+                    return (
+                        <Pager
+                            total={10}
+                            page={this.state.page}
+                            onChange={({page, target}) => {
+                                expect(page).toBe(4);
+                                expect(target).toBe(pager);
+                                this.setState({page});
+                                spy();
+                            }} />
+                    );
+                }
+            }
+
+            const component = TestUtils.renderIntoDocument(
+                <TestComponent />
+            );
+
+            pager = TestUtils.findRenderedComponentWithType(component, Pager);
+
+            const items = TestUtils.scryRenderedDOMComponentsWithTag(component, 'li');
+            TestUtils.Simulate.click(items[5]);
+            then(() => {
+                expect(spy.calls.length).toBe(1);
+                expect(component.state.page).toBe(4);
                 done();
             });
         });

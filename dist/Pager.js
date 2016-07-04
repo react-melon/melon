@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './Icon', 'melon-core/classname/cxBuilder', './common/util/array', "./babelHelpers"], factory);
+        define(['exports', 'react', './Icon', 'melon-core/classname/cxBuilder', 'melon-core/util/array', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./Icon'), require('melon-core/classname/cxBuilder'), require('./common/util/array'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./Icon'), require('melon-core/classname/cxBuilder'), require('melon-core/util/array'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -66,18 +66,11 @@
 
             e.preventDefault();
 
-            var currentTarget = e.currentTarget;
             var target = e.target;
-
 
             var role = target.getAttribute('data-role');
 
-            while (role !== 'pager-item' && target !== currentTarget) {
-                target = target.parentNode;
-                role = target.getAttribute('data-role');
-            }
-
-            if (target === currentTarget) {
+            if (role !== 'pager-item') {
                 return;
             }
 
@@ -87,8 +80,6 @@
 
 
             var page = +target.getAttribute('data-page') + first;
-
-            target = null;
 
             if (this.state.page === page) {
                 return;

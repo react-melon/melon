@@ -7,7 +7,7 @@ import React, {Component, PropTypes} from 'react';
 import moment from 'moment';
 
 import {create} from 'melon-core/classname/cxBuilder';
-import {range} from '../common/util/array';
+import {range} from 'melon-core/util/array';
 import {
     getPosition,
     on,

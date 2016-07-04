@@ -6,7 +6,7 @@
 import React, {Component, PropTypes} from 'react';
 import Icon from './Icon';
 import {create} from 'melon-core/classname/cxBuilder';
-import {range} from './common/util/array';
+import {range} from 'melon-core/util/array';
 
 const cx = create('Pager');
 
@@ -42,24 +42,17 @@ export default class Pager extends Component {
 
         e.preventDefault();
 
-        let {currentTarget, target} = e;
+        const target = e.target;
 
-        let role = target.getAttribute('data-role');
+        const role = target.getAttribute('data-role');
 
-        while (role !== 'pager-item' && target !== currentTarget) {
-            target = target.parentNode;
-            role = target.getAttribute('data-role');
-        }
-
-        if (target === currentTarget) {
+        if (role !== 'pager-item') {
             return;
         }
 
         const {first, onChange} = this.props;
 
         const page = +target.getAttribute('data-page') + first;
-
-        target = null;
 
         if (this.state.page === page) {
             return;
