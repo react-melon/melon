@@ -8,7 +8,6 @@ module.exports = {
         'BoxGroup',
         'Breadcrumb',
         'Button',
-        'Calendar',
         'Dialog',
         'Drawer',
         'Grid',
