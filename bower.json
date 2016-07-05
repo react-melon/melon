@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "http://react-melon.github.io/melon",
   "authors": [
     "ludafa@outlook.com"
@@ -29,7 +29,6 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-motion": "https://npmcdn.com/react-motion/bower.zip",
-    "melon-core": "^0.3.0",
-    "moment": "^2.13.0"
+    "melon-core": "^0.3.0"
   }
 }

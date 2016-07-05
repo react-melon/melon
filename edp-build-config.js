@@ -21,7 +21,7 @@ exports.output = path.resolve(__dirname, 'output');
 // var pageEntries = 'html,htm,phtml,tpl,vm';
 
 exports.getProcessors = function () {
-    var jsProcessor = new JsCompressor();
+    // var jsProcessor = new JsCompressor();
     var pathMapperProcessor = new PathMapper();
     var addCopyright = new AddCopyright();
 
@@ -96,5 +96,4 @@ exports.injectProcessor = function (processors) {
         global[key] = processors[key];
     }
     global.BabelProcessor = require('./tool/BabelProcessor.js');
-    global.AmdWrapper = require('./tool/AmdWrapper.js');
 };
