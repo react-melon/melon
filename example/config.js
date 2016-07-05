@@ -22,7 +22,6 @@ module.exports = {
         'Table',
         'Tabs',
         'TextBox',
-        'TimePicker',
         'Tree',
         'Tooltip',
         'Uploader',
