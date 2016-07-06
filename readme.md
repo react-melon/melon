@@ -12,6 +12,34 @@ bower install melon
 
 ![image](http://boscdn.bpc.baidu.com/mms-res/react-melon/melon/melonFamily.png "melon-family")
 
+## Components
+
+* BoxGroup
+* Breadcrumb
+* Button
+* Dialog
+* Drawer
+* Grid
+* Icon
+* Pager
+* Progress
+* Region
+* ScrollView
+* Select
+* Slider
+* SnackBar
+* Table
+* Tabs
+* TextBox
+* Tree
+* Tooltip
+* Uploader
+* Zippy
+
+## Demos
+
+[http://react-melon.github.io/melon](http://react-melon.github.io/melon)
+
 ## Compatible for ie8
 
 You need use `es5-shim` 和 `es5-sham` on `ie8`

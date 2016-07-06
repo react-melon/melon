@@ -9,7 +9,6 @@
     "example": "example"
   },
   "devDependencies": {
-    "babel-cli": "^6.7.5",
     "babel-core": "^6.7.2",
     "babel-istanbul": "^0.11.0",
     "babel-plugin-external-helpers": "^6.5.0",
