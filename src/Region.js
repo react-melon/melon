@@ -1,6 +1,6 @@
 /**
  * @file melon/Region
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React, {PropTypes} from 'react';
@@ -8,8 +8,8 @@ import React, {PropTypes} from 'react';
 import Selector from './region/Selector';
 import Area from './region/Area';
 import * as helper from './region/helper';
-import InputComponent from './InputComponent';
-import {create} from './common/util/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Region');
 

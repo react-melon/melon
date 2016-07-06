@@ -1,6 +1,6 @@
 /**
  * @file TextBox单测
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 /* globals before */
@@ -230,20 +230,6 @@ describe('TextBox', function () {
 
             then(() => {
                 expect(textbox.getValue()).toBe('');
-            });
-
-        });
-
-
-        it('syncTextareaHeight', () => {
-
-            const textarea = TestUtils.findRenderedDOMComponentWithTag(textbox, 'textarea');
-            textarea.value = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-            TestUtils.Simulate.change(textarea);
-
-            then(() => {
-                expect(textbox.state.value).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-                expect(textarea.style.height).toBe(textarea.scrollHeight + 'px');
             });
 
         });

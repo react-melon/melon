@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-dom', './textbox/FloatLabel', './textbox/Input', './Validity', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', './textbox/FloatLabel', './textbox/Input', 'melon-core/Validity', 'melon-core/InputComponent', 'melon-core/classname/cxBuilder', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-dom'), require('./textbox/FloatLabel'), require('./textbox/Input'), require('./Validity'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('./textbox/FloatLabel'), require('./textbox/Input'), require('melon-core/Validity'), require('melon-core/InputComponent'), require('melon-core/classname/cxBuilder'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}

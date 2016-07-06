@@ -6,7 +6,7 @@
 import React, {Component, PropTypes, Children} from 'react';
 import Row from './table/Row';
 import * as dom from './common/util/dom';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Column from './table/Column';
 
 const cx = create('Table');

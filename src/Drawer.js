@@ -5,7 +5,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import Mask from './Mask';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import domUtil from './common/util/dom';
 
 const cx = create('Drawer');

@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './boxgroup/Option', './common/util/cxBuilder', './InputComponent', './Validity', "./babelHelpers"], factory);
+        define(['exports', 'react', './boxgroup/Option', 'melon-core/classname/cxBuilder', 'melon-core/InputComponent', 'melon-core/Validity', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./boxgroup/Option'), require('./common/util/cxBuilder'), require('./InputComponent'), require('./Validity'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./boxgroup/Option'), require('melon-core/classname/cxBuilder'), require('melon-core/InputComponent'), require('melon-core/Validity'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -29,7 +29,7 @@
 
     /**
      * @file melon/BoxGroup
-     * @author cxtom<cxtom2010@gmail.com>
+     * @author cxtom<cxtom2008@gmail.com>
      * @author leon<ludafa@outlook.com>
      */
 

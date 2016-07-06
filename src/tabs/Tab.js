@@ -1,10 +1,10 @@
 /**
  * @file melon Tabs Tab
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TabsItem');
 

@@ -4,7 +4,7 @@
  */
 
 import React, {Component, PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import TableCell from './Cell';
 
 const cx = create('TableRow');
@@ -72,8 +72,7 @@ export default class TableRow extends Component {
     render() {
 
         const props = this.props;
-        const columns = props.columns;
-        const tableWidth = props.tableWidth;
+        const {columns, tableWidth} = props;
 
         return (
             <div

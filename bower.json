@@ -1,12 +1,12 @@
 {
   "name": "melon",
-  "version": "0.2.31",
-  "homepage": "https://github.com/jinzhubaofu/melon",
+  "version": "0.3.1",
+  "homepage": "http://react-melon.github.io/melon",
   "authors": [
     "ludafa@outlook.com"
   ],
   "description": "react ui components",
-  "main": "src/main",
+  "main": "src",
   "moduleType": [
     "amd"
   ],
@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "react": "^0.14.8",
-    "react-motion": "https://npmcdn.com/react-motion/bower.zip"
+    "react-motion": "https://npmcdn.com/react-motion/bower.zip",
+    "melon-core": "^0.3.0"
   }
 }

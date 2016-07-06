@@ -1,10 +1,10 @@
 /**
  * @file Region/RegionProvince
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React, {PropTypes, Component} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Selector from './Selector';
 import * as helper from './helper';
 

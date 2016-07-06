@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -rf dist
+rm -rf dist lib
 edp build -f
 mv output/asset dist
 mkdir -p lib
