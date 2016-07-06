@@ -1,6 +1,6 @@
 /**
  * @file waitFor from http://brandonokert.com/2015/08/04/TestingInReact/
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 let waitsInProgress = [];

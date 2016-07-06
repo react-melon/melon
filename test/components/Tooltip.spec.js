@@ -1,6 +1,6 @@
 /**
  * @file Tooltip单测
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React from 'react';
@@ -17,7 +17,6 @@ describe('Tooltip', () => {
     let component;
 
     afterEach(() => {
-        component.componentWillUnmount();
         component = null;
     });
 

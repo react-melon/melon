@@ -1,6 +1,6 @@
 /**
  * @file melon Tabs Tab
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {PropTypes} from 'react';
