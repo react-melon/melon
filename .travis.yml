@@ -1,8 +1,12 @@
 language: node_js
 node_js:
-    - "4.2.3"
+    - 4
 install:
-    - npm install npm@3 -g && npm -v && npm install
+|
+    npm install -g npm@latest
+    npm cache clean
+    npm --version
+    npm install --registry http://registry.npmjs.org
 script:
     - npm run test
 after_script:
