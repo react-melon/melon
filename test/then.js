@@ -1,12 +1,11 @@
 /**
  * @file waitFor from http://brandonokert.com/2015/08/04/TestingInReact/
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 
-const then = function (callback, timeout) {
+export default function then(callback, timeout) {
     setTimeout(callback, timeout > 0 ? timeout : 0);
-    return {then: then};
-};
+    return {then};
+}
 
-module.exports = then;

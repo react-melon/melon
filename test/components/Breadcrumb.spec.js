@@ -1,6 +1,6 @@
 /**
  * @file Breadcrumb单测
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React from 'react';

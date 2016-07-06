@@ -1,16 +1,19 @@
 /**
  * @file Pager单测
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React from 'react';
 import expect from 'expect';
+import expectJSX from 'expect-jsx';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
 
 import Pager from '../../src/Pager';
 import Icon from '../../src/Icon';
+
+expect.extend(expectJSX);
 
 /* global before */
 
