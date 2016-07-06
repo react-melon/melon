@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-dom', './RippleCircle', '../common/util/dom', '../common/util/cxBuilder', 'react-motion', "../babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', './RippleCircle', '../common/util/dom', 'melon-core/classname/cxBuilder', 'react-motion', "../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-dom'), require('./RippleCircle'), require('../common/util/dom'), require('../common/util/cxBuilder'), require('react-motion'), require("../babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('./RippleCircle'), require('../common/util/dom'), require('melon-core/classname/cxBuilder'), require('react-motion'), require("../babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -28,7 +28,7 @@
 
     /**
      * @file melon/TouchRipple
-     * @author cxtom<cxtom2010@gmail.com>
+     * @author cxtom<cxtom2008@gmail.com>
      */
 
     var cx = (0, _cxBuilder.create)('TouchRipple');

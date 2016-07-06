@@ -1,16 +1,19 @@
 /**
  * @file Pager单测
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 import React from 'react';
 import expect from 'expect';
+import expectJSX from 'expect-jsx';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
 
 import Pager from '../../src/Pager';
 import Icon from '../../src/Icon';
+
+expect.extend(expectJSX);
 
 /* global before */
 
@@ -23,37 +26,55 @@ describe('Pager', () => {
         );
         let actualElement = renderer.getRenderOutput();
         let expectedElement = (
-            <ul className="ui-pager" page={1} disabled={false} onClick={function noRefCheck() {}}>
+            <ul
+                className="ui-pager"
+                page={1}
+                disabled={false}
+                lang={{ellipsis: '...', next: '下一页', prev: '上一页'}}
+                onClick={function noRefCheck() {}}>
                 <li
                     className="ui-pager-item state-prev"
                     data-page={0}
                     data-role="pager-item">
-                    <a href="#">
-                        <Icon icon="navigate-before" />
-                    </a>
+                    <Icon icon="navigate-before" />
                 </li>
                 <li
                     className={'ui-pager-item'}
                     key={1}
                     data-role="pager-item"
                     data-page={0}>
-                    <a href="#">1</a>
+                    1
                 </li>
                 <li
                     className={'ui-pager-item state-current'}
                     key={2}
                     data-role="pager-item"
                     data-page={1}>
-                    <a href="#">2</a>
+                    2
                 </li>
                 <li
                     className="ui-pager-item state-disabled state-next"
                     data-page={1}
                     data-role="pager-item">
-                    <a href="#">
-                        <Icon icon="navigate-next" />
-                    </a>
+                    <Icon icon="navigate-next" />
                 </li>
+            </ul>
+        );
+        expect(actualElement).toEqualJSX(expectedElement);
+    });
+
+    it('showAlays', () => {
+        const renderer = TestUtils.createRenderer();
+        renderer.render(
+            <Pager total={1} page={0} showAlways={false} />
+        );
+        let actualElement = renderer.getRenderOutput();
+        let expectedElement = (
+            <ul
+                className="ui-pager"
+                page={0}
+                disabled={false}
+                lang={{ellipsis: '...', next: '下一页', prev: '上一页'}}>
             </ul>
         );
         expect(actualElement).toEqualJSX(expectedElement);
@@ -62,7 +83,6 @@ describe('Pager', () => {
     describe('click', () => {
 
         let component;
-        let spy;
         let items;
 
         let current;
@@ -70,8 +90,7 @@ describe('Pager', () => {
         let next;
 
         beforeEach(() => {
-            spy = expect.createSpy();
-            component = TestUtils.renderIntoDocument(<Pager total={10} page={1} onChange={spy} />);
+            component = TestUtils.renderIntoDocument(<Pager total={10} page={1} />);
             items = TestUtils.scryRenderedDOMComponentsWithClass(component, 'ui-pager-item');
 
             current = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-pager-item state-current');
@@ -80,7 +99,7 @@ describe('Pager', () => {
         });
 
         afterEach(() => {
-            spy = component = current = prev = next = null;
+            component = current = prev = next = null;
             items.length = 0;
             items = null;
         });
@@ -101,7 +120,6 @@ describe('Pager', () => {
 
             then(() => {
                 expect(component.state.page).toBe(4);
-                expect(spy).toHaveBeenCalled();
                 done();
             });
         });
@@ -112,7 +130,6 @@ describe('Pager', () => {
 
             then(() => {
                 expect(component.state.page).toBe(0);
-                expect(spy).toHaveBeenCalled();
                 done();
             });
         });
@@ -123,7 +140,52 @@ describe('Pager', () => {
 
             then(() => {
                 expect(component.state.page).toBe(2);
-                expect(spy).toHaveBeenCalled();
+                done();
+            });
+        });
+
+    });
+
+
+    describe('controlled', () => {
+
+        it('click', done => {
+            const spy = expect.createSpy();
+            let pager;
+
+            class TestComponent extends React.Component {
+
+                constructor(props) {
+                    super(props);
+                    this.state = {page: 0};
+                }
+
+                render() {
+                    return (
+                        <Pager
+                            total={10}
+                            page={this.state.page}
+                            onChange={({page, target}) => {
+                                expect(page).toBe(4);
+                                expect(target).toBe(pager);
+                                this.setState({page});
+                                spy();
+                            }} />
+                    );
+                }
+            }
+
+            const component = TestUtils.renderIntoDocument(
+                <TestComponent />
+            );
+
+            pager = TestUtils.findRenderedComponentWithType(component, Pager);
+
+            const items = TestUtils.scryRenderedDOMComponentsWithTag(component, 'li');
+            TestUtils.Simulate.click(items[5]);
+            then(() => {
+                expect(spy.calls.length).toBe(1);
+                expect(component.state.page).toBe(4);
                 done();
             });
         });

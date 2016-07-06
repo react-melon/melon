@@ -1,15 +1,16 @@
 /**
  * @file melon Tabs Panel
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {PropTypes} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TabsPanel');
 
 export default function TabsPanel(props) {
 
+    /* eslint-disable fecs-min-vars-per-destructure */
     const {active, ...others} = props;
 
     return (

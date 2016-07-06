@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', 'melon-core/classname/cxBuilder', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('melon-core/classname/cxBuilder'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -22,7 +22,7 @@
 
     /**
      * @file Zippy
-     * @author cxtom(cxtom2010@gmail.com)
+     * @author cxtom(cxtom2008@gmail.com)
      */
 
     var cx = (0, _cxBuilder.create)('Zippy');

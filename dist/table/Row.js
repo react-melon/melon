@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', '../common/util/cxBuilder', './Cell', "../babelHelpers"], factory);
+        define(['exports', 'react', 'melon-core/classname/cxBuilder', './Cell', "../babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('../common/util/cxBuilder'), require('./Cell'), require("../babelHelpers"));
+        factory(exports, require('react'), require('melon-core/classname/cxBuilder'), require('./Cell'), require("../babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -89,6 +89,7 @@
             var props = this.props;
             var columns = props.columns;
             var tableWidth = props.tableWidth;
+
 
             return _react2['default'].createElement(
                 'div',

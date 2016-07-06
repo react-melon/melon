@@ -1,12 +1,12 @@
 /**
  * @file melon/Tabs
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {Component, PropTypes, cloneElement, Children} from  'react';
 import Tab from './tabs/Tab';
 import TabPanel from  './tabs/Panel';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Tabs');
 

@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', 'react-dom', './common/util/cxBuilder', './tree/TreeNode', "./babelHelpers"], factory);
+        define(['exports', 'react', 'react-dom', 'melon-core/classname/cxBuilder', './tree/TreeNode', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('react-dom'), require('./common/util/cxBuilder'), require('./tree/TreeNode'), require("./babelHelpers"));
+        factory(exports, require('react'), require('react-dom'), require('melon-core/classname/cxBuilder'), require('./tree/TreeNode'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -26,7 +26,7 @@
 
     /**
      * @file melon/Tree
-     * @author cxtom<cxtom2010@gmail.com>
+     * @author cxtom<cxtom2008@gmail.com>
      * @author leon<ludafa@outlook.com>
      */
 

@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Link');
 

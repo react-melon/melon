@@ -6,9 +6,9 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 
-import InputComponent from './InputComponent';
-import Validity from './Validity';
-import {create} from './common/util/cxBuilder';
+import InputComponent from 'melon-core/InputComponent';
+import Validity from 'melon-core/Validity';
+import {create} from 'melon-core/classname/cxBuilder';
 import domUtil from './common/util/dom';
 
 import SliderBar from './slider/Bar';

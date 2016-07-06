@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Item from './breadcrumb/Item';
 
 const cx = create('Breadcrumb');
@@ -21,14 +21,14 @@ export default function Breadcrumb(props) {
         <div {...rest} className={cx(props).build()}>
             {React.Children.map(
                 children,
-                (child, index) => {
-                    return child && child.type === Item
+                (child, index) => (
+                    child && child.type === Item
                         ? React.cloneElement(child, {
                             key: index,
                             level: index
                         })
-                        : null;
-                }
+                        : null
+                )
             )}
         </div>
     );

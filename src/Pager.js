@@ -1,12 +1,12 @@
 /**
  * @file melon/Pager
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {Component, PropTypes} from 'react';
 import Icon from './Icon';
-import {create} from './common/util/cxBuilder';
-import {range} from './common/util/array';
+import {create} from 'melon-core/classname/cxBuilder';
+import {range} from 'melon-core/util/array';
 
 const cx = create('Pager');
 
@@ -16,9 +16,7 @@ export default class Pager extends Component {
 
         super(props);
 
-        const {
-            page = 0
-        } = props;
+        const page = props.page;
 
         this.state = {page};
 
@@ -26,13 +24,10 @@ export default class Pager extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-
-        let page = nextProps.page;
-        const total = nextProps.total;
+    componentWillReceiveProps({page, total}) {
 
         if (page < 0) {
-            page = 0
+            page = 0;
         }
         else if (page > total) {
             page = total - 1;
@@ -41,33 +36,17 @@ export default class Pager extends Component {
         if (page !== this.state.page) {
             this.setState({page});
         }
-
     }
 
     onMainClick(e) {
 
-        const {currentTarget} = e;
-
-        let {target} = e;
-
         e.preventDefault();
 
-        // 不加这个React会报错 ISSUE#4865
-        if (e.stopPropagation) {
-            e.stopPropagation();
-        }
-        else {
-            e.cancelBubble = true;
-        }
+        const target = e.target;
 
-        let role = target.getAttribute('data-role');
+        const role = target.getAttribute('data-role');
 
-        while (role !== 'pager-item' && target !== currentTarget) {
-            target = target.parentNode;
-            role = target.getAttribute('data-role');
-        }
-
-        if (target === currentTarget) {
+        if (role !== 'pager-item') {
             return;
         }
 
@@ -75,16 +54,20 @@ export default class Pager extends Component {
 
         const page = +target.getAttribute('data-page') + first;
 
-        target = null;
-
         if (this.state.page === page) {
             return;
         }
 
-        this.setState(
-            {page},
-            onChange ? () => onChange({target: this, page: page}) : null
-        );
+        // 被控制的
+        if (onChange) {
+            onChange({
+                target: this,
+                page: page
+            });
+            return;
+        }
+
+        this.setState({page});
 
     }
 
@@ -130,7 +113,7 @@ export default class Pager extends Component {
 
         let pageText;
 
-        if (!useLang && part) {
+        if (!useLang && part && part !== 'ellipsis') {
             pageText = (<Icon icon={Pager.ICONS[part]} />);
         }
         else {
@@ -143,9 +126,7 @@ export default class Pager extends Component {
                 key={part + page}
                 data-role="pager-item"
                 data-page={page}>
-                <a href="#">
-                    {pageText}
-                </a>
+                {pageText}
             </li>
         );
     }
@@ -160,15 +141,25 @@ export default class Pager extends Component {
             padding,
             showCount,
             useLang,
-            lang,
             showAlways,
             ...others
         } = props;
 
-        let {page} = state;
+        let page = state.page;
 
         showCount = showCount > total ? total : showCount;
         page = page - first;
+
+        const className = cx(props).addVariants(useLang ? 'lang' : null).build();
+
+        if (!showAlways && total <= 1) {
+            return (
+                <ul
+                    {...others}
+                    className={className}>
+                </ul>
+            );
+        }
 
         const wing = Math.floor(showCount / 2);
 
@@ -243,7 +234,7 @@ export default class Pager extends Component {
         return (
             <ul
                 {...others}
-                className={cx(props).addVariants(useLang ? 'lang' : null).build()}
+                className={className}
                 onClick={this.onMainClick}>
                 {result}
             </ul>
@@ -313,6 +304,5 @@ Pager.propTypes = {
 
 Pager.ICONS = {
     prev: 'navigate-before',
-    next: 'navigate-next',
-    ellipsis: 'keyboard-control'
+    next: 'navigate-next'
 };

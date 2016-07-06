@@ -1,11 +1,11 @@
 /**
  * @file melon/Progress
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  * @author leon<ludafa@outlook.com>
  */
 
 import React, {Component, PropTypes} from 'react';
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Progress');
 

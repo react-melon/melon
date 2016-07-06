@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.2.31",
+  "version": "0.3.1",
   "description": "ui components for react",
   "main": "./src",
   "directories": {
@@ -11,6 +11,7 @@
   "devDependencies": {
     "babel-cli": "^6.7.5",
     "babel-core": "^6.7.2",
+    "babel-istanbul": "^0.11.0",
     "babel-plugin-external-helpers": "^6.5.0",
     "babel-plugin-transform-es2015-modules-umd": "^6.6.5",
     "babel-plugin-transform-es3-member-expression-literals": "^6.5.0",
@@ -19,22 +20,33 @@
     "babel-preset-es2015-loose": "^7.0.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-1": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "browserify-istanbul": "^2.0.0",
+    "coveralls": "^2.11.9",
     "expect": "^1.12.2",
     "expect-jsx": "^2.0.1",
-    "isparta": "^4.0.0",
-    "jsdom": "^8.4.0",
+    "karma": "^1.1.0",
+    "karma-browserify": "^5.0.5",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-coverage": "^1.0.0",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.0.4",
+    "karma-phantomjs-launcher": "^1.0.1",
     "lodash": "^3.10.1",
     "mime": "^1.3.4",
     "mocha": "^2.2.5",
-    "moment": "^2.13.0",
     "nib": "^1.1.0",
     "react-addons-test-utils": "^0.14.3",
     "stylus": "^0.54.2",
-    "swig": "^1.4.2"
+    "swig": "^1.4.2",
+    "watchify": "^3.7.0"
   },
   "scripts": {
-    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha test/components/** --compilers js:babel-core/register --require ./test/setup.js",
-    "coverage": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover --report html ./node_modules/.bin/_mocha -- test/components/** --require ./test/setup.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/karma start",
+    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test:local": "./node_modules/.bin/karma start",
     "lint": "fecs src",
     "build": "sh tool/build.sh"
   },
@@ -65,8 +77,9 @@
     "dependencies": {}
   },
   "dependencies": {
+    "melon-core": "^0.3.1",
     "react": "^0.14.8",
-    "react-dom": "0.14.7",
+    "react-dom": "0.14.8",
     "react-motion": "^0.4.2"
   }
 }

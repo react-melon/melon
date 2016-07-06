@@ -3,7 +3,7 @@
 $-melon-pager-states = {
 
     disabled: {
-        cursor: default
+        cursor: not-allowed
         color: $-melon-pager.item.states.disabled.color
 
         '&:hover': {
@@ -99,15 +99,3 @@ $-melon-pager-states = {
             &.state-{$state}
                 {$hashes}
 
-        a
-            text-decoration: none
-            color: inherit
-            display: block
-
-            &:link
-            &:active
-            &:hover
-                text-decoration: none
-                color: inherit
-                background: transparent
-                cursor: inherit

@@ -1,9 +1,9 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './region/Selector', './region/Area', './region/helper', './InputComponent', './common/util/cxBuilder', "./babelHelpers"], factory);
+        define(['exports', 'react', './region/Selector', './region/Area', './region/helper', 'melon-core/InputComponent', 'melon-core/classname/cxBuilder', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./region/Selector'), require('./region/Area'), require('./region/helper'), require('./InputComponent'), require('./common/util/cxBuilder'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./region/Selector'), require('./region/Area'), require('./region/helper'), require('melon-core/InputComponent'), require('melon-core/classname/cxBuilder'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
@@ -30,7 +30,7 @@
 
     /**
      * @file melon/Region
-     * @author cxtom(cxtom2010@gmail.com)
+     * @author cxtom(cxtom2008@gmail.com)
      */
 
     var cx = (0, _cxBuilder.create)('Region');

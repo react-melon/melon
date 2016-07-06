@@ -8,10 +8,10 @@ import Button from './Button';
 import Icon from './Icon';
 import Progress from './Progress';
 import Link from './Link';
-import Validity from './Validity';
-import InputComponent from './InputComponent';
+import Validity from 'melon-core/Validity';
+import InputComponent from 'melon-core/InputComponent';
 
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Uploader');
 

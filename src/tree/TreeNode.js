@@ -1,10 +1,10 @@
 /**
  * @file melon/Tree
- * @author cxtom<cxtom2010@gmail.com>
+ * @author cxtom<cxtom2008@gmail.com>
  */
 
 import React, {Component, PropTypes, Children} from 'react';
-import {create} from '../common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
 
 const cx = create('TreeNode');

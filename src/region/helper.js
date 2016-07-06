@@ -1,6 +1,6 @@
 /**
  * @file melon/region/mixin
- * @author cxtom(cxtom2010@gmail.com)
+ * @author cxtom(cxtom2008@gmail.com)
  */
 
 export function selectAll(child) {

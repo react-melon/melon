@@ -1,19 +1,19 @@
-# melon
+# melon [![Coverage Status](https://coveralls.io/repos/github/react-melon/melon/badge.svg?branch=)](https://coveralls.io/github/react-melon/melon?branch=)
 
-基于react的ui组件包
+A Set of React Components that Implement Google's Material Design
 
-## 启动example进行开发
+## Install
 
 ```
-npm install
-bower install
-edp webserver
+bower install melon
 ```
 
-浏览器打开 `http://localhost:8848/example/Button.jsx`即可
+## Melon Family
 
-## 兼容 ie8
+![image](http://boscdn.bpc.baidu.com/mms-res/react-melon/melon/melonFamily.png "melon-family")
 
-由于 `react` 需要在 `es5-shim` 和 `es5-sham` 的加持下才能使用，因此在 `ie8` 上必须在 `react` 加载前引入这两个库。
+## Compatible for ie8
 
-关于 `es5-shim` 和 `es5-sham` 参见这里 [es5-shim](https://github.com/es-shims/es5-shim)
+You need use `es5-shim` 和 `es5-sham` on `ie8`
+
+see `es5-shim` `es5-sham` [es5-shim](https://github.com/es-shims/es5-shim)

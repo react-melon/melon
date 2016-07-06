@@ -7,10 +7,10 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import FloatingLabel from './textbox/FloatLabel';
 import TextBoxInput from './textbox/Input';
-import Validity from './Validity';
-import InputComponent from './InputComponent';
+import Validity from 'melon-core/Validity';
+import InputComponent from 'melon-core/InputComponent';
 
-import {create} from './common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TextBox');
 
