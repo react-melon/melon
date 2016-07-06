@@ -44,7 +44,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test ./node_modules/.bin/karma start",
-    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
     "test:local": "./node_modules/.bin/karma start",
     "lint": "fecs src",
     "build": "sh tool/build.sh"
