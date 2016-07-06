@@ -1,4 +1,4 @@
-# melon [![Coverage Status](https://coveralls.io/repos/github/react-melon/melon/badge.svg?branch=)](https://coveralls.io/github/react-melon/melon?branch=)
+# melon [![Coverage Status](https://coveralls.io/repos/github/react-melon/melon/badge.svg?branch=)](https://coveralls.io/github/react-melon/melon?branch=) [![Version](https://img.shields.io/npm/v/melon.svg)](https://www.npmjs.com/package/melon)
 
 A Set of React Components that Implement Google's Material Design
 
