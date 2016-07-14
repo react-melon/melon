@@ -92,6 +92,8 @@ export default class Select extends InputComponent {
             this.container = container = null;
         }
 
+        super.componentWillUnmount();
+
     }
 
     showOptions() {

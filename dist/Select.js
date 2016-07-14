@@ -108,6 +108,8 @@
                 container.parentElement.removeChild(container);
                 this.container = container = null;
             }
+
+            _InputComponent.prototype.componentWillUnmount.call(this);
         };
 
         Select.prototype.showOptions = function showOptions() {

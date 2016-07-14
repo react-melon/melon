@@ -38,7 +38,6 @@
     "nib": "^1.1.0",
     "react-addons-test-utils": "^0.14.3",
     "stylus": "^0.54.2",
-    "swig": "^1.4.2",
     "watchify": "^3.7.0"
   },
   "scripts": {
@@ -50,7 +49,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jinzhubaofu/melon.git"
+    "url": "git+https://github.com/react-melon/melon.git"
   },
   "peerDependencies": {
     "react": ">=0.14"
@@ -63,9 +62,9 @@
   "author": "ludafa@outlook.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jinzhubaofu/melon/issues"
+    "url": "https://github.com/react-melon/melon/issues"
   },
-  "homepage": "https://github.com/jinzhubaofu/melon#readme",
+  "homepage": "https://github.com/react-melon/melon#readme",
   "edp": {
     "wwwroot": "/",
     "depDir": "dep",
