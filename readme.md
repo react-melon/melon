@@ -79,8 +79,6 @@ see `es5-shim` `es5-sham` [es5-shim](https://github.com/es-shims/es5-shim)
 
     ```javascript
     
-    const nib = require('nib');
-    
     module.exports = {
         loaders: [
             // 处理 stylus
