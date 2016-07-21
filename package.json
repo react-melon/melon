@@ -47,7 +47,8 @@
     "test-ci": "./node_modules/.bin/karma start ./tool/karma.ci.conf.js",
     "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
     "lint": "fecs src",
-    "build": "sh tool/build.sh"
+    "build": "sh tool/build.sh",
+    "release": "sh tool/release.sh"
   },
   "repository": {
     "type": "git",
