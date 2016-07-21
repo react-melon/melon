@@ -3,19 +3,13 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-/* globals before */
-
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import TestUtils, {createRenderer} from 'react-addons-test-utils';
 
 import TextBox from '../../src/TextBox';
 import Input from '../../src/textbox/Input';
 import FloatLabel from '../../src/textbox/FloatLabel';
 import then from '../then';
-
-expect.extend(expectJSX);
 
 /* eslint-disable max-nested-callbacks */
 
@@ -82,9 +76,11 @@ describe('TextBox', function () {
     describe('work', () => {
 
         let textbox;
-        let spy = expect.createSpy();
+        let spy;
 
-        before(() => {
+        beforeAll(() => {
+
+            spy = jasmine.createSpy();
 
             textbox = TestUtils.renderIntoDocument(
                 <TextBox
@@ -95,21 +91,19 @@ describe('TextBox', function () {
                     name="haha" />
             );
 
-
         });
 
         it('init', () => {
 
             expect(TestUtils.isCompositeComponent(textbox)).toBe(true);
 
-            expect(textbox.state).toInclude({
+            expect(textbox.state).toEqual({
                 isFloating: true,
                 isFocus: false,
                 value: 'haha'
             });
 
-            expect(textbox.getValue()).toBe('haha');
-
+            expect(textbox.getValue()).toEqual('haha');
         });
 
         it('focus', done => {
@@ -119,17 +113,17 @@ describe('TextBox', function () {
 
             then(() => {
 
-                expect(textbox.state).toInclude({
+                expect(textbox.state).toEqual({
                     isFloating: true,
                     isFocus: true,
                     value: 'haha'
                 });
 
-                expect(spy.calls.length).toEqual(1);
-                expect(spy.calls[0].arguments).toInclude({
+                expect(spy).toHaveBeenCalled();
+                expect(spy.calls.allArgs()).toEqual([[{
                     type: 'focus',
                     target: textbox
-                });
+                }]]);
 
                 done();
             });
@@ -163,14 +157,11 @@ describe('TextBox', function () {
             })
             .then(() => {
 
-                expect(textbox.state).toInclude({
-                    isFloating: false,
-                    isFocus: false,
-                    value: ''
-                });
+                expect(textbox.state.isFloating).toBeFalsy();
+                expect(textbox.state.isFocus).toBeFalsy();
 
-                expect(spy.calls.length).toEqual(2);
-                expect(spy.calls[1].arguments).toInclude({
+                expect(spy.calls.count()).toEqual(2);
+                expect(spy.calls.mostRecent().args[0]).toEqual({
                     type: 'blur',
                     target: textbox
                 });
@@ -211,7 +202,7 @@ describe('TextBox', function () {
             }
         });
 
-        before(() => {
+        beforeAll(() => {
             test = TestUtils.renderIntoDocument(<TestComponent />);
             textbox = TestUtils.findRenderedComponentWithType(test, TextBox);
         });
@@ -222,7 +213,7 @@ describe('TextBox', function () {
             expect(textbox.props.value).toBe('haha');
         });
 
-        it('change', () => {
+        it('change', done => {
 
             const textarea = TestUtils.findRenderedDOMComponentWithTag(textbox, 'textarea');
             textarea.value = '';
@@ -230,6 +221,7 @@ describe('TextBox', function () {
 
             then(() => {
                 expect(textbox.getValue()).toBe('');
+                done();
             });
 
         });

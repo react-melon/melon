@@ -309,6 +309,9 @@ Select.propTypes = {
     children: PropTypes.node.isRequired
 };
 
+Select.childContextTypes = InputComponent.childContextTypes;
+Select.contextTypes = InputComponent.contextTypes;
+
 export function createOptions(dataSource) {
 
     return dataSource.map(function (option, index) {

@@ -5,18 +5,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import TestUtils from 'react-addons-test-utils';
 
 import Tabs from '../../src/Tabs';
 import TabsPanel from '../../src/tabs/Panel';
 
 const Tab = Tabs.Tab;
-
-expect.extend(expectJSX);
-
-/* globals before, after */
 
 describe('Tabs', function () {
 
@@ -31,7 +25,7 @@ describe('Tabs', function () {
         renderer = null;
     });
 
-    after(function () {
+    afterAll(function () {
         ReactDOM.unmountComponentAtNode(container);
         document.body.removeChild(container);
         container = null;
@@ -50,58 +44,6 @@ describe('Tabs', function () {
         let expectedElement = (<div className="ui-tabs-panel state-active" />);
         expect(actualElement).toEqualJSX(expectedElement);
     });
-
-    // it('Tabs Structure', function () {
-    //
-    //     renderer.render(
-    //         <Tabs>
-    //             <Tab label="Tab1">
-    //                 Tab1 Content
-    //             </Tab>
-    //             <Tab label="Tab2" disabled>
-    //                 Tab2 Content
-    //             </Tab>
-    //         </Tabs>
-    //     );
-    //
-    //     const actualElement = renderer.getRenderOutput();
-    //
-    //     const expectedElement = (
-    //         <div className="ui-tabs" selectedIndex={0}>
-    //             <ul>
-    //                 <Tab
-    //                     label="Tab1"
-    //                     selected={true}
-    //                     style={{width: '50%'}}
-    //                     onClick={function noRefCheck() {}}
-    //                     tabIndex={0}>
-    //                     Tab1 Content
-    //                 </Tab>
-    //                 <Tab
-    //                     label="Tab2"
-    //                     selected={false}
-    //                     style={{width: '50%'}}
-    //                     disabled={true}
-    //                     tabIndex={1}>
-    //                     Tab2 Content
-    //                 </Tab>
-    //                 <li className="ui-tabs-inkbar" style={{left: 'calc(50%*0)', width: '50%'}} />
-    //             </ul>
-    //             <TabsPanel active={true}>
-    //                Tab1 Content
-    //             </TabsPanel>
-    //             <TabsPanel active={false}>
-    //                Tab2 Content
-    //             </TabsPanel>
-    //         </div>
-    //     );
-    //
-    //     console.log(actualElement.props.children);
-    //     console.log(expectedElement.props.children);
-    //
-    //     expect(actualElement).toEqualJSX(expectedElement);
-    //
-    // });
 
     it('Tabs functions', function (done) {
 

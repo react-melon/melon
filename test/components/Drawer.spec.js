@@ -5,7 +5,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
@@ -37,7 +36,7 @@ describe('Drawer', () => {
 
     it('work', done => {
 
-        const spy = expect.createSpy();
+        const spy = jasmine.createSpy();
         component = TestUtils.renderIntoDocument(<TestComponent onHide={spy} />);
         const drawer = TestUtils.findRenderedComponentWithType(component, Drawer);
         const masks = TestUtils.scryRenderedComponentsWithType(component, Mask);
@@ -78,7 +77,7 @@ describe('Drawer', () => {
             component = TestUtils.renderIntoDocument(<TestComponent position={pos} />);
             const dWindow = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-drawer-window');
 
-            expect(dWindow.style.transition).toInclude(pos);
+            expect(dWindow.style.transition).toMatch(pos);
         });
 
         it('position ' + pos + ' size < 0', () => {
@@ -92,10 +91,9 @@ describe('Drawer', () => {
                 right: 'left'
             };
 
-            expect(dWindow.style.transition).toInclude(REVERT_POSITION[pos]);
+            expect(dWindow.style.transition).toMatch(REVERT_POSITION[pos]);
         });
 
     });
 
 });
-

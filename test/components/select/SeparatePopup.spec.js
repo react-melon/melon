@@ -4,14 +4,10 @@
  */
 
 import React from 'react';
-import expect from 'expect';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 
 import SelectSeparatePopup from '../../../src/select/SeparatePopup';
-import then from '../../then';
-import waitFor from '../../waitFor';
-
 
 describe('SelectSeparatePopup', function () {
 
@@ -24,7 +20,8 @@ describe('SelectSeparatePopup', function () {
         target = document.createElement('div');
         document.body.appendChild(target);
         document.body.appendChild(node);
-        spy = expect.createSpy();
+        spy = jasmine.createSpy();
+        jasmine.clock().install();
     });
 
     afterEach(() => {
@@ -32,6 +29,7 @@ describe('SelectSeparatePopup', function () {
         ReactDOM.unmountComponentAtNode(node);
         document.body.removeChild(node);
         spy = target = node = null;
+        jasmine.clock().uninstall();
     });
 
     it('work', done => {
@@ -41,40 +39,33 @@ describe('SelectSeparatePopup', function () {
                 open={false}
                 target={target}
                 onHide={spy} />,
-                node
+            node
         );
         let content;
 
-        then(() => {
-
-            expect(component.state).toEqual({
-                styles: {
-                    top: 0,
-                    left: -5000,
-                    height: 0,
-                    opacity: 0,
-                    width: 0
-                }
-            });
-
-            content = component.main;
-            expect(TestUtils.isDOMComponent(content)).toBe(true);
-
-            component = ReactDOM.render(
-                <SelectSeparatePopup
-                    open={true}
-                    target={target}
-                    onHide={spy} />,
-                    node
-            );
-
+        expect(component.state).toEqual({
+            styles: {
+                top: 0,
+                left: -5000,
+                height: 0,
+                opacity: 0,
+                width: 0
+            }
         });
 
-        waitFor(
-            () => content.style.opacity === '1',
-            'Animate failed!',
-            done,
-            1500
+        content = component.main;
+        expect(TestUtils.isDOMComponent(content)).toBeTruthy();
+
+        component = ReactDOM.render(
+            <SelectSeparatePopup
+                open={true}
+                target={target}
+                onHide={spy} />,
+            node,
+            () => {
+                expect(component.state.styles.opacity).toBe(1);
+                done();
+            }
         );
 
     });
@@ -88,12 +79,12 @@ describe('SelectSeparatePopup', function () {
                 node
         );
         component.onClick({target});
-        expect(spy.calls.length).toBe(1);
+        expect(spy).toHaveBeenCalled();
         component.onClick({target: component.main});
-        expect(spy.calls.length).toBe(1);
+        expect(spy.calls.count()).toBe(1);
     });
 
-    it('resize', done => {
+    it('resize', () => {
 
         let component = ReactDOM.render(
             <SelectSeparatePopup
@@ -103,15 +94,12 @@ describe('SelectSeparatePopup', function () {
                 node
         );
 
-        const setStateSpy = expect.spyOn(component, 'setState');
+        const setStateSpy = spyOn(component, 'setState');
         component.onWindowResize();
 
-        waitFor(
-            () => setStateSpy.calls.length === 1,
-            'onWindowResize has not been called',
-            done,
-            1500
-        );
+        jasmine.clock().tick(1500);
+
+        expect(setStateSpy.calls.count()).toBe(1);
 
     });
 

@@ -120,4 +120,7 @@
         trueValue: _react.PropTypes.string.isRequired,
         falseValue: _react.PropTypes.string
     });
+
+    Toggle.childContextTypes = _InputComponent3['default'].childContextTypes;
+    Toggle.contextTypes = _InputComponent3['default'].contextTypes;
 });

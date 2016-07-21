@@ -5,7 +5,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
@@ -71,10 +70,10 @@ describe('Tree', () => {
 
         then(() => {
 
-            expect(ReactDOM.findDOMNode(nodes[0]).className).toInclude('state-selected');
+            expect(ReactDOM.findDOMNode(nodes[0]).className).toMatch('state-selected');
 
             expect(nodes[0].state.expand).toBe(true);
-            expect(label[0].className).toInclude('state-expand');
+            expect(label[0].className).toMatch('state-expand');
 
             done();
 
@@ -145,4 +144,3 @@ describe('Tree', () => {
     });
 
 });
-

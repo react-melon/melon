@@ -14,9 +14,7 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
     }
 
     if (action === 'selectAll') {
-        return dataSource.map((_, index) => {
-            return index;
-        });
+        return dataSource.map((_, index) => index);
     }
 
     if (action === 'unselectAll') {

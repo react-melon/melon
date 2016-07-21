@@ -54,10 +54,9 @@ export default class Region extends InputComponent {
 
     }
 
-    onSelectorChange(index, e) {
+    onSelectorChange(index, {value}) {
 
-        const {value} = e;
-        const {datasource} = this.state;
+        const datasource = this.state.datasource;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
 
@@ -75,9 +74,7 @@ export default class Region extends InputComponent {
     stringifyValue(datasource) {
         return datasource
             ? datasource.reduce(
-                (...args) => {
-                    return this.format(...args);
-                },
+                (...args) => this.format(...args),
                 []
             ).join(',')
             : '';
@@ -91,9 +88,7 @@ export default class Region extends InputComponent {
 
         return child.children
             ? child.children.reduce(
-                (...args) => {
-                    return this.format(...args);
-                },
+                (...args) => this.format(...args),
                 result
             )
             : result;
@@ -124,30 +119,26 @@ export default class Region extends InputComponent {
         return Array.isArray(area) && area.length > 0
             ? (
                 <ul>
-                    {area.map((a, index) => {
-                        return (
-                            <Area
-                                key={index}
-                                variants={index % 2 ? ['even'] : []}
-                                datasource={a}
-                                onChange={e => {
-                                    this.onAreaChange(index, cIndex, e);
-                                }} />
-                        );
-                    })}
+                    {area.map((a, index) =>
+                        <Area
+                            key={index}
+                            variants={index % 2 ? ['even'] : []}
+                            datasource={a}
+                            onChange={e => {
+                                this.onAreaChange(index, cIndex, e);
+                            }} />
+                    )}
                 </ul>
             ) : null;
     }
 
     render() {
 
-        const {datasource} = this.state;
+        const datasource = this.state.datasource;
 
         return (
             <div className={cx(this.props).build()}>
-                {datasource.map((...args) => {
-                    return this.renderCountry(...args);
-                })}
+                {datasource.map((...args) => this.renderCountry(...args))}
             </div>
         );
 
@@ -167,3 +158,6 @@ Region.propTypes = {
     selected: PropTypes.bool,
     datasource: PropTypes.arrayOf(PropTypes.object)
 };
+
+Region.childContextTypes = InputComponent.childContextTypes;
+Region.contextTypes = InputComponent.contextTypes;

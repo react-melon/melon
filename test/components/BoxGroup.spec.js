@@ -4,11 +4,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-/* globals before */
-
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import TestUtils, {createRenderer} from 'react-addons-test-utils';
 
 
@@ -17,8 +13,6 @@ import Icon from '../../src/Icon';
 import CenterRipple from '../../src/ripples/CenterRipple';
 import BoxGroupOption from '../../src/boxgroup/Option';
 import then from '../then';
-
-expect.extend(expectJSX);
 
 const datasource = [
     {value: '1', name: 'Never'},
@@ -72,7 +66,7 @@ describe('BoxGroup', function () {
         let options;
         let inputs;
 
-        before(() => {
+        beforeAll(() => {
             component = TestUtils.renderIntoDocument(
                 <BoxGroup value={['1']}>
                     {BoxGroup.createOptions(datasource)}
@@ -87,12 +81,12 @@ describe('BoxGroup', function () {
 
         it('init', () => {
 
-            expect(TestUtils.isCompositeComponent(boxgroup)).toBe(true);
-            expect(TestUtils.isCompositeComponent(component)).toBe(true);
+            expect(TestUtils.isCompositeComponent(boxgroup)).toBeTruthy();
+            expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
             expect(options.length).toBe(5);
-            expect(TestUtils.isDOMComponent(options[0])).toBe(true);
+            expect(TestUtils.isDOMComponent(options[0])).toBeTruthy();
 
-            expect(options[0].className).toInclude('state-checked');
+            expect(options[0].className).toMatch('state-checked');
 
             expect(boxgroup.getValue()).toEqual(['1']);
 
@@ -104,7 +98,7 @@ describe('BoxGroup', function () {
             TestUtils.Simulate.change(inputs[2]);
 
             then(() => {
-                expect(options[2].className).toInclude('state-checked');
+                expect(options[2].className).toMatch('state-checked');
                 expect(boxgroup.getValue()).toEqual(['1', '3']);
                 done();
             });
@@ -118,7 +112,7 @@ describe('BoxGroup', function () {
             TestUtils.Simulate.change(inputs[0]);
 
             then(() => {
-                expect(options[0].className).toExclude('state-checked');
+                expect(options[0].className).not.toMatch('state-checked');
                 expect(boxgroup.getValue()).toEqual(['3']);
                 done();
             });
@@ -168,7 +162,7 @@ describe('BoxGroup', function () {
         let options;
         let inputs;
 
-        before(() => {
+        beforeAll(() => {
             component = TestUtils.renderIntoDocument(
                 <BoxGroup boxModel="radio">
                     {BoxGroup.createOptions(datasource)}
@@ -182,10 +176,10 @@ describe('BoxGroup', function () {
 
         it('init', () => {
 
-            expect(TestUtils.isCompositeComponent(boxgroup)).toBe(true);
-            expect(TestUtils.isCompositeComponent(component)).toBe(true);
+            expect(TestUtils.isCompositeComponent(boxgroup)).toBeTruthy();
+            expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
             expect(options.length).toBe(5);
-            expect(TestUtils.isDOMComponent(options[0])).toBe(true);
+            expect(TestUtils.isDOMComponent(options[0])).toBeTruthy();
             expect(boxgroup.getValue()).toEqual([]);
 
         });
@@ -196,14 +190,14 @@ describe('BoxGroup', function () {
             TestUtils.Simulate.click(options[2]);
 
             then(() => {
-                expect(options[2].className).toInclude('state-checked');
+                expect(options[2].className).toMatch('state-checked');
                 expect(boxgroup.getValue()).toEqual(['3']);
 
                 TestUtils.Simulate.change(inputs[0]);
             })
             .then(() => {
-                expect(options[2].className).toExclude('state-checked');
-                expect(options[0].className).toInclude('state-checked');
+                expect(options[2].className).not.toMatch('state-checked');
+                expect(options[0].className).toMatch('state-checked');
                 expect(boxgroup.getValue()).toEqual(['1']);
 
                 done();
@@ -216,14 +210,11 @@ describe('BoxGroup', function () {
             TestUtils.Simulate.change(inputs[0]);
 
             then(() => {
-                expect(options[0].className).toInclude('state-checked');
+                expect(options[0].className).toMatch('state-checked');
                 expect(boxgroup.getValue()).toEqual(['1']);
-
                 done();
             });
-
         });
-
 
     });
 

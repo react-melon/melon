@@ -189,3 +189,6 @@ Uploader.defaultProps = {
     ...InputComponent.defaultProps,
     btnText: '点击上传'
 };
+
+Uploader.childContextTypes = InputComponent.childContextTypes;
+Uploader.contextTypes = InputComponent.contextTypes;

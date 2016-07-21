@@ -71,8 +71,8 @@
         };
 
         SelectSeparatePopup.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var open = nextProps.open;
 
+            var open = nextProps.open;
 
             _dom2['default'][open ? 'on' : 'off'](window, 'resize', this.onWindowResize);
 
@@ -97,7 +97,6 @@
 
             var target = this.props.target;
             var main = this.main;
-
 
             var targetPosition = _dom2['default'].getPosition(target);
 
@@ -162,6 +161,7 @@
         };
 
         SelectSeparatePopup.prototype.onClick = function onClick(e) {
+
             var target = e.target;
             var main = this.main;
             var _props = this.props;
@@ -185,7 +185,6 @@
 
             var children = this.props.children;
 
-
             var className = cx(this.props).build();
             var contentClassName = cx().part('content').build();
 
@@ -202,7 +201,6 @@
                         opacity: (0, _reactMotion.spring)(opacity, { stiffness: 120, damping: 15 })
                     }) },
                 function (style) {
-
                     return _react2['default'].createElement(
                         'div',
                         {

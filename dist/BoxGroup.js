@@ -159,6 +159,9 @@
         defaultValue: []
     });
 
+    BoxGroup.childContextTypes = _InputComponent3['default'].childContextTypes;
+    BoxGroup.contextTypes = _InputComponent3['default'].contextTypes;
+
     function createOptions(datasource) {
 
         return datasource.map(function (option, index) {

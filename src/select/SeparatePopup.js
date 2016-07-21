@@ -52,7 +52,7 @@ export default class SelectSeparatePopup extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        let {open} = nextProps;
+        let open = nextProps.open;
 
         domUtil[open ? 'on' : 'off'](window, 'resize', this.onWindowResize);
 
@@ -79,7 +79,7 @@ export default class SelectSeparatePopup extends Component {
         }
 
         let target = this.props.target;
-        let {main} = this;
+        let main = this.main;
 
         let targetPosition = domUtil.getPosition(target);
 
@@ -147,8 +147,8 @@ export default class SelectSeparatePopup extends Component {
 
     onClick(e) {
 
-        let {target} = e;
-        let {main} = this;
+        let target = e.target;
+        let main = this.main;
         let {onHide, open} = this.props;
 
         if (open && main !== target && !domUtil.contains(main, target)) {
@@ -166,12 +166,12 @@ export default class SelectSeparatePopup extends Component {
 
     render() {
 
-        const {children} = this.props;
+        const children = this.props.children;
 
         const className = cx(this.props).build();
         const contentClassName = cx().part('content').build();
 
-        const {styles} = this.state;
+        const styles = this.state.styles;
         const {height, opacity} = styles;
 
         return (
@@ -181,26 +181,23 @@ export default class SelectSeparatePopup extends Component {
                     height: spring(height, {stiffness: 120, damping: 15}),
                     opacity: spring(opacity, {stiffness: 120, damping: 15})
                 }}>
-                {style => {
-
-                    return (
-                        <div
-                            className={className}
-                            style={{
-                                ...style,
-                                visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
-                            }}
-                            ref={main => {
-                                if (main) {
-                                    this.main = main;
-                                }
-                            }}>
-                            <div className={contentClassName} >
-                                {children}
-                            </div>
+                {style =>
+                    <div
+                        className={className}
+                        style={{
+                            ...style,
+                            visibility: style.opacity < 0.1 ? 'hidden' : 'visible'
+                        }}
+                        ref={main => {
+                            if (main) {
+                                this.main = main;
+                            }
+                        }}>
+                        <div className={contentClassName} >
+                            {children}
                         </div>
-                    );
-                }}
+                    </div>
+                }
             </Motion>
         );
 

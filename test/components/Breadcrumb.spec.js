@@ -4,16 +4,11 @@
  */
 
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
 import Breadcrumb from '../../src/Breadcrumb';
 
-const {Item} = Breadcrumb;
-
-expect.extend(expectJSX);
-
+const Item = Breadcrumb.Item;
 
 describe('Breadcrumb', function () {
 
