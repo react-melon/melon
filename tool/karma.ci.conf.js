@@ -38,13 +38,8 @@ var customLaunchers = {
     },
     slEdge: {
         base: 'SauceLabs',
-        browserName: 'microsoft edge'
-    },
-    slMacSafari: {
-        base: 'SauceLabs',
-        browserName: 'safari',
-        version: '9',
-        platform: 'Windows 7'
+        browserName: 'microsoftedge',
+        platform: 'Windows 10'
     }
 };
 
