@@ -35,12 +35,17 @@ var customLaunchers = {
         base: 'SauceLabs',
         browserName: 'internet explorer',
         version: '9'
-    },
-    slEdge: {
-        base: 'SauceLabs',
-        browserName: 'microsoftedge',
-        platform: 'Windows 10'
     }
+    // slEdge: {
+    //     base: 'SauceLabs',
+    //     browserName: 'microsoftedge',
+    //     platform: 'Windows 10'
+    // },
+    // slMacSafari: {
+    //     base: 'SauceLabs',
+    //     browserName: 'safari',
+    //     platform: 'OS X 10.10'
+    // }
 };
 
 module.exports = function (config) {
