@@ -36,15 +36,15 @@ var customLaunchers = {
         browserName: 'internet explorer',
         version: '9'
     },
-    slIE13: {
+    slEdge: {
         base: 'SauceLabs',
-        browserName: 'internet explorer',
-        version: '13'
+        browserName: 'microsoft edge'
     },
     slMacSafari: {
         base: 'SauceLabs',
         browserName: 'safari',
-        version: '9'
+        version: '9',
+        platform: 'Windows 7'
     }
 };
 
