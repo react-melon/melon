@@ -38,7 +38,8 @@ var customLaunchers = {
     },
     slMacSafari: {
         base: 'SauceLabs',
-        browserName: 'safari'
+        browserName: 'safari',
+        version: '8'
     }
 };
 
