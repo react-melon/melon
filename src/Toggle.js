@@ -100,3 +100,6 @@ Toggle.propTypes = {
     trueValue: PropTypes.string.isRequired,
     falseValue: PropTypes.string
 };
+
+Toggle.childContextTypes = InputComponent.childContextTypes;
+Toggle.contextTypes = InputComponent.contextTypes;

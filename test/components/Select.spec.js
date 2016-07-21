@@ -6,7 +6,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import expect from 'expect';
+
 import Form from 'melon-core/Form';
 import Select from '../../src/Select';
 import then from '../then';
@@ -47,29 +47,29 @@ describe('Select', function () {
 
                 element = document.querySelector('.ui-select');
 
-                expect(select.getValue()).toBe('1');
-                expect(select.isOpen()).toBe(false);
+                expect(select.getValue()).toEqual('1');
+                expect(select.isOpen()).toBeFalsy();
 
                 TestUtils.Simulate.click(element);
 
                 then(() => {
-                    expect(select.isOpen()).toBe(true);
+                    expect(select.isOpen()).toBeTruthy();
                     TestUtils.Simulate.click(element);
                 })
                 .then(() => {
-                    expect(select.isOpen()).toBe(false);
+                    expect(select.isOpen()).toBeFalsy();
                     const option = document.querySelectorAll('.ui-select-option')[2];
                     TestUtils.Simulate.click(option);
                 })
                 .then(() => {
-                    expect(select.isOpen()).toBe(false);
-                    expect(select.getValue()).toBe('3');
+                    expect(select.isOpen()).toBeFalsy();
+                    expect(select.getValue()).toEqual('3');
 
                     const option = document.querySelectorAll('.ui-select-option')[4];
                     TestUtils.Simulate.click(option);
                 })
                 .then(() => {
-                    expect(select.getValue()).toBe('3');
+                    expect(select.getValue()).toEqual('3');
                     done();
                 });
             },

@@ -20,7 +20,7 @@ export default class TextBox extends InputComponent {
 
         super(props, context);
 
-        const {value} = this.state;
+        const value = this.state.value;
 
         this.state = {
             ...this.state,
@@ -37,7 +37,7 @@ export default class TextBox extends InputComponent {
 
     componentWillReceiveProps(nextProps) {
 
-        const {value} = nextProps;
+        const value = nextProps.value;
 
         // 多行文本框应该可以自动更新高度
         if (nextProps.multiline && this.state.value !== value) {
@@ -78,7 +78,7 @@ export default class TextBox extends InputComponent {
             isFloating: true
         });
 
-        const {onFocus} = this.props;
+        const onFocus = this.props.onFocus;
 
         if (onFocus)  {
             onFocus({
@@ -96,14 +96,14 @@ export default class TextBox extends InputComponent {
 
     onBlur(e) {
 
-        const {value} = e.target;
+        const value = e.target.value;
 
         this.setState({
             isFloating: !!value,
             isFocus: false
         });
 
-        const {onBlur} = this.props;
+        const onBlur = this.props.onBlur;
 
         if (onBlur)  {
             onBlur({
@@ -134,7 +134,7 @@ export default class TextBox extends InputComponent {
 
     syncTextareaHeight() {
 
-        const {input} = this;
+        const input = this.input;
 
         if (input) {
             input.style.height = 'auto';
@@ -240,3 +240,6 @@ TextBox.propTypes = {
     onBlur: PropTypes.func
 
 };
+
+TextBox.childContextTypes = InputComponent.childContextTypes;
+TextBox.contextTypes = InputComponent.contextTypes;

@@ -47,7 +47,6 @@
 
             var value = _this.state.value;
 
-
             _this.state = babelHelpers['extends']({}, _this.state, {
                 isFloating: !!value,
                 isFocus: false
@@ -61,8 +60,8 @@
         }
 
         TextBox.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var value = nextProps.value;
 
+            var value = nextProps.value;
 
             // 多行文本框应该可以自动更新高度
             if (nextProps.multiline && this.state.value !== value) {
@@ -103,7 +102,6 @@
 
             var onFocus = this.props.onFocus;
 
-
             if (onFocus) {
                 onFocus({
                     type: 'focus',
@@ -118,8 +116,8 @@
         };
 
         TextBox.prototype.onBlur = function onBlur(e) {
-            var value = e.target.value;
 
+            var value = e.target.value;
 
             this.setState({
                 isFloating: !!value,
@@ -127,7 +125,6 @@
             });
 
             var onBlur = this.props.onBlur;
-
 
             if (onBlur) {
                 onBlur({
@@ -154,8 +151,8 @@
         };
 
         TextBox.prototype.syncTextareaHeight = function syncTextareaHeight() {
-            var input = this.input;
 
+            var input = this.input;
 
             if (input) {
                 input.style.height = 'auto';
@@ -246,4 +243,7 @@
         onBlur: _react.PropTypes.func
 
     });
+
+    TextBox.childContextTypes = _InputComponent3['default'].childContextTypes;
+    TextBox.contextTypes = _InputComponent3['default'].contextTypes;
 });

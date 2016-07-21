@@ -5,7 +5,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
@@ -22,8 +21,8 @@ describe('Zippy', () => {
             <Zippy><p>test</p></Zippy>
         );
 
-        expect(TestUtils.isCompositeComponent(component)).toBe(true);
-        expect(ReactDOM.findDOMNode(component).className).toContain('variant-vertical');
+        expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
+        expect(ReactDOM.findDOMNode(component).className).toMatch('variant-vertical');
     });
 
     it('horizontal', () => {
@@ -34,8 +33,8 @@ describe('Zippy', () => {
             </Zippy>
         );
 
-        expect(ReactDOM.findDOMNode(component).className).toInclude('variant-horizontal');
-        expect(ReactDOM.findDOMNode(component).className).toInclude('state-close');
+        expect(ReactDOM.findDOMNode(component).className).toMatch('variant-horizontal');
+        expect(ReactDOM.findDOMNode(component).className).toMatch('state-close');
     });
 
     it('expand', done => {
@@ -66,7 +65,7 @@ describe('Zippy', () => {
         component.setState({expand: true});
 
         then(() => {
-            expect(zippy.className).toExclude('state-close');
+            expect(zippy.className).not.toMatch('state-close');
             done();
         });
 

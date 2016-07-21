@@ -24,7 +24,7 @@ export default class SnackBar extends Component {
         this.onHide = this.onHide.bind(this);
 
         this.state = {
-            open: this.props.open
+            open: props.open
         };
 
     }
@@ -41,9 +41,7 @@ export default class SnackBar extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-
-        const {open} = nextProps;
+    componentWillReceiveProps({open}) {
 
         if (open === this.state.open) {
             return;
@@ -69,11 +67,9 @@ export default class SnackBar extends Component {
 
     locate() {
 
-        const {
-            direction
-        } = this.props;
+        const direction = this.props.direction;
 
-        const {open} = this.state;
+        const open = this.state.open;
 
         const main = ReactDOM.findDOMNode(this);
 
@@ -98,7 +94,7 @@ export default class SnackBar extends Component {
 
     onHide() {
 
-        const {onHide} = this.props;
+        const onHide = this.props.onHide;
 
         this.setState({open: false}, function () {
             if (onHide) {
@@ -163,7 +159,7 @@ export default class SnackBar extends Component {
             direction
         } = this.props;
 
-        const {open} = this.state;
+        const open = this.state.open;
 
         const className = cx(this.props)
             .addStates({open})

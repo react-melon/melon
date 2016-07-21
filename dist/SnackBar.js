@@ -48,7 +48,7 @@
             _this.onHide = _this.onHide.bind(_this);
 
             _this.state = {
-                open: _this.props.open
+                open: props.open
             };
 
             return _this;
@@ -65,8 +65,8 @@
             this.locate();
         };
 
-        SnackBar.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-            var open = nextProps.open;
+        SnackBar.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
+            var open = _ref.open;
 
 
             if (open === this.state.open) {
@@ -90,9 +90,10 @@
         };
 
         SnackBar.prototype.locate = function locate() {
-            var direction = this.props.direction;
-            var open = this.state.open;
 
+            var direction = this.props.direction;
+
+            var open = this.state.open;
 
             var main = _reactDom2['default'].findDOMNode(this);
 
@@ -115,8 +116,8 @@
         };
 
         SnackBar.prototype.onHide = function onHide() {
-            var onHide = this.props.onHide;
 
+            var onHide = this.props.onHide;
 
             this.setState({ open: false }, function () {
                 if (onHide) {
@@ -171,8 +172,9 @@
             var message = _props2.message;
             var action = _props2.action;
             var direction = _props2.direction;
-            var open = this.state.open;
 
+
+            var open = this.state.open;
 
             var className = cx(this.props).addStates({ open: open }).addVariants('direction-' + direction).build();
 

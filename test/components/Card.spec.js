@@ -4,14 +4,9 @@
  */
 
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
 import Card from '../../src/Card';
-
-expect.extend(expectJSX);
-
 
 describe('Card', function () {
 

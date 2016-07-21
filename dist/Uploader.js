@@ -229,4 +229,7 @@
     Uploader.defaultProps = babelHelpers['extends']({}, _InputComponent3['default'].defaultProps, {
         btnText: '点击上传'
     });
+
+    Uploader.childContextTypes = _InputComponent3['default'].childContextTypes;
+    Uploader.contextTypes = _InputComponent3['default'].contextTypes;
 });

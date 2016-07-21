@@ -4,8 +4,6 @@
  */
 
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
@@ -13,9 +11,6 @@ import then from '../then';
 import Pager from '../../src/Pager';
 import Icon from '../../src/Icon';
 
-expect.extend(expectJSX);
-
-/* global before */
 
 describe('Pager', () => {
 
@@ -105,13 +100,13 @@ describe('Pager', () => {
         });
 
         it('base', () => {
-            expect(TestUtils.isCompositeComponent(component)).toBe(true);
-            expect(TestUtils.isDOMComponent(current)).toBe(true);
-            expect(TestUtils.isDOMComponent(prev)).toBe(true);
-            expect(TestUtils.isDOMComponent(next)).toBe(true);
-            expect(items.length).toBe(9);
-            expect(component.props.page).toBe(1);
-            expect(component.state.page).toBe(1);
+            expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
+            expect(TestUtils.isDOMComponent(current)).toBeTruthy();
+            expect(TestUtils.isDOMComponent(prev)).toBeTruthy();
+            expect(TestUtils.isDOMComponent(next)).toBeTruthy();
+            expect(items.length).toEqual(9);
+            expect(component.props.page).toEqual(1);
+            expect(component.state.page).toEqual(1);
         });
 
         it('click page', done => {
@@ -119,7 +114,7 @@ describe('Pager', () => {
             TestUtils.Simulate.click(items[5]);
 
             then(() => {
-                expect(component.state.page).toBe(4);
+                expect(component.state.page).toEqual(4);
                 done();
             });
         });
@@ -129,7 +124,7 @@ describe('Pager', () => {
             TestUtils.Simulate.click(prev);
 
             then(() => {
-                expect(component.state.page).toBe(0);
+                expect(component.state.page).toEqual(0);
                 done();
             });
         });
@@ -139,7 +134,7 @@ describe('Pager', () => {
             TestUtils.Simulate.click(next);
 
             then(() => {
-                expect(component.state.page).toBe(2);
+                expect(component.state.page).toEqual(2);
                 done();
             });
         });
@@ -150,7 +145,7 @@ describe('Pager', () => {
     describe('controlled', () => {
 
         it('click', done => {
-            const spy = expect.createSpy();
+            const spy = jasmine.createSpy();
             let pager;
 
             class TestComponent extends React.Component {
@@ -166,8 +161,8 @@ describe('Pager', () => {
                             total={10}
                             page={this.state.page}
                             onChange={({page, target}) => {
-                                expect(page).toBe(4);
-                                expect(target).toBe(pager);
+                                expect(page).toEqual(4);
+                                expect(target).toEqual(pager);
                                 this.setState({page});
                                 spy();
                             }} />
@@ -184,8 +179,8 @@ describe('Pager', () => {
             const items = TestUtils.scryRenderedDOMComponentsWithTag(component, 'li');
             TestUtils.Simulate.click(items[5]);
             then(() => {
-                expect(spy.calls.length).toBe(1);
-                expect(component.state.page).toBe(4);
+                expect(spy.calls.count()).toEqual(1);
+                expect(component.state.page).toEqual(4);
                 done();
             });
         });
@@ -194,4 +189,3 @@ describe('Pager', () => {
 
 
 });
-

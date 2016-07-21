@@ -24,7 +24,15 @@ exports.off = function (target, eventName, handler) {
 };
 
 exports.contains = function (container, contained) {
-    return container.contains(contained);
+    if (container.contains) {
+        return container.contains(contained);
+    }
+    while ((contained = contained.parentNode)) {
+        if (contained === container) {
+            return true;
+        }
+    }
+    return false;
 };
 
 /**

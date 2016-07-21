@@ -5,8 +5,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import TestUtils from 'react-addons-test-utils';
 
 import DialogWindow from '../../src/dialog/DialogWindow';
@@ -14,10 +12,6 @@ import Dialog from '../../src/Dialog';
 import Alert from '../../src/Alert';
 import Confirm from '../../src/Confirm';
 import Mask from '../../src/Mask';
-
-expect.extend(expectJSX);
-
-/* globals before, after */
 
 describe('Dialog', function () {
 
@@ -112,7 +106,7 @@ describe('Dialog', function () {
 
         it('show hide', function (done) {
 
-            let showSpy = expect.createSpy();
+            let showSpy = jasmine.createSpy();
 
             let TestComponent = React.createClass({
 

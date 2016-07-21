@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 
 import then from '../then';
@@ -92,8 +91,8 @@ describe('Tooltip', () => {
             const style = component.getPosition();
 
             expect(style.opacity).toBe(1);
-            expect(style.left).toNotEqual(undefined);
-            expect(style.top).toNotEqual(undefined);
+            expect(style.left).not.toEqual(undefined);
+            expect(style.top).not.toEqual(undefined);
 
         });
 

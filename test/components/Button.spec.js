@@ -4,15 +4,11 @@
  */
 
 import React from 'react';
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
 import {createRenderer} from 'react-addons-test-utils';
 
 import Button from '../../src/Button';
 import Icon from '../../src/Icon';
 import TouchRipple from '../../src/ripples/TouchRipple';
-
-expect.extend(expectJSX);
 
 describe('Button', function () {
 

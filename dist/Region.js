@@ -76,10 +76,11 @@
             });
         };
 
-        Region.prototype.onSelectorChange = function onSelectorChange(index, e) {
-            var value = e.value;
-            var datasource = this.state.datasource;
+        Region.prototype.onSelectorChange = function onSelectorChange(index, _ref) {
+            var value = _ref.value;
 
+
+            var datasource = this.state.datasource;
 
             helper[value ? 'selectAll' : 'cancelAll'](datasource[index]);
 
@@ -158,7 +159,6 @@
 
             var datasource = this.state.datasource;
 
-
             return _react2['default'].createElement(
                 'div',
                 { className: cx(this.props).build() },
@@ -182,4 +182,7 @@
         selected: _react.PropTypes.bool,
         datasource: _react.PropTypes.arrayOf(_react.PropTypes.object)
     });
+
+    Region.childContextTypes = _InputComponent3['default'].childContextTypes;
+    Region.contextTypes = _InputComponent3['default'].contextTypes;
 });

@@ -7,3 +7,5 @@ npm-debug.log
 output
 coverage
 *.orig
+.DS_Store
+**/.DS_Store

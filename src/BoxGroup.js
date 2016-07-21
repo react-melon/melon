@@ -148,6 +148,9 @@ BoxGroup.defaultProps = {
     defaultValue: []
 };
 
+BoxGroup.childContextTypes = InputComponent.childContextTypes;
+BoxGroup.contextTypes = InputComponent.contextTypes;
+
 export function createOptions(datasource) {
 
     return datasource.map(function (option, index) {

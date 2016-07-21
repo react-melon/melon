@@ -301,6 +301,9 @@
         children: _react.PropTypes.node.isRequired
     });
 
+    Select.childContextTypes = _InputComponent3['default'].childContextTypes;
+    Select.contextTypes = _InputComponent3['default'].contextTypes;
+
     function createOptions(dataSource) {
 
         return dataSource.map(function (option, index) {
