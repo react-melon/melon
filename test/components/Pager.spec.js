@@ -31,7 +31,7 @@ describe('Pager', () => {
                     className="ui-pager-item state-prev"
                     data-page={0}
                     data-role="pager-item">
-                    <Icon icon="navigate-before" />
+                    <Icon data-page={0} data-role="pager-item" icon="navigate-before" />
                 </li>
                 <li
                     className={'ui-pager-item'}
@@ -51,7 +51,7 @@ describe('Pager', () => {
                     className="ui-pager-item state-disabled state-next"
                     data-page={1}
                     data-role="pager-item">
-                    <Icon icon="navigate-next" />
+                    <Icon data-page={1} data-role="pager-item" icon="navigate-next" />
                 </li>
             </ul>
         );
