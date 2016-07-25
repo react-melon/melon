@@ -114,7 +114,7 @@ export default class Pager extends Component {
         let pageText;
 
         if (!useLang && part && part !== 'ellipsis') {
-            pageText = (<Icon icon={Pager.ICONS[part]} />);
+            pageText = (<Icon icon={Pager.ICONS[part]} data-role="pager-item" data-page={page} />);
         }
         else {
             pageText = lang[part] || page + 1;
