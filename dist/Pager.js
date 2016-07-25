@@ -115,7 +115,7 @@
             var pageText = void 0;
 
             if (!useLang && part && part !== 'ellipsis') {
-                pageText = _react2['default'].createElement(_Icon2['default'], { icon: Pager.ICONS[part] });
+                pageText = _react2['default'].createElement(_Icon2['default'], { icon: Pager.ICONS[part], 'data-role': 'pager-item', 'data-page': page });
             } else {
                 pageText = lang[part] || page + 1;
             }
