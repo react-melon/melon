@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/react-melon/melon/badge.svg?branch=)](https://coveralls.io/github/react-melon/melon?branch=) [![Version](https://badge.fury.io/js/melon.svg?style=flat)](https://www.npmjs.com/package/melon)
 [![Build Status](https://travis-ci.org/react-melon/melon.svg?style=flat)](https://travis-ci.org/react-melon/melon)
 
-[![Selenium Test Status](https://saucelabs.com/browser-matrix/react-melon.svg)](https://saucelabs.com/u/react-melon)
+[![Build Status](https://saucelabs.com/browser-matrix/react-melon.svg)](https://saucelabs.com/beta/builds/9c34f307345147a98a75d3aecf85392a)
 
 A Set of React Components that Implement Google's Material Design
 
