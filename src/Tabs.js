@@ -10,20 +10,45 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Tabs');
 
+/**
+ * melon/Tabs
+ *
+ * @class
+ */
 export default class Tabs extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param {*} props 属性
+     */
     constructor(props) {
 
         super(props);
 
-        const {selectedIndex} = props;
+        const selectedIndex = props.selectedIndex;
 
+        /**
+         * 状态
+         *
+         * @private
+         * @type {Object}
+         */
         this.state = {
             selectedIndex
         };
 
     }
 
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
     componentWillReceiveProps(nextProps) {
 
         if (nextProps.selectedIndex !== this.state.selectedIndex) {
@@ -33,6 +58,13 @@ export default class Tabs extends Component {
         }
     }
 
+    /**
+     * 处理 Tab 点击事件
+     *
+     * @private
+     * @param {number} index tab 序号
+     * @param {e}      e     原始点击事件
+     */
     handleTabClick(index, e) {
 
         if (index === this.state.selectedIndex) {
@@ -58,14 +90,33 @@ export default class Tabs extends Component {
 
     }
 
+    /**
+     * 获取 Tab 总数
+     *
+     * @protected
+     * @return {number}
+     */
     getTabCount() {
         return Children.count(this.props.children);
     }
 
-    getSelected(tab, index) {
+    /**
+     * 指定序号的标签是否被选中
+     *
+     * @protected
+     * @param {number} index 序号
+     * @return {boolean}
+     */
+    isTabSelected(index) {
         return this.state.selectedIndex === index;
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const props = this.props;
@@ -79,7 +130,7 @@ export default class Tabs extends Component {
 
             let tab = children[i];
 
-            const selected = this.getSelected(tab, i);
+            const selected = this.isTabSelected(i);
 
             if (selected) {
                 tabIndex = i;
@@ -122,6 +173,13 @@ export default class Tabs extends Component {
 
 }
 
+/**
+ * propTypes
+ *
+ * @property {number}   selectedIndex  选中标签的序号
+ * @property {Function} onChange       选中标签发生变化后处理函数
+ * @property {Function} onBeforeChange 选中标签发生变化前处理函数
+ */
 Tabs.propTypes = {
     selectedIndex: PropTypes.number.isRequired,
     onChange: PropTypes.func,

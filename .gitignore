@@ -9,3 +9,4 @@ coverage
 *.orig
 .DS_Store
 **/.DS_Store
+doc

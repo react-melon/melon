@@ -23,6 +23,8 @@
     "browserify": "^13.0.1",
     "browserify-istanbul": "^2.0.0",
     "coveralls": "^2.11.9",
+    "esdoc": "^0.4.8",
+    "esdoc-es7-plugin": "0.0.3",
     "expect": "^1.12.2",
     "expect-jsx": "^2.0.1",
     "jasmine-core": "^2.4.1",
@@ -48,7 +50,8 @@
     "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
     "lint": "fecs src",
     "build": "sh tool/build.sh",
-    "release": "sh tool/release.sh"
+    "release": "sh tool/release.sh",
+    "doc": "esdoc -c esdoc.json"
   },
   "repository": {
     "type": "git",
