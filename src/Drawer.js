@@ -17,8 +17,20 @@ const REVERT_POSITION = {
     right: 'left'
 };
 
+/**
+ * melon/Drawer
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Drawer extends Component {
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {
@@ -98,6 +110,16 @@ export default class Drawer extends Component {
 
 Drawer.displayName = 'Drawer';
 
+/**
+ * propTypes
+ *
+ * @property {number}   position       弹出的位置
+ * @property {boolean}  open           是否打开
+ * @property {number}   size           宽度
+ * @property {boolean}  mask           是否需要遮罩
+ * @property {boolean}  maskClickClose 是否点击遮罩以后关闭
+ * @property {Function} onHide         关闭时调用
+ */
 Drawer.propTypes = {
     position: PropTypes.oneOf(Object.keys(REVERT_POSITION)).isRequired,
     open: PropTypes.bool.isRequired,
