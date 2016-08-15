@@ -9,8 +9,17 @@ import {create} from 'melon-core/classname/cxBuilder';
 const cx = create('Icon');
 
 /* eslint-disable fecs-prefer-class */
+
+/**
+ * melon/Icon
+ *
+ * @param {Object} props     属性
+ * @param {string} props.icon icon名称
+ * @return {ReactElement}
+ */
 export default function Icon(props) {
 
+    /* eslint-disable fecs-min-vars-per-destructure */
     const {
         icon,
         ...rest
@@ -21,8 +30,6 @@ export default function Icon(props) {
     );
 
 }
-/* eslint-enable fecs-prefer-class */
-
 
 Icon.propTypes = {
     icon: PropTypes.string.isRequired

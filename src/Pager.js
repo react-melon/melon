@@ -31,6 +31,12 @@ export default class Pager extends Component {
 
         const page = props.page;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {page};
 
         this.onMainClick = this.onMainClick.bind(this);

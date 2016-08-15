@@ -14,14 +14,34 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TextBox');
 
+/**
+ * melon/TextBox
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class TextBox extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
 
         const value = this.state.value;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             isFloating: !!value,
@@ -35,6 +55,13 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
     componentWillReceiveProps(nextProps) {
 
         const value = nextProps.value;
@@ -61,6 +88,12 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
 
         super.componentDidMount();
@@ -71,6 +104,12 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 获取焦点时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onFocus(e) {
 
         this.setState({
@@ -94,6 +133,12 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 失去焦点时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onBlur(e) {
 
         const value = e.target.value;
@@ -122,6 +167,12 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 值改变时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onChange(e) {
 
         super.onChange({
@@ -132,6 +183,11 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 多行时同步输入框高度
+     *
+     * @protected
+     */
     syncTextareaHeight() {
 
         const input = this.input;
@@ -143,10 +199,26 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 是否需要校验
+     *
+     * @private
+     * @param {number} eventName 事件名称
+     * @return {boolean} 是否需要校验
+     */
     needValidate(eventName) {
         return this.props.validateEvents.indexOf(eventName) !== -1;
     }
 
+    /**
+     * 渲染浮动标签
+     *
+     * @protected
+     * @param  {string}  floatingLabel 标签内容
+     * @param  {boolean} isFloating    是否浮动
+     * @param  {boolean} isFocus       是否获取焦点
+     * @return {?ReactElement}
+     */
     renderFloatingLabel(floatingLabel, isFloating, isFocus) {
 
         if (!floatingLabel) {
@@ -162,6 +234,12 @@ export default class TextBox extends InputComponent {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {
@@ -171,9 +249,9 @@ export default class TextBox extends InputComponent {
             props
         } = this;
 
+        /* eslint-disable fecs-min-vars-per-destructure */
         const {
             floatingLabel,
-            className,
             ...rest
         } = props;
 

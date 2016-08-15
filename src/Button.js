@@ -10,6 +10,15 @@ import TouchRipple from './ripples/TouchRipple';
 const cx = create('Button');
 
 /* eslint-disable fecs-prefer-class */
+
+/**
+ * melon/Button
+ *
+ * @param {Object}  props           属性
+ * @param {boolean} props.disabled  是否不可点击
+ * @param {boolean} props.hasRipple 是否有ripple动画
+ * @return {ReactElement}
+ */
 export default function Button(props) {
 
     const {

@@ -9,6 +9,13 @@ import Button from './Button';
 import createCommand from './dialog/commander';
 
 /* eslint-disable fecs-prefer-class */
+
+/**
+ * melon/Alert
+ *
+ * @param {Object}  props 属性
+ * @return {ReactElement}
+ */
 export default function Alert(props) {
 
     const {
