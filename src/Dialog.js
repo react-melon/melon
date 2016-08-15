@@ -15,14 +15,39 @@ import {Motion, spring} from 'react-motion';
 
 const cx = create('Dialog');
 
+/**
+ * melon/Dialog
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Dialog extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props 属性
+     */
     constructor(props) {
 
         super(props);
 
+        /**
+         * 保存原始的 html body 样式
+         *
+         * @private
+         * @type {Object}
+         */
         this.originalHTMLBodySize = {};
 
+        /**
+         * 初始状态
+         *
+         * @private
+         * @type {Object}
+         */
         this.state = {
             open: props.open
         };
@@ -33,19 +58,42 @@ export default class Dialog extends Component {
 
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
         if (this.state.open) {
             this.positionDialog();
         }
     }
 
+    /**
+     * 状态将要更新时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     * @param {*} nextState 新状态
+     */
     componentWillUpdate(nextProps, nextState) {
         if (nextState.open) {
             this.positionDialog();
         }
     }
 
-    componentWillReceiveProps({open}) {
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {Object}  nestProps 新属性
+     */
+    componentWillReceiveProps(nestProps) {
+
+        const open = nestProps.open;
 
         if (open === this.state.open) {
             return;
@@ -55,6 +103,11 @@ export default class Dialog extends Component {
 
     }
 
+    /**
+     * 定位对话框
+     *
+     * @protected
+     */
     positionDialog() {
         let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
         let marginTop = -dialogWindow.offsetHeight / 2;
@@ -68,6 +121,12 @@ export default class Dialog extends Component {
         dialogWindow.style.marginTop = marginTop + 'px';
     }
 
+    /**
+     * 遮罩点击事件处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onMaskClick(e) {
         if (this.props.maskClickClose) {
             this.setState({open: false}, this.onHide);
@@ -77,6 +136,11 @@ export default class Dialog extends Component {
         }
     }
 
+    /**
+     * 显示事件处理
+     *
+     * @protected
+     */
     onShow() {
         const onShow = this.props.onShow;
         if (onShow) {
@@ -84,6 +148,11 @@ export default class Dialog extends Component {
         }
     }
 
+    /**
+     * 隐藏事件处理
+     *
+     * @protected
+     */
     onHide() {
         const onHide = this.props.onHide;
         if (onHide) {
@@ -91,6 +160,12 @@ export default class Dialog extends Component {
         }
     }
 
+    /**
+     * 获取标题
+     *
+     * @protected
+     * @return {ReactElement|null} [description]
+     */
     renderTitle() {
 
         const title = this.props.title;
@@ -101,6 +176,12 @@ export default class Dialog extends Component {
 
     }
 
+    /**
+     * 获取按钮
+     *
+     * @protected
+     * @return {ReactElement|null} [description]
+     */
     renderAction() {
 
         const actions = this.props.actions;
@@ -115,6 +196,12 @@ export default class Dialog extends Component {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {props, state} = this;
@@ -170,6 +257,19 @@ export default class Dialog extends Component {
 
 }
 
+Dialog.displayName = 'Dialog';
+
+/**
+ * propTypes
+ *
+ * @property {Array<ReactElement>} selectedIndex  选中标签的序号
+ * @property {boolean}             maskClickClose 是否点击遮罩时隐藏对话框
+ * @property {boolean}             open           是否显示
+ * @property {Function}            onHide         隐藏时执行
+ * @property {Function}            onShow         显示时执行
+ * @property {ReactElement|string} title          标题
+ * @property {number|string}       width          对话框宽度
+ */
 Dialog.propTypes = {
     actions: PropTypes.node,
     maskClickClose: PropTypes.bool,

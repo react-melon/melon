@@ -219,7 +219,7 @@ export default class Select extends InputComponent {
     /**
      * 渲染label部件
      *
-     * @param {string|ReactElement} label label部件内容
+     * @protected
      * @return {ReactElement}
      */
     renderLabel() {
