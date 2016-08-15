@@ -11,12 +11,30 @@ import Column from './table/Column';
 
 const cx = create('Table');
 
+/**
+ * melon/Table
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Table extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     */
     constructor(props) {
 
         super(props);
 
+        /**
+         * 状态
+         *
+         * @type {Object}
+         */
         this.state = {
             columns: this.getColumns(this.props)
         };
@@ -24,21 +42,48 @@ export default class Table extends Component {
         this.onWindowResize = this.onWindowResize.bind(this);
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
         this.onWindowResize();
         dom.on(window, 'resize', this.onWindowResize);
     }
 
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
     componentWillReceiveProps(nextProps) {
         this.setState({
             columns: this.getColumns(nextProps)
         });
     }
 
+    /**
+     * unmount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
         dom.off(window, 'resize', this.onWindowResize);
     }
 
+    /**
+     * 过滤所有子元素，必须为TableColumn类型
+     *
+     * @protected
+     * @param  {Object} props 组建属性
+     * @return {Array<ReactElement>}
+     * @throws {Error} 有子元素不是TableColumn时报错
+     */
     getColumns(props) {
 
         return Children
@@ -63,10 +108,18 @@ export default class Table extends Component {
 
     }
 
+    /**
+     * 渲染表头
+     *
+     * @protected
+     * @param  {Array<ReactElement>} columns 所有列
+     * @param  {number} width   宽度
+     * @return {ReactElement}
+     */
     renderHeader(columns, width) {
-        const {props} = this;
+        const props = this.props;
         return (
-            <div className={cx().part('header').build()}>
+            <div className={cx.getPartClassName('header')}>
                 <Row
                     part='header'
                     height={props.headerRowHeight}
@@ -76,6 +129,14 @@ export default class Table extends Component {
         );
     }
 
+    /**
+     * 渲染表格
+     *
+     * @protected
+     * @param  {Array<ReactElement>} columns 所有列
+     * @param  {number} width   宽度
+     * @return {ReactElement}
+     */
     renderBody(columns, width) {
 
         const {dataSource, noDataContent} = this.props;
@@ -100,6 +161,16 @@ export default class Table extends Component {
 
     }
 
+    /**
+     * 渲染表格
+     *
+     * @protected
+     * @param  {Array<ReactElement>} columns 所有列
+     * @param  {Object} rowData 表格数据
+     * @param  {number} index 行号
+     * @param  {number} tableWidth 表格宽度
+     * @return {ReactElement}
+     */
     renderRow(columns, rowData, index, tableWidth) {
         const {rowHeight, highlight} = this.props;
         return (
@@ -115,22 +186,40 @@ export default class Table extends Component {
         );
     }
 
+    /**
+     * 渲染表尾
+     *
+     * @protected
+     * @param  {Array<ReactElement>} columns 所有列
+     * @return {ReactElement}
+     * @todo
+     */
     renderFooter(columns) {
         return null;
     }
 
+    /**
+     * 窗口大小改变时执行
+     *
+     * @protected
+     */
     onWindowResize() {
 
-        const {main} = this;
+        const main = this.main;
 
-        if (this.main) {
+        if (main) {
             this.setState({
                 width: main.offsetWidth
             });
         }
-
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         let {width, columns} = this.state;
@@ -162,8 +251,6 @@ export default class Table extends Component {
         );
 
     }
-
-
 
 }
 

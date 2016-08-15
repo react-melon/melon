@@ -31,8 +31,22 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
 
 }
 
+
+/**
+ * melon/SelectableTable
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class SelectableTable extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     */
     constructor(props) {
 
         super(props);
@@ -43,12 +57,25 @@ export default class SelectableTable extends Component {
         this.onSelect = this.onSelect.bind(this);
         this.onSelectAll = this.onSelectAll.bind(this);
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             selected: this.props.selected
         };
 
     }
 
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} props 新属性
+     */
     componentWillReceiveProps(props) {
 
         if (!this.props.onSelect) {
@@ -59,6 +86,12 @@ export default class SelectableTable extends Component {
 
     }
 
+    /**
+     * 行选中时的处理
+     *
+     * @protected
+     * @param  {number} rowIndex 行号
+     */
     onSelect(rowIndex) {
         this.onRowSelectorClick(
             this.isRowSelected(rowIndex) ? 'unselect' : 'select',
@@ -66,12 +99,24 @@ export default class SelectableTable extends Component {
         );
     }
 
+    /**
+     * 点击全选时的处理
+     *
+     * @protected
+     */
     onSelectAll() {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
         );
     }
 
+    /**
+     * 点击某一行时的处理
+     *
+     * @protected
+     * @param  {string} action   指令：select(选择某一行), selectAll(全选)，unselectAll(全部取消)
+     * @param  {number} rowIndex 行号
+     */
     onRowSelectorClick(action, rowIndex) {
 
         const {
@@ -104,23 +149,48 @@ export default class SelectableTable extends Component {
 
     }
 
+    /**
+     * 获取当前选中的行号
+     *
+     * @public
+     * @return {Array<number>}
+     */
     getSelected() {
         const {state, props} = this;
-        const {onSelect} = props;
-        const {selected} = onSelect ? props : state;
+        const onSelect = props.onSelect;
+        const selected = onSelect ? props.selected : state.selected;
         return selected;
     }
 
+    /**
+     * 某行是否选中
+     *
+     * @public
+     * @param {number} rowIndex 行号
+     * @return {boolean}
+     */
     isRowSelected(rowIndex) {
         const selected = this.getSelected();
         return selected.indexOf(rowIndex) !== -1;
     }
 
+    /**
+     * 是否全部选中
+     *
+     * @public
+     * @return {boolean}
+     */
     isAllRowsSelected() {
         const selected = this.getSelected();
         return selected.length === this.props.dataSource.length;
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {children, multiple, ...rest} = this.props;

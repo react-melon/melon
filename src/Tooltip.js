@@ -10,8 +10,21 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Tooltip');
 
+/**
+ * melon/Tooltip
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Tooltip extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     */
     constructor(props) {
 
         super(props);
@@ -20,54 +33,130 @@ export default class Tooltip extends Component {
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             isShown: false
         };
 
     }
 
+    /**
+     * 将要Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
         const popup = this.popup = Tooltip.createPopup();
         this.renderPopup(popup, this.props.content);
     }
 
+    /**
+     * 将要Unmount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
         Tooltip.destroyPopup(this.popup);
+
+        /**
+         * 弹出层的dom
+         *
+         * @protected
+         * @type {HTMLElement}
+         */
         this.popup = null;
     }
 
+    /**
+     * 状态更新时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidUpdate() {
         this.renderPopup(this.popup, this.props.content);
     }
 
+    /**
+     * 点击时的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onClick(e) {
         this.toggle();
     }
 
+    /**
+     * 鼠标进入时的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onMouseEnter(e) {
         this.show();
     }
 
+    /**
+     * 点击离开的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onMouseLeave(e) {
         this.hide();
     }
 
+    /**
+     * 当前是否显示
+     *
+     * @public
+     * @return {boolean}
+     */
     isShown() {
         return this.state.isShown;
     }
 
+    /**
+     * 改变当前显示状态
+     *
+     * @public
+     */
     toggle() {
         this.isShown() ? this.hide() : this.show();
     }
 
+    /**
+     * 显示tip
+     *
+     * @public
+     */
     show() {
         this.setState({isShown: true});
     }
 
+    /**
+     * 隐藏tip
+     *
+     * @public
+     */
     hide() {
         this.setState({isShown: false});
     }
 
+    /**
+     * 获取位置的样式
+     *
+     * @protected
+     * @return {Object}
+     */
     getPosition() {
 
         const main = this.main;
@@ -121,6 +210,13 @@ export default class Tooltip extends Component {
 
     }
 
+    /**
+     * 渲染弹出层
+     *
+     * @protected
+     * @param  {HTMLElement} target  目标dom
+     * @param  {string|ReactElement} content 内容
+     */
     renderPopup(target, content) {
 
         ReactDOM.render(
@@ -134,6 +230,12 @@ export default class Tooltip extends Component {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const props = this.props;

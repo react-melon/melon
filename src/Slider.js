@@ -47,6 +47,12 @@ export default class Slider extends InputComponent {
         this.state.value = value > maximum ? maximum : value;
         this.state.value = value < minimum ? minimum : value;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             active: false
@@ -60,6 +66,13 @@ export default class Slider extends InputComponent {
      * @override
      */
     componentWillUnmount() {
+
+        /**
+         * bar
+         *
+         * @protected
+         * @type {HTMLElement}
+         */
         this.slider = null;
     }
 

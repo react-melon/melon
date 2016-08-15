@@ -12,14 +12,34 @@ import Validity from 'melon-core/Validity';
 
 const cx = create('BoxGroup');
 
+/**
+ * melon/BoxGroup
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class BoxGroup extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
 
         const value = this.state.value;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             value: Array.isArray(value) ? value : [value]
@@ -30,6 +50,12 @@ export default class BoxGroup extends InputComponent {
 
     }
 
+    /**
+     * 值改变时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onChange(e) {
 
         const optionValue = e.target.value;
@@ -62,7 +88,12 @@ export default class BoxGroup extends InputComponent {
 
     }
 
-
+    /**
+     * 获取当前值
+     *
+     * @public
+     * @return {Array<string>}
+     */
     getValue() {
 
         const currentValue = this.state.value;
@@ -84,15 +115,12 @@ export default class BoxGroup extends InputComponent {
                 return result;
 
             }, []);
-
-
     }
-
-
 
     /**
      * 渲染选项
      *
+     * @protected
      * @param  {?ReactElement} option 选项
      * @return {Array.ReactElement}
      */
@@ -122,6 +150,12 @@ export default class BoxGroup extends InputComponent {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
         return (
             <div className={cx(this.props).addStates(this.getStyleStates()).build()}>
@@ -151,6 +185,12 @@ BoxGroup.defaultProps = {
 BoxGroup.childContextTypes = InputComponent.childContextTypes;
 BoxGroup.contextTypes = InputComponent.contextTypes;
 
+/**
+ * 生成 BoxGroup 的选项
+ *
+ * @param  {Array<{disabled: boolean, name: string, value: string}>} datasource 数据
+ * @return {Array<ReactElement>}
+ */
 export function createOptions(datasource) {
 
     return datasource.map(function (option, index) {

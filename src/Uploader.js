@@ -15,12 +15,32 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Uploader');
 
+/**
+ * melon/Uploader
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class Uploader extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             isUploading: false,
@@ -29,7 +49,12 @@ export default class Uploader extends InputComponent {
 
     }
 
-
+    /**
+     * 文件上传时的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onFileChange(e) {
 
         this.setUploading();
@@ -47,12 +72,23 @@ export default class Uploader extends InputComponent {
 
     }
 
+    /**
+     * 设置正在上传的状态
+     *
+     * @public
+     */
     setUploading() {
         this.setState({
             isUploading: true
         });
     }
 
+    /**
+     * 设置上传完毕以后的文件地址
+     *
+     * @public
+     * @param {string} value 文件地址
+     */
     setFile(value) {
 
         this.setState({
@@ -67,6 +103,11 @@ export default class Uploader extends InputComponent {
         });
     }
 
+    /**
+     * 重置上传的文件
+     *
+     * @public
+     */
     clearFile() {
 
         this.setState({
@@ -83,6 +124,12 @@ export default class Uploader extends InputComponent {
 
     }
 
+    /**
+     * 渲染input
+     *
+     * @protected
+     * @return {ReactElement?}
+     */
     renderUploadFile() {
 
         const {isUploading, isUploaded} = this.state;
@@ -102,6 +149,12 @@ export default class Uploader extends InputComponent {
 
     }
 
+    /**
+     * 渲染按钮
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderUploadButton() {
 
         const {isUploading, isUploaded, value} = this.state;
@@ -154,6 +207,12 @@ export default class Uploader extends InputComponent {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const props = this.props;

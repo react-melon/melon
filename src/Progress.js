@@ -9,13 +9,38 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Progress');
 
+/**
+ * melon/Progress
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Progress extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props 属性
+     */
     constructor(props) {
         super(props);
+
+        /**
+         * timerIds
+         *
+         * @type {Object}
+         */
         this.timers = {};
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
 
         if (this.isDeterminate()) {
@@ -46,6 +71,12 @@ export default class Progress extends Component {
 
     }
 
+    /**
+     * unmount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
 
         Object.keys(this.timers).forEach(name => {
@@ -57,9 +88,16 @@ export default class Progress extends Component {
 
     }
 
-    barUpdate(step, barName, stepValues) {
+    /**
+     * 更新进度条动画
+     *
+     * @private
+     * @param  {number} step 步骤
+     * @param  {string} barName 名称
+     * @param  {Array}  stepValues 动画的配置
+     */
+    barUpdate(step = 0, barName, stepValues) {
 
-        step = step || 0;
         step %= 4;
 
         const element = this.refs[barName];
@@ -88,9 +126,15 @@ export default class Progress extends Component {
 
     }
 
-    scalePath(path, step) {
+    /**
+     * 缩放圆圈的大小
+     *
+     * @protected
+     * @param  {SVGElement} path 圆
+     * @param  {number} step 动画到哪一个步骤
+     */
+    scalePath(path, step = 0) {
 
-        step = step || 0;
         step %= 3;
 
         this.timers.path = setTimeout(
@@ -118,6 +162,12 @@ export default class Progress extends Component {
 
     }
 
+    /**
+     * 缩放圆圈的大小
+     *
+     * @protected
+     * @param  {HTMLElement} wrapper 园旋转的动画
+     */
     rotateWrapper(wrapper) {
 
         this.timers.wrapper = setTimeout(this.rotateWrapper.bind(this, wrapper), 10050);
@@ -133,6 +183,12 @@ export default class Progress extends Component {
 
     }
 
+    /**
+     * 获取相对百分比的值
+     *
+     * @public
+     * @return  {number}
+     */
     getRelativeValue() {
 
         const {value, min, max} = this.props;
@@ -144,10 +200,22 @@ export default class Progress extends Component {
         return relValue * 100;
     }
 
+    /**
+     * 是否是直接传值的
+     *
+     * @public
+     * @return {ReactElement}
+     */
     isDeterminate() {
         return this.props.mode.toLowerCase() === 'determinate';
     }
 
+    /**
+     * 渲染进度条
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderLinear() {
 
         let children;
@@ -160,22 +228,34 @@ export default class Progress extends Component {
         }
         else {
             children = ([
-                <div ref="bar1" className={cx().part('bar1').build()} key="bar1" />,
-                <div ref="bar2" className={cx().part('bar2').build()} key="bar2" />
+                <div ref="bar1" className={cx.getPartClassName('bar1')} key="bar1" />,
+                <div ref="bar2" className={cx.getPartClassName('bar2')} key="bar2" />
             ]);
         }
 
         return (
-            <div className={cx().part('bar').build()} style={style}>
+            <div className={cx.getPartClassName('bar')} style={style}>
                 {children}
             </div>
         );
     }
 
+    /**
+     * 获取形状的缩放比例
+     *
+     * @private
+     * @return {number}
+     */
     getZoom() {
         return Progress.SIZES[this.props.size] || 1;
     }
 
+    /**
+     * 渲染圆圈
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderCircle() {
         let zoom = this.getZoom();
         let r = 14 * zoom;
@@ -190,13 +270,13 @@ export default class Progress extends Component {
         }
 
         return (
-            <div ref="wrapper" className={cx().part('wapper').build()}>
-                <svg className={cx().part('svg').build()}>
+            <div ref="wrapper" className={cx.getPartClassName('wapper')}>
+                <svg className={cx.getPartClassName('svg')}>
                     <circle ref="path"
                         cx={c}
                         cy={c}
                         r={r}
-                        className={cx().part('path').build()}
+                        className={cx.getPartClassName('path')}
                         style={pathStyle}
                         fill="none"
                         strokeWidth={strokeWidth}
@@ -206,9 +286,15 @@ export default class Progress extends Component {
         );
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
-        const {props} = this;
+        const props = this.props;
 
         const {
             shape,
