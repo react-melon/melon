@@ -9,8 +9,21 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Zippy');
 
+
+/**
+ * melon/Zippy
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Zippy extends React.Component {
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const props = this.props;
@@ -20,8 +33,6 @@ export default class Zippy extends React.Component {
             horizontal,
             ...others
         } = props;
-
-        /* eslint-disable fecs-min-vars-per-destructure */
 
         const className = cx(props)
             .addVariants(horizontal ? 'horizontal' : 'vertical')

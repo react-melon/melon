@@ -13,8 +13,22 @@ import Validity from 'melon-core/Validity';
 
 const cx = create('Toggle');
 
+/**
+ * melon/Toggle
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class Toggle extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
@@ -23,6 +37,12 @@ export default class Toggle extends InputComponent {
 
     }
 
+    /**
+     * 值改变处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onChange(e) {
 
         const {
@@ -44,6 +64,12 @@ export default class Toggle extends InputComponent {
 
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {

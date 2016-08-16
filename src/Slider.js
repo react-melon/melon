@@ -16,8 +16,23 @@ import getNewValue from './slider/getNewValue';
 
 const cx = create('Slider');
 
+
+/**
+ * melon/Slider
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class Slider extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
@@ -32,23 +47,55 @@ export default class Slider extends InputComponent {
         this.state.value = value > maximum ? maximum : value;
         this.state.value = value < minimum ? minimum : value;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             active: false
         };
     }
 
+    /**
+     * 将要Unmount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
+
+        /**
+         * bar
+         *
+         * @protected
+         * @type {HTMLElement}
+         */
         this.slider = null;
     }
 
+    /**
+     * 鼠标抬起时的处理
+     *
+     * @protected
+     */
     onMouseUp() {
         domUtil.off(window, 'mouseup', this.onMouseUp);
         domUtil.off(window, 'mousemove', this.onMouseChange);
         this.setState({active: false});
     }
 
-    onMouseChange({clientX}) {
+    /**
+     * 鼠标移动时的处理
+     *
+     * @protected
+     * @param  {{clientX: number}} e 事件对象
+     */
+    onMouseChange(e) {
+
+        const clientX = e.clientX;
 
         const {maximum, minimum, step} = this.props;
         const value = this.state.value;
@@ -62,6 +109,12 @@ export default class Slider extends InputComponent {
         this.onSliderChange(newValue);
     }
 
+    /**
+     * 数值改变时调用
+     *
+     * @protected
+     * @param  {number} newValue 新值
+     */
     onSliderChange(newValue) {
         super.onChange({
             type: 'change',
@@ -70,6 +123,13 @@ export default class Slider extends InputComponent {
         });
     }
 
+    /**
+     * 鼠标按下时的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     * @return {undefined}
+     */
     onMouseDown(e) {
 
         if (this.props.disable || this.props.readOnly) {
@@ -83,10 +143,22 @@ export default class Slider extends InputComponent {
         this.setState({active: true});
     }
 
+    /**
+     * 获得当前值
+     *
+     * @public
+     * @return {number} 当前值
+     */
     getSliderValue() {
         return this.state.value;
     }
 
+    /**
+     * 渲染input
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderHiddenInput() {
 
         const value = this.state.value;
@@ -98,6 +170,12 @@ export default class Slider extends InputComponent {
         );
     }
 
+    /**
+     * 渲染bar
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderBar() {
 
         return (
@@ -112,6 +190,12 @@ export default class Slider extends InputComponent {
         );
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const validity = this.state.validity;

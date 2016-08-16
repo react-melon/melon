@@ -12,8 +12,20 @@ import createCommand from './dialog/commander';
 // 但是在 TestUtils 中渲染出来的组件树中找不到 funciton component，非常诡异；
 // 先把这货改成正常的 component，后面再看能不能优化
 
+/**
+ * melon/Confirm
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Confirm extends React.Component {
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const props = this.props;
