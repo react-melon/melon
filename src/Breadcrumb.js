@@ -10,8 +10,16 @@ import Item from './breadcrumb/Item';
 const cx = create('Breadcrumb');
 
 /* eslint-disable fecs-prefer-class */
+
+/**
+ * melon/Breadcrumb
+ *
+ * @param {Object}  props 属性
+ * @return {ReactElement}
+ */
 export default function Breadcrumb(props) {
 
+    /* eslint-disable fecs-min-vars-per-destructure */
     const {
         children,
         ...rest

@@ -12,23 +12,52 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('SnackBar');
 
+/**
+ * melon/SnackBar
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class SnackBar extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     */
     constructor(props) {
 
         super(props);
 
+        /**
+         * timeoutId
+         *
+         * @type {?number}
+         */
         this.autoHideTimer = null;
 
         this.onMouseUp = this.onMouseUp.bind(this);
         this.onHide = this.onHide.bind(this);
 
+        /**
+         * 状态
+         *
+         * @type {Object}
+         */
         this.state = {
             open: props.open
         };
 
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
 
         dom.on(document.body, 'mouseup', this.onMouseUp);
@@ -41,7 +70,16 @@ export default class SnackBar extends Component {
 
     }
 
-    componentWillReceiveProps({open}) {
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
+    componentWillReceiveProps(nextProps) {
+
+        const open = nextProps.open;
 
         if (open === this.state.open) {
             return;
@@ -51,10 +89,22 @@ export default class SnackBar extends Component {
 
     }
 
+    /**
+     * 状态更新后的处理
+     *
+     * @public
+     * @override
+     */
     componentDidUpdate() {
         this.locate();
     }
 
+    /**
+     * unount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
 
         dom.off(document.body, 'mouseup', this.onMouseUp);
@@ -65,6 +115,12 @@ export default class SnackBar extends Component {
 
     }
 
+    /**
+     * 定位浮层
+     *
+     * @private
+     * @return {undefined}
+     */
     locate() {
 
         const direction = this.props.direction;
@@ -92,6 +148,11 @@ export default class SnackBar extends Component {
 
     }
 
+    /**
+     * 显示时的处理
+     *
+     * @protected
+     */
     onHide() {
 
         const onHide = this.props.onHide;
@@ -104,6 +165,11 @@ export default class SnackBar extends Component {
 
     }
 
+    /**
+     * 隐藏时的处理
+     *
+     * @protected
+     */
     onShow() {
 
         const {
@@ -132,6 +198,12 @@ export default class SnackBar extends Component {
 
     }
 
+    /**
+     * 鼠标抬起时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onMouseUp(e) {
 
         if (!this.state.open) {
@@ -151,6 +223,12 @@ export default class SnackBar extends Component {
         }
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {

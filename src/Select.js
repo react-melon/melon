@@ -15,12 +15,31 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Select');
 
+/**
+ * melon/Select
+ *
+ * @extends {melon-core/InputComponent}
+ * @class
+ */
 export default class Select extends InputComponent {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props   属性
+     * @param  {*} context 上下文
+     */
     constructor(props, context) {
 
         super(props, context);
 
+        /**
+         * 状态
+         *
+         * @type {Object}
+         */
         this.state = {
             ...this.state,
             open: false
@@ -32,6 +51,12 @@ export default class Select extends InputComponent {
 
     }
 
+    /**
+     * Mount时的处理
+     *
+     * @public
+     * @override
+     */
     componentDidMount() {
 
         super.componentDidMount();
@@ -42,6 +67,11 @@ export default class Select extends InputComponent {
 
         document.body.appendChild(container);
 
+        /**
+         * 浮层
+         *
+         * @type {Object}
+         */
         this.popup = ReactDOM.render(
             <SeparatePopup
                 target={ReactDOM.findDOMNode(this)}
@@ -58,6 +88,13 @@ export default class Select extends InputComponent {
 
     }
 
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
     componentWillReceiveProps(nextProps) {
 
         const children = nextProps.children;
@@ -82,6 +119,12 @@ export default class Select extends InputComponent {
 
     }
 
+    /**
+     * 将要Unmount时的处理
+     *
+     * @public
+     * @override
+     */
     componentWillUnmount() {
 
         let container = this.container;
@@ -89,6 +132,12 @@ export default class Select extends InputComponent {
         if (container) {
             ReactDOM.unmountComponentAtNode(container);
             container.parentElement.removeChild(container);
+
+            /**
+             * 浮层的容器
+             *
+             * @type {HTMLElement}
+             */
             this.container = container = null;
         }
 
@@ -96,15 +145,21 @@ export default class Select extends InputComponent {
 
     }
 
-    showOptions() {
+    /**
+     * 渲染选项浮层
+     *
+     * @protected
+     * @param  {boolean} open 是否可见
+     */
+    renderOptions(open) {
 
         this.setState({
-            open: true
+            open
         }, () => {
             ReactDOM.render(
                 <SeparatePopup
                     target={ReactDOM.findDOMNode(this)}
-                    open={true}
+                    open={open}
                     onHide={this.onPopupHide}>
                     {Children.map(
                         this.props.children,
@@ -118,28 +173,11 @@ export default class Select extends InputComponent {
 
     }
 
-    hideOptions() {
-
-        this.setState({
-            open: false
-        }, () => {
-            ReactDOM.render(
-                <SeparatePopup
-                    target={ReactDOM.findDOMNode(this)}
-                    open={false}
-                    onHide={this.onPopupHide}>
-                    {Children.map(
-                        this.props.children,
-                        this.renderItem,
-                        this
-                    )}
-                </SeparatePopup>,
-                this.container
-            );
-        });
-
-    }
-
+    /**
+     * 点击时处理
+     *
+     * @protected
+     */
     onClick() {
 
         const {disabled, readOnly} = this.props;
@@ -148,31 +186,46 @@ export default class Select extends InputComponent {
             return;
         }
 
-        if (this.isOpen()) {
-            this.hideOptions();
-        }
-        else {
-            this.showOptions();
-        }
-
+        this.renderOptions(!this.isOpen());
     }
 
-    onClickOption({value}) {
+    /**
+     * 点击选项时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     * @param  {string} e.value 当前值
+     */
+    onClickOption(e) {
 
-        this.hideOptions();
+        const value = e.value;
+
+        this.renderOptions(false);
 
         super.onChange({
             type: 'change',
             target: this,
             value
         });
-
     }
 
-    onPopupHide(e) {
-        this.hideOptions();
+    /**
+     * popup 隐藏时调用
+     *
+     * @protected
+     */
+    onPopupHide() {
+        this.renderOptions(false);
     }
 
+    /**
+     * 渲染选项
+     *
+     * @protected
+     * @param  {ReactElement} child 节点
+     * @param  {number} index 序号
+     * @return {ReactElement}
+     */
     renderItem(child, index) {
 
         if (!child) {
@@ -201,6 +254,12 @@ export default class Select extends InputComponent {
 
     }
 
+    /**
+     * 渲染input
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderHiddenInput() {
 
         const {name, value} = this.props;
@@ -219,7 +278,7 @@ export default class Select extends InputComponent {
     /**
      * 渲染label部件
      *
-     * @param {string|ReactElement} label label部件内容
+     * @protected
      * @return {ReactElement}
      */
     renderLabel() {
@@ -245,6 +304,14 @@ export default class Select extends InputComponent {
 
     }
 
+    /**
+     * 找到当前选中的选项
+     *
+     * @protected
+     * @param  {string} value    当前值
+     * @param  {Array<ReactElement>} children 子节点数组
+     * @return {Array<ReactElement>?}
+     */
     findOption(value, children) {
 
         children = Children.toArray(children);
@@ -270,14 +337,32 @@ export default class Select extends InputComponent {
         return null;
     }
 
+    /**
+     * 渲染icon
+     *
+     * @protected
+     * @return {ReactElement}
+     */
     renderIcon() {
         return <Icon icon='expand-more' />;
     }
 
+    /**
+     * 是否打开
+     *
+     * @protected
+     * @return {boolean}
+     */
     isOpen() {
         return this.state.open;
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         return (
@@ -312,6 +397,12 @@ Select.propTypes = {
 Select.childContextTypes = InputComponent.childContextTypes;
 Select.contextTypes = InputComponent.contextTypes;
 
+/**
+ * 生成 Select 的选项
+ *
+ * @param  {Array<{disabled: boolean, name: string, value: string}>} dataSource 数据
+ * @return {Array<ReactElement>}
+ */
 export function createOptions(dataSource) {
 
     return dataSource.map(function (option, index) {

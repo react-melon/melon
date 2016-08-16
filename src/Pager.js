@@ -10,21 +10,49 @@ import {range} from 'melon-core/util/array';
 
 const cx = create('Pager');
 
+/**
+ * melon/Pager
+ *
+ * @extends {React.Component}
+ * @class
+ */
 export default class Pager extends Component {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @constructor
+     * @param  {*} props 属性
+     */
     constructor(props) {
 
         super(props);
 
         const page = props.page;
 
+        /**
+         * 状态
+         *
+         * @protected
+         * @type {Object}
+         */
         this.state = {page};
 
         this.onMainClick = this.onMainClick.bind(this);
 
     }
 
-    componentWillReceiveProps({page, total}) {
+    /**
+     * 接受新属性时的处理
+     *
+     * @public
+     * @override
+     * @param {*} nextProps 新属性
+     */
+    componentWillReceiveProps(nextProps) {
+
+        let {page, total} = nextProps;
 
         if (page < 0) {
             page = 0;
@@ -38,6 +66,12 @@ export default class Pager extends Component {
         }
     }
 
+    /**
+     * 鼠标移动时的处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     */
     onMainClick(e) {
 
         e.preventDefault();
@@ -77,11 +111,12 @@ export default class Pager extends Component {
      * 输入: start 0, stop 10, paddingLeft 3 paddingRight 3
      * 输出: 0, 1, 2, -3, 8, 9, 10
      *
+     * @private
      * @param  {number} start        起始页码
      * @param  {number} stop         结束页面(不包含)
      * @param  {number} paddingLeft  起始页码之后, 应展开的页码个数
      * @param  {number} paddingRight 结束页面之前, 应展开的页码个数
-     * @return {Array.number}        [start, paddingLeft, .., paddingRight, stop]
+     * @return {Array<number>}        [start, paddingLeft, .., paddingRight, stop]
      */
     range(start, stop, paddingLeft, paddingRight) {
         return start + paddingLeft < stop - paddingRight
@@ -93,6 +128,13 @@ export default class Pager extends Component {
             : range(start, stop);
     }
 
+    /**
+     * 渲染页码
+     *
+     * @protected
+     * @param {Object} conf 页码的属性
+     * @return {ReactElement}
+     */
     renderItem(conf) {
 
         const {
@@ -131,6 +173,12 @@ export default class Pager extends Component {
         );
     }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
     render() {
 
         const {props, state} = this;

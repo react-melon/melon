@@ -11,6 +11,12 @@ const cx = create('Link');
 
 /* eslint-disable fecs-prefer-class */
 
+/**
+ * melon/Link
+ *
+ * @param {Object} props     属性
+ * @return {ReactElement}
+ */
 export default function Link(props) {
 
     return (
@@ -18,5 +24,7 @@ export default function Link(props) {
     );
 
 }
+
+Link.displayName = 'Link';
 
 /* eslint-enable fecs-prefer-class */

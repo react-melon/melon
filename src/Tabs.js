@@ -13,6 +13,7 @@ const cx = create('Tabs');
 /**
  * melon/Tabs
  *
+ * @extends {React.Component}
  * @class
  */
 export default class Tabs extends Component {
