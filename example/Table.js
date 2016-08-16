@@ -34,9 +34,33 @@ class View extends React.Component {
         this.state = {
             table1DataSource: createDataSource(20),
             table2DataSource: createDataSource(3),
-            table3DataSource: createDataSource(5),
+            table3DataSource: createDataSource(100),
             selected: []
         };
+    }
+
+    componentDidMount() {
+
+        this.updateTimer = setInterval(() => {
+
+            const records = this.state.table3DataSource;
+            const index = Math.floor((Math.random() * records.length));
+            const record = records[index];
+
+            this.setState({
+                table3DataSource: records
+                    .slice(0, index)
+                    .concat({
+                        ...record,
+                        complete: Math.min(100, Math.round(Math.random() * 110))
+                    })
+                    .concat(records.slice(index + 1))
+            });
+
+
+
+        }, 1000);
+
     }
 
     getEditableTableColumns() {
@@ -82,11 +106,6 @@ class View extends React.Component {
                         width={100} />
                     <Table.Column
                         dataKey='complete'
-                        header='% Complete'
-                        footer='% Complete'
-                        width={300} />
-                    <Table.Column
-                        dataKey='haha'
                         header='% Complete'
                         footer='% Complete'
                         width={300} />
@@ -136,8 +155,19 @@ class View extends React.Component {
                         footer='Title'
                         width={200} />
                     <Table.Column
-                        dataKey='comment'
-                        header='comment'
+                        dataKey='priority'
+                        header='Priority'
+                        footer='Priority'
+                        width={200} />
+                    <Table.Column
+                        dataKey='issueType'
+                        header='Issue Type'
+                        footer='Issue Type'
+                        width={100} />
+                    <Table.Column
+                        dataKey='complete'
+                        header='% Complete'
+                        footer='% Complete'
                         width={300} />
                 </SelectableTable>
                 <SelectableTable
@@ -155,8 +185,19 @@ class View extends React.Component {
                         footer='Title'
                         width={200} />
                     <Table.Column
-                        dataKey='comment'
-                        header='comment'
+                        dataKey='priority'
+                        header='Priority'
+                        footer='Priority'
+                        width={200} />
+                    <Table.Column
+                        dataKey='issueType'
+                        header='Issue Type'
+                        footer='Issue Type'
+                        width={100} />
+                    <Table.Column
+                        dataKey='complete'
+                        header='% Complete'
+                        footer='% Complete'
                         width={300} />
                 </SelectableTable>
                 <SelectableTable
@@ -169,18 +210,27 @@ class View extends React.Component {
                         dataKey='id'
                         header='ID'
                         footer='ID'
-                        align='left'
-                        width={100}
-                        headerRenderer={({cellData}) => `${cellData}*2`}
-                        bodyRenderer={({cellData}) => cellData * 2} />
+                        align='right'
+                        width={100} />
                     <Table.Column
                         dataKey='task'
                         header='Title'
                         footer='Title'
                         width={200} />
                     <Table.Column
-                        dataKey='comment'
-                        header='comment'
+                        dataKey='priority'
+                        header='Priority'
+                        footer='Priority'
+                        width={200} />
+                    <Table.Column
+                        dataKey='issueType'
+                        header='Issue Type'
+                        footer='Issue Type'
+                        width={100} />
+                    <Table.Column
+                        dataKey='complete'
+                        header='% Complete'
+                        footer='% Complete'
                         width={300} />
                 </SelectableTable>
                 <div>

@@ -3,13 +3,28 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes} from 'react';
+import React, {PropTypes, Component} from 'react';
 
 import Icon from '../Icon';
 import Column from './Column';
 
-export default function TableSelectorColumn(props) {
-    return null;
+/**
+ * 可选择的表格列
+ *
+ * @extends React.Component
+ */
+export default class TableSelectorColumn extends Component {
+
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {Element}
+     */
+    render() {
+        return null;
+    }
+
 }
 
 TableSelectorColumn.displayName = 'TableSelectorColumn';
@@ -32,15 +47,14 @@ TableSelectorColumn.getIcon = function (multiple, selected) {
 
 TableSelectorColumn.cellRenderer = function (props) {
 
-
-    let {part, columnData, rowIndex} = props;
-    let {multiple} = columnData;
+    const {part, columnData, rowIndex} = props;
+    const multiple = columnData.multiple;
 
     if (!multiple && part !== 'body') {
         return null;
     }
 
-    let isSelected = part === 'body'
+    const isSelected = part === 'body'
         ? columnData.isSelected(rowIndex)
         : columnData.isAllSelected();
 

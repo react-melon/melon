@@ -6,17 +6,21 @@
 */
 
 
-export function throttle(func, wait, options) {
+/**
+ * 限流
+ *
+ * @param  {Function} func       被限流的原函数
+ * @param  {number}   wait       限流时间阀
+ * @param  {Object}   options    选项
+ * @return {Function}
+ */
+export function throttle(func, wait, options = {}) {
 
     let timeout;
     let context;
     let args;
     let result;
     let previous = 0;
-
-    if (!options) {
-        options = {};
-    }
 
     const later = function () {
 
