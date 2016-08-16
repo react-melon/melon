@@ -3,10 +3,25 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import {PropTypes} from 'react';
+import {PropTypes, Component} from 'react';
 
-export default function TableColumn(props) {
-    return null;
+/**
+ * 表格列
+ *
+ * @extends React.Component
+ */
+export default class TableColumn extends Component {
+
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {React.Element}
+     */
+    render() {
+        return null;
+    }
+
 }
 
 TableColumn.displayName = 'TableColumn';
@@ -45,7 +60,7 @@ TableColumn.propTypes = {
     /**
      * 列的头部文本
      *
-     * @type {[type]}
+     * @type {string}
      */
     title: PropTypes.string,
 

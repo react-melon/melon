@@ -3,9 +3,10 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {PropTypes} from 'react';
 import Table from './Table';
 import SelectorColumn from './table/SelectorColumn';
+import SelectorRow from './table/SelectorRow';
 
 function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex) {
 
@@ -31,8 +32,19 @@ function getNextSelectedRowData(multiple, dataSource, current, action, rowIndex)
 
 }
 
-export default class SelectableTable extends Component {
+/**
+ * 可选择行的表格
+ *
+ * @extends {Table}
+ */
+export default class SelectableTable extends Table {
 
+    /**
+     * 构造函数
+     *
+     * @public
+     * @param  {*} props 属性
+     */
     constructor(props) {
 
         super(props);
@@ -44,21 +56,38 @@ export default class SelectableTable extends Component {
         this.onSelectAll = this.onSelectAll.bind(this);
 
         this.state = {
+            ...this.state,
             selected: this.props.selected
         };
 
     }
 
+    /**
+     * 接受新属性时处理函数
+     *
+     * @public
+     * @param  {*} props 新属性
+     */
     componentWillReceiveProps(props) {
 
-        if (!this.props.onSelect) {
+        super.componentWillReceiveProps(props);
+
+        const {selected, onSelect} = props;
+
+        if (onSelect && selected != null) {
             this.setState({
-                selected: props.selected
+                selected
             });
         }
 
     }
 
+    /**
+     * 当某行被选中时处理函数
+     *
+     * @private
+     * @param  {number} rowIndex 行号
+     */
     onSelect(rowIndex) {
         this.onRowSelectorClick(
             this.isRowSelected(rowIndex) ? 'unselect' : 'select',
@@ -66,12 +95,24 @@ export default class SelectableTable extends Component {
         );
     }
 
+    /**
+     * 当『选择全部』被点击时的处理函数
+     *
+     * @private
+     */
     onSelectAll() {
         this.onRowSelectorClick(
             this.isAllRowsSelected() ? 'unselectAll' : 'selectAll'
         );
     }
 
+    /**
+     * 当某行中的选择器被点击时的处理函数
+     *
+     * @private
+     * @param  {string} action   动作
+     * @param  {number} rowIndex 行号
+     */
     onRowSelectorClick(action, rowIndex) {
 
         const {
@@ -104,39 +145,90 @@ export default class SelectableTable extends Component {
 
     }
 
+    /**
+     * 获取当前选中行号
+     *
+     * @protected
+     * @return {Array.number}
+     */
     getSelected() {
-        const {state, props} = this;
-        const {onSelect} = props;
-        const {selected} = onSelect ? props : state;
-        return selected;
+        const source = this.props.onSelect ? this.props : this.state;
+        return source.selected;
     }
 
+    /**
+     * 指定行号是否被选中
+     *
+     * @public
+     * @param  {number}  rowIndex 行号
+     * @return {boolean}
+     */
     isRowSelected(rowIndex) {
-        const selected = this.getSelected();
-        return selected.indexOf(rowIndex) !== -1;
+        const selectedRows = this.getSelected();
+        return selectedRows.indexOf(rowIndex) !== -1;
     }
 
+    /**
+     * 是否全部被选中
+     *
+     * @public
+     * @return {boolean}
+     */
     isAllRowsSelected() {
-        const selected = this.getSelected();
-        return selected.length === this.props.dataSource.length;
+        const selectedRows = this.getSelected();
+        return selectedRows.length === this.props.dataSource.length;
     }
 
-    render() {
+    /**
+     * 从属性中解析出列配置
+     *
+     * @protected
+     * @param  {*} props 属性
+     * @return {Array.Element}
+     */
+    getColumns(props) {
 
-        const {children, multiple, ...rest} = this.props;
-
-        return (
-            <Table {...rest}>
-                <SelectorColumn
-                    isSelected={this.isRowSelected}
-                    isAllSelected={this.isAllRowsSelected}
-                    multiple={multiple}
-                    onSelect={this.onSelect}
-                    onSelectAll={this.onSelectAll} />
-                {children}
-            </Table>
+        const selectorColumn = (
+            <SelectorColumn
+                isSelected={this.isRowSelected}
+                isAllSelected={this.isAllRowsSelected}
+                multiple={props.multiple}
+                onSelect={this.onSelect}
+                onSelectAll={this.onSelectAll} />
         );
 
+        const columns = super.getColumns(props);
+
+        return [selectorColumn, ...columns];
+
+    }
+
+    /**
+     * 渲染一行
+     *
+     * @protected
+     * @param  {string}        part       位置
+     * @param  {Array.Element} columns    列配置
+     * @param  {*}             rowData    行数据
+     * @param  {number}        index      行号
+     * @param  {number}        tableWidth 表格宽度
+     * @return {Element}
+     */
+    renderRow(part, columns, rowData, index, tableWidth) {
+        const {rowHeight, headerRowHeight, highlight, rowHasChanged} = this.props;
+        return (
+            <SelectorRow
+                selected={part === 'body' ? this.isRowSelected(index) : this.isAllRowsSelected()}
+                height={part === 'body' ? rowHeight : headerRowHeight}
+                highlight={highlight}
+                key={index}
+                rowIndex={index}
+                part={part}
+                columns={columns}
+                data={rowData}
+                tableWidth={tableWidth}
+                rowHasChanged={rowHasChanged} />
+        );
     }
 
 }
