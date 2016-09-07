@@ -35,9 +35,24 @@
 
     var cx = (0, _cxBuilder.create)('BoxGroup');
 
+    /**
+     * melon/BoxGroup
+     *
+     * @extends {melon-core/InputComponent}
+     * @class
+     */
+
     var BoxGroup = function (_InputComponent) {
         babelHelpers.inherits(BoxGroup, _InputComponent);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         * @param  {*} context 上下文
+         */
         function BoxGroup(props, context) {
             babelHelpers.classCallCheck(this, BoxGroup);
 
@@ -45,6 +60,12 @@
 
             var value = _this.state.value;
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = babelHelpers['extends']({}, _this.state, {
                 value: Array.isArray(value) ? value : [value]
             });
@@ -54,6 +75,14 @@
 
             return _this;
         }
+
+        /**
+         * 值改变时处理
+         *
+         * @protected
+         * @param  {Object} e 事件对象
+         */
+
 
         BoxGroup.prototype.onChange = function onChange(e) {
 
@@ -162,6 +191,12 @@
     BoxGroup.childContextTypes = _InputComponent3['default'].childContextTypes;
     BoxGroup.contextTypes = _InputComponent3['default'].contextTypes;
 
+    /**
+     * 生成 BoxGroup 的选项
+     *
+     * @param  {Array<{disabled: boolean, name: string, value: string}>} datasource 数据
+     * @return {Array<ReactElement>}
+     */
     function createOptions(datasource) {
 
         return datasource.map(function (option, index) {

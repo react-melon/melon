@@ -26,17 +26,23 @@
     * @author leon <ludafa@outlook.com>
     */
 
-    function throttle(func, wait, options) {
+    /**
+     * 限流
+     *
+     * @param  {Function} func       被限流的原函数
+     * @param  {number}   wait       限流时间阀
+     * @param  {Object}   options    选项
+     * @return {Function}
+     */
+    function throttle(func, wait) {
+        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
 
         var timeout = void 0;
         var context = void 0;
         var args = void 0;
         var result = void 0;
         var previous = 0;
-
-        if (!options) {
-            options = {};
-        }
 
         var later = function later() {
 

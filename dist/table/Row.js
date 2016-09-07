@@ -29,52 +29,11 @@
 
     var cx = (0, _cxBuilder.create)('TableRow');
 
-    function renderCell(props, columnData, index) {
-        var part = props.part;
-        var data = props.data;
-        var height = props.height;
-        var rowIndex = props.rowIndex;
-        var width = columnData.width;
-        var align = columnData.align;
-        var dataKey = columnData.dataKey;
-        var cellRenderer = columnData.cellRenderer;
-
-
-        var cellData = part === 'header' || part === 'footer' ? columnData[part] : data[dataKey];
-
-        var cellProps = {
-            part: part,
-            height: height,
-            width: width,
-            align: align,
-            rowIndex: rowIndex,
-            columnData: columnData,
-            cellData: cellData,
-            key: dataKey || part,
-            columnIndex: index,
-            rowData: data,
-            cellKey: dataKey
-        };
-
-        // 内容默认是 cellData
-        var content = cellData;
-
-        // 如果有 cellRenderer
-        if (typeof cellRenderer === 'function') {
-            content = cellRenderer(cellProps);
-        }
-        // 或者是有局部的 renderer
-        else {
-
-                var partSpecificRenderer = columnData[part + 'Renderer'];
-
-                if (typeof partSpecificRenderer === 'function') {
-                    content = partSpecificRenderer(cellProps);
-                }
-            }
-
-        return _react2['default'].createElement(_Cell2['default'], babelHelpers['extends']({}, cellProps, { content: content }));
-    }
+    /**
+     * 表格行
+     *
+     * @extends React.Component
+     */
 
     var TableRow = function (_Component) {
         babelHelpers.inherits(TableRow, _Component);
@@ -84,7 +43,73 @@
             return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
         }
 
+        TableRow.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps, nextState) {
+            var _props = this.props;
+            var tableWidth = _props.tableWidth;
+            var rowHasChanged = _props.rowHasChanged;
+            var data = _props.data;
+
+
+            if (tableWidth !== nextProps.tableWidth) {
+                return true;
+            }
+
+            if (rowHasChanged) {
+                return rowHasChanged(data, nextProps.data);
+            }
+
+            return true;
+        };
+
+        TableRow.prototype.renderCell = function renderCell(props, columnData, index) {
+            var part = props.part;
+            var data = props.data;
+            var height = props.height;
+            var rowIndex = props.rowIndex;
+            var width = columnData.width;
+            var align = columnData.align;
+            var dataKey = columnData.dataKey;
+            var cellRenderer = columnData.cellRenderer;
+
+
+            var cellData = part === 'header' || part === 'footer' ? columnData[part] : data[dataKey];
+
+            var cellProps = {
+                part: part,
+                height: height,
+                width: width,
+                align: align,
+                rowIndex: rowIndex,
+                columnData: columnData,
+                cellData: cellData,
+                key: dataKey || part,
+                columnIndex: index,
+                rowData: data,
+                cellKey: dataKey
+            };
+
+            // 内容默认是 cellData
+            var content = cellData;
+
+            // 如果有 cellRenderer
+            if (typeof cellRenderer === 'function') {
+                content = cellRenderer(cellProps);
+            }
+            // 或者是有局部的 renderer
+            else {
+
+                    var partSpecificRenderer = columnData[part + 'Renderer'];
+
+                    if (typeof partSpecificRenderer === 'function') {
+                        content = partSpecificRenderer(cellProps);
+                    }
+                }
+
+            return _react2['default'].createElement(_Cell2['default'], babelHelpers['extends']({}, cellProps, { content: content }));
+        };
+
         TableRow.prototype.render = function render() {
+            var _this2 = this;
 
             var props = this.props;
             var columns = props.columns;
@@ -97,7 +122,7 @@
                     className: cx(props).build(),
                     style: { width: tableWidth ? tableWidth - 2 : null } },
                 columns.map(function (column, index) {
-                    return renderCell(props, column.props, index);
+                    return _this2.renderCell(props, column.props, index);
                 })
             );
         };
@@ -132,6 +157,15 @@
          * Height of the row.
          * @type {number}
          */
-        height: _react.PropTypes.number.isRequired
+        height: _react.PropTypes.number.isRequired,
+
+        /**
+         * 行数据是否发生变化
+         *
+         * 此函数会被用于优化性能。如果返回值为 false，那么当前行不会被更新
+         *
+         * @type {Funciton}
+         */
+        rowHasChanged: _react.PropTypes.func.isRequired
     };
 });
