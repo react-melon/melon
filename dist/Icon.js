@@ -29,6 +29,14 @@
     var cx = (0, _cxBuilder.create)('Icon');
 
     /* eslint-disable fecs-prefer-class */
+
+    /**
+     * melon/Icon
+     *
+     * @param {Object} props     属性
+     * @param {string} props.icon icon名称
+     * @return {ReactElement}
+     */
     function Icon(props) {
         var icon = props.icon;
         var rest = babelHelpers.objectWithoutProperties(props, ['icon']);
@@ -36,7 +44,6 @@
 
         return _react2['default'].createElement('i', babelHelpers['extends']({}, rest, { 'data-icon': icon, className: cx(props).build() }));
     }
-    /* eslint-enable fecs-prefer-class */
 
     Icon.propTypes = {
         icon: _react.PropTypes.string.isRequired

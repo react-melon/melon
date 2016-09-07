@@ -37,9 +37,24 @@
 
     var cx = (0, _cxBuilder.create)('TextBox');
 
+    /**
+     * melon/TextBox
+     *
+     * @extends {melon-core/InputComponent}
+     * @class
+     */
+
     var TextBox = function (_InputComponent) {
         babelHelpers.inherits(TextBox, _InputComponent);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         * @param  {*} context 上下文
+         */
         function TextBox(props, context) {
             babelHelpers.classCallCheck(this, TextBox);
 
@@ -47,6 +62,12 @@
 
             var value = _this.state.value;
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = babelHelpers['extends']({}, _this.state, {
                 isFloating: !!value,
                 isFocus: false
@@ -58,6 +79,15 @@
 
             return _this;
         }
+
+        /**
+         * 接受新属性时的处理
+         *
+         * @public
+         * @override
+         * @param {*} nextProps 新属性
+         */
+
 
         TextBox.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 
@@ -184,8 +214,7 @@
             var onChange = this.onChange;
             var props = this.props;
             var floatingLabel = props.floatingLabel;
-            var className = props.className;
-            var rest = babelHelpers.objectWithoutProperties(props, ['floatingLabel', 'className']);
+            var rest = babelHelpers.objectWithoutProperties(props, ['floatingLabel']);
             var _state2 = this.state;
             var validity = _state2.validity;
             var isFocus = _state2.isFocus;
@@ -232,7 +261,7 @@
 
     TextBox.propTypes = babelHelpers['extends']({}, _InputComponent3['default'].propTypes, {
 
-        type: _react.PropTypes.oneOf(['text', 'password']),
+        type: _react.PropTypes.oneOf(['text', 'password', 'number']),
 
         placeholder: _react.PropTypes.string,
         floatingLabel: _react.PropTypes.string,

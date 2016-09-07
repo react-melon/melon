@@ -28,6 +28,13 @@
 
     var cx = (0, _cxBuilder.create)('TabsPanel');
 
+    /**
+     * melon/Tabs/TabPanel
+     *
+     * @param {Object}  props        属性
+     * @param {boolean} props.active 是否选中
+     * @return {ReactElement}
+     */
     function TabsPanel(props) {
         var active = props.active;
         var others = babelHelpers.objectWithoutProperties(props, ['active']);

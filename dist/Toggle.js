@@ -34,9 +34,24 @@
 
     var cx = (0, _cxBuilder.create)('Toggle');
 
+    /**
+     * melon/Toggle
+     *
+     * @extends {melon-core/InputComponent}
+     * @class
+     */
+
     var Toggle = function (_InputComponent) {
         babelHelpers.inherits(Toggle, _InputComponent);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         * @param  {*} context 上下文
+         */
         function Toggle(props, context) {
             babelHelpers.classCallCheck(this, Toggle);
 
@@ -46,6 +61,14 @@
 
             return _this;
         }
+
+        /**
+         * 值改变处理
+         *
+         * @protected
+         * @param  {Object} e 事件对象
+         */
+
 
         Toggle.prototype.onChange = function onChange(e) {
             var _props = this.props;

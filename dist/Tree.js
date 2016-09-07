@@ -27,14 +27,28 @@
     /**
      * @file melon/Tree
      * @author cxtom<cxtom2008@gmail.com>
-     * @author leon<ludafa@outlook.com>
+     *         leon<ludafa@outlook.com>
      */
 
     var cx = (0, _cxBuilder.create)('Tree');
 
+    /**
+     * melon/Tree
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Tree = function (_Component) {
         babelHelpers.inherits(Tree, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         */
         function Tree(props) {
             babelHelpers.classCallCheck(this, Tree);
 
@@ -43,6 +57,14 @@
             _this.onTreeNodeClick = _this.onTreeNodeClick.bind(_this);
             return _this;
         }
+
+        /**
+         * 节点点击的处理
+         *
+         * @protected
+         * @param  {Object} e 事件对象
+         */
+
 
         Tree.prototype.onTreeNodeClick = function onTreeNodeClick(e) {
 
@@ -103,9 +125,9 @@
 
     Tree.TreeNode = _TreeNode2['default'];
 
-    Tree.createTreeNodes = function (datasource, level) {
+    Tree.createTreeNodes = function (datasource) {
+        var level = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 
-        level = level || 1;
 
         if (datasource == null) {
             return null;

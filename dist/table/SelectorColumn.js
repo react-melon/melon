@@ -17,7 +17,6 @@
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.default = TableSelectorColumn;
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
 
@@ -25,14 +24,23 @@
 
     var _Column2 = babelHelpers.interopRequireDefault(_Column);
 
-    /**
-     * @file TableSelectorColumn
-     * @author leon(ludafa@outlook.com)
-     */
+    var TableSelectorColumn = function (_Component) {
+        babelHelpers.inherits(TableSelectorColumn, _Component);
 
-    function TableSelectorColumn(props) {
-        return null;
-    }
+        function TableSelectorColumn() {
+            babelHelpers.classCallCheck(this, TableSelectorColumn);
+            return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+        }
+
+        TableSelectorColumn.prototype.render = function render() {
+            return null;
+        };
+
+        return TableSelectorColumn;
+    }(_react.Component);
+
+    exports['default'] = TableSelectorColumn;
+
 
     TableSelectorColumn.displayName = 'TableSelectorColumn';
 
@@ -56,8 +64,8 @@
         var part = props.part;
         var columnData = props.columnData;
         var rowIndex = props.rowIndex;
-        var multiple = columnData.multiple;
 
+        var multiple = columnData.multiple;
 
         if (!multiple && part !== 'body') {
             return null;

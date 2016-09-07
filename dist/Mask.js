@@ -29,6 +29,13 @@
 
     var cx = (0, _cxBuilder.create)('Mask');
 
+    /**
+     * melon/Pager
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Mask = function (_Component) {
         babelHelpers.inherits(Mask, _Component);
 
@@ -75,9 +82,9 @@
         };
 
         Mask.prototype.render = function render() {
+
             var props = this.props;
             var show = props.show;
-
 
             return _react2['default'].createElement('div', babelHelpers['extends']({}, props, { className: cx(props).addStates({ show: show }).build() }));
         };

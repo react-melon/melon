@@ -34,25 +34,57 @@
 
     var cx = (0, _cxBuilder.create)('SnackBar');
 
+    /**
+     * melon/SnackBar
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var SnackBar = function (_Component) {
         babelHelpers.inherits(SnackBar, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         */
         function SnackBar(props) {
             babelHelpers.classCallCheck(this, SnackBar);
 
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
+            /**
+             * timeoutId
+             *
+             * @type {?number}
+             */
             _this.autoHideTimer = null;
 
             _this.onMouseUp = _this.onMouseUp.bind(_this);
             _this.onHide = _this.onHide.bind(_this);
 
+            /**
+             * 状态
+             *
+             * @type {Object}
+             */
             _this.state = {
                 open: props.open
             };
 
             return _this;
         }
+
+        /**
+         * Mount时的处理
+         *
+         * @public
+         * @override
+         */
+
 
         SnackBar.prototype.componentDidMount = function componentDidMount() {
 
@@ -65,9 +97,9 @@
             this.locate();
         };
 
-        SnackBar.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
-            var open = _ref.open;
+        SnackBar.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 
+            var open = nextProps.open;
 
             if (open === this.state.open) {
                 return;
