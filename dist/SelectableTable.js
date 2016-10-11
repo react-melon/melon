@@ -1,17 +1,17 @@
 /*! 2016 Baidu Inc. All Rights Reserved */
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
-        define(['exports', 'react', './Table', './table/SelectorColumn', "./babelHelpers"], factory);
+        define(['exports', 'react', './Table', './table/SelectorColumn', './table/SelectorRow', "./babelHelpers"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require('react'), require('./Table'), require('./table/SelectorColumn'), require("./babelHelpers"));
+        factory(exports, require('react'), require('./Table'), require('./table/SelectorColumn'), require('./table/SelectorRow'), require("./babelHelpers"));
     } else {
         var mod = {
             exports: {}
         };
-        factory(mod.exports, global.react, global.Table, global.SelectorColumn, global.babelHelpers);
+        factory(mod.exports, global.react, global.Table, global.SelectorColumn, global.SelectorRow, global.babelHelpers);
         global.SelectableTable = mod.exports;
     }
-})(this, function (exports, _react, _Table, _SelectorColumn, babelHelpers) {
+})(this, function (exports, _react, _Table2, _SelectorColumn, _SelectorRow, babelHelpers) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -20,9 +20,11 @@
 
     var _react2 = babelHelpers.interopRequireDefault(_react);
 
-    var _Table2 = babelHelpers.interopRequireDefault(_Table);
+    var _Table3 = babelHelpers.interopRequireDefault(_Table2);
 
     var _SelectorColumn2 = babelHelpers.interopRequireDefault(_SelectorColumn);
+
+    var _SelectorRow2 = babelHelpers.interopRequireDefault(_SelectorRow);
 
     /**
      * @file SelectableTable
@@ -52,13 +54,25 @@
         return selected;
     }
 
-    var SelectableTable = function (_Component) {
-        babelHelpers.inherits(SelectableTable, _Component);
+    /**
+     * 可选择行的表格
+     *
+     * @extends {Table}
+     */
 
+    var SelectableTable = function (_Table) {
+        babelHelpers.inherits(SelectableTable, _Table);
+
+        /**
+         * 构造函数
+         *
+         * @public
+         * @param  {*} props 属性
+         */
         function SelectableTable(props) {
             babelHelpers.classCallCheck(this, SelectableTable);
 
-            var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
+            var _this = babelHelpers.possibleConstructorReturn(this, _Table.call(this, props));
 
             _this.getSelected = _this.getSelected.bind(_this);
             _this.isAllRowsSelected = _this.isAllRowsSelected.bind(_this);
@@ -66,18 +80,32 @@
             _this.onSelect = _this.onSelect.bind(_this);
             _this.onSelectAll = _this.onSelectAll.bind(_this);
 
-            _this.state = {
+            _this.state = babelHelpers['extends']({}, _this.state, {
                 selected: _this.props.selected
-            };
+            });
 
             return _this;
         }
 
+        /**
+         * 接受新属性时处理函数
+         *
+         * @public
+         * @param  {*} props 新属性
+         */
+
+
         SelectableTable.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
 
-            if (!this.props.onSelect) {
+            _Table.prototype.componentWillReceiveProps.call(this, props);
+
+            var selected = props.selected;
+            var onSelect = props.onSelect;
+
+
+            if (onSelect && selected != null) {
                 this.setState({
-                    selected: props.selected
+                    selected: selected
                 });
             }
         };
@@ -115,62 +143,69 @@
         };
 
         SelectableTable.prototype.getSelected = function getSelected() {
-            var state = this.state;
-            var props = this.props;
-            var onSelect = props.onSelect;
-
-            var _ref = onSelect ? props : state;
-
-            var selected = _ref.selected;
-
-            return selected;
+            var source = this.props.onSelect ? this.props : this.state;
+            return source.selected;
         };
 
         SelectableTable.prototype.isRowSelected = function isRowSelected(rowIndex) {
-            var selected = this.getSelected();
-            return selected.indexOf(rowIndex) !== -1;
+            var selectedRows = this.getSelected();
+            return selectedRows.indexOf(rowIndex) !== -1;
         };
 
         SelectableTable.prototype.isAllRowsSelected = function isAllRowsSelected() {
-            var selected = this.getSelected();
-            return selected.length === this.props.dataSource.length;
+            var selectedRows = this.getSelected();
+            return selectedRows.length === this.props.dataSource.length;
         };
 
-        SelectableTable.prototype.render = function render() {
+        SelectableTable.prototype.getColumns = function getColumns(props) {
+
+            var selectorColumn = _react2['default'].createElement(_SelectorColumn2['default'], {
+                isSelected: this.isRowSelected,
+                isAllSelected: this.isAllRowsSelected,
+                multiple: props.multiple,
+                onSelect: this.onSelect,
+                onSelectAll: this.onSelectAll });
+
+            var columns = _Table.prototype.getColumns.call(this, props);
+
+            return [selectorColumn].concat(columns);
+        };
+
+        SelectableTable.prototype.renderRow = function renderRow(part, columns, rowData, index, tableWidth) {
             var _props2 = this.props;
-            var children = _props2.children;
-            var multiple = _props2.multiple;
-            var rest = babelHelpers.objectWithoutProperties(_props2, ['children', 'multiple']);
+            var rowHeight = _props2.rowHeight;
+            var headerRowHeight = _props2.headerRowHeight;
+            var highlight = _props2.highlight;
+            var rowHasChanged = _props2.rowHasChanged;
 
-
-            return _react2['default'].createElement(
-                _Table2['default'],
-                rest,
-                _react2['default'].createElement(_SelectorColumn2['default'], {
-                    isSelected: this.isRowSelected,
-                    isAllSelected: this.isAllRowsSelected,
-                    multiple: multiple,
-                    onSelect: this.onSelect,
-                    onSelectAll: this.onSelectAll }),
-                children
-            );
+            return _react2['default'].createElement(_SelectorRow2['default'], {
+                selected: part === 'body' ? this.isRowSelected(index) : this.isAllRowsSelected(),
+                height: part === 'body' ? rowHeight : headerRowHeight,
+                highlight: highlight,
+                key: index,
+                rowIndex: index,
+                part: part,
+                columns: columns,
+                data: rowData,
+                tableWidth: tableWidth,
+                rowHasChanged: rowHasChanged });
         };
 
         return SelectableTable;
-    }(_react.Component);
+    }(_Table3['default']);
 
     exports['default'] = SelectableTable;
 
 
     SelectableTable.displayName = 'SelectableTable';
 
-    SelectableTable.propTypes = babelHelpers['extends']({}, _Table2['default'].propTypes, {
+    SelectableTable.propTypes = babelHelpers['extends']({}, _Table3['default'].propTypes, {
         multiple: _react.PropTypes.bool.isRequired,
         onSelect: _react.PropTypes.func,
         selected: _react.PropTypes.arrayOf(_react.PropTypes.number).isRequired
     });
 
-    SelectableTable.defaultProps = babelHelpers['extends']({}, _Table2['default'].defaultProps, {
+    SelectableTable.defaultProps = babelHelpers['extends']({}, _Table3['default'].defaultProps, {
         multiple: true,
         selected: []
     });

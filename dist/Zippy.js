@@ -27,6 +27,13 @@
 
     var cx = (0, _cxBuilder.create)('Zippy');
 
+    /**
+     * melon/Zippy
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Zippy = function (_React$Component) {
         babelHelpers.inherits(Zippy, _React$Component);
 
@@ -43,8 +50,6 @@
             var horizontal = props.horizontal;
             var others = babelHelpers.objectWithoutProperties(props, ['expand', 'horizontal']);
 
-
-            /* eslint-disable fecs-min-vars-per-destructure */
 
             var className = cx(props).addVariants(horizontal ? 'horizontal' : 'vertical').addStates({ close: !expand }).build();
 

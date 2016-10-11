@@ -31,9 +31,23 @@
 
     var cx = (0, _cxBuilder.create)('Tooltip');
 
+    /**
+     * melon/Tooltip
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Tooltip = function (_Component) {
         babelHelpers.inherits(Tooltip, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         */
         function Tooltip(props) {
             babelHelpers.classCallCheck(this, Tooltip);
 
@@ -43,12 +57,26 @@
             _this.onMouseEnter = _this.onMouseEnter.bind(_this);
             _this.onMouseLeave = _this.onMouseLeave.bind(_this);
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = {
                 isShown: false
             };
 
             return _this;
         }
+
+        /**
+         * 将要Mount时的处理
+         *
+         * @public
+         * @override
+         */
+
 
         Tooltip.prototype.componentDidMount = function componentDidMount() {
             var popup = this.popup = Tooltip.createPopup();
@@ -57,6 +85,13 @@
 
         Tooltip.prototype.componentWillUnmount = function componentWillUnmount() {
             Tooltip.destroyPopup(this.popup);
+
+            /**
+             * 弹出层的dom
+             *
+             * @protected
+             * @type {HTMLElement}
+             */
             this.popup = null;
         };
 

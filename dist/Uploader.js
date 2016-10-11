@@ -39,14 +39,35 @@
 
     var cx = (0, _cxBuilder.create)('Uploader');
 
+    /**
+     * melon/Uploader
+     *
+     * @extends {melon-core/InputComponent}
+     * @class
+     */
+
     var Uploader = function (_InputComponent) {
         babelHelpers.inherits(Uploader, _InputComponent);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         * @param  {*} context 上下文
+         */
         function Uploader(props, context) {
             babelHelpers.classCallCheck(this, Uploader);
 
             var _this = babelHelpers.possibleConstructorReturn(this, _InputComponent.call(this, props, context));
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = babelHelpers['extends']({}, _this.state, {
                 isUploading: false,
                 isUploaded: !!_this.props.value
@@ -54,6 +75,14 @@
 
             return _this;
         }
+
+        /**
+         * 文件上传时的处理
+         *
+         * @protected
+         * @param  {Object} e 事件对象
+         */
+
 
         Uploader.prototype.onFileChange = function onFileChange(e) {
             var _this2 = this;

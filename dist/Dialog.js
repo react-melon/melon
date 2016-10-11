@@ -35,16 +35,42 @@
 
     var cx = (0, _cxBuilder.create)('Dialog');
 
+    /**
+     * melon/Dialog
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Dialog = function (_Component) {
         babelHelpers.inherits(Dialog, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props 属性
+         */
         function Dialog(props) {
             babelHelpers.classCallCheck(this, Dialog);
 
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
+            /**
+             * 保存原始的 html body 样式
+             *
+             * @private
+             * @type {Object}
+             */
             _this.originalHTMLBodySize = {};
 
+            /**
+             * 初始状态
+             *
+             * @private
+             * @type {Object}
+             */
             _this.state = {
                 open: props.open
             };
@@ -55,6 +81,14 @@
 
             return _this;
         }
+
+        /**
+         * Mount时的处理
+         *
+         * @public
+         * @override
+         */
+
 
         Dialog.prototype.componentDidMount = function componentDidMount() {
             if (this.state.open) {
@@ -68,9 +102,9 @@
             }
         };
 
-        Dialog.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
-            var open = _ref.open;
+        Dialog.prototype.componentWillReceiveProps = function componentWillReceiveProps(nestProps) {
 
+            var open = nestProps.open;
 
             if (open === this.state.open) {
                 return;
@@ -164,8 +198,8 @@
                 _react2['default'].createElement(
                     _reactMotion.Motion,
                     { style: { y: (0, _reactMotion.spring)(open ? 0 : -80) } },
-                    function (_ref2) {
-                        var y = _ref2.y;
+                    function (_ref) {
+                        var y = _ref.y;
                         return _react2['default'].createElement(
                             _DialogWindow2['default'],
                             {
@@ -194,6 +228,19 @@
     exports['default'] = Dialog;
 
 
+    Dialog.displayName = 'Dialog';
+
+    /**
+     * propTypes
+     *
+     * @property {Array<ReactElement>} selectedIndex  选中标签的序号
+     * @property {boolean}             maskClickClose 是否点击遮罩时隐藏对话框
+     * @property {boolean}             open           是否显示
+     * @property {Function}            onHide         隐藏时执行
+     * @property {Function}            onShow         显示时执行
+     * @property {ReactElement|string} title          标题
+     * @property {number|string}       width          对话框宽度
+     */
     Dialog.propTypes = {
         actions: _react.PropTypes.node,
         maskClickClose: _react.PropTypes.bool,

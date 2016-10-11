@@ -30,6 +30,13 @@
     /* eslint-disable fecs-prefer-class */
 
     /**
+     * melon/Alert
+     *
+     * @param {Object}  props 属性
+     * @return {ReactElement}
+     */
+
+    /**
      * @file melon/dialog/Alert
      * @author cxtom(cxtom2008@gmail.com)
      */

@@ -31,9 +31,23 @@
 
     var cx = (0, _cxBuilder.create)('Tabs');
 
+    /**
+     * melon/Tabs
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Tabs = function (_Component) {
         babelHelpers.inherits(Tabs, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param {*} props 属性
+         */
         function Tabs(props) {
             babelHelpers.classCallCheck(this, Tabs);
 
@@ -41,13 +55,27 @@
 
             var selectedIndex = props.selectedIndex;
 
-
+            /**
+             * 状态
+             *
+             * @private
+             * @type {Object}
+             */
             _this.state = {
                 selectedIndex: selectedIndex
             };
 
             return _this;
         }
+
+        /**
+         * 接受新属性时的处理
+         *
+         * @public
+         * @override
+         * @param {*} nextProps 新属性
+         */
+
 
         Tabs.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 
@@ -89,7 +117,7 @@
             return _react.Children.count(this.props.children);
         };
 
-        Tabs.prototype.getSelected = function getSelected(tab, index) {
+        Tabs.prototype.isTabSelected = function isTabSelected(index) {
             return this.state.selectedIndex === index;
         };
 
@@ -106,7 +134,7 @@
 
                 var tab = children[i];
 
-                var selected = this.getSelected(tab, i);
+                var selected = this.isTabSelected(i);
 
                 if (selected) {
                     tabIndex = i;
@@ -153,6 +181,13 @@
     exports['default'] = Tabs;
 
 
+    /**
+     * propTypes
+     *
+     * @property {number}   selectedIndex  选中标签的序号
+     * @property {Function} onChange       选中标签发生变化后处理函数
+     * @property {Function} onBeforeChange 选中标签发生变化前处理函数
+     */
     Tabs.propTypes = {
         selectedIndex: _react.PropTypes.number.isRequired,
         onChange: _react.PropTypes.func,

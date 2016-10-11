@@ -29,9 +29,16 @@
     var cx = (0, _cxBuilder.create)('Card');
 
     /* eslint-disable fecs-prefer-class */
-    function Card(props) {
-        var children = props.children;
 
+    /**
+     * melon/Card
+     *
+     * @param {Object}  props           属性
+     * @return {ReactElement}
+     */
+    function Card(props) {
+
+        var children = props.children;
 
         return _react2['default'].createElement(
             'div',
@@ -40,4 +47,6 @@
         );
     }
     /* eslint-enable fecs-prefer-class */
+
+    Card.displayName = 'Card';
 });

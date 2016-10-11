@@ -33,21 +33,44 @@
 
     var cx = (0, _cxBuilder.create)('Table');
 
+    /**
+     * 表格
+     *
+     * @extends React.Component
+     */
+
     var Table = function (_Component) {
         babelHelpers.inherits(Table, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @param {*} props 属性
+         */
         function Table(props) {
             babelHelpers.classCallCheck(this, Table);
 
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
-            _this.state = {
-                columns: _this.getColumns(_this.props)
-            };
+            _this.state = {};
 
             _this.onWindowResize = _this.onWindowResize.bind(_this);
             return _this;
         }
+
+        /**
+         * 即将挂载到 DOM 时处理函数
+         *
+         * @public
+         */
+
+
+        Table.prototype.componentWillMount = function componentWillMount() {
+            this.setState({
+                columns: this.getColumns(this.props)
+            });
+        };
 
         Table.prototype.componentDidMount = function componentDidMount() {
             this.onWindowResize();
@@ -74,7 +97,9 @@
                         throw new Error('Table child must be a TableColumn');
                     }
 
-                    children.push(child);
+                    children.push((0, _react.cloneElement)(child, {
+                        rowHasChanged: props.rowHasChanged
+                    }));
                 }
 
                 return children;
@@ -82,16 +107,10 @@
         };
 
         Table.prototype.renderHeader = function renderHeader(columns, width) {
-            var props = this.props;
-
             return _react2['default'].createElement(
                 'div',
-                { className: cx().part('header').build() },
-                _react2['default'].createElement(_Row2['default'], {
-                    part: 'header',
-                    height: props.headerRowHeight,
-                    columns: columns,
-                    tableWidth: width })
+                { className: cx.getPartClassName('header') },
+                this.renderRow('header', columns, null, -1, width)
             );
         };
 
@@ -104,36 +123,42 @@
 
 
             var body = dataSource && dataSource.length ? dataSource.map(function (rowData, index) {
-                return _this2.renderRow(columns, rowData, index, width);
+                return _this2.renderRow('body', columns, rowData, index, width);
             }) : _react2['default'].createElement(
                 'div',
                 {
-                    className: cx().part('body-empty').build(),
+                    className: cx.getPartClassName('body-empty'),
                     style: { width: width - 2 } },
                 noDataContent
             );
 
             return _react2['default'].createElement(
                 'div',
-                { className: cx().part('body').build() },
+                { className: cx.getPartClassName('body') },
                 body
             );
         };
 
-        Table.prototype.renderRow = function renderRow(columns, rowData, index, tableWidth) {
+        Table.prototype.renderRow = function renderRow(part, columns, rowData, index, tableWidth) {
             var _props2 = this.props;
             var rowHeight = _props2.rowHeight;
+            var headerRowHeight = _props2.headerRowHeight;
             var highlight = _props2.highlight;
+            var rowHasChanged = _props2.rowHasChanged;
+
+
+            var height = part === 'body' ? rowHeight : headerRowHeight;
 
             return _react2['default'].createElement(_Row2['default'], {
-                height: rowHeight,
+                height: height,
                 highlight: highlight,
                 key: index,
                 rowIndex: index,
-                part: 'body',
+                part: part,
                 columns: columns,
                 data: rowData,
-                tableWidth: tableWidth });
+                tableWidth: tableWidth,
+                rowHasChanged: rowHasChanged });
         };
 
         Table.prototype.renderFooter = function renderFooter(columns) {
@@ -141,8 +166,8 @@
         };
 
         Table.prototype.onWindowResize = function onWindowResize() {
-            var main = this.main;
 
+            var main = this.main;
 
             if (this.main) {
                 this.setState({
@@ -194,12 +219,16 @@
         highlight: _react.PropTypes.bool,
         headerRowHeight: _react.PropTypes.number,
         dataSource: _react.PropTypes.array.isRequired,
-        noDataContent: _react.PropTypes.node
+        noDataContent: _react.PropTypes.node,
+        rowHasChanged: _react.PropTypes.func.isRequired
     }, Table.defaultProps = {
         highlight: true,
         rowHeight: 48,
         headerRowHeight: 56,
-        noDataContent: '没有数据'
+        noDataContent: '没有数据',
+        rowHasChanged: function rowHasChanged(r1, r2) {
+            return r1 !== r2;
+        }
     };
 
     Table.Column = _Column2['default'];

@@ -31,6 +31,13 @@
     var cx = (0, _cxBuilder.create)('Breadcrumb');
 
     /* eslint-disable fecs-prefer-class */
+
+    /**
+     * melon/Breadcrumb
+     *
+     * @param {Object}  props 属性
+     * @return {ReactElement}
+     */
     function Breadcrumb(props) {
         var children = props.children;
         var rest = babelHelpers.objectWithoutProperties(props, ['children']);

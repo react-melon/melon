@@ -28,17 +28,44 @@
 
     var cx = (0, _cxBuilder.create)('Progress');
 
+    /**
+     * melon/Progress
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Progress = function (_Component) {
         babelHelpers.inherits(Progress, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props 属性
+         */
         function Progress(props) {
             babelHelpers.classCallCheck(this, Progress);
 
             var _this = babelHelpers.possibleConstructorReturn(this, _Component.call(this, props));
 
+            /**
+             * timerIds
+             *
+             * @type {Object}
+             */
             _this.timers = {};
             return _this;
         }
+
+        /**
+         * Mount时的处理
+         *
+         * @public
+         * @override
+         */
+
 
         Progress.prototype.componentDidMount = function componentDidMount() {
             var _this2 = this;
@@ -73,9 +100,12 @@
             this.timers = {};
         };
 
-        Progress.prototype.barUpdate = function barUpdate(step, barName, stepValues) {
+        Progress.prototype.barUpdate = function barUpdate() {
+            var step = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+            var barName = arguments[1];
+            var stepValues = arguments[2];
 
-            step = step || 0;
+
             step %= 4;
 
             var element = this.refs[barName];
@@ -100,9 +130,10 @@
             this.timers[barName] = setTimeout(this.barUpdate.bind(this, step + 1, barName, stepValues), 420);
         };
 
-        Progress.prototype.scalePath = function scalePath(path, step) {
+        Progress.prototype.scalePath = function scalePath(path) {
+            var step = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-            step = step || 0;
+
             step %= 3;
 
             this.timers.path = setTimeout(this.scalePath.bind(this, path, step + 1), step ? 750 : 250);
@@ -168,12 +199,12 @@
                     width: this.getRelativeValue() + '%'
                 };
             } else {
-                children = [_react2['default'].createElement('div', { ref: 'bar1', className: cx().part('bar1').build(), key: 'bar1' }), _react2['default'].createElement('div', { ref: 'bar2', className: cx().part('bar2').build(), key: 'bar2' })];
+                children = [_react2['default'].createElement('div', { ref: 'bar1', className: cx.getPartClassName('bar1'), key: 'bar1' }), _react2['default'].createElement('div', { ref: 'bar2', className: cx.getPartClassName('bar2'), key: 'bar2' })];
             }
 
             return _react2['default'].createElement(
                 'div',
-                { className: cx().part('bar').build(), style: style },
+                { className: cx.getPartClassName('bar'), style: style },
                 children
             );
         };
@@ -197,15 +228,15 @@
 
             return _react2['default'].createElement(
                 'div',
-                { ref: 'wrapper', className: cx().part('wapper').build() },
+                { ref: 'wrapper', className: cx.getPartClassName('wapper') },
                 _react2['default'].createElement(
                     'svg',
-                    { className: cx().part('svg').build() },
+                    { className: cx.getPartClassName('svg') },
                     _react2['default'].createElement('circle', { ref: 'path',
                         cx: c,
                         cy: c,
                         r: r,
-                        className: cx().part('path').build(),
+                        className: cx.getPartClassName('path'),
                         style: pathStyle,
                         fill: 'none',
                         strokeWidth: strokeWidth,
@@ -215,7 +246,9 @@
         };
 
         Progress.prototype.render = function render() {
+
             var props = this.props;
+
             var shape = props.shape;
             var mode = props.mode;
 
