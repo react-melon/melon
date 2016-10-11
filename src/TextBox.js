@@ -249,7 +249,6 @@ export default class TextBox extends InputComponent {
             props
         } = this;
 
-        /* eslint-disable fecs-min-vars-per-destructure */
         const {
             floatingLabel,
             ...rest
