@@ -39,9 +39,24 @@
 
     var cx = (0, _cxBuilder.create)('Slider');
 
+    /**
+     * melon/Slider
+     *
+     * @extends {melon-core/InputComponent}
+     * @class
+     */
+
     var Slider = function (_InputComponent) {
         babelHelpers.inherits(Slider, _InputComponent);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props   属性
+         * @param  {*} context 上下文
+         */
         function Slider(props, context) {
             babelHelpers.classCallCheck(this, Slider);
 
@@ -59,13 +74,34 @@
             _this.state.value = value > maximum ? maximum : value;
             _this.state.value = value < minimum ? minimum : value;
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = babelHelpers['extends']({}, _this.state, {
                 active: false
             });
             return _this;
         }
 
+        /**
+         * 将要Unmount时的处理
+         *
+         * @public
+         * @override
+         */
+
+
         Slider.prototype.componentWillUnmount = function componentWillUnmount() {
+
+            /**
+             * bar
+             *
+             * @protected
+             * @type {HTMLElement}
+             */
             this.slider = null;
         };
 
@@ -75,8 +111,10 @@
             this.setState({ active: false });
         };
 
-        Slider.prototype.onMouseChange = function onMouseChange(_ref) {
-            var clientX = _ref.clientX;
+        Slider.prototype.onMouseChange = function onMouseChange(e) {
+
+            var clientX = e.clientX;
+
             var _props = this.props;
             var maximum = _props.maximum;
             var minimum = _props.minimum;

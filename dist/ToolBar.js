@@ -28,9 +28,15 @@
 
     var cx = (0, _cxBuilder.create)('ToolBar');
 
+    /**
+     * melon/ToolBar
+     *
+     * @param {Object}  props        属性
+     * @return {ReactElement}
+     */
     function ToolBar(props) {
-        var children = props.children;
 
+        var children = props.children;
 
         return _react2['default'].createElement(
             'div',
@@ -38,4 +44,6 @@
             children
         );
     }
+
+    ToolBar.displayName = 'ToolBar';
 });

@@ -38,6 +38,13 @@
         right: 'left'
     };
 
+    /**
+     * melon/Drawer
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Drawer = function (_Component) {
         babelHelpers.inherits(Drawer, _Component);
 
@@ -119,6 +126,16 @@
 
     Drawer.displayName = 'Drawer';
 
+    /**
+     * propTypes
+     *
+     * @property {number}   position       弹出的位置
+     * @property {boolean}  open           是否打开
+     * @property {number}   size           宽度
+     * @property {boolean}  mask           是否需要遮罩
+     * @property {boolean}  maskClickClose 是否点击遮罩以后关闭
+     * @property {Function} onHide         关闭时调用
+     */
     Drawer.propTypes = {
         position: _react.PropTypes.oneOf(Object.keys(REVERT_POSITION)).isRequired,
         open: _react.PropTypes.bool.isRequired,

@@ -306,7 +306,7 @@ TextBox.propTypes = {
 
     ...InputComponent.propTypes,
 
-    type: PropTypes.oneOf(['text', 'password']),
+    type: PropTypes.oneOf(['text', 'password', 'number']),
 
     placeholder: PropTypes.string,
     floatingLabel: PropTypes.string,

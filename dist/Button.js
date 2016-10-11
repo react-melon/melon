@@ -31,6 +31,15 @@
     var cx = (0, _cxBuilder.create)('Button');
 
     /* eslint-disable fecs-prefer-class */
+
+    /**
+     * melon/Button
+     *
+     * @param {Object}  props           属性
+     * @param {boolean} props.disabled  是否不可点击
+     * @param {boolean} props.hasRipple 是否有ripple动画
+     * @return {ReactElement}
+     */
     function Button(props) {
         var hasRipple = props.hasRipple;
         var label = props.label;

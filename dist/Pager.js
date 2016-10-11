@@ -29,9 +29,23 @@
 
     var cx = (0, _cxBuilder.create)('Pager');
 
+    /**
+     * melon/Pager
+     *
+     * @extends {React.Component}
+     * @class
+     */
+
     var Pager = function (_Component) {
         babelHelpers.inherits(Pager, _Component);
 
+        /**
+         * 构造函数
+         *
+         * @public
+         * @constructor
+         * @param  {*} props 属性
+         */
         function Pager(props) {
             babelHelpers.classCallCheck(this, Pager);
 
@@ -39,6 +53,12 @@
 
             var page = props.page;
 
+            /**
+             * 状态
+             *
+             * @protected
+             * @type {Object}
+             */
             _this.state = { page: page };
 
             _this.onMainClick = _this.onMainClick.bind(_this);
@@ -46,9 +66,18 @@
             return _this;
         }
 
-        Pager.prototype.componentWillReceiveProps = function componentWillReceiveProps(_ref) {
-            var page = _ref.page;
-            var total = _ref.total;
+        /**
+         * 接受新属性时的处理
+         *
+         * @public
+         * @override
+         * @param {*} nextProps 新属性
+         */
+
+
+        Pager.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+            var page = nextProps.page;
+            var total = nextProps.total;
 
 
             if (page < 0) {

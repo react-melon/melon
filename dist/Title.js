@@ -29,6 +29,14 @@
     var cx = (0, _cxBuilder.create)('Title');
 
     /* eslint-disable fecs-prefer-class */
+
+    /**
+     * melon/Title
+     *
+     * @param {Object}  props       属性
+     * @param {Object}  props.level 级别
+     * @return {ReactElement}
+     */
     function Title(props) {
         var level = props.level;
         var rest = babelHelpers.objectWithoutProperties(props, ['level']);

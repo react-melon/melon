@@ -17,16 +17,24 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = TableColumn;
 
-  /**
-   * @file TableColumn
-   * @author leon(ludafa@outlook.com)
-   */
+  var TableColumn = function (_Component) {
+    babelHelpers.inherits(TableColumn, _Component);
 
-  function TableColumn(props) {
-    return null;
-  }
+    function TableColumn() {
+      babelHelpers.classCallCheck(this, TableColumn);
+      return babelHelpers.possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    TableColumn.prototype.render = function render() {
+      return null;
+    };
+
+    return TableColumn;
+  }(_react.Component);
+
+  exports['default'] = TableColumn;
+
 
   TableColumn.displayName = 'TableColumn';
 
@@ -62,7 +70,7 @@
     /**
      * 列的头部文本
      *
-     * @type {[type]}
+     * @type {string}
      */
     title: _react.PropTypes.string,
 
