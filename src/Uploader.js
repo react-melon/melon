@@ -59,22 +59,17 @@ export default class Uploader extends InputComponent {
 
         this.setUploading();
 
-        const {upload, onSelect} = this.props;
+        const upload = this.props.upload;
 
         const event = {
             target: this,
             files: e.target.files
         };
 
-        if (upload) {
-            upload(event).then(
-                result => this.setFile(result),
-                error => this.clearFile()
-            );
-            return;
-        }
-
-        onSelect(event);
+        upload(event).then(
+            result => this.setFile(result),
+            error => this.clearFile()
+        );
 
     }
 
@@ -90,13 +85,13 @@ export default class Uploader extends InputComponent {
                 isUploading: false,
                 value
             });
+            return;
         }
-        else {
-            this.setState({
-                isUploaded: false,
-                value
-            });
-        }
+
+        this.setState({
+            isUploaded: false,
+            value
+        });
 
     }
 
@@ -124,7 +119,6 @@ export default class Uploader extends InputComponent {
             isUploading: false,
             value
         });
-
 
         super.onChange({
             type: 'change',
