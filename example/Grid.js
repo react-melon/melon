@@ -7,6 +7,14 @@ import React from 'react';
 
 import Title from '../src/Title';
 
+const CELL_STYLE = {
+    backgroundColor: '#eee',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '60px'
+};
+
 class View extends React.Component {
 
     render() {
@@ -14,9 +22,7 @@ class View extends React.Component {
             <div>
                 <Title level={3}>按钮</Title>
                 <Title level={4}>预定义样式</Title>
-
                 {this.renderGrid(12)}
-
             </div>
         );
     }
@@ -32,8 +38,8 @@ class View extends React.Component {
 
             grid[i] = (
                 <div className="melon-row" key={i}>
-                    <div className={prev}>{i}</div>
-                    <div className={next}>{columns - i}</div>
+                    <div className={prev} style={CELL_STYLE}>{i}</div>
+                    <div className={next} style={CELL_STYLE}>{columns - i}</div>
                 </div>
             );
 

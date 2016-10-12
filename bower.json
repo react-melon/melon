@@ -22,13 +22,15 @@
     "dep",
     "test",
     "tests",
-    "lib",
+    "src",
     "doc",
-    "example"
+    "example",
+    "asset"    
   ],
   "dependencies": {
-    "react": "^0.14.8",
-    "react-motion": "https://unpkg.com/react-motion/bower.zip",
-    "melon-core": "^0.3.0"
+      "melon-core": "^0.3.2",
+      "react": "^0.14.8",
+      "react-dom": "0.14.8",
+      "react-motion": "^0.4.2"
   }
 }

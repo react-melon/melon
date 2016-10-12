@@ -3,10 +3,10 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React from 'react';
+import React, {Component} from 'react';
 import Nav from './common/Nav';
 
-class App extends React.Component {
+export default class App extends Component {
     render() {
         const {components, name, Component} = this.props;
         return (
@@ -22,5 +22,3 @@ class App extends React.Component {
             : '加载中~';
     }
 }
-
-module.exports = App;
