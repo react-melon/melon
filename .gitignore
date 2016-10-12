@@ -10,3 +10,5 @@ coverage
 **/.DS_Store
 doc
 asset
+lib/package.json
+lib/readme.md
