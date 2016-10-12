@@ -7,11 +7,26 @@ import React from 'react';
 import Title from '../src/Title';
 import Uploader from '../src/Uploader';
 
+/* eslint-disable */
+const EXAMPLE_IMG_URL = [
+    'https://assets.materialup.com/uploads/878dbfeb-7503-4d63-a4ab-1435ac533296/attachment.png',
+    'http://react-melon.github.io/melon/asset/common/img/melon-logo.ffb5dd37.png'
+];
+/* eslint-enable */
+
+function randomImageURL() {
+    const index = Math.floor(EXAMPLE_IMG_URL.length * Math.random());
+    return EXAMPLE_IMG_URL[index];
+}
+
 class View extends React.Component {
 
     constructor(props) {
         super(props);
         this.upload = this.upload.bind(this);
+        this.state = {
+            imgURL: randomImageURL()
+        };
     }
 
     render() {
@@ -19,9 +34,20 @@ class View extends React.Component {
             <div>
                 <Title level={3}>文件上传</Title>
                 <Title level={4}>待选择</Title>
-                <Uploader btnText="图片上传" upload={this.upload}/>
+                <Uploader placeholder="图片上传" upload={this.upload} style={{width: 200}} />
+                <Uploader
+                    variants={['fluid']}
+                    placeholder="图片上传"
+                    upload={this.upload} />
                 <Title level={4}>已选择</Title>
-                <Uploader label="背景图片上传" upload={this.upload} value="https://www.baidu.com/img/bd_logo1.png" />
+                <Uploader
+                    upload={this.upload}
+                    onChange={e => {
+                        this.setState({
+                            imgURL: e.value
+                        });
+                    }}
+                    value={this.state.imgURL} />
             </div>
         );
     }
@@ -32,7 +58,7 @@ class View extends React.Component {
 
             setTimeout(
                 function () {
-                    resolve('https://www.baidu.com/img/bd_logo1.png');
+                    resolve(randomImageURL());
                 },
                 1000
             );
