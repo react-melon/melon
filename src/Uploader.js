@@ -59,16 +59,44 @@ export default class Uploader extends InputComponent {
 
         this.setUploading();
 
-        this
-            .props
-            .upload({
-                target: this,
-                files: e.target.files
-            })
-            .then(
+        const {upload, onSelect} = this.props;
+
+        const event = {
+            target: this,
+            files: e.target.files
+        };
+
+        if (upload) {
+            upload(event).then(
                 result => this.setFile(result),
                 error => this.clearFile()
             );
+            return;
+        }
+
+        onSelect(event);
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        const value = nextProps.value;
+
+        super.componentWillReceiveProps(nextProps);
+
+        if (value) {
+            this.setState({
+                isUploaded: true,
+                isUploading: false,
+                value
+            });
+        }
+        else {
+            this.setState({
+                isUploaded: false,
+                value
+            });
+        }
 
     }
 
@@ -93,14 +121,18 @@ export default class Uploader extends InputComponent {
 
         this.setState({
             isUploaded: true,
-            isUploading: false
-        }, () => {
-            super.onChange({
-                type: 'change',
-                target: this,
-                value
-            });
+            isUploading: false,
+            value
         });
+
+
+        super.onChange({
+            type: 'change',
+            target: this,
+            value
+        });
+
+
     }
 
     /**
@@ -112,15 +144,17 @@ export default class Uploader extends InputComponent {
 
         this.setState({
             isUploaded: false,
-            isUploading: false
-        }, () => {
-
-            super.onChange({
-                type: 'change',
-                target: this,
-                value: ''
-            });
+            isUploading: false,
+            value: ''
         });
+
+
+        super.onChange({
+            type: 'change',
+            target: this,
+            value: ''
+        });
+
 
     }
 
@@ -158,7 +192,7 @@ export default class Uploader extends InputComponent {
     renderUploadButton() {
 
         const {isUploading, isUploaded, value} = this.state;
-        const {size, btnText} = this.props;
+        const {size, placeholder} = this.props;
 
         if (isUploading) {
             return (
@@ -172,37 +206,41 @@ export default class Uploader extends InputComponent {
         if (isUploaded) {
 
             return (
-                <div className={cx().part('uploaded').build()}>
-                    <Icon icon="done" size={size} /> 已上传
+                <div className={cx.getPartClassName('content')}>
+                    <image
+                        className={cx.getPartClassName('preview')}
+                        src={value} />
                     <Link
                         size={size}
                         href={value}
-                        variants={['button']}
+                        title="点击查看"
                         target="_blank">
-                        查看
+                        {value}
                     </Link>
                     <Button
                         size={size}
                         type="button"
+                        title="重新选择"
                         onClick={() => {
                             this.clearFile();
                         }} >
-                        重选
+                        <Icon icon="refresh" />
                     </Button>
                 </div>
             );
         }
 
         return (
-            <Button
-                type="button"
-                variants={['raised']}
+            <div
+                className={cx.getPartClassName('content')}
                 onClick={() => {
                     this.refs.file.click();
                 }}>
                 <Icon icon="file-upload" />
-                {btnText}
-            </Button>
+                <span className={cx.getPartClassName('placeholder')}>
+                    {placeholder}
+                </span>
+            </div>
         );
 
     }
@@ -216,12 +254,14 @@ export default class Uploader extends InputComponent {
     render() {
 
         const props = this.props;
-        const {value, name, label} = props;
+        const {value, name, style} = props;
+        const className = cx(props).addStates(this.getStyleStates()).build();
 
         return (
-            <div className={cx(props).addStates(this.getStyleStates()).build()}>
+            <div
+                className={className}
+                style={style}>
                 <input name={name} type="hidden" value={value} />
-                {label ? <label className={cx().part('label').build()}>{label}</label> : null}
                 {this.renderUploadFile()}
                 {this.renderUploadButton()}
                 <Validity validity={this.state.validity} />
@@ -236,17 +276,14 @@ Uploader.displayName = 'Uploader';
 
 Uploader.propTypes = {
     ...InputComponent.propTypes,
-    multiple: PropTypes.bool,
     accept: PropTypes.string,
-    files: PropTypes.array,
     upload: PropTypes.func.isRequired,
-    btnText: PropTypes.string,
-    label: PropTypes.string
+    placeholder: PropTypes.string
 };
 
 Uploader.defaultProps = {
     ...InputComponent.defaultProps,
-    btnText: '点击上传'
+    placeholder: '点击上传'
 };
 
 Uploader.childContextTypes = InputComponent.childContextTypes;
