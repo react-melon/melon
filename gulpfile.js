@@ -24,7 +24,14 @@ gulp.task('stylus', function () {
     return gulp.src('src/**/*.styl').pipe(gulp.dest('lib'));
 });
 
-gulp.task('build', ['babel', 'stylus']);
+gulp.task('pkg', function () {
+    return gulp.src([
+        'package.json',
+        'readme.md'
+    ]).pipe(gulp.dest('lib'));
+});
+
+gulp.task('build', ['babel', 'stylus', 'pkg']);
 
 gulp.task('clean', function () {
     return gulp
