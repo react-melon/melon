@@ -54,7 +54,7 @@ export default class CenterRipple extends Component {
     render() {
 
         const {opacity, children} = this.props;
-        const {now} = this.state;
+        const now = this.state.now;
 
         const styles = [{
             key: now,

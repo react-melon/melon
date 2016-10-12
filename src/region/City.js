@@ -22,7 +22,7 @@ export default class RegionCity extends Component {
 
     onSelectorChange(e) {
 
-        const {value} = e;
+        const value = e.value;
 
         const {datasource, onChange} = this.props;
 
@@ -36,7 +36,7 @@ export default class RegionCity extends Component {
 
     render() {
 
-        const {datasource} = this.props;
+        const datasource = this.props.datasource;
 
         return (
             <li className={cx(this.props).build()}>
