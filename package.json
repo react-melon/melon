@@ -66,7 +66,6 @@
     "start": "node tools/server.js",
     "build": "rimraf lib && gulp build",
     "lint": "fecs src",
-    "prepublish": "npm run lint && npm run rebuild",
     "docs": "esdoc -c esdoc.json",
     "setup": "rimraf asset && webpack --config=tools/webpack.dll.js",
     "test": "./node_modules/.bin/karma start ./test/karma.conf.js",

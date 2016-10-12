@@ -24,6 +24,10 @@ gulp.task('stylus', function () {
     return gulp.src('src/**/*.styl').pipe(gulp.dest('lib'));
 });
 
+gulp.task('font', function () {
+    return gulp.src('src/font/*').pipe(gulp.dest('lib/font'));
+});
+
 gulp.task('pkg', function () {
     return gulp.src([
         'package.json',
@@ -31,7 +35,7 @@ gulp.task('pkg', function () {
     ]).pipe(gulp.dest('lib'));
 });
 
-gulp.task('build', ['babel', 'stylus', 'pkg']);
+gulp.task('build', ['babel', 'stylus', 'font', 'pkg']);
 
 gulp.task('clean', function () {
     return gulp
