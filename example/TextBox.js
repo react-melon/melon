@@ -101,12 +101,12 @@ class View extends React.Component {
                             pattern="\d+"
                             patternErrorMessage="出价需要是整数呢"
                             floatingLabel="出价" />
-                            <span className="ui-textbox-suffix">万元
+                            <span className="ui-text-box-suffix">万元
                         </span>
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={5}>后缀</Title>
-                        <span className="ui-textbox-prefix">{'http://'}</span><TextBox floatingLabel="网址" prefix="http://" />
+                        <span className="ui-text-box-prefix">{'http://'}</span><TextBox floatingLabel="网址" prefix="http://" />
                     </div>
                 </div>
 

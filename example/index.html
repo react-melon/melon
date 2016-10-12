@@ -1,83 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta charset="UTF-8">
     <title>melon example</title>
-    <link rel="stylesheet" href="index.styl">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0">
 </head>
 <body>
 <div id="app"></div>
-<!--[if lt IE 9]>
-<script src="../dep/es5-shim/es5-shim.js"></script>
-<script src="../dep/es5-shim/es5-sham.js"></script>
-<![endif]-->
-<script src="http://s1.bdstatic.com/r/www/cache/ecom/esl/2-0-6/esl.js"></script>
-<script>
-require.config({
-    baseUrl: '.',
-    paths: {
-        'melon': '../src',
-        'react': '../dep/react/react-with-addons',
-        'react-motion': '../dep/react-motion/build/react-motion',
-        'react-dom': '../dep/react/react-dom',
-        'underscore': '../dep/underscore/underscore',
-        'es5-shim': '../dep/es5-shim/es5-shim',
-        'moment': '../dep/moment/moment',
-        'melon-core': '../dep/melon-core/dist'
-    },
-    waitSeconds: 5
-});
-
-require(['react', 'react-dom', 'App', 'config'], function (React, ReactDOM, App, config) {
-
-    function dispatch() {
-
-        var hash = window.location.hash;
-        var name = hash ? hash.slice(2) : 'Button';
-
-        // ReactDOM.render(
-        //     React.createElement(
-        //         App,
-        //         {
-        //             components: config.components,
-        //             component: name,
-        //             Component: null
-        //         }
-        //     ),
-        //     document.getElementById('app')
-        // );
-
-        require([name], function (Component) {
-            ReactDOM.render(
-                React.createElement(
-                    App,
-                    {
-                        components: config.components,
-                        name: name,
-                        Component: Component
-                    }
-                ),
-                document.getElementById('app')
-            );
-        });
-
-    }
-
-    window.ReactPerf = React.addons.Perf;
-
-    React.addons.Perf.start();
-
-    window.onhashchange = function () {
-        dispatch();
-    };
-
-    dispatch();
-
-});
-
-
-
-</script>
+<!--@inject=inf.dll.js-->
+<!--@inject=hot.dll.js-->
 </body>
 </html>

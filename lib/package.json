@@ -1,0 +1,86 @@
+{
+  "name": "melon",
+  "version": "0.3.5",
+  "description": "ui components for react",
+  "main": "./src",
+  "directories": {
+    "doc": "doc",
+    "test": "test",
+    "example": "example"
+  },
+  "devDependencies": {
+    "babel-core": "^6.13.2",
+    "babel-istanbul": "^0.11.0",
+    "babel-plugin-external-helpers": "^6.8.0",
+    "babel-plugin-transform-es2015-modules-umd": "^6.12.0",
+    "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
+    "babel-plugin-transform-es3-property-literals": "^6.8.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-1": "^6.13.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "browserify-istanbul": "^2.0.0",
+    "coveralls": "^2.11.12",
+    "esdoc": "^0.4.8",
+    "esdoc-es7-plugin": "0.0.3",
+    "expect": "^1.12.2",
+    "expect-jsx": "^2.0.1",
+    "jasmine-core": "^2.4.1",
+    "jasmine-expect-jsx": "^1.1.2",
+    "karma": "^1.2.0",
+    "karma-browserify": "^5.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-mocha-reporter": "^2.1.0",
+    "karma-sauce-launcher": "^1.0.0",
+    "lodash": "^3.10.1",
+    "nib": "^1.1.2",
+    "react-addons-test-utils": "^0.14.3",
+    "stylus": "^0.54.2",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start ./tool/karma.conf.js",
+    "test-ci": "./node_modules/.bin/karma start ./tool/karma.ci.conf.js",
+    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
+    "lint": "fecs src",
+    "build": "sh tool/build.sh",
+    "release": "sh tool/release.sh",
+    "doc": "esdoc -c esdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-melon/melon.git"
+  },
+  "peerDependencies": {
+    "react": ">=0.14"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components"
+  ],
+  "author": "ludafa@outlook.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/react-melon/melon/issues"
+  },
+  "homepage": "https://github.com/react-melon/melon#readme",
+  "edp": {
+    "wwwroot": "/",
+    "depDir": "dep",
+    "srcDir": "src",
+    "loaderAutoConfig": "js,htm,html,tpl,vm,phtml",
+    "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/2-1-4/esl.js",
+    "dependencies": {}
+  },
+  "dependencies": {
+    "melon-core": "^0.3.2",
+    "react": "^0.14.8",
+    "react-dom": "0.14.8",
+    "react-motion": "^0.4.2"
+  }
+}

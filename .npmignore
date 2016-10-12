@@ -9,3 +9,4 @@ output
 coverage
 *.orig
 .bower.json
+asset
