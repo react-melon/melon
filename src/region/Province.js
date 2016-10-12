@@ -28,7 +28,7 @@ export default class RegionProvince extends Component {
 
     onSelectorChange(e) {
 
-        const {value} = e;
+        const value = e.value;
         const {datasource, onChange} = this.props;
 
         helper[value ? 'selectAll' : 'cancelAll'](datasource);
@@ -49,7 +49,7 @@ export default class RegionProvince extends Component {
 
     renderSelectedInfo() {
 
-        const {datasource} = this.props;
+        const datasource = this.props.datasource;
 
         const total = datasource.children && datasource.children.length;
 

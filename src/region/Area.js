@@ -77,9 +77,9 @@ export default class RegionArea extends Component {
                 onChange={this.onProvinceChange.bind(this, index)}>
                 {
                     Array.isArray(child.children) && child.children.length > 0
-                    ? child.children.map((child, i) => {
-                        return this.renderCity(index, child, i);
-                    })
+                    ? child.children.map((child, i) => (
+                        this.renderCity(index, child, i)
+                    ))
                     : null
                 }
             </Province>
@@ -91,15 +91,13 @@ export default class RegionArea extends Component {
             <City
                 key={index}
                 datasource={child}
-                onChange={e => {
-                    return this.onCityChange(pIndex, index, e);
-                }} />
+                onChange={e => this.onCityChange(pIndex, index, e)} />
         );
     }
 
     render() {
 
-        const {datasource} = this.props;
+        const datasource = this.props.datasource;
 
         return (
             <li className={cx(this.props).build()}>
@@ -113,9 +111,7 @@ export default class RegionArea extends Component {
                 <div className={cx().part('content').build()}>
                     {datasource
                         .children
-                        .map((...args) => {
-                            return this.renderProvince(...args);
-                        })
+                        .map((...args) => this.renderProvince(...args))
                     }
                 </div>
             </li>

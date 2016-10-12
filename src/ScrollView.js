@@ -65,9 +65,7 @@ export default class ScrollView extends Component {
             content
         } = this.refs;
 
-        const {
-            position
-        } = this.state;
+        const position = this.state.position;
 
         this.getDirections().forEach(key => {
             let contentSize = content[SIZES[key]];
@@ -90,9 +88,9 @@ export default class ScrollView extends Component {
 
         switch (action) {
             case 'change':
-                let pos = {};
-                pos[direction] = position;
-                this.setScrollPercent(pos);
+                this.setScrollPercent({
+                    [direction]: position
+                });
                 break;
         }
     }
@@ -101,9 +99,7 @@ export default class ScrollView extends Component {
 
         let directions = this.getDirections();
 
-        let {
-            wheelSpeed
-        } = this.props;
+        let wheelSpeed = this.props.wheelSpeed;
 
         let current = this.state.position;
 
@@ -157,8 +153,10 @@ export default class ScrollView extends Component {
     }
 
     getDirections() {
-        const {direction} = this.props;
-        const directions = direction === 'both' ? Object.keys(DIRECTIONS) : [direction];
+        const direction = this.props.direction;
+        const directions = direction === 'both'
+            ? Object.keys(DIRECTIONS)
+            : [direction];
         return directions;
     }
 
@@ -166,7 +164,7 @@ export default class ScrollView extends Component {
 
         const directions = this.getDirections();
 
-        const {position} = this.state;
+        const position = this.state.position;
 
         return directions.map((dir, index) => {
 

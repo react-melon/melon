@@ -5,6 +5,7 @@
 
 const originalHTMLBodySize = {};
 
+/* eslint-disable fecs-valid-dom-style */
 
 function stopWindowScrolling(name) {
 

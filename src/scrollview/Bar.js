@@ -107,9 +107,7 @@ export default class ScrollViewBar extends Component {
             thumbSize
         } = this.props;
 
-        let {
-            main
-        } = this.refs;
+        let main = this.refs.main;
 
         let me = this;
         let isVertical = direction === 'vertical';
