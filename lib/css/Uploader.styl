@@ -7,25 +7,45 @@
 .{$-melon-class-prefix}-uploader
     position: relative
     display: inline-block
+    min-width: 5em
+
 
     >input[type=file]
         display: none
 
-    &-uploaded
-        vertical-align: middle
-        display: inline-block
+    &-content
+        border-bottom: 1px solid $-melon-colors.grey300
+        height: 2em
+        line-height: 2em
+        padding-bottom: 3px
+        cursor: pointer;
+        padding: 0 2em 0 1.5em;
+        clearfix();
+
+        >.ui-link,
+        .{$-melon-class-prefix}-uploader-placeholder
+            display: block;
+            float: left;
+            width: 100%;
+            line-height: 2em;
+            text-transform: none;
+            vertical-align: middle;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
 
         >.ui-icon
-            display: inline-block
-            color: $-melon-colors.teal500
-            vertical-align: middle
+            float: left;
+            display: inline-block;
+            line-height: 2em;
+            height: 100%;
+            vertical-align: middle;
+            margin-left: -1.5em
 
-        >span
-        >.ui-button,
-        >.ui-link
-            display: inline-block
-            margin-left: 0.5em
-            vertical-align: middle
+        >.ui-button
+            float: left;
+            margin-right: -2em;
+
 
     &-uploading
         >.ui-progress
@@ -36,15 +56,28 @@
         vertical-align: middle
         margin-right: 1em
 
-    &-file
-        font-size: $-melon-small-font-size
-        melon-clearfix()
+    &-preview
+        float: left;
+        display: inline-block;
+        line-height: 2em
+        margin: 0.5em 0 0.5em -1.5em
+        width: 1em;
+        height: 1em;
+        border: 1px solid #ddd;
+        vertical-align: middle;
 
-        &-name
-            float: left
-            line-height: 2em
+    &-placeholder
+        color: $-melon-colors.grey500
 
-        > .{$-melon-class-prefix}-icon
-            float: right
-            line-height: 2em
-            cursor: pointer
+    // &-file
+    //     font-size: $-melon-small-font-size
+    //     melon-clearfix()
+    //
+    //     &-name
+    //         float: left
+    //         line-height: 2em
+    //
+    //     > .{$-melon-class-prefix}-icon
+    //         float: right
+    //         line-height: 2em
+    //         cursor: pointer
