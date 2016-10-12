@@ -64,7 +64,11 @@ export default class TextBox extends InputComponent {
      */
     componentWillReceiveProps(nextProps) {
 
-        const value = nextProps.value;
+        let {value, defaultValue} = nextProps;
+
+        if (value === void 0) {
+            value = defaultValue;
+        }
 
         // 多行文本框应该可以自动更新高度
         if (nextProps.multiline && this.state.value !== value) {
