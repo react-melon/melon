@@ -123,8 +123,7 @@ Toggle.defaultProps = {
 
 Toggle.propTypes = {
     ...InputComponent.propTypes,
-    trueValue: PropTypes.string.isRequired,
-    falseValue: PropTypes.string
+    trueValue: PropTypes.any.isRequired
 };
 
 Toggle.childContextTypes = InputComponent.childContextTypes;
