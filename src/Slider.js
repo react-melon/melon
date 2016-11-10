@@ -132,7 +132,7 @@ export default class Slider extends InputComponent {
      */
     onMouseDown(e) {
 
-        if (this.props.disable || this.props.readOnly) {
+        if (this.props.disable || this.props.readOnly || e.button !== 0) {
             return;
         }
 
