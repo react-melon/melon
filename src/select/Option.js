@@ -33,7 +33,7 @@ export default function SelectOption(props)  {
             data-role="option"
             title={label || children}
             onClick={!disabled && onClick ? () => onClick({value}) : null}>
-            {label || children}
+            {children || label}
         </div>
     );
 
