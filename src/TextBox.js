@@ -7,17 +7,20 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import FloatingLabel from './textbox/FloatLabel';
 import TextBoxInput from './textbox/Input';
-import Validity from 'melon-core/Validity';
 import InputComponent from 'melon-core/InputComponent';
 
 import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TextBox');
 
+function getValueStringLength(value) {
+    return value == null ? 0 : ('' + value).length;
+}
+
 /**
  * melon/TextBox
  *
- * @extends {melon-core/InputComponent}
+ * @extends {React.Component}
  * @class
  */
 export default class TextBox extends InputComponent {
@@ -34,17 +37,14 @@ export default class TextBox extends InputComponent {
 
         super(props, context);
 
-        const value = this.state.value;
-
         /**
          * 状态
          *
-         * @protected
+         * @private
          * @type {Object}
          */
         this.state = {
             ...this.state,
-            isFloating: !!value,
             isFocus: false
         };
 
@@ -52,43 +52,6 @@ export default class TextBox extends InputComponent {
         this.onBlur = this.onBlur.bind(this);
         this.onChange = this.onChange.bind(this);
 
-
-    }
-
-    /**
-     * 接受新属性时的处理
-     *
-     * @public
-     * @override
-     * @param {*} nextProps 新属性
-     */
-    componentWillReceiveProps(nextProps) {
-
-        let {value, defaultValue} = nextProps;
-
-        if (value === void 0) {
-            value = defaultValue;
-        }
-
-        // 多行文本框应该可以自动更新高度
-        if (nextProps.multiline && this.state.value !== value) {
-            this.syncTextareaHeight();
-        }
-
-        const {
-            isFloating,
-            isFocus
-        } = this.state;
-
-        const nextIsFloating = !!value || isFocus;
-
-        if (isFloating !== nextIsFloating) {
-            this.setState({
-                isFloating: nextIsFloating
-            });
-        }
-
-        super.componentWillReceiveProps(nextProps);
 
     }
 
@@ -102,7 +65,23 @@ export default class TextBox extends InputComponent {
 
         super.componentDidMount();
 
-        if (this.props.multiline && this.state.value) {
+        if (this.props.multiline && this.state.value != null) {
+            this.syncTextareaHeight();
+        }
+
+    }
+
+    componentDidUpdate() {
+
+        const props = this.props;
+
+        if (
+            // 多行的
+            props.multiline
+            // 控制的
+            && !props.hasOwnProperty('defaultValue')
+        ) {
+            // 同步高度
             this.syncTextareaHeight();
         }
 
@@ -117,8 +96,7 @@ export default class TextBox extends InputComponent {
     onFocus(e) {
 
         this.setState({
-            isFocus: true,
-            isFloating: true
+            isFocus: true
         });
 
         const onFocus = this.props.onFocus;
@@ -131,10 +109,6 @@ export default class TextBox extends InputComponent {
             return;
         }
 
-        if (this.needValidate('focus')) {
-            this.validate(this.state.value);
-        }
-
     }
 
     /**
@@ -145,10 +119,7 @@ export default class TextBox extends InputComponent {
      */
     onBlur(e) {
 
-        const value = e.target.value;
-
         this.setState({
-            isFloating: !!value,
             isFocus: false
         });
 
@@ -159,30 +130,28 @@ export default class TextBox extends InputComponent {
                 type: 'blur',
                 target: this
             });
-            return;
         }
 
-        this.setState({value});
-
-
-        if (this.needValidate('blur')) {
-            this.validate(value);
-        }
 
     }
 
-    /**
-     * 值改变时处理
-     *
-     * @protected
-     * @param  {Object} e 事件对象
-     */
     onChange(e) {
 
+        const currentValue = this.state.value;
+
         super.onChange({
-            type: 'change',
-            target: this,
-            value: e.target.value
+            value: e.target.value,
+            target: e.target,
+            currentTarget: this,
+            type: 'change'
+        }, () => {
+            if (
+                this.props.multiline
+                && this.props.hasOwnProperty('defaultValue')
+                && currentValue !== this.state.value
+            ) {
+                this.syncTextareaHeight();
+            }
         });
 
     }
@@ -201,17 +170,6 @@ export default class TextBox extends InputComponent {
             input.style.height = input.scrollHeight + 'px';
         }
 
-    }
-
-    /**
-     * 是否需要校验
-     *
-     * @private
-     * @param {number} eventName 事件名称
-     * @return {boolean} 是否需要校验
-     */
-    needValidate(eventName) {
-        return this.props.validateEvents.indexOf(eventName) !== -1;
     }
 
     /**
@@ -255,72 +213,59 @@ export default class TextBox extends InputComponent {
 
         const {
             floatingLabel,
+            defaultValue,
             ...rest
         } = props;
 
         const {
-            validity,
             isFocus,
-            isFloating,
-            value
+            value = defaultValue
         } = this.state;
 
-        const statefulClassName = cx(props)
+        const floating = !!getValueStringLength(value) || isFocus;
+
+        const className = cx(props)
             .addStates({
+                floating: floatingLabel && floating,
                 focus: isFocus,
-                floating: isFloating,
-                fulfilled: !!value
+                fulfilled: value == null
             })
             .addStates(this.getStyleStates())
             .build();
 
         return (
-            <div className={statefulClassName}>
-                {this.renderFloatingLabel(floatingLabel, isFloating, isFocus)}
+            <div className={className}>
+                {this.renderFloatingLabel(floatingLabel, floating, isFocus)}
                 <TextBoxInput
                     {...rest}
                     onFocus={onFocus}
                     onBlur={onBlur}
                     onChange={onChange}
                     isFocus={isFocus}
-                    value={value}
+                    value={value == null ? '' : value}
                     ref={input => {
                         if (input) {
                             this.input = ReactDOM.findDOMNode(input);
                         }
                     }} />
-                <Validity validity={validity} />
             </div>
         );
 
     }
-
-
 
 }
 
 TextBox.displayName = 'TextBox';
 
 TextBox.defaultProps = {
-    ...InputComponent.defaultProps,
-    validateEvents: ['change', 'blur']
+    type: 'text'
 };
 
 TextBox.propTypes = {
-
-    ...InputComponent.propTypes,
-
     type: PropTypes.oneOf(['text', 'password', 'number']),
-
     placeholder: PropTypes.string,
     floatingLabel: PropTypes.string,
-
-    multiline: PropTypes.bool,
-
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func
-
+    multiline: PropTypes.bool
 };
 
-TextBox.childContextTypes = InputComponent.childContextTypes;
 TextBox.contextTypes = InputComponent.contextTypes;

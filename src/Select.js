@@ -7,7 +7,6 @@ import React, {PropTypes, Children} from 'react';
 import ReactDOM from 'react-dom';
 import Icon from './Icon';
 import SeparatePopup from './select/SeparatePopup';
-import Validity from 'melon-core/Validity';
 import InputComponent from 'melon-core/InputComponent';
 import Group from './select/OptionGroup';
 import Option from './select/Option';
@@ -372,7 +371,6 @@ export default class Select extends InputComponent {
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
-                <Validity validity={this.state.validity} />
             </div>
         );
 
@@ -384,8 +382,7 @@ Select.displayName = 'Select';
 
 Select.defaultProps = {
     ...InputComponent.defaultProps,
-    placeholder: '请选择',
-    defaultValue: ''
+    placeholder: '请选择'
 };
 
 Select.propTypes = {

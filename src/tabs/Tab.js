@@ -13,7 +13,9 @@ const cx = create('TabsItem');
 /**
  * melon/Tabs/TabPanel
  *
+ * @class
  * @param {Object}              props          属性
+ * @param {number}              props.index    序号
  * @param {string|ReactElement} props.label    Tab上显示的内容
  * @param {boolean}             props.disabled 是否不可选
  * @param {boolean}             props.selected 是否选中
@@ -25,22 +27,27 @@ export default function Tab(props) {
         selected,
         disabled,
         label,
+        index,
+        onClick,
         ...others
     } = props;
 
     const className = cx(props).addStates({selected, disabled}).build();
 
     return (
-        <li {...others} className={className}>
+        <li
+            {...others}
+            className={className}
+            onClick={e => disabled || onClick(index)}>
             {label}
         </li>
     );
+
 }
 
 Tab.propTypes = {
     label: PropTypes.node,
-    disabled: PropTypes.bool,
-    selected: PropTypes.bool
+    disabled: PropTypes.bool
 };
 
 Tab.defaultProps = {

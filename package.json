@@ -3,6 +3,16 @@
   "version": "0.3.10",
   "description": "ui components for react",
   "main": "./src",
+  "scripts": {
+    "start": "NODE_ENV=dev node tools/server.js",
+    "build": "rimraf lib && NODE_ENV=production gulp build",
+    "lint": "fecs src",
+    "docs": "esdoc -c esdoc.json",
+    "setup": "rimraf asset && NODE_ENV=production webpack --config=tools/webpack.dll.js",
+    "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
+    "test-ci": "NODE_ENV=test karma start ./test/karma.ci.conf.js",
+    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls"
+  },
   "directories": {
     "doc": "doc",
     "test": "test",
@@ -13,6 +23,7 @@
     "babel-loader": "^6.2.5",
     "babel-plugin-external-helpers": "^6.8.0",
     "babel-plugin-external-helpers-insert-require": "^1.0.0",
+    "babel-plugin-istanbul": "^3.0.0",
     "babel-plugin-transform-es2015-modules-umd": "^6.12.0",
     "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
     "babel-plugin-transform-es3-property-literals": "^6.8.0",
@@ -21,10 +32,9 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-2": "^6.13.0",
     "babelify": "^7.3.0",
-    "browserify": "^13.1.0",
-    "browserify-istanbul": "^2.0.0",
     "coveralls": "^2.11.12",
     "css-loader": "^0.24.0",
+    "enzyme": "^2.6.0",
     "esdoc": "^0.4.8",
     "esdoc-es7-plugin": "0.0.3",
     "express": "^4.14.0",
@@ -43,41 +53,32 @@
     "json-loader": "^0.5.4",
     "karma": "^1.2.0",
     "karma-babel-preprocessor": "^6.0.1",
-    "karma-browserify": "^5.1.0",
     "karma-browserstack-launcher": "^1.1.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.1.1",
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
+    "karma-jasmine-expect-jsx": "^1.0.2",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.8.0",
     "nib": "^1.1.2",
     "numen": "^0.2.0",
     "react-addons-test-utils": "^0.14.8",
-    "react-hot-loader": "^1.3.0",
     "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1",
     "watchify": "^3.7.0",
     "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.8.3",
-    "webpack-hot-middleware": "^2.12.2"
-  },
-  "scripts": {
-    "start": "node tools/server.js",
-    "build": "rimraf lib && gulp build",
-    "lint": "fecs src",
-    "docs": "esdoc -c esdoc.json",
-    "setup": "rimraf asset && webpack --config=tools/webpack.dll.js",
-    "test": "./node_modules/.bin/karma start ./test/karma.conf.js",
-    "test-ci": "./node_modules/.bin/karma start ./test/karma.ci.conf.js",
-    "coveralls": "cat ./coverage/lcov/lcov.info | ./node_modules/.bin/coveralls"
+    "webpack-dev-middleware": "^1.8.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/react-melon/melon.git"
   },
   "peerDependencies": {
-    "react": ">=0.14"
+    "react": "^0.14.8||^15.4.0",
+    "react-dom": "^0.14.8||^15.4.0"
   },
   "keywords": [
     "react",
@@ -99,35 +100,51 @@
     "dependencies": {}
   },
   "dependencies": {
-    "melon-core": "^0.3.2",
-    "react": "^0.14.8",
-    "react-dom": "0.14.8",
+    "lodash": "^4.17.2",
+    "melon-core": "^0.4.1",
+    "react": "^0.14.8||^15.4.0",
+    "react-addons-test-utils": "^0.14.8||^15.4.0",
+    "react-dom": "^0.14.8||^15.4.0",
     "react-motion": "^0.4.2"
   },
   "babel": {
-    "presets": [
-      "es2015",
-      "stage-2",
-      "react"
-    ]
-  },
-  "babelBuild": {
-    "presets": [
-      [
-        "es2015",
-        {
-          "loose": true,
-          "modules": "umd"
-        }
-      ],
-      "stage-2",
-      "react"
-    ],
-    "plugins": [
-      "external-helpers",
-      "external-helpers-insert-require",
-      "transform-es3-property-literals",
-      "transform-es3-member-expression-literals"
-    ]
+    "env": {
+      "dev": {
+        "presets": [
+          "es2015",
+          "stage-2",
+          "react"
+        ]
+      },
+      "test": {
+        "presets": [
+          "es2015",
+          "stage-2",
+          "react"
+        ],
+        "plugins": [
+          "istanbul"
+        ]
+      },
+      "production": {
+        "presets": [
+          [
+            "es2015",
+            {
+              "loose": true,
+              "modules": "umd"
+            }
+          ],
+          "stage-2",
+          "react"
+        ],
+        "plugins": [
+          "external-helpers",
+          "external-helpers-insert-require",
+          "transform-es3-property-literals",
+          "transform-es3-member-expression-literals"
+        ]
+      }
+    }
   }
 }

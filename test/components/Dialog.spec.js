@@ -4,239 +4,349 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-
+import {shallow, mount} from 'enzyme';
 import DialogWindow from '../../src/dialog/DialogWindow';
 import Dialog from '../../src/Dialog';
 import Alert from '../../src/Alert';
 import Confirm from '../../src/Confirm';
 import Mask from '../../src/Mask';
+import then from '../then';
 
 describe('Dialog', function () {
 
-    let renderer;
+    it('mask will lock scroll', function (done) {
 
-    beforeEach(function () {
-        renderer = TestUtils.createRenderer();
+        let TestComponent = React.createClass({
+
+            getInitialState() {
+                return {
+                    show: false
+                };
+            },
+
+            componentDidMount() {
+                this.setState({show: true}, () => {
+                    const body = document.getElementsByTagName('body')[0];
+                    expect(body.style.overflow).toBe('hidden');
+                    done();
+                });
+            },
+
+            render() {
+
+                return (
+                    <Mask
+                        show={this.state.show}
+                        lockScrollingOnShow={true} />
+                );
+
+            }
+        });
+
+        mount(<TestComponent />);
+
     });
 
-    afterEach(function () {
-        renderer = null;
-    });
+    it('dom', () => {
 
-    it('Mask', function () {
-        renderer.render(<Mask />);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <div
-                lockScrollingOnShow={true}
-                className="ui-mask"
-                show={false} />
+        const dialog = mount(
+            <Dialog
+                title="test"
+                actions={
+                    <footer></footer>
+                } />
         );
-        expect(actualElement).toEqualJSX(expectedElement);
+
+        expect(dialog.find('.ui-dialog-title').length).toBe(1);
+
+        const actions = dialog.find('.ui-dialog-actions');
+
+        expect(actions.length).toBe(1);
+        expect(actions.contains(<footer />)).toBe(true);
+
+
     });
+
+    it('show on create', function (done) {
+
+        // let showSpy = jasmine.createSpy('dialog-show');
+        // let hideSpy = jasmine.createSpy('dialog-hide');
+
+        let dialog = mount(
+            <Dialog open={true}>Hello</Dialog>
+        );
+
+        then(() => {
+            expect(dialog.state('open')).toBe(true);
+            dialog.unmount();
+            done();
+        });
+
+    });
+
+    it('show/hide on `open` prop change', function (done) {
+
+        let showSpy = jasmine.createSpy('dialog-show');
+        let hideSpy = jasmine.createSpy('dialog-hide');
+
+        let dialog = mount(
+            <Dialog
+                open={false}
+                onShow={showSpy}
+                onHide={hideSpy}>
+                Hello
+            </Dialog>
+        );
+
+        dialog.setProps({open: true});
+
+        then(() => {
+            expect(dialog.state('open')).toBe(true);
+            expect(showSpy).toHaveBeenCalled();
+            dialog.setProps({open: false});
+        }).then(() => {
+            expect(dialog.state('open')).toBe(false);
+            expect(hideSpy).toHaveBeenCalled();
+            dialog.unmount();
+            done();
+        });
+
+    });
+
+    it('click on mask will hide dialog if `maskClickClose` is true', done => {
+
+        let hideSpy = jasmine.createSpy('dialog-hide');
+
+        let dialog = mount(
+            <Dialog
+                maskClickClose={true}
+                open={true}
+                onHide={hideSpy}>
+                Hello
+            </Dialog>
+        );
+
+        dialog.find('.ui-mask').simulate('click');
+
+        then(() => {
+            expect(dialog.state('open')).toBe(false);
+            expect(hideSpy).toHaveBeenCalled();
+            dialog.unmount();
+            done();
+        });
+
+    });
+
+    it('click on mask will do nothing if `maskClickClose` is false', done => {
+
+        let hideSpy = jasmine.createSpy('dialog-hide');
+
+        let dialog = mount(
+            <Dialog
+                maskClickClose={false}
+                open={true}
+                onHide={hideSpy}>
+                Hello
+            </Dialog>
+        );
+
+        dialog.find('.ui-mask').simulate('click');
+
+        then(() => {
+            expect(dialog.state('open')).toBe(true);
+            expect(hideSpy).not.toHaveBeenCalled();
+            dialog.unmount();
+            done();
+        });
+
+    });
+
+});
+
+describe('Dialog:Mask', () => {
+
+    it('dom', function () {
+        const mask = mount(<Mask />);
+
+        expect(mask.prop('lockScrollingOnShow')).toBe(true);
+        expect(mask.prop('show')).toBe(false);
+        expect(mask.find('div').hasClass('ui-mask')).toBe(true);
+
+    });
+
+});
+
+describe('Dialog:Window', () => {
 
     it('DialogWindow', function () {
-        renderer.render(<DialogWindow footer={<div />} title={<div />} top={100}>Hello</DialogWindow>);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <div
-                className="ui-dialog-window"
-                style={{
-                    transform: 'translate(0, 100px)',
-                    WebkitTransform: 'translate(0, 100px)',
-                    msTransform: 'translate(0, 100px)',
-                    MozTransform: 'translate(0, 100px)'
-                }}>
-                <div />
+
+        const window = shallow(
+            <DialogWindow
+                footer={<div />}
+                title={<div />}
+                top={100}>
                 Hello
-                <div />
-            </div>
+            </DialogWindow>
         );
-        expect(actualElement).toEqualJSX(expectedElement);
+
+        // let expectedElement = (
+        //     <div
+        //         className="ui-dialog-window"
+        //         style={{
+        //             transform: 'translate(0, 100px)',
+        //             WebkitTransform: 'translate(0, 100px)',
+        //             msTransform: 'translate(0, 100px)',
+        //             MozTransform: 'translate(0, 100px)'
+        //         }}>
+        //         <div />
+        //         Hello
+        //         <div />
+        //     </div>
+        // );
+
+        expect(window.hasClass('ui-dialog-window')).toBe(true);
+        expect(window.prop('style')).toEqual({
+            transform: 'translate(0, 100px)',
+            WebkitTransform: 'translate(0, 100px)',
+            msTransform: 'translate(0, 100px)',
+            MozTransform: 'translate(0, 100px)'
+        });
+
     });
 
-    describe('functions', function () {
+});
 
-        let container;
 
-        beforeEach(function () {
-            container = document.createElement('div');
-            document.body.appendChild(container);
-        });
+describe('Alert', () => {
 
-        afterEach(function () {
-            ReactDOM.unmountComponentAtNode(container);
-            document.body.removeChild(container);
-            container = null;
-        });
+    it('work', done => {
 
-        it('mask', function (done) {
+        let spy = jasmine.createSpy('alert-confirm-spy');
 
-            let TestComponent = React.createClass({
+        let alert = mount(
+            <Alert
+                title="hello"
+                onConfirm={spy}
+                open={true}>
+                报警！
+            </Alert>
+        );
 
-                getInitialState() {
-                    return {
-                        show: false
-                    };
-                },
+        let dialog = alert.find(Dialog);
 
-                componentDidMount() {
-                    this.setState({show: true}, () => {
-                        const body = document.getElementsByTagName('body')[0];
-                        expect(body.style.overflow).toBe('hidden');
-                        done();
-                    });
-                },
+        let button = alert.find('.ui-button');
 
-                render() {
+        expect(button.length).toBe(1);
 
-                    return (
-                        <Mask
-                            show={this.state.show}
-                            lockScrollingOnShow={true} />
-                    );
+        button.simulate('click');
 
-                }
-            });
+        then(() => {
 
-            ReactDOM.render(<TestComponent />, container);
-        });
-
-        it('show hide', function (done) {
-
-            let showSpy = jasmine.createSpy();
-
-            let TestComponent = React.createClass({
-
-                getInitialState() {
-                    return {
-                        open: false
-                    };
-                },
-
-                componentDidMount() {
-                    this.setState({open: true});
-                },
-
-                onShow() {
-                    showSpy();
-                    let mask = document.querySelector('.ui-mask');
-                    TestUtils.Simulate.click(mask);
-                },
-
-                onHide() {
-                    expect(showSpy).toHaveBeenCalled();
-                    this.setState({open: false}, done);
-                },
-
-                render() {
-
-                    return (
-                        <Dialog
-                            ref="dialog"
-                            onShow={this.onShow}
-                            onHide={this.onHide}
-                            open={this.state.open}>
-                            Hello
-                        </Dialog>
-                    );
-
-                }
-
-            });
-
-            ReactDOM.render(<TestComponent />, container);
+            expect(dialog.hasClass('state-open')).toBe(false);
+            expect(spy).toHaveBeenCalled();
+            alert.unmount();
+            done();
 
         });
 
-        it('Alert', function (done) {
+    });
 
-            let TestComponent = React.createClass({
+    it('Alert.show', () => {
 
-                getInitialState() {
-                    return {
-                        open: true
-                    };
-                },
+        expect(typeof Alert.show).toBe('function');
 
-                componentDidMount() {
-                    let button = document.querySelector('button');
-                    TestUtils.Simulate.click(button);
-
-                    let mask = document.querySelector('.ui-mask');
-                    TestUtils.Simulate.click(mask);
-                },
-
-                onConfirm() {
-
-                    this.setState({open: false}, () => {
-                        done();
-                    });
-
-                },
-
-                render() {
-
-                    return (
-                        <Alert
-                            title="hello"
-                            onConfirm={this.onConfirm}
-                            open={this.state.open}>
-                            报警！
-                        </Alert>
-                    );
-                }
-            });
-
-            ReactDOM.render(<TestComponent />, container);
+        const destroy = Alert.show({
+            content: 'haha'
         });
 
-        it('Confirm', function (done) {
+        expect(typeof destroy === 'function').toBe(true);
 
-            let TestComponent = React.createClass({
+        let elements = document.querySelectorAll(
+            '.melon-seperate-dialog-container>div'
+        );
 
-                getInitialState() {
-                    return {
-                        open: true
-                    };
-                },
+        expect(elements.length).toBe(1);
 
-                componentDidMount() {
-                    let button = document.querySelector('.variant-cancel');
-                    TestUtils.Simulate.click(button);
-                },
+        destroy();
 
-                onCancel() {
+        elements = document.querySelectorAll(
+            '.melon-seperate-dialog-container>div'
+        );
 
-                    let button = document.querySelector('.variant-confirm');
+        expect(elements.length).toBe(0);
 
-                    TestUtils.Simulate.click(button);
+    });
 
-                    this.setState({open: false}, () => {
-                        done();
-                    });
+});
 
-                },
 
-                render() {
+describe('Confirm', () => {
 
-                    return (
-                        <Confirm
-                            title="hello"
-                            onCancel={this.onCancel}
-                            open={this.state.open}>
-                            <div style={{height: 2000, width: 100}}></div>
-                        </Confirm>
-                    );
+    it('work', done => {
 
-                }
-            });
+        let confirmSpy = jasmine.createSpy('confirm-confirm-spy');
+        let cancelSpy = jasmine.createSpy('confirm-cancel-spy');
 
-            ReactDOM.render(<TestComponent />, container);
+        let confirm = mount(
+            <Confirm
+                title="hello"
+                onConfirm={confirmSpy}
+                onCancel={cancelSpy}
+                open={true}>
+                报警！
+            </Confirm>
+        );
 
+        let dialog = confirm.find('.ui-dialog');
+
+        let button = confirm.find('.ui-button');
+
+        expect(button.length).toBe(2);
+
+        button.at(0).simulate('click');
+
+        then(() => {
+            expect(dialog.hasClass('state-open')).toBe(true);
+            expect(cancelSpy).toHaveBeenCalled();
+            button.at(1).simulate('click');
+        })
+        .then(() => {
+            expect(dialog.hasClass('state-open')).toBe(true);
+            expect(confirmSpy).toHaveBeenCalled();
+            confirm.setProps({open: false});
+        })
+        .then(() => {
+            expect(dialog.hasClass('state-open')).toBe(false);
+            confirm.unmount();
+            done();
         });
+
+
+    });
+
+    it('Confirm.show', () => {
+
+        expect(typeof Confirm.show).toBe('function');
+
+        const destroy = Confirm.show({
+            content: 'haha'
+        });
+
+        expect(typeof destroy === 'function').toBe(true);
+
+        let elements = document.querySelectorAll(
+            '.melon-seperate-dialog-container>div'
+        );
+
+        expect(elements.length).toBe(1);
+
+        destroy();
+
+        elements = document.querySelectorAll(
+            '.melon-seperate-dialog-container>div'
+        );
+
+        expect(elements.length).toBe(0);
 
     });
 

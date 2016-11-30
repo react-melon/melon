@@ -1,12 +1,16 @@
 {
     "eslint": {
+        "env": {
+            "es6": -1
+        },
         "rules": {
             "fecs-jsx-var": [
                 2,
                 {
                     "pragma": "React"
                 }
-            ]
+            ],
+            "fecs-no-require": -1
         }
     }
 }

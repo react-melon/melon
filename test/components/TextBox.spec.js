@@ -4,228 +4,250 @@
  */
 
 import React from 'react';
-import TestUtils, {createRenderer} from 'react-addons-test-utils';
-
+import {mount, shallow} from 'enzyme';
 import TextBox from '../../src/TextBox';
-import Input from '../../src/textbox/Input';
-import FloatLabel from '../../src/textbox/FloatLabel';
+import TextBoxInput from '../../src/textbox/Input';
+import TextBoxFloatingLabel from '../../src/textbox/FloatLabel';
 import then from '../then';
 
 /* eslint-disable max-nested-callbacks */
 
 describe('TextBox', function () {
 
-    describe('dom', () => {
+    let textbox;
+    let spy;
 
-        let renderer;
+    beforeEach(() => {
 
-        beforeEach(() => {
-            renderer = createRenderer();
-        });
+        spy = jasmine.createSpy();
 
-        it('Input', function () {
+        textbox = mount(
+            <TextBox
+                floatingLabel="floating"
+                defaultValue="haha"
+                onFocus={spy}
+                onBlur={spy}
+                name="haha" />
+        );
 
-            renderer.render(
-                <Input isFocus={true} rows={10} />
-            );
-
-            let actualElement = renderer.getRenderOutput();
-            let expectedElement = (
-                <input rows={null} className={'ui-text-box-input state-focus'} />
-            );
-
-            expect(actualElement).toEqualJSX(expectedElement);
-        });
-
-        it('Input multiline', function () {
-
-            renderer.render(
-                <Input multiline={true} rows={10}>test</Input>
-            );
-
-            let actualElement = renderer.getRenderOutput();
-            let expectedElement = (
-                <textarea className={'ui-text-box-input'} rows={10}>test</textarea>
-            );
-
-            expect(actualElement).toEqualJSX(expectedElement);
-        });
-
-        it('FloatLabel', function () {
-
-            renderer.render(
-                <FloatLabel
-                    focused={true}
-                    floating={true}
-                    label={'test'}>
-                    haha
-                </FloatLabel>
-            );
-
-            let actualElement = renderer.getRenderOutput();
-            let expectedElement = (
-                <label className={'ui-text-box-floating-label state-focus state-floating'}>
-                    test
-                </label>
-            );
-
-            expect(actualElement).toEqualJSX(expectedElement);
-        });
     });
 
-    describe('work', () => {
+    afterEach(() => {
+        textbox.unmount();
+        textbox = null;
+    });
 
-        let textbox;
-        let spy;
+    it('init', () => {
 
-        beforeAll(() => {
-
-            spy = jasmine.createSpy();
-
-            textbox = TestUtils.renderIntoDocument(
-                <TextBox
-                    floatingLabel="floating"
-                    defaultValue="haha"
-                    onFocus={spy}
-                    onBlur={spy}
-                    name="haha" />
-            );
-
+        expect(textbox.state()).toEqual({
+            isFocus: false,
+            value: 'haha'
         });
 
-        it('init', () => {
+        expect(textbox.instance().getValue()).toEqual('haha');
 
-            expect(TestUtils.isCompositeComponent(textbox)).toBe(true);
+    });
 
-            expect(textbox.state).toEqual({
-                isFloating: true,
-                isFocus: false,
+    it('focus', done => {
+
+        textbox.find('input').simulate('focus');
+
+        then(() => {
+
+            expect(textbox.state()).toEqual({
+                isFocus: true,
                 value: 'haha'
             });
 
-            expect(textbox.getValue()).toEqual('haha');
-        });
+            expect(spy).toHaveBeenCalled();
 
-        it('focus', done => {
+            expect(spy.calls.allArgs()).toEqual([[{
+                type: 'focus',
+                target: textbox.instance()
+            }]]);
 
-            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
-            TestUtils.Simulate.focus(input);
-
-            then(() => {
-
-                expect(textbox.state).toEqual({
-                    isFloating: true,
-                    isFocus: true,
-                    value: 'haha'
-                });
-
-                expect(spy).toHaveBeenCalled();
-                expect(spy.calls.allArgs()).toEqual([[{
-                    type: 'focus',
-                    target: textbox
-                }]]);
-
-                done();
-            });
-
-        });
-
-
-        it('change', done => {
-
-            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
-            input.value = 'aaa';
-            TestUtils.Simulate.change(input);
-
-            then(() => {
-                expect(textbox.getValue()).toBe('aaa');
-                done();
-            });
-
-        });
-
-
-        it('blur', done => {
-
-            const input = TestUtils.findRenderedDOMComponentWithTag(textbox, 'input');
-            input.value = '';
-            TestUtils.Simulate.change(input);
-
-            then(() => {
-                expect(textbox.getValue()).toBe('');
-                TestUtils.Simulate.blur(input);
-            })
-            .then(() => {
-
-                expect(textbox.state.isFloating).toBeFalsy();
-                expect(textbox.state.isFocus).toBeFalsy();
-
-                expect(spy.calls.count()).toEqual(2);
-                expect(spy.calls.mostRecent().args[0]).toEqual({
-                    type: 'blur',
-                    target: textbox
-                });
-
-                done();
-            });
-
-        });
-    });
-
-    describe('multiline & controled', () => {
-
-        let textbox;
-        let test;
-
-        const TestComponent = React.createClass({
-
-            getInitialState() {
-                return {
-                    value: 'haha'
-                };
-            },
-
-            onChange(e) {
-                this.setState({value: e.value});
-            },
-
-            render() {
-                return (
-                    <TextBox
-                        floatingLabel="floating"
-                        value={this.state.value}
-                        onChange={this.onChange}
-                        style={{width: 10}}
-                        multiline={true}
-                        name="haha" />
-                );
-            }
-        });
-
-        beforeAll(() => {
-            test = TestUtils.renderIntoDocument(<TestComponent />);
-            textbox = TestUtils.findRenderedComponentWithType(test, TextBox);
-        });
-
-        it('init', () => {
-            expect(TestUtils.isCompositeComponent(textbox)).toBe(true);
-            expect(textbox.getValue()).toBe('haha');
-            expect(textbox.props.value).toBe('haha');
-        });
-
-        it('change', done => {
-
-            const textarea = TestUtils.findRenderedDOMComponentWithTag(textbox, 'textarea');
-            textarea.value = '';
-            TestUtils.Simulate.change(textarea);
-
-            then(() => {
-                expect(textbox.getValue()).toBe('');
-                done();
-            });
-
+            done();
         });
 
     });
+
+
+    it('change', done => {
+
+        const input = textbox.find('input');
+        input.get(0).value = 'aaa';
+        input.simulate('change');
+
+        then(() => {
+            expect(textbox.instance().getValue()).toBe('aaa');
+            done();
+        });
+
+    });
+
+
+    it('blur', done => {
+
+        textbox.find('input').simulate('blur');
+
+        then(() => {
+            expect(textbox.state('value')).toBe('haha');
+        })
+        .then(() => {
+
+            expect(!!textbox.state.isFocus).toBe(false);
+
+            expect(spy.calls.count()).toEqual(1);
+            expect(spy.calls.mostRecent().args[0]).toEqual({
+                type: 'blur',
+                target: textbox.instance()
+            });
+
+            done();
+        });
+
+    });
+
+});
+
+describe('TextBox floating-label:', () => {
+
+    it('no-float-label', function () {
+
+        let textbox = shallow(
+            <TextBox value="haha" />
+        );
+
+        // <div className="ui-text-box ">
+        //     <TextBoxInput
+        //         ref={() => {}}
+        //         isFocus={false}
+        //         onBlur={() => {}}
+        //         onChange={() => {}}
+        //         onFocus={() => {}}
+        //         rows={2}
+        //         type="text"
+        //         value="haha" />
+        // </div>
+
+        expect(textbox.hasClass('state-floating')).toBe(false);
+        expect(textbox.find(TextBoxFloatingLabel).length).toBe(0);
+
+    });
+
+    it('floating while value\'s length > 0', () => {
+
+        let textbox = shallow(
+            <TextBox value="haha" floatingLabel="test" />
+        );
+
+        expect(textbox.hasClass('state-floating')).toBe(true);
+        expect(textbox.find(TextBoxFloatingLabel).length).toBe(1);
+
+    });
+
+    it('floating while focus without value', done => {
+
+        const textbox = mount(
+            <TextBox floatingLabel="floating" name="haha" value="" />
+        );
+
+        expect(textbox.state('isFocus')).toBe(false);
+        expect(textbox.find(TextBoxFloatingLabel).length).toBe(1);
+
+        const input = textbox.find('input');
+
+        input.simulate('focus');
+
+        then(() => {
+            expect(textbox.state('isFocus')).toBe(true);
+            expect(
+                textbox
+                    .find(TextBoxFloatingLabel)
+                    .prop('floating')
+            ).toBe(true);
+            input.simulate('blur');
+        })
+        .then(() => {
+
+            expect(textbox.state('isFocus')).toBe(false);
+            expect(
+                textbox
+                    .find(TextBoxFloatingLabel)
+                    .prop('floating')
+            ).toBe(false);
+
+            done();
+
+        });
+
+    });
+
+});
+
+describe('TextBox multiline & controled', () => {
+
+    let textbox;
+    let value = '';
+    let changeSuffix = 'a';
+
+    beforeEach(() => {
+        textbox = mount(
+            <TextBox
+                value={value}
+                multiline={true}
+                onChange={e => {
+                    textbox.setProps({
+                        value: e.value + 'a'
+                    });
+                }}
+            />
+        );
+    });
+
+    afterEach(() => {
+        textbox.unmount();
+        textbox = null;
+        value = '';
+    });
+
+    it('init', () => {
+        expect(textbox.state('value')).toBe(value);
+        expect(textbox.prop('value')).toBe(value);
+    });
+
+    it('change', done => {
+
+        const changeValue = 't';
+        const textarea = textbox.find('textarea');
+        textarea.get(0).value = changeValue;
+        textarea.simulate('change');
+
+        then(() => {
+            const expectedValue = `${changeValue}${changeSuffix}`;
+            expect(textbox.prop('value')).toBe(expectedValue);
+            expect(textbox.prop('value')).toBe(expectedValue);
+            done();
+        });
+
+    });
+
+    // it('uncontrolled sync height after change', () => {
+    //
+    //     const text = mount(
+    //         <TextBox defaultValue="123" multiline={true} />
+    //     );
+    //
+    //     spyOn(TextBox.prototype, 'syncTextareaHeight').and.callThrough();
+    //
+    //     const textarea = text.find('textarea');
+    //     textarea.get(0).value = '333';
+    //     textarea.simulate('change');
+    //
+    //     then(() => {
+    //         expect(TextBox.prototype.syncTextareaHeight).toHaveBeenCalled();
+    //     });
+    //
+    // });
 
 });

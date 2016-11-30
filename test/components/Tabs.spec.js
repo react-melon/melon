@@ -6,9 +6,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-
+import {mount, shallow} from 'enzyme';
 import Tabs from '../../src/Tabs';
 import TabsPanel from '../../src/tabs/Panel';
+import then from '../then';
 
 const Tab = Tabs.Tab;
 
@@ -32,10 +33,14 @@ describe('Tabs', function () {
     });
 
     it('Tab', function () {
-        renderer.render(<Tab label="Tab1" selected />);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (<li className="ui-tabs-item state-selected">Tab1</li>);
-        expect(actualElement).toEqualJSX(expectedElement);
+
+        const tab = shallow(
+            <Tab label="Tab1" selected />
+        );
+
+        expect(tab.hasClass('ui-tabs-item')).toBe(true);
+        expect(tab.hasClass('state-selected')).toBe(true);
+
     });
 
     it('TabsPanel', function () {
@@ -47,71 +52,31 @@ describe('Tabs', function () {
 
     it('Tabs functions', function (done) {
 
-        let firstClick = true;
+        const spy = jasmine.createSpy('tabs-change');
 
-        const TestComponent = React.createClass({
+        const tabs = mount(
+            <Tabs onChange={spy}>
+                <Tab label="Tab1" id="tab1">
+                    Tab1 Content
+                </Tab>
+                <Tab label="Tab2" id="tab2">
+                    Tab2 Content
+                </Tab>
+            </Tabs>
+        );
 
-            getInitialState() {
-                return {
-                    tabIndex: 0
-                };
-            },
+        const labels = tabs.find('.ui-tabs-item');
 
-            componentDidMount() {
-                let tab2 = document.getElementById('tab2');
-                TestUtils.Simulate.click(tab2);
-            },
+        expect(labels.length).toBe(2);
+        expect(tabs.find('.ui-tabs-panel').length).toBe(2);
+        expect(tabs.state('selectedIndex')).toBe(0);
 
-            onBeforeChange(e) {
+        labels.at(1).simulate('click');
 
-                if (!firstClick) {
-                    return;
-                }
-
-                firstClick = false;
-
-                expect(e.selectedIndex).toBe(1);
-                e.preventDefault();
-
-                this.setState({
-                    tabIndex: e.selectedIndex
-                }, () => {
-                    expect(this.refs.tabs.state.selectedIndex).toBe(1);
-                    let tab2 = document.getElementById('tab2');
-                    TestUtils.Simulate.click(tab2);
-                    let tab1 = document.getElementById('tab1');
-                    TestUtils.Simulate.click(tab1);
-                });
-            },
-
-            onChange(e) {
-                expect(e.selectedIndex).toBe(0);
-                expect(this.refs.tabs.state.selectedIndex).toBe(0);
-                done();
-            },
-
-            render() {
-                return (
-                    <Tabs
-                        selectedIndex={this.state.tabIndex}
-                        ref="tabs"
-                        onBeforeChange={this.onBeforeChange}
-                        onChange={this.onChange}>
-                        <Tab label="Tab1" id="tab1">
-                            Tab1 Content
-                        </Tab>
-                        <Tab label="Tab2" id="tab2">
-                            Tab2 Content
-                        </Tab>
-                    </Tabs>
-                );
-            }
+        then(() => {
+            expect(tabs.state('selectedIndex')).toBe(1);
+            done();
         });
-
-        container = document.createElement('div');
-        document.body.appendChild(container);
-
-        ReactDOM.render(<TestComponent />, container);
 
     });
 

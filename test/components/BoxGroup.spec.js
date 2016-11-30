@@ -6,7 +6,7 @@
 
 import React from 'react';
 import TestUtils, {createRenderer} from 'react-addons-test-utils';
-
+import {shallow, mount} from 'enzyme';
 
 import BoxGroup from '../../src/BoxGroup';
 import Icon from '../../src/Icon';
@@ -59,62 +59,72 @@ describe('BoxGroup', function () {
         expect(actualElement).toEqualJSX(expectedElement);
     });
 
-    describe('checkbox', () => {
+    describe('uncontrolled checkbox', () => {
 
-        let component;
-        let boxgroup;
-        let options;
-        let inputs;
+        it('init', () => {
 
-        beforeAll(() => {
-            component = TestUtils.renderIntoDocument(
-                <BoxGroup value={['1']}>
+            let boxgroup = shallow(
+                <BoxGroup defaultValue={['1']}>
                     {BoxGroup.createOptions(datasource)}
                 </BoxGroup>
             );
 
-            boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
-            options = TestUtils.scryRenderedDOMComponentsWithTag(component, 'label');
-            inputs = TestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
-        });
+            // 5 个选项
+            expect(boxgroup.find(BoxGroupOption).length).toBe(5);
+            // 1 个选中
+            expect(boxgroup.find({checked: true}).length).toBe(1);
+            // value 是 ['1']
+            expect(boxgroup.state('value')).toEqual(['1']);
 
-
-        it('init', () => {
-
-            expect(TestUtils.isCompositeComponent(boxgroup)).toBeTruthy();
-            expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
-            expect(options.length).toBe(5);
-            expect(TestUtils.isDOMComponent(options[0])).toBeTruthy();
-
-            expect(options[0].className).toMatch('state-checked');
-
-            expect(boxgroup.getValue()).toEqual(['1']);
+            boxgroup.unmount();
 
         });
 
-        it('click', done => {
+        it('check', done => {
 
-            inputs[2].checked = true;
-            TestUtils.Simulate.change(inputs[2]);
+            let boxgroup = mount(
+                <BoxGroup defaultValue={['1']}>
+                    {BoxGroup.createOptions(datasource)}
+                </BoxGroup>
+            );
+
+            const inputs = boxgroup.find('input');
+
+            inputs.get(2).checked = true;
+            inputs.at(2).simulate('change');
 
             then(() => {
-                expect(options[2].className).toMatch('state-checked');
-                expect(boxgroup.getValue()).toEqual(['1', '3']);
+
+                // 2 个选中
+                expect(boxgroup.find({checked: true}).length).toBe(2);
+                expect(boxgroup.state('value')).toEqual(['1', '3']);
                 done();
+
             });
 
         });
 
 
-        it('click checked', done => {
+        it('unchecked', done => {
 
-            inputs[0].checked = false;
-            TestUtils.Simulate.change(inputs[0]);
+            let boxgroup = mount(
+                <BoxGroup defaultValue={['1']}>
+                    {BoxGroup.createOptions(datasource)}
+                </BoxGroup>
+            );
+
+            const inputs = boxgroup.find('input');
+
+            inputs.get(0).checked = true;
+            inputs.at(0).simulate('change');
 
             then(() => {
-                expect(options[0].className).not.toMatch('state-checked');
-                expect(boxgroup.getValue()).toEqual(['3']);
+
+                // 2 个选中
+                expect(boxgroup.find({checked: true}).length).toBe(0);
+                expect(boxgroup.state('value')).toEqual([]);
                 done();
+
             });
 
         });
@@ -140,83 +150,131 @@ describe('BoxGroup', function () {
                 disabled: true
             }];
 
-            const component = TestUtils.renderIntoDocument(
+            const boxgroup = shallow(
                 <BoxGroup disabled value={value}>
                     {BoxGroup.createOptions(datasource)}
                 </BoxGroup>
             );
 
-            const boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
-
-            expect(boxgroup.getValue()).toEqual(['1', '2']);
+            expect(boxgroup.instance().getValue()).toEqual(['1', '2']);
 
         });
 
     });
 
+});
 
-    describe('radio', () => {
+describe('BoxGropu:radio', () => {
 
-        let component;
-        let boxgroup;
-        let options;
-        let inputs;
+    it('init', () => {
 
-        beforeAll(() => {
-            component = TestUtils.renderIntoDocument(
-                <BoxGroup boxModel="radio">
-                    {BoxGroup.createOptions(datasource)}
-                </BoxGroup>
-            );
+        const boxgroup = shallow(
+            <BoxGroup boxModel="radio">
+                {BoxGroup.createOptions(datasource)}
+            </BoxGroup>
+        );
 
-            boxgroup = TestUtils.findRenderedComponentWithType(component, BoxGroup);
-            options = TestUtils.scryRenderedDOMComponentsWithTag(component, 'label');
-            inputs = TestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
+        const options = boxgroup.find(BoxGroupOption);
+
+        expect(options.length).toBe(5);
+        expect(boxgroup.instance().getValue()).toEqual([]);
+
+    });
+
+    it('defaultValue', () => {
+
+        const boxgroup = shallow(
+            <BoxGroup boxModel="radio" defaultValue={['1']}>
+                {BoxGroup.createOptions(datasource)}
+            </BoxGroup>
+        );
+
+        const options = boxgroup.find(BoxGroupOption);
+
+        expect(options.length).toBe(5);
+        expect(boxgroup.instance().getValue()).toEqual(['1']);
+
+    });
+
+    it('uncontrolled click', done => {
+
+        const boxgroup = mount(
+            <BoxGroup boxModel="radio">
+                {BoxGroup.createOptions(datasource)}
+            </BoxGroup>
+        );
+
+        const inputs = boxgroup.find('input');
+
+        inputs.get(0).checked = true;
+        inputs.at(0).simulate('change');
+
+        then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['1']);
+            inputs.get(1).checked = true;
+            inputs.at(1).simulate('change');
+        })
+        .then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['2']);
+            boxgroup.unmount();
+            done();
         });
 
-        it('init', () => {
 
-            expect(TestUtils.isCompositeComponent(boxgroup)).toBeTruthy();
-            expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
-            expect(options.length).toBe(5);
-            expect(TestUtils.isDOMComponent(options[0])).toBeTruthy();
-            expect(boxgroup.getValue()).toEqual([]);
+    });
 
-        });
 
-        it('click', done => {
 
-            TestUtils.Simulate.change(inputs[2]);
-            TestUtils.Simulate.click(options[2]);
+    it('click checked', done => {
 
-            then(() => {
-                expect(options[2].className).toMatch('state-checked');
-                expect(boxgroup.getValue()).toEqual(['3']);
+        const boxgroup = mount(
+            <BoxGroup boxModel="radio" defaultValue={['1']}>
+                {BoxGroup.createOptions(datasource)}
+            </BoxGroup>
+        );
 
-                TestUtils.Simulate.change(inputs[0]);
-            })
-            .then(() => {
-                expect(options[2].className).not.toMatch('state-checked');
-                expect(options[0].className).toMatch('state-checked');
-                expect(boxgroup.getValue()).toEqual(['1']);
+        const inputs = boxgroup.find('input');
 
-                done();
-            });
+        inputs.get(0).checked = true;
+        inputs.at(0).simulate('change');
 
-        });
-
-        it('click checked', done => {
-
-            TestUtils.Simulate.change(inputs[0]);
-
-            then(() => {
-                expect(options[0].className).toMatch('state-checked');
-                expect(boxgroup.getValue()).toEqual(['1']);
-                done();
-            });
+        then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['1']);
+            inputs.get(1).checked = true;
+            inputs.at(1).simulate('change');
+        })
+        .then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['2']);
+            boxgroup.unmount();
+            done();
         });
 
     });
 
+    it('controlled', done => {
+
+        const boxgroup = mount(
+            <BoxGroup boxModel="radio" value={['1']}>
+                {BoxGroup.createOptions(datasource)}
+            </BoxGroup>
+        );
+
+        const inputs = boxgroup.find('input');
+
+        inputs.get(3).checked = true;
+        inputs.at(3).simulate('change');
+
+        then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['1']);
+            inputs.get(1).checked = true;
+            inputs.at(1).simulate('change');
+        })
+        .then(() => {
+            expect(boxgroup.instance().getValue()).toEqual(['1']);
+            boxgroup.unmount();
+            done();
+        });
+
+    });
 
 });
