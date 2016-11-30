@@ -68,26 +68,35 @@ export default class Tree extends Component {
      * @protected
      * @param  {Array<ReactElement>} children 所有子节点
      * @param  {number}              level    层级
+     * @param  {boolean}             expand   是否展开
      * @return {?Array}
      */
-    renderTreeNode(children, level) {
+    renderTreeNode(children, level, expand = false) {
 
         if (!children) {
             return;
         }
 
-        const expand = this.props.defaultExpandAll;
+        return Children.map(
+            children,
+            (child, index) => cloneElement(
+                child,
+                {
+                    onClick: this.onTreeNodeClick,
+                    key: index,
+                    level,
+                    expand
+                },
+                Children.count(child.props.children)
+                    ? this.renderTreeNode(
+                        child.props.children,
+                        level + 1,
+                        expand
+                    )
+                    : null
+            )
+        );
 
-        return Children.map(children, function (child, index) {
-
-            return cloneElement(child, {
-                onClick: this.onTreeNodeClick,
-                key: index,
-                level: level,
-                expand: expand
-            }, this.renderTreeNode(child.props.children, level + 1));
-
-        }, this);
     }
 
     /**
@@ -98,12 +107,22 @@ export default class Tree extends Component {
      */
     render() {
 
-        /* eslint-disable fecs-min-vars-per-destructure */
-        const {children, ...rest} = this.props;
+        const {
+            children,
+            variants,
+            states,
+            defaultExpandAll,
+            ...rest
+        } = this.props;
+
+        const className = cx()
+            .addVariants(variants)
+            .addStates(states)
+            .build();
 
         return (
-            <ul {...rest} className={cx(this.props).build()}>
-                {this.renderTreeNode(children, 1)}
+            <ul {...rest} className={className}>
+                {this.renderTreeNode(children, 1, defaultExpandAll)}
             </ul>
         );
 

@@ -4,43 +4,121 @@
  */
 
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-
+import {mount} from 'enzyme';
 import then from '../then';
 
 import Toggle from '../../src/Toggle';
 
 describe('Toggle', () => {
 
-    it('work', done => {
-        let component = TestUtils.renderIntoDocument(<Toggle value="" />);
+    it('uncontrolled', done => {
 
-        expect(TestUtils.isCompositeComponent(component)).toBe(true);
+        let toggle = mount(
+            <Toggle
+                defaultValue="on"
+                trueValue="on"
+                falseValue="off" />
+        );
 
-        const input = TestUtils.findRenderedDOMComponentWithTag(component, 'input');
+        expect(toggle.state('value')).toBe('on');
 
-        expect(component.getValue()).toEqual('');
+        const input = toggle.find('input');
 
-        input.checked = true;
-        TestUtils.Simulate.change(input);
+        input.get(0).checked = false;
+        input.at(0).simulate('change');
 
         then(() => {
-            expect(component.getValue()).toEqual('on');
+            expect(toggle.state('value')).toBe('off');
             done();
         });
+
     });
 
-    // it('disabled', done => {
-    //     let component = TestUtils.renderIntoDocument(<Toggle disabled={true} />);
+    it('controlled', done => {
 
-    //     const input = TestUtils.findRenderedDOMComponentWithTag(component, 'input');
+        const spy = jasmine.createSpy('toggle-change');
 
-    //     TestUtils.Simulate.change(input);
+        let toggle = mount(
+            <Toggle
+                value="on"
+                onChange={spy}
+                trueValue="on"
+                falseValue="off" />
+        );
 
-    //     then(() => {
-    //         expect(component.getValue()).toEqual('');
-    //         done();
-    //     });
-    // });
+        expect(toggle.state('value')).toBe('on');
+
+        const input = toggle.find('input');
+
+        input.get(0).checked = false;
+        input.at(0).simulate('change');
+
+        then(() => {
+            expect(spy).toHaveBeenCalled();
+            expect(toggle.state('value')).toBe('on');
+            toggle.setProps({value: 'off'});
+        })
+        .then(() => {
+            expect(toggle.state('value')).toBe('off');
+            done();
+        });
+
+    });
+
+    it('disabled', done => {
+
+        const spy = jasmine.createSpy('toggle-change');
+
+        let toggle = mount(
+            <Toggle
+                value="on"
+                disabled={true}
+                onChange={spy}
+                trueValue="on"
+                falseValue="off" />
+        );
+
+        expect(toggle.state('value')).toBe('on');
+
+        const input = toggle.find('input');
+
+        input.get(0).checked = false;
+        input.at(0).simulate('change');
+
+        then(() => {
+            expect(spy).not.toHaveBeenCalled();
+            expect(toggle.state('value')).toBe('on');
+            done();
+        });
+
+    });
+
+    it('readOnly', done => {
+
+        const spy = jasmine.createSpy('toggle-change');
+
+        let toggle = mount(
+            <Toggle
+                value="on"
+                readOnly={true}
+                onChange={spy}
+                trueValue="on"
+                falseValue="off" />
+        );
+
+        expect(toggle.state('value')).toBe('on');
+
+        const input = toggle.find('input');
+
+        input.get(0).checked = false;
+        input.at(0).simulate('change');
+
+        then(() => {
+            expect(spy).not.toHaveBeenCalled();
+            expect(toggle.state('value')).toBe('on');
+            done();
+        });
+
+    });
 
 });

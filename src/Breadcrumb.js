@@ -14,6 +14,7 @@ const cx = create('Breadcrumb');
 /**
  * melon/Breadcrumb
  *
+ * @class
  * @param {Object}  props 属性
  * @return {ReactElement}
  */

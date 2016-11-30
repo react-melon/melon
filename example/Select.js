@@ -33,7 +33,7 @@ class View extends React.Component {
         return (
             <div>
                 <Title level={4}>下拉选项</Title>
-                <Title level={5}>Uncontrolled Select</Title>
+                <p>Uncontrolled Select</p>
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={6}>普通</Title>
@@ -57,38 +57,23 @@ class View extends React.Component {
                         </Select>
                     </div>
                 </div>
-                <div className="melon-row">
-                    <div className="melon-column melon-column-6">
-                        <Title level={6}>只读</Title>
-                        <Select
-                            name="a"
-                            readOnly={true}
-                            defaultValue={this.state.a} >
-                            {Select.createOptions(datasource)}
-                        </Select>
-                    </div>
-                    <div className="melon-column melon-column-6">
-                        <Title level={6}>禁用</Title>
-                        <Select
-                            name="a"
-                            disabled={true}
-                            defaultValue={this.state.a} >
-                            {Select.createOptions(datasource)}
-                        </Select>
-                    </div>
-                </div>
-                <Title level={5}>Controlled Select</Title>
+                <p>Controlled Select</p>
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={6}>普通</Title>
-                        <Select name="a" value={this.state.a} onChange={this.onChange.bind(this, 'a')}>
+                        <Select
+                            name="a"
+                            value={this.state.a} onChange={this.onChange.bind(this, 'a')}>
                             {Select.createOptions(datasource)}
                         </Select>
                         {this.getCurrentValue('a')}
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={6}>选项分组</Title>
-                        <Select name="b" value={this.state.b} onChange={this.onChange.bind(this, 'b')}>
+                        <Select
+                            name="b"
+                            value={this.state.b}
+                            onChange={this.onChange.bind(this, 'b')}>
                             <optgroup label="fruit">
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
@@ -101,6 +86,27 @@ class View extends React.Component {
                             </optgroup>
                         </Select>
                         {this.getCurrentValue('b')}
+                    </div>
+                </div>
+                <p>States</p>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>只读</Title>
+                        <Select
+                            name="a"
+                            readOnly={true}
+                            defaultValue="2" >
+                            {Select.createOptions(datasource)}
+                        </Select>
+                    </div>
+                    <div className="melon-column melon-column-6">
+                        <Title level={6}>禁用</Title>
+                        <Select
+                            name="b"
+                            disabled={true}
+                            defaultValue="3" >
+                            {Select.createOptions(datasource)}
+                        </Select>
                     </div>
                 </div>
             </div>

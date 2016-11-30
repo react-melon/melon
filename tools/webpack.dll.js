@@ -19,13 +19,7 @@ module.exports = {
                         );
                     },
                     ['numen/HashLocator']
-                ),
-            hot: [
-                'react-hot-api',
-                'react-hot-loader',
-                'json3',
-                'json5'
-            ]
+                )
         };
 
     })(require('../package.json'), require('./dll.json')),

@@ -13,6 +13,7 @@ import createCommand from './dialog/commander';
 /**
  * melon/Alert
  *
+ * @class
  * @param {Object}  props 属性
  * @return {ReactElement}
  */

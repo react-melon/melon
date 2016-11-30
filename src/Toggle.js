@@ -9,7 +9,6 @@ import React, {PropTypes} from 'react';
 import InputComponent from 'melon-core/InputComponent';
 import {create} from 'melon-core/classname/cxBuilder';
 import CenterRipple from './ripples/CenterRipple';
-import Validity from 'melon-core/Validity';
 
 const cx = create('Toggle');
 
@@ -78,7 +77,7 @@ export default class Toggle extends InputComponent {
             onChange
         } = this;
 
-        const {value, validity} = state;
+        const value = state.value;
 
         const {
             name,
@@ -104,7 +103,6 @@ export default class Toggle extends InputComponent {
                             : <CenterRipple flag={checked} scale={2.5} opacity={0.3} />}
                     </div>
                 </div>
-                <Validity validity={validity} />
             </label>
         );
 
@@ -117,8 +115,7 @@ Toggle.displayName = 'Toggle';
 Toggle.defaultProps = {
     ...InputComponent.defaultProps,
     trueValue: 'on',
-    falseValue: '',
-    defaultValue: ''
+    falseValue: ''
 };
 
 Toggle.propTypes = {
