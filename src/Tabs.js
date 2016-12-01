@@ -7,6 +7,7 @@ import React, {Component, PropTypes, cloneElement, Children} from  'react';
 import Tab from './tabs/Tab';
 import TabPanel from  './tabs/Panel';
 import {create} from 'melon-core/classname/cxBuilder';
+import omit from 'lodash/omit';
 
 const cx = create('Tabs');
 
@@ -41,6 +42,8 @@ export default class Tabs extends Component {
             selectedIndex
         };
 
+        this.onTabClick = this.onTabClick.bind(this);
+
     }
 
     /**
@@ -48,13 +51,12 @@ export default class Tabs extends Component {
      *
      * @public
      * @override
-     * @param {*} nextProps 新属性
      */
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps({selectedIndex}) {
 
-        if (nextProps.selectedIndex !== this.state.selectedIndex) {
+        if (selectedIndex !== this.state.selectedIndex) {
             this.setState({
-                selectedIndex: nextProps.selectedIndex
+                selectedIndex
             });
         }
     }
@@ -64,29 +66,21 @@ export default class Tabs extends Component {
      *
      * @private
      * @param {number} index tab 序号
-     * @param {e}      e     原始点击事件
      */
-    handleTabClick(index, e) {
+    onTabClick(index) {
 
         if (index === this.state.selectedIndex) {
             return;
         }
 
-        let {onBeforeChange, onChange} = this.props;
+        let onChange = this.props.onChange;
 
-        e.selectedIndex = index;
-
-        if (onBeforeChange) {
-
-            onBeforeChange(e);
-
-            if (e.isDefaultPrevented()) {
-                return;
-            }
-        }
-
-        this.setState({selectedIndex: index}, function () {
-            onChange && onChange(e);
+        this.setState({selectedIndex: index}, () => {
+            onChange && onChange({
+                type: 'change',
+                selectedIndex: index,
+                target: this
+            });
         });
 
     }
@@ -120,18 +114,28 @@ export default class Tabs extends Component {
      */
     render() {
 
-        const props = this.props;
+        let props = this.props;
         let tabIndex = 0;
-        const percent = 1 / this.getTabCount() * 100 + '%';
-        const tabContents = [];
-        const tabs = [];
-        const children = Children.toArray(props.children);
+        let percent = 1 / this.getTabCount() * 100 + '%';
+        let tabContents = [];
+        let tabs = [];
+
+        let {
+            variants,
+            states,
+            children,
+            ...rest
+        } = props;
+
+        children = Children.toArray(props.children);
+
+        let selectedIndex = this.state.selectedIndex;
 
         for (let i = 0, len = children.length; i < len; ++i) {
 
             let tab = children[i];
 
-            const selected = this.isTabSelected(i);
+            let selected = selectedIndex === i;
 
             if (selected) {
                 tabIndex = i;
@@ -145,13 +149,18 @@ export default class Tabs extends Component {
                 );
             }
 
-            tabs.push(cloneElement(tab, {
-                key: i,
-                selected: selected,
-                tabIndex: i,
-                style: {width: percent},
-                onClick: tab.props.disabled ? null : this.handleTabClick.bind(this, i)
-            }));
+            tabs.push(
+                cloneElement(
+                    tab,
+                    {
+                        key: i,
+                        selected: selected,
+                        index: i,
+                        style: {width: percent},
+                        onClick: this.onTabClick
+                    }
+                )
+            );
 
         }
 
@@ -160,11 +169,20 @@ export default class Tabs extends Component {
             left: 'calc(' + percent + '*' + tabIndex + ')'
         };
 
+        const className = cx()
+            .addVariants(variants)
+            .addStates(states)
+            .build();
+
         return (
-            <div {...props} className={cx(props).build()}>
+            <div
+                {...omit(rest, ['selectedIndex'])}
+                className={className}>
                 <ul>
                     {tabs}
-                    <li className={cx().part('inkbar').build()} style={InkBarStyles}></li>
+                    <li
+                        className={cx.getPartClassName('inkbar')}
+                        style={InkBarStyles} />
                 </ul>
                 {tabContents}
             </div>
@@ -183,8 +201,7 @@ export default class Tabs extends Component {
  */
 Tabs.propTypes = {
     selectedIndex: PropTypes.number.isRequired,
-    onChange: PropTypes.func,
-    onBeforeChange: PropTypes.func
+    onChange: PropTypes.func
 };
 
 Tabs.defaultProps = {

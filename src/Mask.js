@@ -6,6 +6,7 @@
 import React, {PropTypes, Component} from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
 import * as windowScrollHelper from './dialog/windowScrollHelper';
+import omit from 'lodash/omit';
 
 const cx = create('Mask');
 
@@ -90,11 +91,25 @@ export default class Mask extends Component {
      */
     render() {
 
-        const props = this.props;
-        const show = props.show;
+        const {
+            show,
+            variants,
+            states,
+            ...rest
+        } = this.props;
+
+        const className = cx()
+            .addVariants(variants)
+            .addStates({
+                ...states,
+                show
+            })
+            .build();
 
         return (
-            <div {...props} className={cx(props).addStates({show}).build()} />
+            <div
+                {...omit(rest, 'lockScrollingOnShow')}
+                className={className} />
         );
 
     }

@@ -7,7 +7,6 @@ import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 
 import InputComponent from 'melon-core/InputComponent';
-import Validity from 'melon-core/Validity';
 import {create} from 'melon-core/classname/cxBuilder';
 import domUtil from './common/util/dom';
 
@@ -198,10 +197,6 @@ export default class Slider extends InputComponent {
      */
     render() {
 
-        const validity = this.state.validity;
-
-        /* eslint-disable fecs-minimum-vars-per-destructure */
-
         const {
             width,
             style = {}
@@ -217,7 +212,6 @@ export default class Slider extends InputComponent {
                 className={className}>
                 {this.renderHiddenInput()}
                 {this.renderBar()}
-                <Validity validity={validity} />
             </div>
         );
 

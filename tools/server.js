@@ -5,7 +5,6 @@
 
 const express = require('express');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpack = require('webpack');
 const path = require('path');
 const config = require('./webpack.dev.js');
@@ -26,8 +25,6 @@ const middleware = webpackDevMiddleware(compiler, {
 });
 
 app.use(middleware);
-
-app.use(webpackHotMiddleware(compiler));
 
 const fs = middleware.fileSystem;
 

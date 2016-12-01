@@ -190,15 +190,17 @@ export default class ScrollView extends Component {
 
         const {
             children,
-            others,
             height,
             width
         } = this.props;
 
+        const className = cx(this.props)
+            .addVariants(this.getDirections())
+            .build();
+
         return (
             <div
-                {...others}
-                className={cx(this.props).addVariants(this.getDirections()).build()}
+                className={className}
                 style={{height, width}}
                 onWheel={this.onWheel}
                 ref="main">

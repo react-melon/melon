@@ -63,6 +63,13 @@ class View extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        if (this.updateTimer) {
+            clearInterval(this.updateTimer);
+            this.updateTimer = null;
+        }
+    }
+
     getEditableTableColumns() {
         return [];
     }
