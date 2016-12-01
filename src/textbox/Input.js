@@ -3,7 +3,7 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import {Component, createElement, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TextBoxInput');
@@ -12,28 +12,34 @@ export default class TextBoxInput extends Component {
 
     render() {
 
-        const props = this.props;
-
         const {
             multiline,
             rows,
             isFocus,
+            value,
+            variants,
+            states,
             ...rest
-        } = props;
+        } = this.props;
 
-        const tag = multiline ? 'textarea' : 'input';
+        const Text = multiline ? 'textarea' : 'input';
+        const className = cx()
+            .addVariants(variants)
+            .addStates({
+                ...states,
+                focus: isFocus
+            })
+            .build();
 
-        return createElement(
-            tag,
-            {
-                ...rest,
-                className: cx(props)
-                    .addStates({
-                        focus: isFocus
-                    })
-                    .build(),
-                rows: multiline ? rows : null
-            }
+        const props = {
+            ...rest,
+            className,
+            value,
+            rows: multiline ? rows : null
+        };
+
+        return (
+            <Text {...props} />
         );
 
     }

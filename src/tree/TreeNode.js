@@ -6,6 +6,7 @@
 import React, {Component, PropTypes, Children} from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
+import omit from 'lodash/omit';
 
 const cx = create('TreeNode');
 
@@ -42,23 +43,30 @@ export default class TreeNode extends Component {
 
     render() {
 
-        const props = this.props;
-        /* eslint-disable fecs-min-vars-per-destructure */
-        const {label, ...others} = props;
-        /* eslint-enable fecs-min-vars-per-destructure */
-        const expand = this.state.expand;
+        let props = this.props;
 
-        const icon = expand
-            ? (props.expandIcon || TreeNode.ICON[1])
-            : (props.unexpandIcon || TreeNode.ICON[0]);
+        let {
+            label,
+            variants,
+            states,
+            expandIcon,
+            unexpandIcon,
+            children,
+            level,
+            icons,
+            ...others
+        } = props;
 
-        let children = props.children;
+        let expand = this.state.expand;
+
+        let icon = expand
+            ? (expandIcon || icons[1])
+            : (unexpandIcon || icons[0]);
 
         let iconStyle;
         let labelStyle;
 
-        if (props.level) {
-            const level = props.level - 0;
+        if (level) {
             labelStyle = {
                 paddingLeft: level * 1.2 + 0.4 + 'em'
             };
@@ -104,11 +112,17 @@ export default class TreeNode extends Component {
             );
         }
 
+        const className = cx(props)
+            .addVariants(variants)
+            .addVariants('level' + props.level)
+            .addStates(states)
+            .build();
+
         return (
             <li
-                {...others}
+                {...omit(others, ['expand'])}
                 data-role="tree-node"
-                className={cx(props).addVariants('level' + props.level).build()}>
+                className={className}>
                 {children}
             </li>
         );
@@ -132,10 +146,9 @@ TreeNode.propTypes = {
 TreeNode.defaultProps = {
     label: '',
     expand: false,
-    selected: false
+    selected: false,
+    icons: [
+        'keyboard-arrow-right',
+        'keyboard-arrow-down'
+    ]
 };
-
-TreeNode.ICON = [
-    'expand-less',
-    'expand-more'
-];

@@ -5,6 +5,7 @@
 
 import React, {PropTypes} from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
+import omit from 'lodash/omit';
 
 const cx = create('Icon');
 
@@ -13,6 +14,7 @@ const cx = create('Icon');
 /**
  * melon/Icon
  *
+ * @class
  * @param {Object} props     属性
  * @param {string} props.icon icon名称
  * @return {ReactElement}
@@ -26,7 +28,10 @@ export default function Icon(props) {
     } = props;
 
     return (
-        <i {...rest} data-icon={icon} className={cx(props).build()}/>
+        <i
+            {...omit(rest, ['states', 'variants'])}
+            data-icon={icon}
+            className={cx(props).build()} />
     );
 
 }

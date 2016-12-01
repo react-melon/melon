@@ -8,7 +8,6 @@ import React, {PropTypes, Children} from 'react';
 import Option from './boxgroup/Option';
 import {create} from 'melon-core/classname/cxBuilder';
 import InputComponent from 'melon-core/InputComponent';
-import Validity from 'melon-core/Validity';
 
 const cx = create('BoxGroup');
 
@@ -157,10 +156,14 @@ export default class BoxGroup extends InputComponent {
      * @return {ReactElement}
      */
     render() {
+
+        const className = cx(this.props)
+            .addStates(this.getStyleStates())
+            .build();
+
         return (
-            <div className={cx(this.props).addStates(this.getStyleStates()).build()}>
+            <div className={className}>
                 {Children.map(this.props.children, this.renderOption)}
-                <Validity validity={this.state.validity} />
             </div>
         );
     }
@@ -172,14 +175,16 @@ BoxGroup.displayName = 'BoxGroup';
 BoxGroup.propTypes = {
     ...InputComponent.propTypes,
     boxModel: PropTypes.oneOf(['radio', 'checkbox']).isRequired,
-    value: PropTypes.arrayOf(PropTypes.string),
+    value(...args) {
+        return InputComponent.propTypes.value(...args)
+            && PropTypes.arrayOf(PropTypes.string)(...args);
+    },
     children: PropTypes.node.isRequired
 };
 
 BoxGroup.defaultProps = {
     ...InputComponent.defaultProps,
-    boxModel: 'checkbox',
-    defaultValue: []
+    boxModel: 'checkbox'
 };
 
 BoxGroup.childContextTypes = InputComponent.childContextTypes;

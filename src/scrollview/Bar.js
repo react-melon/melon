@@ -178,7 +178,6 @@ export default class ScrollViewBar extends Component {
 
         return (
             <div
-                {...this.props}
                 ref="main"
                 className={cx(this.props).addVariants(this.props.direction).build()}
                 onMouseDown={this.onBarMouseDown}>

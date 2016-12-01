@@ -29,7 +29,9 @@ class View extends React.Component {
                     onClick={() => this.setState({example1: !this.state.example1})}>
                     打开
                 </Button>
-                <Zippy expand={this.state.example1} style={{height: 25 * 16}}>
+                <Zippy
+                    expand={this.state.example1}
+                    style={{height: 25 * 16, overflow: 'hidden'}}>
                     <div style={{width: 800, lineHeight: '25px'}}>
                         <p>如何让你遇见我</p>
                         <p>在我最美丽的时刻为这</p>
@@ -75,7 +77,7 @@ class View extends React.Component {
                     onClick={() => this.setState({example3: !this.state.example3})}>
                     打开
                 </Button>
-                <Zippy expand={this.state.example3} isAdaptive>
+                <Zippy expand={this.state.example3}>
                     <div style={{width: 800, lineHeight: '25px'}}>
                         <p>如何让你遇见我</p>
                         <p>在我最美丽的时刻为这</p>

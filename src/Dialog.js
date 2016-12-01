@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import Mask from './Mask';
 import dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
+import omit from 'lodash/omit';
 
 import {create} from 'melon-core/classname/cxBuilder';
 
@@ -208,8 +209,7 @@ export default class Dialog extends Component {
 
         const {
             children,
-            width,
-            ...others
+            width
         } = props;
 
         const open = state.open;
@@ -229,8 +229,10 @@ export default class Dialog extends Component {
             .addVariants(width === 'adaptive' ? 'adaptive' : undefined)
             .build();
 
+        const className = cx(props).addStates({open}).build();
+
         return (
-            <div {...others} className={cx(props).addStates({open}).build()}>
+            <div className={className}>
                 <Motion style={{y: spring(open ? 0 : -80)}}>
                     {({y}) =>
                         <DialogWindow

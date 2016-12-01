@@ -6,6 +6,7 @@
 import React from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
 import TouchRipple from './ripples/TouchRipple';
+import omit from 'lodash/omit';
 
 const cx = create('Button');
 
@@ -14,6 +15,7 @@ const cx = create('Button');
 /**
  * melon/Button
  *
+ * @class
  * @param {Object}  props           属性
  * @param {boolean} props.disabled  是否不可点击
  * @param {boolean} props.hasRipple 是否有ripple动画
@@ -40,7 +42,7 @@ export default function Button(props) {
 
     return (
         <button
-            {...others}
+            {...omit(others, ['variants'])}
             disabled={disabled}
             className={className}>
             {label || children}

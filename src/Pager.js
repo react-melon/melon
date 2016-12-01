@@ -189,8 +189,7 @@ export default class Pager extends Component {
             padding,
             showCount,
             useLang,
-            showAlways,
-            ...others
+            showAlways
         } = props;
 
         let page = state.page;
@@ -202,10 +201,7 @@ export default class Pager extends Component {
 
         if (!showAlways && total <= 1) {
             return (
-                <ul
-                    {...others}
-                    className={className}>
-                </ul>
+                <ul className={className} />
             );
         }
 
@@ -237,31 +233,33 @@ export default class Pager extends Component {
         // 生成右半端页码
         const right = this.range(page + 1, total, wingRight, paddingRight);
 
-        const result = [{
-            page: Math.max(page - 1, 0),
-            states: {
-                prev: true,
-                disabled: page === 0
+        const result = [
+            {
+                page: Math.max(page - 1, 0),
+                states: {
+                    prev: true,
+                    disabled: page === 0
+                },
+                part: 'prev'
             },
-            part: 'prev'
-        }]
-        .concat(left)
-        .concat({
-            page: page,
-            states: {
-                current: true
+            ...left,
+            {
+                page: page,
+                states: {
+                    current: true
+                },
+                part: ''
             },
-            part: ''
-        })
-        .concat(right)
-        .concat({
-            page: Math.min(page + 1, total - 1),
-            states: {
-                next: true,
-                disabled: page >= total - 1
-            },
-            part: 'next'
-        })
+            ...right,
+            {
+                page: Math.min(page + 1, total - 1),
+                states: {
+                    next: true,
+                    disabled: page >= total - 1
+                },
+                part: 'next'
+            }
+        ]
         .map(conf => {
 
             if (typeof conf === 'number') {
@@ -280,10 +278,7 @@ export default class Pager extends Component {
         });
 
         return (
-            <ul
-                {...others}
-                className={className}
-                onClick={this.onMainClick}>
+            <ul className={className} onClick={this.onMainClick}>
                 {result}
             </ul>
         );

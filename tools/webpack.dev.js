@@ -14,8 +14,6 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const config = Object.assign({}, require('./webpack.common'), {
 
     entry: [
-        'webpack-hot-middleware/client',
-        'webpack/hot/only-dev-server',
         path.join(__dirname, '../example/index.js')
     ],
 
@@ -23,7 +21,6 @@ const config = Object.assign({}, require('./webpack.common'), {
         loaders: [{
             test: /\.js?$/,
             loaders: [
-                'react-hot',
                 'babel?cacheDirectory'
             ],
             exclude: [
@@ -33,7 +30,7 @@ const config = Object.assign({}, require('./webpack.common'), {
             test: /\.styl$/,
             loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url']
         }, {
-            test: /\.(svg|eot|ttf|woff|jpg|png)(\?.*)?$/,
+            test: /\.(svg|eot|ttf|woff|woff2|jpg|png)(\?.*)?$/,
             loader: 'file?name=asset/[name].[ext]'
         }, {
             test: /\.json(\?.*)?$/,
@@ -60,10 +57,6 @@ const config = Object.assign({}, require('./webpack.common'), {
         new webpack.DllReferencePlugin({
             context: '.',
             manifest: require('../asset/inf-manifest.json')
-        }),
-        new webpack.DllReferencePlugin({
-            context: '.',
-            manifest: require('../asset/hot-manifest.json')
         }),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
