@@ -63,7 +63,7 @@
     "karma-webpack": "^1.8.0",
     "nib": "^1.1.2",
     "numen": "^0.2.0",
-    "react-addons-test-utils": "^0.14.8",
+    "react-addons-test-utils": "^0.14.8||^15.4.0",
     "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
@@ -103,7 +103,6 @@
     "lodash": "^4.17.2",
     "melon-core": "^0.4.1",
     "react": "^0.14.8||^15.4.0",
-    "react-addons-test-utils": "^0.14.8||^15.4.0",
     "react-dom": "^0.14.8||^15.4.0",
     "react-motion": "^0.4.2"
   },
