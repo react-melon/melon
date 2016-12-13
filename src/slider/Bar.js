@@ -22,6 +22,7 @@ export default class SliderBar extends Component {
             disableFocusRipple,
             pointerSize,
             active,
+            variants,
             ...rest
         } = this.props;
 
@@ -51,8 +52,14 @@ export default class SliderBar extends Component {
             }
         }
 
+        const className = cx()
+            .part('wrapper')
+            .addVariants(variants)
+            .addStates({active})
+            .build();
+
         return (
-            <div {...rest} className={cx().part('wrapper').addStates({active}).build()}>
+            <div {...rest} className={className}>
                 <div style={{height}} className={cx(this.props).build()}>
                     <div style={activeStyle} className={cx().part('active').build()} />
                     <Tooltip

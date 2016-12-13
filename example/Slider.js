@@ -33,6 +33,11 @@ class View extends React.Component {
                     onChange={this.onChange}
                     value={this.state.value1}
                     width={500} />
+                <Slider
+                    variants={['fluid']}
+                    style={{marginTop: 100}}
+                    onChange={this.onChange}
+                    value={this.state.value1} />
                 <div>
                     数值：{this.state.value1}
                 </div>
