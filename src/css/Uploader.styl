@@ -49,9 +49,22 @@
 
 
     &-uploading
-        >.ui-progress
-            font-size: 12px !important
-            margin: 0
+        height: 2em;
+
+        &:before
+            content: '';
+            display: inline-block
+            vertical-align: middle;
+            height: 100%;
+
+        >span,
+        >.ui-progress,
+        >.ui-button
+            color: #aaa
+            display: inline-block
+            vertical-align: middle;
+            margin-right: 0.5em
+
 
     &-label
         vertical-align: middle
