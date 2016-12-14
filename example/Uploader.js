@@ -34,18 +34,26 @@ class View extends React.Component {
             <div>
                 <Title level={3}>文件上传</Title>
                 <Title level={4}>待选择</Title>
-                <Uploader placeholder="图片上传" upload={this.upload} style={{width: 200}} />
+                <Uploader
+                    placeholder="图片上传"
+                    defaultValue=""
+                    upload={this.upload}
+                    style={{width: 200}} />
                 <Uploader
                     variants={['fluid']}
                     placeholder="图片上传"
+                    defaultValue=""
                     upload={this.upload} />
                 <Title level={4}>已选择</Title>
                 <Uploader
-                    upload={this.upload}
-                    onChange={e => {
-                        this.setState({
-                            imgURL: e.value
-                        });
+                    uploading={this.state.uploading}
+                    onFileChange={files => {
+
+                        if (!files) {
+                            this.setState({imgURL: ''});
+                            return;
+                        }
+
                     }}
                     value={this.state.imgURL} />
             </div>
@@ -60,7 +68,7 @@ class View extends React.Component {
                 function () {
                     resolve(randomImageURL());
                 },
-                1000
+                50000
             );
 
         });
