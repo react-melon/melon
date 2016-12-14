@@ -242,7 +242,7 @@ export default class Uploader extends InputComponent {
             case 'fulfilled':
                 return (
                     <div className={cx.getPartClassName('content')}>
-                        <image
+                        <img
                             className={cx.getPartClassName('preview')}
                             src={value} />
                         <Link
