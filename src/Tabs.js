@@ -17,7 +17,7 @@ const cx = create('Tabs');
  * @extends {React.Component}
  * @class
  */
-export default class Tabs extends Component {
+class Tabs extends Component {
 
     /**
      * 构造函数
@@ -209,3 +209,10 @@ Tabs.defaultProps = {
 };
 
 Tabs.Tab = Tab;
+Tabs.TabPanel = TabPanel;
+
+export {
+    Tabs as default,
+    Tab,
+    TabPanel
+};

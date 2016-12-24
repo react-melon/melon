@@ -16,7 +16,7 @@ const cx = create('Table');
  *
  * @extends React.Component
  */
-export default class Table extends Component {
+class Table extends Component {
 
     /**
      * 构造函数
@@ -289,3 +289,8 @@ Table.defaultProps = {
 };
 
 Table.Column = Column;
+
+export {
+    Table as default,
+    Column
+};
