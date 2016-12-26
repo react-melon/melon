@@ -6,6 +6,7 @@
 import React from 'react';
 
 import {create} from 'melon-core/classname/cxBuilder';
+import omit from 'lodash/omit';
 
 const cx = create('Link');
 
@@ -20,7 +21,7 @@ const cx = create('Link');
 export default function Link(props) {
 
     return (
-        <a {...props} className={cx(props).build()} />
+        <a {...omit(props, ['variants', 'states'])} className={cx(props).build()} />
     );
 
 }
