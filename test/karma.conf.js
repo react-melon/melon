@@ -20,7 +20,8 @@ module.exports = {
     ],
 
     browsers: [
-        'Chrome'
+        'Chrome',
+        'Firefox'
     ],
 
     preprocessors: {
