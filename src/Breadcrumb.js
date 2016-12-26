@@ -18,7 +18,7 @@ const cx = create('Breadcrumb');
  * @param {Object}  props 属性
  * @return {ReactElement}
  */
-export default function Breadcrumb(props) {
+function Breadcrumb(props) {
 
     /* eslint-disable fecs-min-vars-per-destructure */
     const {
@@ -63,4 +63,9 @@ Breadcrumb.createCrumbs = function (crumbs) {
         );
     });
 
+};
+
+export {
+    Breadcrumb as default,
+    Item
 };
