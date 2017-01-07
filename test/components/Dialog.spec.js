@@ -232,17 +232,16 @@ describe('Alert', () => {
             </Alert>
         );
 
-        let dialog = alert.find(Dialog);
-
+        let dialog = alert.find('.ui-dialog');
         let button = alert.find('.ui-button');
 
         expect(button.length).toBe(1);
+        expect(dialog.length).toBe(1);
 
         button.simulate('click');
 
         then(() => {
 
-            expect(dialog.hasClass('state-open')).toBe(false);
             expect(spy).toHaveBeenCalled();
             alert.unmount();
             done();

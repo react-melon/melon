@@ -72,15 +72,13 @@ export default class Dialog extends Component {
     }
 
     /**
-     * 状态将要更新时的处理
+     * 状态更新时的处理
      *
      * @public
      * @override
-     * @param {*} nextProps 新属性
-     * @param {*} nextState 新状态
      */
-    componentWillUpdate(nextProps, nextState) {
-        if (nextState.open) {
+    componentDidUpdate() {
+        if (this.state.open) {
             this.positionDialog();
         }
     }
