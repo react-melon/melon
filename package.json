@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=dev node tools/server.js",
     "build": "rimraf lib && NODE_ENV=production gulp build",
-    "lint": "fecs src",
+    "lint": "fecs",
     "docs": "esdoc -c esdoc.json",
     "setup": "rimraf asset && NODE_ENV=production webpack --config=tools/webpack.dll.js",
     "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
@@ -99,6 +99,7 @@
     "dependencies": {}
   },
   "dependencies": {
+    "dom-align": "^1.5.3",
     "lodash": "^4.17.2",
     "melon-core": "^0.4.1",
     "react": "^0.14.8||^15.4.0",
