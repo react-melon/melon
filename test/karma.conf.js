@@ -15,13 +15,13 @@ module.exports = {
     ],
 
     files: [
-        // 'test/components/Toggle.spec.js'
-        'test/components/**/*.spec.js'
+        'test/components/Dialog.spec.js'
+        // 'test/components/**/*.spec.js'
     ],
 
     browsers: [
-        'Chrome',
-        'Firefox'
+        // 'Firefox',
+        'Chrome'
     ],
 
     preprocessors: {
