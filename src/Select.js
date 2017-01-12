@@ -4,13 +4,14 @@
  */
 
 import React, {PropTypes, Children} from 'react';
-import ReactDOM from 'react-dom';
 import Icon from './Icon';
-import SeparatePopup from './select/SeparatePopup';
 import InputComponent from 'melon-core/InputComponent';
 import Group from './select/OptionGroup';
 import Option from './select/Option';
 import {create} from 'melon-core/classname/cxBuilder';
+import Layer from './Layer';
+import align from 'dom-align';
+import {Motion, spring} from 'react-motion';
 
 const cx = create('Select');
 
@@ -46,129 +47,40 @@ export default class Select extends InputComponent {
 
         this.onClick = this.onClick.bind(this);
         this.onClickOption = this.onClickOption.bind(this);
-        this.onPopupHide = this.onPopupHide.bind(this);
+        this.hideOptions = this.hideOptions.bind(this);
+        this.renderOptions = this.renderOptions.bind(this);
 
     }
 
-    /**
-     * Mount时的处理
-     *
-     * @public
-     * @override
-     */
-    componentDidMount() {
+    componentDidUpdate() {
 
-        super.componentDidMount();
+        if (this.state.open && this.layer && this.main) {
 
-        let container = this.container = document.createElement('div');
+            let {
+                mainArchor,
+                layerArchor
+            } = this.props;
 
-        container.className = cx().part('popup').build();
-
-        document.body.appendChild(container);
-
-        /**
-         * 浮层
-         *
-         * @type {Object}
-         */
-        this.popup = ReactDOM.render(
-            <SeparatePopup
-                target={ReactDOM.findDOMNode(this)}
-                open={false}
-                onHide={this.onPopupHide}>
-                {Children.map(
-                    this.props.children,
-                    this.renderItem,
-                    this
-                )}
-            </SeparatePopup>,
-            container
-        );
-
-    }
-
-    /**
-     * 接受新属性时的处理
-     *
-     * @public
-     * @override
-     * @param {*} nextProps 新属性
-     */
-    componentWillReceiveProps(nextProps) {
-
-        const children = nextProps.children;
-
-        if (children !== this.props.children) {
-            this.popup = ReactDOM.render(
-                <SeparatePopup
-                    target={ReactDOM.findDOMNode(this)}
-                    open={this.state.open}
-                    onHide={this.onPopupHide}>
-                    {Children.map(
-                        children,
-                        this.renderItem,
-                        this
-                    )}
-                </SeparatePopup>,
-                this.container
+            align(
+                this.layer,
+                this.main,
+                {
+                    points: [layerArchor, mainArchor],
+                    overflow: {
+                        adjustX: true,
+                        adjustY: true
+                    }
+                }
             );
         }
 
-        super.componentWillReceiveProps(nextProps);
-
     }
 
-    /**
-     * 将要Unmount时的处理
-     *
-     * @public
-     * @override
-     */
     componentWillUnmount() {
 
-        let container = this.container;
-
-        if (container) {
-            ReactDOM.unmountComponentAtNode(container);
-            container.parentElement.removeChild(container);
-
-            /**
-             * 浮层的容器
-             *
-             * @type {HTMLElement}
-             */
-            this.container = container = null;
+        if (this.closeingTimer) {
+            clearTimeout(this.closeingTimer);
         }
-
-        super.componentWillUnmount();
-
-    }
-
-    /**
-     * 渲染选项浮层
-     *
-     * @protected
-     * @param  {boolean} open 是否可见
-     */
-    renderOptions(open) {
-
-        this.setState({
-            open
-        }, () => {
-            ReactDOM.render(
-                <SeparatePopup
-                    target={ReactDOM.findDOMNode(this)}
-                    open={open}
-                    onHide={this.onPopupHide}>
-                    {Children.map(
-                        this.props.children,
-                        this.renderItem,
-                        this
-                    )}
-                </SeparatePopup>,
-                this.container
-            );
-        });
 
     }
 
@@ -185,7 +97,17 @@ export default class Select extends InputComponent {
             return;
         }
 
-        this.renderOptions(!this.isOpen());
+        let open = this.state.open;
+
+        if (open) {
+            this.hideOptions();
+        }
+        else {
+            this.setState({
+                open: true
+            });
+        }
+
     }
 
     /**
@@ -199,22 +121,65 @@ export default class Select extends InputComponent {
 
         const value = e.value;
 
-        this.renderOptions(false);
+        if (this.state.closing) {
+            return;
+        }
+
+        this.hideOptions();
 
         super.onChange({
             type: 'change',
             target: this,
             value
         });
+
     }
 
     /**
-     * popup 隐藏时调用
+     * 渲染选项浮层
      *
      * @protected
+     * @return {ReactElement}
      */
-    onPopupHide() {
-        this.renderOptions(false);
+    renderOptions() {
+
+        let children = Children.map(
+            this.props.children,
+            this.renderItem,
+            this
+        );
+
+        let className = cx.getPartClassName('popup');
+        let {open, closing} = this.state;
+        let begin = open && !closing ? 0 : 1;
+        let end = open && !closing ? 1 : 0;
+
+        return (
+            <Motion
+                defaultStyle={{
+                    opacity: begin,
+                    scale: begin
+                }}
+                style={{
+                    opacity: spring(end),
+                    scale: spring(end, {stiffness: 260, damping: 20})
+                }}>
+                {({scale, opacity}) => (
+                    <div
+                        className={className}
+                        style={{
+                            opacity: opacity,
+                            transform: `scale(${scale}, ${scale})`
+                        }}
+                        ref={layer => {
+                            this.layer = layer;
+                        }}>
+                        {children}
+                    </div>
+                )}
+            </Motion>
+        );
+
     }
 
     /**
@@ -356,6 +321,25 @@ export default class Select extends InputComponent {
         return this.state.open;
     }
 
+    hideOptions() {
+
+        this.setState({
+            closing: true
+        });
+
+        this.closeingTimer = setTimeout(() => {
+
+            this.setState({
+                open: false,
+                closing: false
+            });
+
+            this.closeingTimer = null;
+
+        }, 500);
+
+    }
+
     /**
      * 渲染
      *
@@ -364,13 +348,23 @@ export default class Select extends InputComponent {
      */
     render() {
 
+        let className = cx(this.props).addStates(this.getStyleStates()).build();
+        let {open, closing} = this.state;
+
         return (
             <div
                 onClick={this.onClick}
-                className={cx(this.props).addStates(this.getStyleStates()).build()}>
+                className={className}
+                ref={main => {
+                    this.main = main;
+                }}>
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
+                <Layer
+                    open={open || closing}
+                    onClickAway={this.hideOptions}
+                    render={this.renderOptions} />
             </div>
         );
 
@@ -380,15 +374,25 @@ export default class Select extends InputComponent {
 
 Select.displayName = 'Select';
 
-Select.defaultProps = {
-    ...InputComponent.defaultProps,
-    placeholder: '请选择'
-};
+let archor = PropTypes.oneOf([
+    'tl', 'tc', 'tr',
+    'cl', 'cc', 'cr',
+    'bl', 'bc', 'br'
+]);
 
 Select.propTypes = {
     ...InputComponent.propTypes,
     placeholder: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    layerArchor: archor,
+    mainArchor: archor
+};
+
+Select.defaultProps = {
+    ...InputComponent.defaultProps,
+    placeholder: '请选择',
+    layerArchor: 'tl',
+    mainArchor: 'tl'
 };
 
 Select.childContextTypes = InputComponent.childContextTypes;

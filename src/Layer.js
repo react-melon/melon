@@ -46,7 +46,7 @@ export default class Layer extends Component {
 
     renderLayer() {
 
-        let {open, render} = this.props;
+        let {open, render, userLayerMask} = this.props;
 
         if (!open) {
             this.unmountLayer();
@@ -56,9 +56,24 @@ export default class Layer extends Component {
         let layer = this.layer;
 
         if (!layer) {
+
             layer = this.layer = document.createElement('div');
-            layer.className = 'ui-layer';
-            layer.addEventListener('click', this.onClickAway);
+            let classNames = ['ui-layer'];
+
+            // 如果使用一个 div 作为遮罩，那么这里给 div 加 click 绑定
+            if (userLayerMask) {
+                layer.addEventListener('click', this.onClickAway);
+                classNames.push('variant-mask');
+            }
+            // 否则我们给 window 加事件绑定
+            else {
+                setTimeout(() => {
+                    window.addEventListener('click', this.onClickAway);
+                }, 0);
+            }
+
+            layer.className = classNames.join(' ');
+
             document.body.appendChild(layer);
         }
 
@@ -79,6 +94,7 @@ export default class Layer extends Component {
         }
 
         layer.removeEventListener('click', this.onClickAway);
+        window.removeEventListener('click', this.onClickAway);
 
         unmountComponentAtNode(layer);
         document.body.removeChild(layer);
@@ -99,5 +115,11 @@ export default class Layer extends Component {
 Layer.propTypes = {
     onClickAway: PropTypes.func,
     open: PropTypes.bool.isRequired,
-    render: PropTypes.func.isRequired
+    render: PropTypes.func.isRequired,
+    useLayerMask: PropTypes.bool.isRequired
+};
+
+Layer.defaultProps = {
+    open: false,
+    useLayerMask: true
 };

@@ -11,7 +11,9 @@ import Select from '../src/Select';
 class View extends React.Component {
 
     constructor(props) {
+
         super(props);
+
         this.state = {
             a: '',
             b: ''
@@ -43,7 +45,10 @@ class View extends React.Component {
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={6}>选项分组</Title>
-                        <Select name="b" defaultValue={this.state.b}>
+                        <Select
+                            name="b"
+                            defaultValue={this.state.b}
+                            mainArchor="bl">
                             <optgroup label="fruit">
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
@@ -63,7 +68,9 @@ class View extends React.Component {
                         <Title level={6}>普通</Title>
                         <Select
                             name="a"
-                            value={this.state.a} onChange={this.onChange.bind(this, 'a')}>
+                            value={this.state.a} onChange={this.onChange.bind(this, 'a')}
+                            mainArchor="cr"
+                            layerArchor="cl">
                             {Select.createOptions(datasource)}
                         </Select>
                         {this.getCurrentValue('a')}
@@ -73,7 +80,9 @@ class View extends React.Component {
                         <Select
                             name="b"
                             value={this.state.b}
-                            onChange={this.onChange.bind(this, 'b')}>
+                            onChange={this.onChange.bind(this, 'b')}
+                            mainArchor="tr"
+                            layerArchor="tr">
                             <optgroup label="fruit">
                                 <option value="Apple" label="Apple" />
                                 <option value="Banana" label="Banana" />
