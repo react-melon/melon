@@ -8,8 +8,7 @@ import ReactDOM from 'react-dom';
 import Mask from './Mask';
 import dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
-import omit from 'lodash/omit';
-
+import Layer from './Layer';
 import {create} from 'melon-core/classname/cxBuilder';
 
 import {Motion, spring} from 'react-motion';
@@ -29,11 +28,12 @@ export default class Dialog extends Component {
      *
      * @public
      * @constructor
-     * @param  {*} props 属性
+     * @param {*} props 属性
+     * @param {*} context 上下文
      */
-    constructor(props) {
+    constructor(props, context) {
 
-        super(props);
+        super(props, context);
 
         /**
          * 保存原始的 html body 样式
@@ -56,6 +56,7 @@ export default class Dialog extends Component {
         this.onShow = this.onShow.bind(this);
         this.onHide = this.onHide.bind(this);
         this.onMaskClick = this.onMaskClick.bind(this);
+        this.renderLayer = this.renderLayer.bind(this);
 
     }
 
@@ -108,16 +109,17 @@ export default class Dialog extends Component {
      * @protected
      */
     positionDialog() {
+
         let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
         let marginTop = -dialogWindow.offsetHeight / 2;
-
         let windowHeight = dom.getClientHeight();
 
         marginTop = dialogWindow.offsetHeight > windowHeight
                         ? (-windowHeight / 2 + 16)
                         : marginTop;
-        dialogWindow.style.marginLeft = -dialogWindow.offsetWidth / 2 + 'px';
+
         dialogWindow.style.marginTop = marginTop + 'px';
+
     }
 
     /**
@@ -187,7 +189,7 @@ export default class Dialog extends Component {
 
         return actions
             ? (
-                <div ref="dialogActions" className={cx().part('actions').build()}>
+                <div className={cx().part('actions').build()}>
                     {actions}
                 </div>
             )
@@ -196,12 +198,11 @@ export default class Dialog extends Component {
     }
 
     /**
-     * 渲染
+     * 渲染内容
      *
-     * @public
      * @return {ReactElement}
      */
-    render() {
+    renderLayer() {
 
         const {props, state} = this;
 
@@ -231,20 +232,22 @@ export default class Dialog extends Component {
 
         return (
             <div className={className}>
-                <Motion style={{y: spring(open ? 0 : -80)}}>
-                    {({y}) =>
+                <Motion
+                    defaultStyle={{y: 80}}
+                    style={{y: spring(0, {stiffness: 150, damping: 15})}}>
+                    {({y}) => (
                         <DialogWindow
-                            top={Math.round(y)}
-                            ref={c => {
-                                this.dialogWindow = c;
-                            }}
-                            width={width}
-                            title={title}
-                            footer={footer}
-                            className={windowPartClassName}>
-                            {body}
-                        </DialogWindow>
-                    }
+                           top={Math.round(y)}
+                           ref={c => {
+                               this.dialogWindow = c;
+                           }}
+                           width={width}
+                           title={title}
+                           footer={footer}
+                           className={windowPartClassName}>
+                           {body}
+                       </DialogWindow>
+                    )}
                 </Motion>
                 <Mask
                     show={open}
@@ -252,7 +255,20 @@ export default class Dialog extends Component {
                     onClick={this.onMaskClick} />
             </div>
         );
+    }
 
+    /**
+     * 渲染
+     *
+     * @public
+     * @return {ReactElement}
+     */
+    render() {
+        return (
+            <Layer
+                open={this.state.open}
+                render={this.renderLayer} />
+        );
     }
 
 }

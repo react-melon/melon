@@ -29,22 +29,21 @@ export default class DialogWindow extends Component {
         } = this.props;
 
         let style = {
-            transform: 'translate(0, ' + top + 'px)',
-            WebkitTransform: 'translate(0, ' + top + 'px)',
-            msTransform: 'translate(0, ' + top + 'px)',
-            MozTransform: 'translate(0, ' + top + 'px)'
+            transform: `translate(-50%, ${top}px)`,
+            WebkitTransform: `translate(-50%, ${top}px)`,
+            msTransform: `translate(-50%, ${top}px)`,
+            MozTransform: `translate(-50%, ${top}px)`
         };
-
-        if (top === 0) {
-            style = {};
-        }
 
         if (typeof width === 'number' || !isNaN(+width)) {
             style.width = `${width}px`;
         }
 
         return (
-            <div {...others} style={style} className={cx(this.props).build()}>
+            <div
+                {...others}
+                style={style}
+                className={cx(this.props).build()}>
                 {title}{children}{footer}
             </div>
         );
