@@ -46,7 +46,7 @@ export default class Layer extends Component {
 
     renderLayer() {
 
-        let {open, render, userLayerMask} = this.props;
+        let {open, render, useLayerMask} = this.props;
 
         if (!open) {
             this.unmountLayer();
@@ -61,12 +61,16 @@ export default class Layer extends Component {
             let classNames = ['ui-layer'];
 
             // 如果使用一个 div 作为遮罩，那么这里给 div 加 click 绑定
-            if (userLayerMask) {
+            if (useLayerMask) {
                 layer.addEventListener('click', this.onClickAway);
                 classNames.push('variant-mask');
             }
             // 否则我们给 window 加事件绑定
             else {
+
+                // 这么干是因为 Layer 通常是被 click 触发展现的
+                // 事件会继续冒泡到 window 上，这样我们这里就会被直接关闭掉
+                // 所以，这里用 setTimeout 做事件绑定
                 setTimeout(() => {
                     window.addEventListener('click', this.onClickAway);
                 }, 0);
