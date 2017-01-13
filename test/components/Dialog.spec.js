@@ -90,14 +90,8 @@ describe('Dialog', function () {
 
     it('show/hide on `open` prop change', function (done) {
 
-        let showSpy = jasmine.createSpy('dialog-show');
-        let hideSpy = jasmine.createSpy('dialog-hide');
-
         let dialog = mount(
-            <Dialog
-                open={false}
-                onShow={showSpy}
-                onHide={hideSpy}>
+            <Dialog open={false}>
                 Hello
             </Dialog>
         );
@@ -105,14 +99,18 @@ describe('Dialog', function () {
         dialog.setProps({open: true});
 
         then(() => {
+
             expect(dialog.state('open')).toBe(true);
-            expect(showSpy).toHaveBeenCalled();
             dialog.setProps({open: false});
-        }).then(() => {
-            expect(dialog.state('open')).toBe(false);
-            expect(hideSpy).toHaveBeenCalled();
-            dialog.unmount();
-            done();
+
+            setTimeout(() => {
+
+                expect(dialog.state('open')).toBe(false);
+                dialog.unmount();
+                done();
+
+            }, 500);
+
         });
 
     });
@@ -132,12 +130,14 @@ describe('Dialog', function () {
 
         document.querySelector('.ui-mask').click();
 
-        then(() => {
+        setTimeout(() => {
+
             expect(dialog.state('open')).toBe(false);
             expect(hideSpy).toHaveBeenCalled();
             dialog.unmount();
             done();
-        });
+
+        }, 500);
 
     });
 
@@ -185,21 +185,12 @@ describe('Dialog:Window', () => {
     it('DialogWindow', function () {
 
         const window = shallow(
-            <DialogWindow
-                footer={<div />}
-                title={<div />}
-                top={100}>
+            <DialogWindow footer={<div />} title={<div />}>
                 Hello
             </DialogWindow>
         );
 
         expect(window.hasClass('ui-dialog-window')).toBe(true);
-        expect(window.prop('style')).toEqual({
-            transform: 'translate(-50%, 100px)',
-            WebkitTransform: 'translate(-50%, 100px)',
-            msTransform: 'translate(-50%, 100px)',
-            MozTransform: 'translate(-50%, 100px)'
-        });
 
     });
 
@@ -302,13 +293,14 @@ describe('Confirm', () => {
             expect(dialog[0].classList.contains('state-open')).toBe(true);
             expect(confirmSpy).toHaveBeenCalled();
             confirm.setProps({open: false});
-        })
-        .then(() => {
-            expect(dialog[0].parentNode == null).toBe(true);
-            confirm.unmount();
-            done();
-        });
 
+            setTimeout(() => {
+                expect(dialog[0].parentNode == null).toBe(true);
+                confirm.unmount();
+                done();
+            }, 500);
+
+        });
 
     });
 

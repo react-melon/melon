@@ -25,6 +25,22 @@ class View extends React.Component {
         };
     }
 
+    onShow(i) {
+        this.setState({
+            [`dialog${i}`]: true
+        });
+    }
+
+    onHide(i) {
+        this.setState({
+            [`dialog${i}`]: false
+        });
+    }
+
+    onConfirm(e) {
+        this.setState({dialog6: false});
+    }
+
     render() {
 
         const actions = [
@@ -38,8 +54,15 @@ class View extends React.Component {
 
                 <div className="row">
                     <Title level={4}>普通</Title>
-                    <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
-                    <Dialog open={this.state.dialog1} onHide={this.onHide.bind(this, 1)}>Hello</Dialog>
+                    <Button
+                        variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>
+                        弹出窗口
+                    </Button>
+                    <Dialog
+                        open={this.state.dialog1}
+                        onHide={this.onHide.bind(this, 1)}>
+                        Hello
+                    </Dialog>
                 </div>
 
                 <div className="row">
@@ -96,22 +119,6 @@ class View extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    onShow(i) {
-        this.setState({
-            [`dialog${i}`]: true
-        });
-    }
-
-    onHide(i) {
-        this.setState({
-            [`dialog${i}`]: false
-        });
-    }
-
-    onConfirm(e) {
-        this.setState({dialog6: false});
     }
 
 }
