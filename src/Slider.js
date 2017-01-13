@@ -8,8 +8,6 @@ import ReactDOM from 'react-dom';
 
 import InputComponent from 'melon-core/InputComponent';
 import {create} from 'melon-core/classname/cxBuilder';
-import domUtil from './common/util/dom';
-
 import SliderBar from './slider/Bar';
 import getNewValue from './slider/getNewValue';
 
@@ -81,8 +79,8 @@ export default class Slider extends InputComponent {
      * @protected
      */
     onMouseUp() {
-        domUtil.off(window, 'mouseup', this.onMouseUp);
-        domUtil.off(window, 'mousemove', this.onMouseChange);
+        window.removeEventListener('mouseup', this.onMouseUp);
+        window.removeEventListener('mousemove', this.onMouseChange);
         this.setState({active: false});
     }
 
@@ -135,8 +133,9 @@ export default class Slider extends InputComponent {
             return;
         }
 
-        domUtil.on(window, 'mouseup', this.onMouseUp);
-        domUtil.on(window, 'mousemove', this.onMouseChange);
+        window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('mousemove', this.onMouseChange);
+
         this.onMouseChange(e);
 
         this.setState({active: true});
