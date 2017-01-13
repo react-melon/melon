@@ -3,38 +3,6 @@
  * @author leon(ludafa@outlook.com)
  */
 
-exports.on = function (target, eventName, handler) {
-    if (target.addEventListener) {
-        target.addEventListener(eventName, handler);
-    }
-    else {
-        target.attachEvent('on' + eventName, handler);
-    }
-};
-
-exports.off = function (target, eventName, handler) {
-
-    if (target.removeEventListener) {
-        target.removeEventListener(eventName, handler);
-    }
-    else {
-        target.detachEvent('on' + eventName, handler);
-    }
-
-};
-
-exports.contains = function (container, contained) {
-    if (container.contains) {
-        return container.contains(contained);
-    }
-    while ((contained = contained.parentNode)) {
-        if (contained === container) {
-            return true;
-        }
-    }
-    return false;
-};
-
 /**
  * 获取文档的兼容根节点
  *
@@ -43,40 +11,32 @@ exports.contains = function (container, contained) {
  * @return {HTMLElement} 兼容的有效根节点
  */
 function getCompatElement(el) {
-    var doc = el && el.ownerDocument || document;
-    var compatMode = doc.compatMode;
+    let doc = el && el.ownerDocument || document;
+    let compatMode = doc.compatMode;
     return !compatMode || compatMode === 'CSS1Compat'
         ? doc.documentElement
         : doc.body;
 }
 
-exports.getScrollLeft = function () {
-    return window.pageXOffset || getCompatElement().scrollLeft;
-};
-
-exports.getScrollTop = function () {
-    return window.pageYOffset || getCompatElement().scrollTop;
-};
-
-exports.getClientHeight = function () {
+export function getClientHeight() {
     return getCompatElement().clientHeight;
-};
+}
 
-exports.getClientWidth = function () {
+export function getClientWidth() {
     return getCompatElement().clientWidth;
-};
+}
 
-exports.getPosition = function (element) {
+export function getPosition(element) {
 
-    var bound = element.getBoundingClientRect();
+    let bound = element.getBoundingClientRect();
 
-    var root = document.documentElement;
-    var body = document.body;
+    let root = document.documentElement;
+    let body = document.body;
 
-    var clientTop = root.clientTop || body.clientTop || 0;
-    var clientLeft = root.clientLeft || body.clientLeft || 0;
-    var scrollTop = window.pageYOffset || root.scrollTop;
-    var scrollLeft = window.pageXOffset || root.scrollLeft;
+    let clientTop = root.clientTop || body.clientTop || 0;
+    let clientLeft = root.clientLeft || body.clientLeft || 0;
+    let scrollTop = window.pageYOffset || root.scrollTop;
+    let scrollLeft = window.pageXOffset || root.scrollLeft;
 
     return {
         left: parseFloat(bound.left) + scrollLeft - clientLeft,
@@ -85,21 +45,21 @@ exports.getPosition = function (element) {
         height: bound.height
     };
 
-};
+}
 
-exports.hasClass = function (element, cls) {
+export function hasClass(element, cls) {
     return element.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-};
+}
 
-exports.addClass = function (element, cls) {
+export function addClass(element, cls) {
     if (!this.hasClass(element, cls)) {
         element.className += ' ' + cls;
     }
-};
+}
 
-exports.removeClass = function (element, cls) {
+export function removeClass(element, cls) {
     if (this.hasClass(element, cls)) {
-        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+        let reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
         element.className = element.className.replace(reg, ' ');
     }
-};
+}
