@@ -89,17 +89,36 @@ export default class Dialog extends Component {
      *
      * @public
      * @override
-     * @param {Object}  nestProps 新属性
+     * @param {Object} nextProps 新属性
      */
-    componentWillReceiveProps(nestProps) {
+    componentWillReceiveProps(nextProps) {
 
-        const open = nestProps.open;
+        const open = nextProps.open;
 
         if (open === this.state.open) {
             return;
         }
 
-        this.setState({open}, open ? this.onShow : this.onHide);
+        // 如果是打开，那么就直接打开。
+        if (open) {
+            this.setState({open: true});
+            return;
+        }
+
+        // 如果是关闭，但我们正在关闭，就算了。
+        if (!this.state.closing) {
+            this.hide();
+        }
+
+    }
+
+    componentWillUnmount() {
+
+        // 如果我们正在关闭就被卸载，那么我们要把关闭动画的定时器清理掉
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
 
     }
 
@@ -110,15 +129,28 @@ export default class Dialog extends Component {
      */
     positionDialog() {
 
-        let dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-        let marginTop = -dialogWindow.offsetHeight / 2;
-        let windowHeight = dom.getClientHeight();
+        let dialogWindow = this.dialogWindow;
 
-        marginTop = dialogWindow.offsetHeight > windowHeight
-                        ? (-windowHeight / 2 + 16)
-                        : marginTop;
+        if (!dialogWindow) {
+            return;
+        }
 
-        dialogWindow.style.marginTop = marginTop + 'px';
+        dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
+
+        if (this.state.open) {
+            let marginTop = -dialogWindow.offsetHeight / 2;
+            let windowHeight = dom.getClientHeight();
+
+            marginTop = dialogWindow.offsetHeight > windowHeight
+            ? (-windowHeight / 2 + 16)
+            : marginTop;
+
+            dialogWindow.style.marginTop = marginTop + 'px';
+        }
+        else {
+            dialogWindow.style.marginTop = 0;
+        }
+
 
     }
 
@@ -129,12 +161,14 @@ export default class Dialog extends Component {
      * @param  {Object} e 事件对象
      */
     onMaskClick(e) {
+
         if (this.props.maskClickClose) {
-            this.setState({open: false}, this.onHide);
+            this.hide(this.onHide);
         }
         else {
             e.stopPropagation();
         }
+
     }
 
     /**
@@ -159,6 +193,32 @@ export default class Dialog extends Component {
         if (onHide) {
             onHide();
         }
+    }
+
+    /**
+     * 关闭窗口
+     *
+     * @param {Function} callback 刚完成关闭动作时的回调
+     */
+    hide(callback) {
+
+        let {open, closing} = this.state;
+
+        if (!open || closing) {
+            return;
+        }
+
+        this.setState({closing: true});
+
+        this.closeTimer = setTimeout(() => {
+
+            this.setState({
+                open: false,
+                closing: false
+            }, callback);
+
+        }, 240);
+
     }
 
     /**
@@ -211,7 +271,7 @@ export default class Dialog extends Component {
             width
         } = props;
 
-        const open = state.open;
+        const {open, closing} = state;
 
         const title = this.renderTitle();
 
@@ -230,21 +290,41 @@ export default class Dialog extends Component {
 
         const className = cx(props).addStates({open}).build();
 
+        const opening = open && !closing;
+
+        const distance = dom.getClientHeight() * 0.4 * (opening ? -1 : 1);
+        const yBegin = opening ? distance : 0;
+        const yEnd = opening ? 0 : distance;
+        const opacityBegin = opening ? 0 : 1;
+        const opacityEnd = opening ? 1 : 0;
+        const control = opening
+            ? {stiffness: 300, damping: 30}
+            : {stiffness: 300, damping: 30};
+
         return (
             <div className={className}>
                 <Motion
-                    defaultStyle={{y: 80}}
-                    style={{y: spring(0, {stiffness: 150, damping: 15})}}>
-                    {({y}) => (
+                    defaultStyle={{
+                        top: yBegin,
+                        opacity: opacityBegin
+                    }}
+                    style={{
+                        top: spring(yEnd, control),
+                        opacity: spring(opacityEnd)
+                    }}>
+                    {({top, opacity}) => (
                         <DialogWindow
-                           top={Math.round(y)}
                            ref={c => {
                                this.dialogWindow = c;
                            }}
                            width={width}
                            title={title}
                            footer={footer}
-                           className={windowPartClassName}>
+                           className={windowPartClassName}
+                           style={{
+                               opacity,
+                               transform: `translate(-50%, ${top}px)`
+                           }}>
                            {body}
                        </DialogWindow>
                     )}
@@ -264,9 +344,12 @@ export default class Dialog extends Component {
      * @return {ReactElement}
      */
     render() {
+
+        let {open, closing} = this.state;
+
         return (
             <Layer
-                open={this.state.open}
+                open={open || closing}
                 render={this.renderLayer} />
         );
     }
