@@ -6,7 +6,7 @@
 import React, {Component, PropTypes} from 'react';
 import Mask from './Mask';
 import {create} from 'melon-core/classname/cxBuilder';
-import domUtil from './common/util/dom';
+import * as dom from './common/util/dom';
 
 const cx = create('Drawer');
 
@@ -47,8 +47,8 @@ export default class Drawer extends Component {
 
         if (size <= 0) {
             const clientSize = position === 'bottom' || position === 'top'
-                    ? domUtil.getClientHeight()
-                    : domUtil.getClientWidth();
+                    ? dom.getClientHeight()
+                    : dom.getClientWidth();
             posValue = open ? -size : clientSize;
         }
 

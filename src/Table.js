@@ -51,7 +51,7 @@ class Table extends Component {
      */
     componentDidMount() {
         this.onWindowResize();
-        dom.on(window, 'resize', this.onWindowResize);
+        window.addEventListener('resize', this.onWindowResize);
     }
 
     /**
@@ -72,7 +72,7 @@ class Table extends Component {
      * @public
      */
     componentWillUnmount() {
-        dom.off(window, 'resize', this.onWindowResize);
+        window.addEventListener('resize', this.onWindowResize);
     }
 
     /**

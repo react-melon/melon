@@ -34,6 +34,13 @@ module.exports = function (config) {
                         os_version: 'Sierra',
                         browser: 'firefox',
                         browser_version: '50.0'
+                    },
+                    bs_ie9_windows: {
+                        base: 'BrowserStack',
+                        browser: 'ie',
+                        browser_version: '9.0',
+                        os: 'Windows',
+                        os_version: '7'
                     }
                 },
                 /* eslint-enable fecs-camelcase */

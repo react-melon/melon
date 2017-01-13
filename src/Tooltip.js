@@ -5,7 +5,7 @@
 
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import dom from './common/util/dom';
+import * as dom from './common/util/dom';
 import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('Tooltip');

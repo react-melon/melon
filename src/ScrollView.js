@@ -205,7 +205,7 @@ export default class ScrollView extends Component {
                 onWheel={this.onWheel}
                 ref="main">
                 {this.renderScrollBar()}
-                <div ref="content" className={cx().part('main').build()}>
+                <div ref="content" className={cx.getPartClassName('main')}>
                     {children}
                 </div>
             </div>
