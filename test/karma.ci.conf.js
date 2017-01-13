@@ -46,7 +46,9 @@ module.exports = function (config) {
                 /* eslint-enable fecs-camelcase */
 
                 browsers: [
-                    'bs_chrome_mac'
+                    'bs_chrome_mac',
+                    'bs_firefix_mac',
+                    'bs_ie9_windows'
                 ],
 
                 // if true, Karma captures browsers, runs the tests and exits
