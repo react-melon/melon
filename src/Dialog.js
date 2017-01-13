@@ -6,7 +6,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Mask from './Mask';
-import dom from './common/util/dom';
+import * as dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
 import Layer from './Layer';
 import {create} from 'melon-core/classname/cxBuilder';

@@ -60,7 +60,7 @@ export default class SnackBar extends Component {
      */
     componentDidMount() {
 
-        dom.on(document.body, 'mouseup', this.onMouseUp);
+        window.addEventListener('mouseup', this.onMouseUp);
 
         if (this.props.openOnMount) {
             this.onShow();
@@ -107,7 +107,7 @@ export default class SnackBar extends Component {
      */
     componentWillUnmount() {
 
-        dom.off(document.body, 'mouseup', this.onMouseUp);
+        window.removeEventListener('mouseup', this.onMouseUp);
 
         if (this.autoHideTimer) {
             clearTimeout(this.autoHideTimer);
@@ -217,7 +217,7 @@ export default class SnackBar extends Component {
         const main = ReactDOM.findDOMNode(this);
 
         // 点击不在 snackBar 内部
-        if (main !== target && !dom.contains(main, target)) {
+        if (main !== target && !main.contains(target)) {
             this.onHide();
             return;
         }

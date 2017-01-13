@@ -32,12 +32,16 @@ export default class ScrollViewBar extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (Math.abs(nextProps.position - this.props.position) < 0.0005) {
-            return false;
+        return Math.abs(nextProps.position - this.props.position) > 0.0005;
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        if (Math.abs(nextProps.position - this.props.position) > 0.0005) {
+            dom.addClass(this.refs.main, 'state-show');
+            this.removeStateShow();
         }
-        dom.addClass(this.refs.main, 'state-show');
-        this.removeStateShow();
-        return true;
+
     }
 
     componentDidUpdate() {
@@ -79,14 +83,15 @@ export default class ScrollViewBar extends Component {
     clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
+            this.timer = null;
+            this.removeStateShow.cancel();
         }
     }
 
     removeStateShow() {
         this.clearTimer();
-        let main = this.refs.main;
-        this.timer = setTimeout(function () {
-            dom.removeClass(main, 'state-show');
+        this.timer = setTimeout(() => {
+            dom.removeClass(this.refs.main, 'state-show');
         }, 1800);
     }
 
@@ -135,16 +140,14 @@ export default class ScrollViewBar extends Component {
         this.thumbStart = parseInt(this.refs.thumb.style[axis], 10) || 0;
         this.moveStart = this.getMousePosition(e, isVertical);
 
-        dom.on(body, 'mousemove', this.onMouseMove);
-        dom.on(body, 'mouseup', this.onMouseUp);
+        body.addEventListener('mousemove', this.onMouseMove);
+        body.addEventListener('mouseup', this.onMouseUp);
 
         e.preventDefault();
     }
 
     onMouseMove(e) {
-
         e = e || window.event;
-
         let isVertical = this.props.direction === 'vertical';
 
         let moveLength = this.getMousePosition(e, isVertical);
@@ -157,8 +160,8 @@ export default class ScrollViewBar extends Component {
     onMouseUp(e) {
         let body = document.body;
         dom.removeClass(body, 'ui-noselect');
-        dom.off(body, 'mousemove', this.onMouseMove);
-        dom.off(body, 'mouseup', this.onMouseUp);
+        body.removeEventListener('mousemove', this.onMouseMove);
+        body.removeEventListener('mouseup', this.onMouseUp);
         this.thumbStart = this.moveStart = 0;
     }
 
@@ -183,7 +186,7 @@ export default class ScrollViewBar extends Component {
                 onMouseDown={this.onBarMouseDown}>
                 <div
                     ref="thumb"
-                    className={cx().part('thumb').build()}
+                    className={cx.getPartClassName('thumb')}
                     onMouseDown={this.onMouseDown} />
             </div>
         );

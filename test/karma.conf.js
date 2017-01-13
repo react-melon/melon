@@ -15,8 +15,8 @@ module.exports = {
     ],
 
     files: [
-        'test/components/Dialog.spec.js'
-        // 'test/components/**/*.spec.js'
+        // 'test/components/ScrollView.spec.js'
+        'test/components/**/*.spec.js'
     ],
 
     browsers: [
@@ -40,6 +40,18 @@ module.exports = {
                 {
                     test: /\.json$/,
                     loaders: ['json']
+                },
+                {
+                    test: /\.styl$/,
+                    loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url']
+                },
+                {
+                    test: /\.(svg|eot|ttf|woff|woff2|jpg|png)(\?.*)?$/,
+                    loader: 'file?name=asset/[name].[ext]'
+                },
+                {
+                    test: /\.css$/,
+                    loader: 'style!css'
                 }
             ]
         },
