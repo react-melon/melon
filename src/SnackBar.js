@@ -217,7 +217,7 @@ export default class SnackBar extends Component {
         const main = ReactDOM.findDOMNode(this);
 
         // 点击不在 snackBar 内部
-        if (main !== target && !dom.contains(main, target)) {
+        if (main !== target && !main.contains(target)) {
             this.onHide();
             return;
         }
