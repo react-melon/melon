@@ -29,7 +29,7 @@ export default class DialogWindow extends Component {
         return (
             <div
                 {...others}
-                style={{...style, width}}
+                style={{...style, width: `${width}px`}}
                 className={cx(this.props).build()}>
                 {title}{children}{footer}
             </div>
