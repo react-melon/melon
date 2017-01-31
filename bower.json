@@ -1,14 +1,14 @@
 {
   "name": "melon",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "homepage": "http://react-melon.github.io/melon",
   "authors": [
     "ludafa@outlook.com"
   ],
   "description": "react ui components",
-  "main": "src",
+  "main": "lib",
   "moduleType": [
-    "amd"
+    "umd"
   ],
   "keywords": [
     "react",
