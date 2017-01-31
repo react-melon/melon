@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "ui components for react",
   "main": "./src",
   "scripts": {
@@ -90,14 +90,6 @@
     "url": "https://github.com/react-melon/melon/issues"
   },
   "homepage": "https://github.com/react-melon/melon#readme",
-  "edp": {
-    "wwwroot": "/",
-    "depDir": "dep",
-    "srcDir": "src",
-    "loaderAutoConfig": "js,htm,html,tpl,vm,phtml",
-    "loaderUrl": "http://s1.bdstatic.com/r/www/cache/ecom/esl/2-1-4/esl.js",
-    "dependencies": {}
-  },
   "dependencies": {
     "dom-align": "^1.5.3",
     "lodash": "^4.17.2",
