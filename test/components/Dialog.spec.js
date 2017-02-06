@@ -11,6 +11,7 @@ import Alert from '../../src/Alert';
 import Confirm from '../../src/Confirm';
 import Mask from '../../src/Mask';
 import then from '../then';
+import Layer from '../../src/Layer';
 
 describe('Dialog', function () {
 
@@ -47,30 +48,33 @@ describe('Dialog', function () {
 
     });
 
-    it('dom', () => {
+    it('dom', done => {
 
         const dialog = mount(
             <Dialog
                 title="test"
+                open={false}
                 actions={
                     <footer></footer>
                 } />
         );
 
-        expect(dialog.find('.ui-dialog-title').length).toBe(1);
+        expect(dialog.find(Layer).length).toBe(1);
+        expect(document.querySelectorAll('.ui-layer').length).toBe(0);
 
-        const actions = dialog.find('.ui-dialog-actions');
+        dialog.setProps({
+            open: true
+        });
 
-        expect(actions.length).toBe(1);
-        expect(actions.contains(<footer />)).toBe(true);
-
+        then(() => {
+            expect(document.querySelectorAll('.ui-layer').length).toBe(1);
+            dialog.unmount();
+            done();
+        });
 
     });
 
     it('show on create', function (done) {
-
-        // let showSpy = jasmine.createSpy('dialog-show');
-        // let hideSpy = jasmine.createSpy('dialog-hide');
 
         let dialog = mount(
             <Dialog open={true}>Hello</Dialog>
@@ -86,14 +90,8 @@ describe('Dialog', function () {
 
     it('show/hide on `open` prop change', function (done) {
 
-        let showSpy = jasmine.createSpy('dialog-show');
-        let hideSpy = jasmine.createSpy('dialog-hide');
-
         let dialog = mount(
-            <Dialog
-                open={false}
-                onShow={showSpy}
-                onHide={hideSpy}>
+            <Dialog open={false}>
                 Hello
             </Dialog>
         );
@@ -101,14 +99,18 @@ describe('Dialog', function () {
         dialog.setProps({open: true});
 
         then(() => {
+
             expect(dialog.state('open')).toBe(true);
-            expect(showSpy).toHaveBeenCalled();
             dialog.setProps({open: false});
-        }).then(() => {
-            expect(dialog.state('open')).toBe(false);
-            expect(hideSpy).toHaveBeenCalled();
-            dialog.unmount();
-            done();
+
+            setTimeout(() => {
+
+                expect(dialog.state('open')).toBe(false);
+                dialog.unmount();
+                done();
+
+            }, 500);
+
         });
 
     });
@@ -126,14 +128,16 @@ describe('Dialog', function () {
             </Dialog>
         );
 
-        dialog.find('.ui-mask').simulate('click');
+        document.querySelector('.ui-mask').click();
 
-        then(() => {
+        setTimeout(() => {
+
             expect(dialog.state('open')).toBe(false);
             expect(hideSpy).toHaveBeenCalled();
             dialog.unmount();
             done();
-        });
+
+        }, 500);
 
     });
 
@@ -150,7 +154,7 @@ describe('Dialog', function () {
             </Dialog>
         );
 
-        dialog.find('.ui-mask').simulate('click');
+        document.querySelector('.ui-mask').click();
 
         then(() => {
             expect(dialog.state('open')).toBe(true);
@@ -181,36 +185,12 @@ describe('Dialog:Window', () => {
     it('DialogWindow', function () {
 
         const window = shallow(
-            <DialogWindow
-                footer={<div />}
-                title={<div />}
-                top={100}>
+            <DialogWindow footer={<div />} title={<div />}>
                 Hello
             </DialogWindow>
         );
 
-        // let expectedElement = (
-        //     <div
-        //         className="ui-dialog-window"
-        //         style={{
-        //             transform: 'translate(0, 100px)',
-        //             WebkitTransform: 'translate(0, 100px)',
-        //             msTransform: 'translate(0, 100px)',
-        //             MozTransform: 'translate(0, 100px)'
-        //         }}>
-        //         <div />
-        //         Hello
-        //         <div />
-        //     </div>
-        // );
-
         expect(window.hasClass('ui-dialog-window')).toBe(true);
-        expect(window.prop('style')).toEqual({
-            transform: 'translate(0, 100px)',
-            WebkitTransform: 'translate(0, 100px)',
-            msTransform: 'translate(0, 100px)',
-            MozTransform: 'translate(0, 100px)'
-        });
 
     });
 
@@ -232,13 +212,13 @@ describe('Alert', () => {
             </Alert>
         );
 
-        let dialog = alert.find('.ui-dialog');
-        let button = alert.find('.ui-button');
+        let dialog = document.querySelectorAll('.ui-dialog');
+        let button = document.querySelectorAll('.ui-button');
 
         expect(button.length).toBe(1);
         expect(dialog.length).toBe(1);
 
-        button.simulate('click');
+        button[0].click();
 
         then(() => {
 
@@ -296,30 +276,31 @@ describe('Confirm', () => {
             </Confirm>
         );
 
-        let dialog = confirm.find('.ui-dialog');
+        let dialog = document.querySelectorAll('.ui-dialog');
+        let buttons = document.querySelectorAll('.ui-button');
 
-        let button = confirm.find('.ui-button');
+        expect(dialog.length).toBe(1);
+        expect(buttons.length).toBe(2);
 
-        expect(button.length).toBe(2);
-
-        button.at(0).simulate('click');
+        buttons[0].click();
 
         then(() => {
-            expect(dialog.hasClass('state-open')).toBe(true);
+            expect(dialog[0].classList.contains('state-open')).toBe(true);
             expect(cancelSpy).toHaveBeenCalled();
-            button.at(1).simulate('click');
+            buttons[1].click();
         })
         .then(() => {
-            expect(dialog.hasClass('state-open')).toBe(true);
+            expect(dialog[0].classList.contains('state-open')).toBe(true);
             expect(confirmSpy).toHaveBeenCalled();
             confirm.setProps({open: false});
-        })
-        .then(() => {
-            expect(dialog.hasClass('state-open')).toBe(false);
-            confirm.unmount();
-            done();
-        });
 
+            setTimeout(() => {
+                expect(dialog[0].parentNode == null).toBe(true);
+                confirm.unmount();
+                done();
+            }, 500);
+
+        });
 
     });
 

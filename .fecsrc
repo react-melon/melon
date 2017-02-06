@@ -12,5 +12,6 @@
             ],
             "fecs-no-require": -1
         }
-    }
+    },
+    "files": ["src"]
 }
