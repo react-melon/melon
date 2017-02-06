@@ -8,8 +8,6 @@ import React from 'react';
 import TextBox from 'melon/TextBox';
 import Title from 'melon/Title';
 
-require('../code/TextBoxFix.txt');
-
 /* eslint-disable fecs-prefer-class */
 
 function View(props) {

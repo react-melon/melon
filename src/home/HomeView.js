@@ -10,7 +10,7 @@ import Title from 'melon/Title';
 import Button from 'melon/Button';
 import Link from 'melon/Link';
 
-const cx = require('melon/common/util/cxBuilder').create('Homeview');
+const cx = require('melon-core/classname/cxBuilder').create('Homeview');
 
 class HomeView extends React.Component {
 

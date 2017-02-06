@@ -8,8 +8,6 @@ import React from 'react';
 import TextBox from 'melon/TextBox';
 import Title from 'melon/Title';
 
-require('../code/TextBoxFloatingLabel.txt');
-
 /* eslint-disable fecs-prefer-class */
 function View(props) {
 

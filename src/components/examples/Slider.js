@@ -7,8 +7,6 @@
 import React from 'react';
 import Slider from 'melon/Slider';
 
-require('../code/Slider.txt');
-
 /* eslint-disable fecs-prefer-class */
 
 function View(props) {

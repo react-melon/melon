@@ -20,9 +20,12 @@
     "es6-promise": "~3.0.2",
     "numen": "~0.1.2",
     "react": "~0.14.3",
-    "melon": "^0.2.29",
+    "melon": "0.5",
     "highlight": "~9.0.0",
     "react-motion": "https://npmcdn.com/react-motion/bower.zip",
-    "moment": "^2.13.0"
+    "moment": "^2.13.0",
+    "melon-calendar": "^1.1.0",
+    "melon-timepicker": "^1.1.3",
+    "lodash": "^4.17.4"
   }
 }

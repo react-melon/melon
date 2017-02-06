@@ -3,9 +3,9 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import ei from 'ei';
+import {Page} from 'ei';
 
-const HomePage = ei.Page.extend({
+const HomePage = Page.extend({
 
     middlewares: [
         require('../common/middleware/asyncAction'),

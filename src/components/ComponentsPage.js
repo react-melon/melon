@@ -5,12 +5,14 @@
 
 import React from 'react';
 import ei from 'ei';
-import {Promise} from 'es6-promise';
+// import {Promise} from 'es6-promise';
 
 import ReducerBuilder from '../common/util/ReducerBuilder';
 
 import examples from './conf/examples';
-import _ from 'underscore';
+
+const componentReq = require.context('./examples', true, /^\.\/.*\.js$/);
+const codeReq = require.context('./code', true, /^\.\/.*\.txt$/);
 
 const ComponentsPage = ei.Page.extend({
 
@@ -30,68 +32,27 @@ const ComponentsPage = ei.Page.extend({
             .toReducer()
     },
 
-    getInitialState(request) {
+    getInitialState({query}) {
 
-        const {query} = request;
-        const {name} = query;
+        const name = query.name;
 
-        return new Promise((resolve, reject) => {
-
-            let requireList = _.map(examples[name], function (item) {
-                return 'components/examples/' + item.name;
-            });
-
-            require(requireList, function (...args) {
-                let Components = _.toArray(args);
-                resolve(
-                    _.map(Components, (Component, index) => {
-
-                        return {
-                            ...examples[name][index],
-                            ... {
-                                exampleComponent: React.createElement(Component)
-                            }
-                        };
-                    })
-                );
-            });
-
-        })
-        .then(function (list) {
-
-            return new Promise((resolve, reject) => {
-
-                const requireList = _.map(examples[name], function (item) {
-                    return 'components/code/' + item.name + '.txt';
-                });
-
-                require(requireList, function (...args) {
-
-                    let codes = _.toArray(args);
-
-                    resolve(
-                        _.map(codes, (code, index) => {
-
-                            return {
-                                ...list[index],
-                                ... {
-                                    code: unescape(code)
-                                }
-                            };
-                        })
-                    );
-                });
-
-            });
-
-        })
-        .then(function (list) {
+        const datasource = examples[name].map(item => {
+            const Component = componentReq(`./${item.name}.js`);
+            const code = codeReq(`./${item.name}.txt`);
 
             return {
-                datasource: list,
-                name
+                ...item,
+                ... {
+                    exampleComponent: <Component />,
+                    code
+                }
             };
         });
+
+        return {
+            datasource,
+            name
+        };
     }
 
 });

@@ -12,7 +12,7 @@ import PropsTable from './component/PropsTable';
 import _ from 'underscore';
 import properties from './conf/properties';
 
-const cx = require('melon/common/util/cxBuilder').create('ComponentView');
+const cx = require('melon-core/classname/cxBuilder').create('ComponentView');
 
 const ComponentView = React.createClass({
 

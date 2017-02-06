@@ -5,10 +5,8 @@
 
 
 import React from 'react';
-import Calendar from 'melon/Calendar';
+import Calendar from 'melon-calendar';
 import Title from 'melon/Title';
-
-require('../code/Calendar.txt');
 
 /* eslint-disable fecs-prefer-class */
 

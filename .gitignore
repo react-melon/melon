@@ -2,4 +2,3 @@ node_modules
 output
 *.orig
 *.log
-dep

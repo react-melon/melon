@@ -5,11 +5,9 @@
 
 
 import React from 'react';
-import RangeCalendar from 'melon/RangeCalendar';
-import UnitCalendar from 'melon/UnitCalendar';
+import RangeCalendar from 'melon-calendar/lib/RangeCalendar';
+import UnitCalendar from 'melon-calendar/lib/UnitCalendar';
 import Title from 'melon/Title';
-
-require('../code/RangeCalendar.txt');
 
 /* eslint-disable fecs-prefer-class */
 

@@ -8,8 +8,6 @@ import React from 'react';
 import Title from 'melon/Title';
 import Progress from 'melon/Progress';
 
-require('../code/ProgressCircle.txt');
-
 class View extends React.Component {
 
     constructor() {

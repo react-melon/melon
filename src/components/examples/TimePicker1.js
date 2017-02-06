@@ -5,9 +5,7 @@
 
 
 import React from 'react';
-import TimePicker from 'melon/TimePicker';
-
-require('../code/TimePicker1.txt');
+import TimePicker from 'melon-timePicker';
 
 /* eslint-disable fecs-prefer-class */
 

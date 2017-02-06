@@ -8,7 +8,7 @@ import Button from 'melon/Button';
 import Link from 'melon/Link';
 import locator from '../../locator';
 
-const cx = require('melon/common/util/cxBuilder').create('ZippyNav');
+const cx = require('melon-core/classname/cxBuilder').create('ZippyNav');
 const _ = require('underscore');
 
 const {
@@ -33,7 +33,7 @@ export default class ZippyNav extends React.Component {
         const {props, state} = this;
 
         const {
-            current,
+            current = {},
             nav,
             onActive,
             ...others
@@ -65,7 +65,7 @@ export default class ZippyNav extends React.Component {
                                         states={{active: current.text === item.text}}
                                         key={index}
                                         onClick={() => onActive()}
-                                        href={locator.createHref(item.pathname, item.query)}>
+                                        href={locator.createHref(item.pathname, item.query || {})}>
                                         {item.text}
                                     </Link>
                                 )}
@@ -78,4 +78,3 @@ export default class ZippyNav extends React.Component {
     }
 
 }
-

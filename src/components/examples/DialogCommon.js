@@ -8,8 +8,6 @@ import Dialog from 'melon/Dialog';
 import Button from 'melon/Button';
 import Title from 'melon/Title';
 
-require('../code/DialogCommon.txt');
-
 class View extends React.Component {
 
     constructor() {

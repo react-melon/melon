@@ -6,8 +6,6 @@
 import React from 'react';
 import ScrollView from 'melon/ScrollView';
 
-require('../code/ScrollView.txt');
-
 module.exports = function (props) {
     return (
         <div>
@@ -46,4 +44,3 @@ module.exports = function (props) {
         </div>
     );
 };
-

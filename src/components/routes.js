@@ -3,7 +3,9 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
+import ComponentsPage from './ComponentsPage';
+
 export default [{
     path: '/components',
-    page: 'components/ComponentsPage'
+    page: ComponentsPage
 }];

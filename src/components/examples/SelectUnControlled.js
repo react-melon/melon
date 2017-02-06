@@ -8,8 +8,6 @@ import React from 'react';
 import Select from 'melon/Select';
 import Title from 'melon/Title';
 
-require('../code/SelectUnControlled.txt');
-
 /* eslint-disable fecs-prefer-class */
 
 function View(props) {

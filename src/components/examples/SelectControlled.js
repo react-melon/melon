@@ -8,8 +8,6 @@ import React from 'react';
 import Title from 'melon/Title';
 import Select from 'melon/Select';
 
-require('../code/SelectControlled.txt');
-
 class View extends React.Component {
 
     constructor(props) {

@@ -8,8 +8,6 @@ import SnackBar from 'melon/SnackBar';
 import Button from 'melon/Button';
 import TextBox from 'melon/TextBox';
 
-require('../code/SnackBar.txt');
-
 const SnackBarExample = React.createClass({
 
     getInitialState() {

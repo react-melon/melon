@@ -8,8 +8,6 @@ import React from 'react';
 import Button from 'melon/Button';
 import Title from 'melon/Title';
 
-require('../code/ButtonSize.txt');
-
 /* eslint-disable fecs-prefer-class */
 
 function View(props) {

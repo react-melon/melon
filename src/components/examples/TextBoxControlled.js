@@ -7,8 +7,6 @@ import React from 'react';
 import TextBox from 'melon/TextBox';
 import Title from 'melon/Title';
 
-require('../code/TextBoxControlled.txt');
-
 /* eslint-disable fecs-prefer-class */
 
 const View = React.createClass({

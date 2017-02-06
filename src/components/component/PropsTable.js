@@ -8,7 +8,7 @@ import React, {PropTypes} from 'react';
 import Table from 'melon/Table';
 import Title from 'melon/Title';
 
-const cx = require('melon/common/util/cxBuilder').create('PropsTable');
+const cx = require('melon-core/classname/cxBuilder').create('PropsTable');
 
 export default React.createClass({
 

@@ -6,7 +6,7 @@
 import React from 'react';
 import Icon from 'melon/Icon';
 
-const cx = require('melon/common/util/cxBuilder').create('ErrorMessage');
+const cx = require('melon-core/classname/cxBuilder').create('ErrorMessage');
 
 export default class ErrorMessage extends React.Component {
 

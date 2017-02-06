@@ -5,6 +5,8 @@
 
 import {App} from 'ei';
 
+import './main.styl';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -13,7 +15,7 @@ import routes from './routes';
 import Nav from './common/component/Nav';
 
 import ES6Promise from 'es6-promise';
-import Page from 'ei/component/Page';
+import Page from 'ei/lib/component/Page';
 
 const AppComponent = App.Component;
 
@@ -33,6 +35,8 @@ function init() {
                         <Page
                             request={location}
                             renderErrorMessage={error => {
+
+                                console.error(error);
 
                                 const {status, statusInfo} = error;
                                 return (
@@ -59,6 +63,4 @@ function init() {
 
 }
 
-module.exports = {
-    init
-};
+init();

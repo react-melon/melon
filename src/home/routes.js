@@ -3,7 +3,9 @@
  * @author cxtom<cxtom2010@gmail.com>
  */
 
+import HomePage from './HomePage';
+
 export default [{
     path: '/',
-    page: 'home/HomePage'
+    page: HomePage
 }];

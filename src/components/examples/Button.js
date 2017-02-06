@@ -9,8 +9,6 @@ import Button from 'melon/Button';
 import Icon from 'melon/Icon';
 import Tab from 'melon/tabs/Tab';
 
-require('../code/Button.txt');
-
 module.exports = function () {
 
     return (

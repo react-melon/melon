@@ -3,9 +3,9 @@
  * @author cxtom(cxtom2010@gmail.com)
  */
 
-import ei from 'ei';
+import {Page} from 'ei';
 
-const IconPage = ei.Page.extend({
+const IconPage = Page.extend({
 
     middlewares: [
         require('../common/middleware/asyncAction'),

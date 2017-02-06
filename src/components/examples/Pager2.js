@@ -6,8 +6,6 @@
 import React from 'react';
 import Pager from 'melon/Pager';
 
-require('../code/Pager2.txt');
-
 class View extends React.Component {
 
     constructor() {

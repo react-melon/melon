@@ -6,7 +6,9 @@
 import ReducerBuilder from '../../common/util/ReducerBuilder';
 import {ICON_SEARCH} from '../actionCreater/iconsearch';
 
-const {INIT} = require('ei/actionCreator/page');
+import {actions} from 'ei';
+
+const INIT = actions.INIT;
 
 const icon = new ReducerBuilder();
 

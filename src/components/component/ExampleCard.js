@@ -11,7 +11,7 @@ import Zippy from 'melon/Zippy';
 import Title from 'melon/Title';
 import Button from 'melon/Button';
 import Icon from 'melon/Icon';
-import {create} from 'melon/common/util/cxBuilder';
+import {create} from 'melon-core/classname/cxBuilder';
 
 import Code from '../../common/component/Code';
 

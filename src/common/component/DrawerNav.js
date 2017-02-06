@@ -13,7 +13,7 @@ import ZippyNav from './ZippyNav';
 import locator from '../../locator';
 import navs from '../conf/navs';
 
-const cx = require('melon/common/util/cxBuilder').create('DrawerNav');
+const cx = require('melon-core/classname/cxBuilder').create('DrawerNav');
 const _ = require('underscore');
 
 
@@ -50,7 +50,7 @@ export default class DrawerNav extends React.Component {
         return (
             <Drawer {...props} className={cx(props).build()}>
                 <Link
-                    href={locator.createHref('/')}
+                    href={locator.createHref('/', {})}
                     onClick={() => {
                         this.props.onHide();
                     }}>

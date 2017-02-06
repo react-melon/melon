@@ -8,8 +8,6 @@ import Button from 'melon/Button';
 import Drawer from 'melon/Drawer';
 import Select from 'melon/Select';
 
-require('../code/Drawer.txt');
-
 class View extends React.Component {
 
     constructor() {

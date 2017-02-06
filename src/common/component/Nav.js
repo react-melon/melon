@@ -10,7 +10,7 @@ import Icon from 'melon/Icon';
 import DrawerNav from './DrawerNav';
 import navs from '../conf/navs';
 
-const cx = require('melon/common/util/cxBuilder').create('Nav');
+const cx = require('melon-core/classname/cxBuilder').create('Nav');
 const _ = require('underscore');
 
 export default class Nav extends React.Component {
@@ -102,7 +102,7 @@ export default class Nav extends React.Component {
         );
     }
 
-    renderTitle(conf) {
+    renderTitle(conf = {}) {
 
         if (!conf.title) {
             return null;
