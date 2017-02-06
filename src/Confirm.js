@@ -59,6 +59,7 @@ export default class Confirm extends React.Component {
         return (
             <Dialog
                 {...rest}
+                size={size}
                 title={null}
                 maskClickClose={false}
                 actions={actions}
