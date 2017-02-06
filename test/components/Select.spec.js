@@ -4,16 +4,11 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-
-import Form from 'melon-core/Form';
+import {mount} from 'enzyme';
 import Select from '../../src/Select';
 import then from '../then';
 
 describe('Select', function () {
-
-    let container;
 
     const datasource = [
         {value: '1', name: 'Never'},
@@ -23,74 +18,40 @@ describe('Select', function () {
         {value: '5', name: 'Weekly', disabled: true}
     ];
 
-    beforeEach(() => {
-        container = document.createElement('div');
-        document.body.appendChild(container);
-    });
+    it('work', done => {
 
-    afterEach(function () {
-        ReactDOM.unmountComponentAtNode(container);
-        document.body.removeChild(container);
-        container = null;
-    });
+        let wrapper = mount(
+            <Select name="a" defaultValue="1">
+                <optgroup label="1">
+                    {Select.createOptions(datasource)}
+                </optgroup>
+                <option label="others" value="0" />
+            </Select>
+        );
 
-    it('Select', done => {
+        let select = wrapper.instance();
 
-        let select;
-        let element;
+        then(() => {
 
-        const TestComponent = React.createClass({
+            expect(select.getValue()).toEqual('1');
+            expect(select.isOpen()).toBeFalsy();
+            wrapper.find('.ui-select').simulate('click');
 
-            componentDidMount() {
+        })
+        .then(() => {
+            expect(select.isOpen()).toBeTruthy();
+            document.querySelectorAll('.ui-select-option')[1].click();
 
-                select = this.refs.form.fields[0];
-
-                element = document.querySelector('.ui-select');
-
-                expect(select.getValue()).toEqual('1');
+            setTimeout(() => {
                 expect(select.isOpen()).toBeFalsy();
+                expect(select.getValue()).toBe('2');
+                wrapper.unmount();
+                done();
 
-                TestUtils.Simulate.click(element);
+            }, 1000);
 
-                then(() => {
-                    expect(select.isOpen()).toBeTruthy();
-                    TestUtils.Simulate.click(element);
-                })
-                .then(() => {
-                    expect(select.isOpen()).toBeFalsy();
-                    const option = document.querySelectorAll('.ui-select-option')[2];
-                    TestUtils.Simulate.click(option);
-                })
-                .then(() => {
-                    expect(select.isOpen()).toBeFalsy();
-                    expect(select.getValue()).toEqual('3');
-
-                    const option = document.querySelectorAll('.ui-select-option')[4];
-                    TestUtils.Simulate.click(option);
-                })
-                .then(() => {
-                    expect(select.getValue()).toEqual('3');
-                    done();
-                });
-            },
-
-            render() {
-
-                return (
-                    <Form ref="form">
-                        <Select name="a" defaultValue="1">
-                            <optgroup label="1">
-                                {Select.createOptions(datasource)}
-                            </optgroup>
-                            <option label="others" value="0" />
-                        </Select>
-                    </Form>
-                );
-
-            }
         });
 
-        ReactDOM.render(<TestComponent />, container);
     });
 
 });

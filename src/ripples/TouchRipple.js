@@ -6,7 +6,7 @@
 import React, {PropTypes, Component} from 'react';
 import ReactDOM from 'react-dom';
 import RippleCircle from './RippleCircle';
-import dom from '../common/util/dom';
+import * as dom from '../common/util/dom';
 import {create} from 'melon-core/classname/cxBuilder';
 import {spring, TransitionMotion} from 'react-motion';
 
