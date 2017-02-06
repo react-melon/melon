@@ -21,8 +21,6 @@ bower install melon
 
 ## Melon Family
 
-![image](http://boscdn.bpc.baidu.com/mms-res/react-melon/melon/melonFamily.png "melon-family")
-
 ### Components
 
 * **melon**
