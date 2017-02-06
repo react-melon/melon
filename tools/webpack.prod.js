@@ -63,6 +63,7 @@ const config = {
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             inject: true,
+            favicon: path.join(__dirname, '../favicon.png'),
             templateContent: (function () {
                 return fs
                     .readFileSync(

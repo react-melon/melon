@@ -20,7 +20,7 @@ class HomeView extends React.Component {
             <div className={cx(this.props).build()}>
                 <div className={cx().part('header').build()}>
                     <div className={cx().part('header-logo').build()} />
-                    <Title level={1}>melon ui</Title>
+                    <Title level={1}>melon</Title>
                     <p>A Set of React Components that Implement</p>
                     <p>Google's Material Design</p>
                 </div>
@@ -35,7 +35,7 @@ class HomeView extends React.Component {
                 </div>
                 <div className={cx().part('install').build()}>
                     <Title level={2}>安装</Title>
-                    <div>$ bower install melon --save</div>
+                    <div>$ npm install melon --save</div>
                 </div>
                 <div className={cx().part('github').build()}>
                     <p>请在github上关注我们的项目</p>
