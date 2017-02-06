@@ -46,7 +46,7 @@ export default function Button(props) {
             disabled={disabled}
             className={className}>
             {label || children}
-            {hasRipple ? <TouchRipple /> : null}
+            {hasRipple && !disabled ? <TouchRipple /> : null}
         </button>
     );
 
