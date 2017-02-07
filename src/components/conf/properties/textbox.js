@@ -48,5 +48,10 @@ module.exports = [{
         name: 'onBlur',
         type: 'function',
         description: '失去焦点时的回调'
+    }, {
+        name: 'disabled',
+        type: 'boolean',
+        defaultValue: 'false',
+        description: '禁用'
     }]
 }];

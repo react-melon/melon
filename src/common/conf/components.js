@@ -4,6 +4,7 @@
  */
 
 export default [
+    'BoxGroup',
     'Button',
     'Calendar',
     'Drawer',

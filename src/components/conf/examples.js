@@ -7,6 +7,20 @@
 
 module.exports = {
 
+    BoxGroup: [{
+        title: 'Uncontrolled',
+        brief: '支持复选框和单选框两种形态，组件默认是 Uncontrolled 模式',
+        name: 'BoxGroup1'
+    }, {
+        title: 'Controlled',
+        brief: 'value 和 onChange 属性同时存在时，组件是 Controlled 模式，值由 store 管理',
+        name: 'BoxGroup2'
+    }, {
+        title: '禁用',
+        brief: '可以通过设置 disabled 属性禁用组件',
+        name: 'BoxGroup3'
+    }],
+
     Button: [{
         title: '按钮',
         brief: 'material风格的按钮，带有 waves 动画，有 Flat、Raised、Floating 三种样式，有 default、primary、secondery、success、info、warning、danger 七种状态，支持图标按钮',
