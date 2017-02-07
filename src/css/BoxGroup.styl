@@ -8,6 +8,9 @@
     display: inline-block
     width: $-melon-boxgroup.width
 
+    &.variant-radio .{$-melon-class-prefix}-center-ripple-circle
+        margin-left: -10px
+
     &-option
         display: block
         line-height: 2em
@@ -32,7 +35,8 @@
             width: 18px
             top: 50%
             margin-top: -9px
-            left: -1px
+            left: 50%
+            margin-left: -9px
 
         > span
             vertical-align: middle
@@ -63,4 +67,3 @@
 
         .{$-melon-class-prefix}-validity
             margin-left: 1.5em
-
