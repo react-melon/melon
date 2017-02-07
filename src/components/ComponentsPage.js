@@ -11,8 +11,8 @@ import ReducerBuilder from '../common/util/ReducerBuilder';
 
 import examples from './conf/examples';
 
-const componentReq = require.context('./examples', true, /^\.\/.*\.js$/);
-const codeReq = require.context('./code', true, /^\.\/.*\.txt$/);
+const componentReq = require.context('babel!./examples', true, /^\.\/.*\.jsx$/);
+const codeReq = require.context('raw!./examples', true, /^\.\/.*\.jsx$/);
 
 const ComponentsPage = ei.Page.extend({
 
@@ -37,8 +37,8 @@ const ComponentsPage = ei.Page.extend({
         const name = query.name;
 
         const datasource = examples[name].map(item => {
-            const Component = componentReq(`./${item.name}.js`);
-            const code = codeReq(`./${item.name}.txt`);
+            const Component = componentReq(`./${item.name}.jsx`);
+            const code = codeReq(`./${item.name}.jsx`);
 
             return {
                 ...item,
