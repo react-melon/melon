@@ -38,7 +38,7 @@ class View extends React.Component {
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={4}>内容很长的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 2)}>弹出窗口</Button>
                         <Dialog open={this.state.dialog2} onHide={this.onHide.bind(this, 2)}>
                             <div ref="content" style={{height: 1000}}>Long!</div>
                         </Dialog>
@@ -47,7 +47,7 @@ class View extends React.Component {
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
                         <Title level={4}>有标题的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 1)}>弹出窗口</Button>
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 3)}>弹出窗口</Button>
                         <Dialog
                             open={this.state.dialog3}
                             onHide={this.onHide.bind(this, 3)}
@@ -57,9 +57,10 @@ class View extends React.Component {
                     </div>
                     <div className="melon-column melon-column-6">
                         <Title level={4}>有按钮的弹窗</Title>
-                        <Button variants={['raised', 'primary']} onClick={this.onHide.bind(this, 4)}>弹出窗口</Button>
+                        <Button variants={['raised', 'primary']} onClick={this.onShow.bind(this, 4)}>弹出窗口</Button>
                         <Dialog
                             open={this.state.dialog4}
+                            onHide={this.onHide.bind(this, 4)}
                             maskClickClose={false}
                             title="Dialog With Actions"
                             actions={actions}>
