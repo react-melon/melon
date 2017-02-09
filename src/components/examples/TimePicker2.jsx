@@ -13,8 +13,8 @@ function View(props) {
     return (
         <TimePicker
             defaultValue="10:00"
-            begin="00:00"
-            end="11:00" />
+            begin="05:00"
+            end="19:00" />
     );
 }
 

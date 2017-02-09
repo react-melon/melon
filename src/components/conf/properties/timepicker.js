@@ -33,5 +33,13 @@ module.exports = [{
         name: 'onChange',
         type: 'function',
         description: '数值改变时的事件'
+    }, {
+        name: 'begin',
+        type: 'string|Date',
+        description: '时间选择的最小值'
+    }, {
+        name: 'end',
+        type: 'string|Date',
+        description: '时间选择的最大值'
     }]
 }];

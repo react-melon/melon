@@ -141,5 +141,9 @@ module.exports = {
         title: '普通的TimePicker',
         brief: '这是一个时间选择器',
         name: 'TimePicker1'
+    }, {
+        title: '范围限制',
+        brief: '可以通过设置 begin 和 end 属性来限制时间选择的范围',
+        name: 'TimePicker2'
     }]
 };
