@@ -51,9 +51,10 @@ describe('BoxGroup', function () {
                     name={'test'}
                     readOnly={undefined}
                     onChange={noop} />
-                <Icon icon={BoxGroupOption.Icons.checkbox.checked} />
+                <Icon icon={BoxGroupOption.Icons.checkbox.checked}>
+                    <CenterRipple ref="ripple" />
+                </Icon>
                 test
-                <CenterRipple ref="ripple" />
             </label>
         );
         expect(actualElement).toEqualJSX(expectedElement);
