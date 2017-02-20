@@ -59,7 +59,7 @@ class View extends React.Component {
                     value={this.state.imgURL} />
                 <Title level={4}>文件已选择</Title>
                 <Uploader
-                    contentType={false}
+                    fileType="all"
                     uploading={this.state.uploading}
                     onFileChange={files => {
 
