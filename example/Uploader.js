@@ -25,7 +25,8 @@ class View extends React.Component {
         super(props);
         this.upload = this.upload.bind(this);
         this.state = {
-            imgURL: randomImageURL()
+            imgURL: randomImageURL(),
+            fileURL: 'http://boscdn.bpc.baidu.com/mms-res/voicefe/captain/widgets/Text.zip'
         };
     }
 
@@ -44,7 +45,7 @@ class View extends React.Component {
                     placeholder="图片上传"
                     defaultValue=""
                     upload={this.upload} />
-                <Title level={4}>已选择</Title>
+                <Title level={4}>图片已选择</Title>
                 <Uploader
                     uploading={this.state.uploading}
                     onFileChange={files => {
@@ -56,6 +57,19 @@ class View extends React.Component {
 
                     }}
                     value={this.state.imgURL} />
+                <Title level={4}>文件已选择</Title>
+                <Uploader
+                    contentType={false}
+                    uploading={this.state.uploading}
+                    onFileChange={files => {
+
+                        if (!files) {
+                            this.setState({fileURL: ''});
+                            return;
+                        }
+
+                    }}
+                    value={this.state.fileURL} />
             </div>
         );
     }

@@ -49,6 +49,7 @@ export default class Uploader extends InputComponent {
         this.state = {
             ...this.state,
             value: props.value == null ? '' : props.value,
+            imgUploader: props.contentType ? true : false,
             uploading: 'value' in props ? !!props.uploading : false
         };
 
@@ -236,15 +237,20 @@ export default class Uploader extends InputComponent {
         const status = this.getStatus(this.state);
         const {size, placeholder} = this.props;
         const value = this.state.value;
+        const imgUploader = this.state.imgUploader;
 
         switch (status) {
 
             case 'fulfilled':
                 return (
                     <div className={cx.getPartClassName('content')}>
-                        <img
-                            className={cx.getPartClassName('preview')}
-                            src={value} />
+                        {imgUploader
+                            ? <img
+                                className={cx.getPartClassName('preview')}
+                                src={value} />
+                            : <Icon icon="folder" />
+                        }
+
                         <Link
                             size={size}
                             href={value}
@@ -375,6 +381,7 @@ Uploader.propTypes = {
 
     accept: PropTypes.string,
     placeholder: PropTypes.string,
+    contentType: PropTypes.bool,
 
     value: controlledCheck(PropTypes.string),
     uploading: controlledCheck(PropTypes.bool),
@@ -390,7 +397,8 @@ Uploader.propTypes = {
 
 Uploader.defaultProps = {
     ...InputComponent.defaultProps,
-    placeholder: '点击上传'
+    placeholder: '点击上传',
+    contentType: true
 };
 
 Uploader.childContextTypes = InputComponent.childContextTypes;
