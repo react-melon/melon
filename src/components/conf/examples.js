@@ -7,6 +7,12 @@
 
 module.exports = {
 
+    AutoComplete: [{
+        title: '一个有 suggstion 浮层的输入框',
+        brief: 'Melon TextBox 的扩展',
+        name: 'AutoComplete1'
+    }],
+
     BoxGroup: [{
         title: 'Uncontrolled',
         brief: '支持复选框和单选框两种形态，组件默认是 Uncontrolled 模式',

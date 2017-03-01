@@ -4,6 +4,7 @@
  */
 
 export default [
+    'AutoComplete',
     'BoxGroup',
     'Button',
     'Calendar',
