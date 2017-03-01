@@ -35,6 +35,16 @@ module.exports = {
         name: 'ButtonSize'
     }],
 
+    ColorPicker: [{
+        title: 'Uncontrolled',
+        brief: 'material 风格的颜色选择器，支持各种颜色表达式',
+        name: 'ColorPicker1'
+    }, {
+        title: 'Controlled',
+        brief: 'Controlled 写法',
+        name: 'ColorPicker2'
+    }],
+
     Calendar: [{
         title: '日历',
         brief: 'material风格的日历组件。支持设定日期选择区间，支持只读和禁用。',
@@ -55,6 +65,12 @@ module.exports = {
         title: '创建Drawer',
         brief: '可配置位置、大小',
         name: 'Drawer'
+    }],
+
+    FloatingActionButton: [{
+        title: '浮动按钮组',
+        brief: '浮动按钮组',
+        name: 'FloatingActionButton'
     }],
 
     Pager: [{

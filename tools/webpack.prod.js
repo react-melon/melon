@@ -25,7 +25,7 @@ const config = {
             // 处理 stylus
             {
                 test: /\.styl$/,
-                loader: css.extract(['css', 'stylus?paths=node_modules&resolve url'])
+                loader: css.extract(['css', 'stylus?paths=node_modules&resolve url&include css'])
             },
             // 处理 iconfont
             {

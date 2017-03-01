@@ -18,6 +18,8 @@ import './properties/snackbar';
 import './properties/tabs';
 import './properties/textbox';
 import './properties/timepicker';
+import './properties/colorpicker';
+import './properties/floatingactionbutton';
 
 module.exports = components.reduce((result, name) => {
 
