@@ -61,6 +61,10 @@ export default class Select extends InputComponent {
                 layerArchor
             } = this.props;
 
+            if (this.layer.offsetWidth < this.main.offsetWidth) {
+                this.layer.style.width = `${this.main.offsetWidth}px`;
+            }
+
             align(
                 this.layer,
                 this.main,
