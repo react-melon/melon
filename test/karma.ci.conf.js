@@ -22,7 +22,8 @@ module.exports = function (config) {
                     concurrency: 2,
                     browserNoActivityTimeout: 1800,
                     browserDisconnectTimeout: 1800,
-                    browserDisconnectTolerance: 3
+                    browserDisconnectTolerance: 3,
+                    pollingTimeout: 30000
                 },
 
                 /* eslint-disable fecs-camelcase */
