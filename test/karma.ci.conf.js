@@ -17,11 +17,11 @@ module.exports = function (config) {
                     username: 'leonlu2',
                     accessKey: 'ps6dvCJdxhJGWWSTrWM4',
                     retryLimit: 5,
-                    captureTimeout: 3e5,
-                    timeout: 3e5,
+                    captureTimeout: 1800,
+                    timeout: 1800,
                     concurrency: 2,
-                    browserNoActivityTimeout: 3e5,
-                    browserDisconnectTimeout: 3e5,
+                    browserNoActivityTimeout: 1800,
+                    browserDisconnectTimeout: 1800,
                     browserDisconnectTolerance: 3
                 },
 
