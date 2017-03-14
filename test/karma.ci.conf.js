@@ -15,7 +15,10 @@ module.exports = function (config) {
 
                 browserStack: {
                     username: 'leonlu2',
-                    accessKey: 'ps6dvCJdxhJGWWSTrWM4'
+                    accessKey: 'ps6dvCJdxhJGWWSTrWM4',
+                    retryLimit: 5,
+                    captureTimeout: 600,
+                    timeout: 600
                 },
 
                 /* eslint-disable fecs-camelcase */
