@@ -22,6 +22,7 @@ export default class SliderBar extends Component {
             disableFocusRipple,
             pointerSize,
             active,
+            states,
             variants,
             ...rest
         } = this.props;
@@ -55,7 +56,7 @@ export default class SliderBar extends Component {
         const className = cx()
             .part('wrapper')
             .addVariants(variants)
-            .addStates({active})
+            .addStates({...states, active})
             .build();
 
         return (
