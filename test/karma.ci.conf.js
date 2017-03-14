@@ -17,8 +17,12 @@ module.exports = function (config) {
                     username: 'leonlu2',
                     accessKey: 'ps6dvCJdxhJGWWSTrWM4',
                     retryLimit: 5,
-                    captureTimeout: 600,
-                    timeout: 600
+                    captureTimeout: 3e5,
+                    timeout: 3e5,
+                    concurrency: 2,
+                    browserNoActivityTimeout: 3e5,
+                    browserDisconnectTimeout: 3e5,
+                    browserDisconnectTolerance: 3
                 },
 
                 /* eslint-disable fecs-camelcase */
