@@ -57,6 +57,7 @@ export default class Dialog extends Component {
         this.onHide = this.onHide.bind(this);
         this.onMaskClick = this.onMaskClick.bind(this);
         this.renderLayer = this.renderLayer.bind(this);
+        this.onMotionEnd = this.onMotionEnd.bind(this);
 
     }
 
@@ -112,16 +113,6 @@ export default class Dialog extends Component {
 
     }
 
-    componentWillUnmount() {
-
-        // 如果我们正在关闭就被卸载，那么我们要把关闭动画的定时器清理掉
-        if (this.closeTimer) {
-            clearTimeout(this.closeTimer);
-            this.closeTimer = null;
-        }
-
-    }
-
     /**
      * 定位对话框
      *
@@ -163,7 +154,7 @@ export default class Dialog extends Component {
     onMaskClick(e) {
 
         if (this.props.maskClickClose) {
-            this.hide(this.onHide);
+            this.hide();
         }
         else {
             e.stopPropagation();
@@ -196,11 +187,31 @@ export default class Dialog extends Component {
     }
 
     /**
-     * 关闭窗口
-     *
-     * @param {Function} callback 刚完成关闭动作时的回调
+     * 当动画完成时回调
      */
-    hide(callback) {
+    onMotionEnd() {
+
+        if (this.state.closing) {
+
+            this.setState({
+                closing: false,
+                open: false
+            });
+
+            let onHide = this.props.onHide;
+
+            if (onHide) {
+                onHide();
+            }
+
+        }
+
+    }
+
+    /**
+     * 关闭窗口
+     */
+    hide() {
 
         let {open, closing} = this.state;
 
@@ -209,15 +220,6 @@ export default class Dialog extends Component {
         }
 
         this.setState({closing: true});
-
-        this.closeTimer = setTimeout(() => {
-
-            this.setState({
-                open: false,
-                closing: false
-            }, callback);
-
-        }, 240);
 
     }
 
@@ -297,12 +299,10 @@ export default class Dialog extends Component {
         const yEnd = opening ? 0 : distance;
         const opacityBegin = opening ? 0 : 1;
         const opacityEnd = opening ? 1 : 0;
-        const control = opening
-            ? {stiffness: 300, damping: 30}
-            : {stiffness: 300, damping: 30};
+        const control = {stiffness: 200, damping: 18, precision: 1};
 
         return (
-            <div className={className}>
+            <div className={className} style={!opening ? {overflow: 'hidden'} : null}>
                 <Motion
                     defaultStyle={{
                         top: yBegin,
@@ -310,8 +310,9 @@ export default class Dialog extends Component {
                     }}
                     style={{
                         top: spring(yEnd, control),
-                        opacity: spring(opacityEnd)
-                    }}>
+                        opacity: spring(opacityEnd, control)
+                    }}
+                    onRest={this.onMotionEnd()}>
                     {({top, opacity}) => (
                         <DialogWindow
                            ref={c => {
@@ -322,12 +323,12 @@ export default class Dialog extends Component {
                            footer={footer}
                            className={windowPartClassName}
                            style={{
-                               opacity,
-                               transform: `translate(-50%, ${top}px)`
+                               opacity: opacity,
+                               transform: `translate(-50%, ${Math.round(top)}px)`
                            }}>
                            {body}
                        </DialogWindow>
-                    )}
+                   )}
                 </Motion>
                 <Mask
                     show={open}
@@ -344,9 +345,7 @@ export default class Dialog extends Component {
      * @return {ReactElement}
      */
     render() {
-
         let {open, closing} = this.state;
-
         return (
             <Layer
                 open={open || closing}
