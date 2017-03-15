@@ -12,6 +12,8 @@ import {create} from 'melon-core/classname/cxBuilder';
 import Layer from './Layer';
 import align from 'dom-align';
 import {Motion, spring} from 'react-motion';
+import {throttle} from './common/util/fn';
+import {getClientHeight, getClientWidth} from './common/util/dom';
 
 const cx = create('Select');
 
@@ -47,6 +49,13 @@ export default class Select extends InputComponent {
 
         this.onClick = this.onClick.bind(this);
         this.onClickOption = this.onClickOption.bind(this);
+        this.onMotionEnd = this.onMotionEnd.bind(this);
+        this.onWindowResizeOrScroll = throttle(
+            this.onWindowResizeOrScroll.bind(this),
+            200,
+            {leading: true, trailing: true}
+        );
+
         this.hideOptions = this.hideOptions.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
 
@@ -54,16 +63,66 @@ export default class Select extends InputComponent {
 
     componentDidUpdate() {
 
-        if (this.state.open && this.layer && this.main) {
+        if (!this.layer || !this.main || !this.state.open) {
+            return;
+        }
+
+        let {
+            mainArchor,
+            layerArchor
+        } = this.props;
+
+        if (this.layer.offsetWidth < this.main.offsetWidth) {
+            this.layer.style.width = `${this.main.offsetWidth}px`;
+        }
+
+        align(
+            this.layer,
+            this.main,
+            {
+                points: [layerArchor, mainArchor],
+                overflow: {
+                    adjustX: true,
+                    adjustY: true
+                }
+            }
+        );
+
+
+    }
+
+    componentWillUnmount() {
+        this.unbindToWindow();
+    }
+
+    onWindowResizeOrScroll() {
+
+        if (!this.state.open || !this.layer || !this.main) {
+            return;
+        }
+
+        let {
+            bottom,
+            top,
+            left,
+            right
+        } = this.main.getBoundingClientRect();
+
+        let windowHeight = getClientHeight();
+        let windowWidth = getClientWidth();
+
+        // 在视野内
+        if (
+            top > 0
+            && bottom < windowHeight
+            && left > 0
+            && right < windowWidth
+        ) {
 
             let {
                 mainArchor,
                 layerArchor
             } = this.props;
-
-            if (this.layer.offsetWidth < this.main.offsetWidth) {
-                this.layer.style.width = `${this.main.offsetWidth}px`;
-            }
 
             align(
                 this.layer,
@@ -76,66 +135,11 @@ export default class Select extends InputComponent {
                     }
                 }
             );
-        }
 
-    }
-
-    componentWillUnmount() {
-
-        if (this.closeingTimer) {
-            clearTimeout(this.closeingTimer);
-        }
-
-    }
-
-    /**
-     * 点击时处理
-     *
-     * @protected
-     */
-    onClick() {
-
-        const {disabled, readOnly} = this.props;
-
-        if (disabled || readOnly) {
-            return;
-        }
-
-        let open = this.state.open;
-
-        if (open) {
-            this.hideOptions();
-        }
-        else {
-            this.setState({
-                open: true
-            });
-        }
-
-    }
-
-    /**
-     * 点击选项时处理
-     *
-     * @protected
-     * @param  {Object} e 事件对象
-     * @param  {string} e.value 当前值
-     */
-    onClickOption(e) {
-
-        const value = e.value;
-
-        if (this.state.closing) {
             return;
         }
 
         this.hideOptions();
-
-        super.onChange({
-            type: 'change',
-            target: this,
-            value
-        });
 
     }
 
@@ -167,7 +171,8 @@ export default class Select extends InputComponent {
                 style={{
                     opacity: spring(end),
                     scale: spring(end, {stiffness: 260, damping: 20})
-                }}>
+                }}
+                onRest={this.onMotionEnd}>
                 {({scale, opacity}) => (
                     <div
                         className={className}
@@ -325,22 +330,98 @@ export default class Select extends InputComponent {
         return this.state.open;
     }
 
-    hideOptions() {
+    /**
+     * 展示浮层
+     *
+     * @private
+     */
+    showOptions() {
+        this.setState({
+            open: true
+        });
+        this.bindToWindow();
+    }
 
+    /**
+     * 隐藏选项浮层
+     *
+     * @private
+     */
+    hideOptions() {
         this.setState({
             closing: true
         });
+        this.unbindToWindow();
+    }
 
-        this.closeingTimer = setTimeout(() => {
+    bindToWindow() {
+        window.addEventListener('resize', this.onWindowResizeOrScroll);
+        window.addEventListener('scroll', this.onWindowResizeOrScroll);
+    }
 
+    unbindToWindow() {
+        window.addEventListener('resize', this.onWindowResizeOrScroll);
+        window.removeEventListener('scroll', this.onWindowResizeOrScroll);
+    }
+
+    /**
+     * 当动画完成时的回调
+     */
+    onMotionEnd() {
+        if (this.state.closing) {
             this.setState({
-                open: false,
-                closing: false
+                closing: false,
+                open: false
             });
+        }
+    }
 
-            this.closeingTimer = null;
+    /**
+     * 点击时处理
+     *
+     * @protected
+     */
+    onClick() {
 
-        }, 500);
+        const {disabled, readOnly} = this.props;
+
+        if (disabled || readOnly) {
+            return;
+        }
+
+        let open = this.state.open;
+
+        if (open) {
+            this.hideOptions();
+            return;
+        }
+
+        this.showOptions();
+
+    }
+
+    /**
+     * 点击选项时处理
+     *
+     * @protected
+     * @param  {Object} e 事件对象
+     * @param  {string} e.value 当前值
+     */
+    onClickOption(e) {
+
+        const value = e.value;
+
+        if (this.state.closing) {
+            return;
+        }
+
+        this.hideOptions();
+
+        super.onChange({
+            type: 'change',
+            target: this,
+            value
+        });
 
     }
 
