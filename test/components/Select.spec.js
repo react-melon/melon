@@ -6,7 +6,8 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import Select from '../../src/Select';
-import then from '../then';
+
+/* eslint-disable max-nested-callbacks */
 
 describe('Select', function () {
 
@@ -31,18 +32,17 @@ describe('Select', function () {
 
         let select = wrapper.instance();
 
-        then(() => {
+        expect(select.getValue()).toEqual('1');
+        expect(select.isOpen()).toBeFalsy();
+        wrapper.find('.ui-select').simulate('click');
 
-            expect(select.getValue()).toEqual('1');
-            expect(select.isOpen()).toBeFalsy();
-            wrapper.find('.ui-select').simulate('click');
+        setTimeout(() => {
 
-        })
-        .then(() => {
             expect(select.isOpen()).toBeTruthy();
             document.querySelectorAll('.ui-select-option')[1].click();
 
             setTimeout(() => {
+
                 expect(select.isOpen()).toBeFalsy();
                 expect(select.getValue()).toBe('2');
                 wrapper.unmount();
@@ -50,7 +50,7 @@ describe('Select', function () {
 
             }, 1000);
 
-        });
+        }, 1000);
 
     });
 
