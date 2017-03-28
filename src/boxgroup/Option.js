@@ -51,9 +51,10 @@ export default class BoxGroupOption extends Component {
                     readOnly={readOnly}
                     name={props.name}
                     onChange={readOnly ? null : onChange} />
-                <Icon icon={icon} />
+                <Icon icon={icon}>
+                    {disabled || readOnly ? null : <CenterRipple ref="ripple" />}
+                </Icon>
                 {props.label}
-                {disabled || readOnly ? null : <CenterRipple ref="ripple" />}
             </label>
         );
 

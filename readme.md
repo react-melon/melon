@@ -21,9 +21,10 @@ bower install melon
 
 ## Melon Family
 
-![image](http://boscdn.bpc.baidu.com/mms-res/react-melon/melon/melonFamily.png "melon-family")
-
 ### Components
+
+* **melon-core**
+    * InputComponent
 
 * **melon**
     * BoxGroup
@@ -48,20 +49,37 @@ bower install melon
     * Uploader
     * Zippy
 
-* **melon-calendar**
+* **[melon-form](https://github.com/react-melon/melon-form)**
+    * Form
+
+* **[melon-json-schema-form](https://github.com/react-melon/melon-json-schema-form)**
+    * Form
+
+* **[melon-layer](https://github.com/react-melon/melon-layer)**
+    * Popover/Layer
+
+* **[melon-calendar](https://github.com/react-melon/melon-calendar)**
     * Calenadr
     * RangeCalendar
     * UnitCalendar
 
-* **melon-timepicker**
+* **[melon-timepicker](https://github.com/react-melon/melon-timepicker)**
     * TimePicker
 
-* **melon-wise**
-    * MonthPicker
-    * EnhancedSelect
+* **[melon-listview](https://github.com/react-melon/melon-listview)**
     * ListView
-    * Popup
-    * CSSTransitionGroup
+
+* **[melon-colorpicker](https://github.com/react-melon/melon-colorpicker)**
+    * ColorPicker
+
+* **[melon-autocomplete](https://github.com/react-melon/melon-autocomplete)**
+    * AutoComplete
+
+* **[melon-split-pane](https://github.com/react-melon/melon-split-pane)**
+    * SplitPane
+
+* **[melon-fab](https://github.com/react-melon/melon-fab)**
+    * FloatingActionButton
 
 ## Demos
 
