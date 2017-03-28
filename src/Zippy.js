@@ -30,7 +30,7 @@ export default class Zippy extends Component {
 
         const {
             expand,
-            horizontal,
+            direction,
             variants,
             states,
             ...others
@@ -39,16 +39,21 @@ export default class Zippy extends Component {
         const className = cx()
             .addVariants(variants)
             .addStates(states)
-            .addVariants(horizontal ? 'horizontal' : 'vertical')
+            .addVariants(direction)
             .addStates({close: !expand})
             .build();
 
         let style = this.props.style;
+        let isVertical = direction === 'vertical';
+        let transform = `scale(${isVertical ? 1 : 0}, ${isVertical ? 0 : 1})`;
 
         if (!expand) {
             style = {
                 ...style,
-                [horizontal ? 'width' : 'height']: 0
+                WebkitTransform: transform,
+                MozTransform: transform,
+                msTransform: transform,
+                transform
             };
         }
 
@@ -63,11 +68,11 @@ export default class Zippy extends Component {
 Zippy.displayName = 'Zippy';
 
 Zippy.propTypes = {
-    horizontal: PropTypes.bool,
+    direction: PropTypes.oneOf(['vertical', 'horizontal']),
     expand: PropTypes.bool
 };
 
 Zippy.defaultProps = {
-    horizontal: false,
+    direction: 'vertical',
     expand: false
 };
