@@ -5,7 +5,6 @@
 
 import React, {Component, PropTypes, Children, cloneElement} from 'react';
 import Row from './table/Row';
-import * as dom from './common/util/dom';
 import {create} from 'melon-core/classname/cxBuilder';
 import Column from './table/Column';
 

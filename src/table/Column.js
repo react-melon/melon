@@ -3,7 +3,12 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import {PropTypes, Component} from 'react';
+import React, {PropTypes, Component} from 'react';
+import Tooltip from '../Tooltip';
+import {create} from 'melon-core/classname/cxBuilder';
+import Icon from '../Icon';
+
+const cx = create('TableColumnHeader');
 
 /**
  * 表格列
@@ -69,11 +74,87 @@ TableColumn.propTypes = {
      *
      * @type {number}
      */
-    width: PropTypes.number.isRequired
+    width: PropTypes.number.isRequired,
+
+    /**
+     * 是否可排序
+     *
+     * @type {boolean}
+     */
+    sortable: PropTypes.bool,
+
+    /**
+     * 排序顺序
+     *
+     * @type {string}
+     */
+    sortBy: PropTypes.oneOf(['asc', 'desc', 'none'])
+
+};
+
+const SORT_ICONS = {
+    asc: 'arrow-upward',
+    none: 'arrow-upward',
+    desc: 'arrow-downward'
+};
+
+TableColumn.headerRenderer = function (props) {
+
+    let {columnData, cellData} = props;
+    let {
+        sortable,
+        sortBy = 'none',
+        title,
+        align,
+        onSort
+    } = columnData;
+
+    let className = cx()
+        .addVariants([`align-${align}`])
+        .addStates({[`sort-by-${sortBy}`]: true})
+        .build();
+
+    if (sortable) {
+
+        cellData = align === 'right'
+            ? (
+                <div
+                    className={cx.getPartClassName('sorter')}
+                    onClick={onSort}>
+                    <Icon icon={SORT_ICONS[sortBy]} size="s" />
+                    {cellData}
+                </div>
+            )
+            : (
+                <div
+                    className={cx.getPartClassName('sorter')}
+                    onClick={onSort}>
+                    {cellData}
+                    <Icon icon={SORT_ICONS[sortBy]} size="s" />
+                </div>
+            );
+
+    }
+
+    if (title) {
+        cellData = (
+            <Tooltip content={title}>
+                {cellData}
+            </Tooltip>
+        );
+    }
+
+    return (
+        <div className={className}>
+            {cellData}
+        </div>
+    );
+
 };
 
 TableColumn.defaultProps = {
-    align: 'left'
+    align: 'left',
+    headerRenderer: TableColumn.headerRenderer
 };
 
 TableColumn._TABLE_COMPONENT_ = 'COLUMN';

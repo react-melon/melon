@@ -89,3 +89,53 @@
 
         &.state-selected
             color: $-melon-colors.teal500
+
+.{$-melon-class-prefix}-table-column-header
+
+    display: inline-block
+    color: rgba(0, 0, 0, .54)
+
+    &-sorter
+        display: inline-block
+        position: relative
+        color: rgba(0, 0, 0, .54)
+        cursor: pointer
+
+        &:hover
+            color: rgba(0, 0, 0, .87)
+
+        >.ui-icon
+            position: absolute;
+            margin: 0 0.5em
+            top: 0
+
+    &.variant-align-left
+        text-align: left
+
+    &.variant-align-left &-sorter >.ui-icon
+        right: 100%
+
+    &.variant-align-right
+        text-align: right
+
+    &.variant-align-right &-sorter >.ui-icon
+        right: 100%
+
+    &.variant-align-center
+        text-align: center
+
+    &.variant-align-center &-sorter >.ui-icon
+        left: 100%
+
+    &.state-sort-by-none
+
+        .ui-icon
+            display: none
+
+        &:hover
+            .ui-icon
+                display: block
+
+    &.state-sort-by-asc &-sorter,
+    &.state-sort-by-desc &-sorter
+        color: rgba(0, 0, 0, .87)

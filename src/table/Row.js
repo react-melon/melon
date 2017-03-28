@@ -6,6 +6,7 @@
 import React, {Component, PropTypes} from 'react';
 import {create} from 'melon-core/classname/cxBuilder';
 import TableCell from './Cell';
+import shallowEqual from 'melon-core/util/shallowEqual';
 
 const cx = create('TableRow');
 
@@ -28,16 +29,27 @@ export default class TableRow extends Component {
 
         const {
             tableWidth,
-            rowHasChanged,
-            data
+            rowHasChanged
         } = this.props;
 
         if (tableWidth !== nextProps.tableWidth) {
             return true;
         }
 
+        let columns = this.props.columns;
+        let nextColumns = nextProps.columns;
+
+        // 列设置是否发生了变化
+        if (
+            columns.length !== nextColumns
+            || columns.some((column, i) => !shallowEqual(column.props, nextColumns[i].props))
+        ) {
+            return true;
+        }
+
+        // 行数据是否发生了变化
         if (rowHasChanged) {
-            return rowHasChanged(data, nextProps.data);
+            return rowHasChanged(this.props, nextProps);
         }
 
         return true;
