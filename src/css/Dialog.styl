@@ -23,7 +23,6 @@
         visibility: visible
 
     &-window
-
         box-sizing: border-box
         -webkit-tap-highlight-color: $-melon-colors.transparent
         position: absolute
@@ -35,24 +34,32 @@
         background-color: $-melon-colors.white
         box-shadow: 0 14px 45px rgba(0, 0, 0, 0.25), 0 10px 18px rgba(0, 0, 0, 0.22)
         border-radius: 2px
-        padding: 1em
+        padding: 1.5em 1.5em 0 1.5em
         margin-bottom: 16px
+
+    &-window.variant-no-title &-body
+        margin: 0 0 1.5em
+
 
     .variant-adaptive
         width: auto
         display: inline-block
 
     &-title
-
         font-size: $-melon-xx-large-font-size
         line-height: 2
+        margin: -0.5em 0 0
 
     &-body
-
-        padding: 0.6em 0
+        margin: 1.25em 0 1.5em
 
     &-actions
 
-        margin-top: 2em
+        margin-right: -1em
+        padding: 0.5em 0
         text-align: right
-        padding: 0 1em
+        clearfix()
+
+        >.{$-melon-class-prefix}-button
+            float: right
+            margin-left: 0.5em

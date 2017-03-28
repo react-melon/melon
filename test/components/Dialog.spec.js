@@ -7,11 +7,11 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import DialogWindow from '../../src/dialog/DialogWindow';
 import Dialog from '../../src/Dialog';
-import Alert from '../../src/Alert';
-import Confirm from '../../src/Confirm';
 import Mask from '../../src/Mask';
 import then from '../then';
 import Layer from '../../src/Layer';
+
+/* eslint-disable max-nested-callbacks */
 
 describe('Dialog', function () {
 
@@ -98,20 +98,18 @@ describe('Dialog', function () {
 
         dialog.setProps({open: true});
 
-        then(() => {
 
-            expect(dialog.state('open')).toBe(true);
-            dialog.setProps({open: false});
+        expect(dialog.state('open')).toBe(true);
+        dialog.setProps({open: false});
 
-            setTimeout(() => {
+        setTimeout(() => {
 
-                expect(dialog.state('open')).toBe(false);
-                dialog.unmount();
-                done();
+            expect(dialog.state('open')).toBe(false);
+            dialog.unmount();
+            done();
 
-            }, 500);
+        }, 1000);
 
-        });
 
     });
 
@@ -137,7 +135,7 @@ describe('Dialog', function () {
             dialog.unmount();
             done();
 
-        }, 500);
+        }, 1000);
 
     });
 
@@ -191,142 +189,6 @@ describe('Dialog:Window', () => {
         );
 
         expect(window.hasClass('ui-dialog-window')).toBe(true);
-
-    });
-
-});
-
-
-describe('Alert', () => {
-
-    it('work', done => {
-
-        let spy = jasmine.createSpy('alert-confirm-spy');
-
-        let alert = mount(
-            <Alert
-                title="hello"
-                onConfirm={spy}
-                open={true}>
-                报警！
-            </Alert>
-        );
-
-        let dialog = document.querySelectorAll('.ui-dialog');
-        let button = document.querySelectorAll('.ui-button');
-
-        expect(button.length).toBe(1);
-        expect(dialog.length).toBe(1);
-
-        button[0].click();
-
-        then(() => {
-
-            expect(spy).toHaveBeenCalled();
-            alert.unmount();
-            done();
-
-        });
-
-    });
-
-    it('Alert.show', () => {
-
-        expect(typeof Alert.show).toBe('function');
-
-        const destroy = Alert.show({
-            content: 'haha'
-        });
-
-        expect(typeof destroy === 'function').toBe(true);
-
-        let elements = document.querySelectorAll(
-            '.melon-seperate-dialog-container>div'
-        );
-
-        expect(elements.length).toBe(1);
-
-        destroy();
-
-        elements = document.querySelectorAll(
-            '.melon-seperate-dialog-container>div'
-        );
-
-        expect(elements.length).toBe(0);
-
-    });
-
-});
-
-
-describe('Confirm', () => {
-
-    it('work', done => {
-
-        let confirmSpy = jasmine.createSpy('confirm-confirm-spy');
-        let cancelSpy = jasmine.createSpy('confirm-cancel-spy');
-
-        let confirm = mount(
-            <Confirm
-                title="hello"
-                onConfirm={confirmSpy}
-                onCancel={cancelSpy}
-                open={true}>
-                报警！
-            </Confirm>
-        );
-
-        let dialog = document.querySelectorAll('.ui-dialog');
-        let buttons = document.querySelectorAll('.ui-button');
-
-        expect(dialog.length).toBe(1);
-        expect(buttons.length).toBe(2);
-
-        buttons[0].click();
-
-        then(() => {
-            expect(dialog[0].classList.contains('state-open')).toBe(true);
-            expect(cancelSpy).toHaveBeenCalled();
-            buttons[1].click();
-        })
-        .then(() => {
-            expect(dialog[0].classList.contains('state-open')).toBe(true);
-            expect(confirmSpy).toHaveBeenCalled();
-            confirm.setProps({open: false});
-
-            setTimeout(() => {
-                expect(dialog[0].parentNode == null).toBe(true);
-                confirm.unmount();
-                done();
-            }, 500);
-
-        });
-
-    });
-
-    it('Confirm.show', () => {
-
-        expect(typeof Confirm.show).toBe('function');
-
-        const destroy = Confirm.show({
-            content: 'haha'
-        });
-
-        expect(typeof destroy === 'function').toBe(true);
-
-        let elements = document.querySelectorAll(
-            '.melon-seperate-dialog-container>div'
-        );
-
-        expect(elements.length).toBe(1);
-
-        destroy();
-
-        elements = document.querySelectorAll(
-            '.melon-seperate-dialog-container>div'
-        );
-
-        expect(elements.length).toBe(0);
 
     });
 

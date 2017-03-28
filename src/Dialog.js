@@ -3,7 +3,7 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes, cloneElement} from 'react';
 import ReactDOM from 'react-dom';
 import Mask from './Mask';
 import * as dom from './common/util/dom';
@@ -34,14 +34,6 @@ export default class Dialog extends Component {
     constructor(props, context) {
 
         super(props, context);
-
-        /**
-         * 保存原始的 html body 样式
-         *
-         * @private
-         * @type {Object}
-         */
-        this.originalHTMLBodySize = {};
 
         /**
          * 初始状态
@@ -188,6 +180,8 @@ export default class Dialog extends Component {
 
     /**
      * 当动画完成时回调
+     *
+     * @private
      */
     onMotionEnd() {
 
@@ -210,6 +204,8 @@ export default class Dialog extends Component {
 
     /**
      * 关闭窗口
+     *
+     * @private
      */
     hide() {
 
@@ -227,16 +223,13 @@ export default class Dialog extends Component {
      * 获取标题
      *
      * @protected
+     * @param {string} title 标题
      * @return {ReactElement|null} [description]
      */
-    renderTitle() {
-
-        const title = this.props.title;
-
+    renderTitle(title) {
         return title
             ? <h1 className={cx().part('title').build()}>{title}</h1>
             : null;
-
     }
 
     /**
@@ -245,17 +238,31 @@ export default class Dialog extends Component {
      * @protected
      * @return {ReactElement|null} [description]
      */
-    renderAction() {
+    renderActionPanel() {
 
-        const actions = this.props.actions;
+        let actions = this.props.actions;
 
-        return actions
-            ? (
-                <div className={cx().part('actions').build()}>
-                    {actions}
-                </div>
-            )
-            : null;
+        if (!actions) {
+            return null;
+        }
+
+        if (!Array.isArray(actions)) {
+            actions = [actions];
+        }
+
+        if (!actions.length) {
+            return null;
+        }
+
+        actions = actions
+            .map(action => cloneElement(action, {size: 'l'}))
+            .reverse();
+
+        return (
+            <div className={cx().part('actions').build()}>
+                {actions}
+            </div>
+        );
 
     }
 
@@ -266,40 +273,46 @@ export default class Dialog extends Component {
      */
     renderLayer() {
 
-        const {props, state} = this;
+        let {props, state} = this;
 
-        const {
+        let {
             children,
-            width
+            width,
+            title
         } = props;
 
-        const {open, closing} = state;
+        let {open, closing} = state;
 
-        const title = this.renderTitle();
+        if (title) {
+            title = this.renderTitle(title);
+        }
 
-        const body = (
+        let body = (
             <div className={cx().part('body').build()}>
                 {children}
             </div>
         );
 
-        const footer = this.renderAction();
+        let footer = this.renderActionPanel();
 
-        const windowPartClassName = cx()
+        let windowPartClassName = cx()
             .part('window')
-            .addVariants(width === 'adaptive' ? 'adaptive' : undefined)
+            .addVariants(
+                width === 'adaptive' ? 'adaptive' : null,
+                title ? null : 'no-title'
+            )
             .build();
 
-        const className = cx(props).addStates({open}).build();
+        let className = cx(props).addStates({open}).build();
 
-        const opening = open && !closing;
+        let opening = open && !closing;
 
-        const distance = dom.getClientHeight() * 0.4 * (opening ? -1 : 1);
-        const yBegin = opening ? distance : 0;
-        const yEnd = opening ? 0 : distance;
-        const opacityBegin = opening ? 0 : 1;
-        const opacityEnd = opening ? 1 : 0;
-        const control = {stiffness: 200, damping: 18, precision: 1};
+        let distance = dom.getClientHeight() * 0.4 * (opening ? -1 : 1);
+        let yBegin = opening ? distance : 0;
+        let yEnd = opening ? 0 : distance;
+        let opacityBegin = opening ? 0 : 1;
+        let opacityEnd = opening ? 1 : 0;
+        let control = {stiffness: 200, damping: 18, precision: 1};
 
         return (
             <div className={className} style={!opening ? {overflow: 'hidden'} : null}>
@@ -312,11 +325,11 @@ export default class Dialog extends Component {
                         top: spring(yEnd, control),
                         opacity: spring(opacityEnd, control)
                     }}
-                    onRest={this.onMotionEnd()}>
+                    onRest={this.onMotionEnd}>
                     {({top, opacity}) => (
                         <DialogWindow
-                           ref={c => {
-                               this.dialogWindow = c;
+                           ref={dialogWindow => {
+                               this.dialogWindow = dialogWindow;
                            }}
                            width={width}
                            title={title}
