@@ -4,10 +4,13 @@
  */
 
 import {Component, PropTypes} from 'react';
+import {create} from 'melon-core/classname/cxBuilder';
 import {
     unstable_renderSubtreeIntoContainer,
     unmountComponentAtNode
 } from 'react-dom';
+
+const cx = create('Layer');
 
 export default class Layer extends Component {
 
@@ -58,12 +61,10 @@ export default class Layer extends Component {
         if (!layer) {
 
             layer = this.layer = document.createElement('div');
-            let classNames = ['ui-layer'];
 
             // 如果使用一个 div 作为遮罩，那么这里给 div 加 click 绑定
             if (useLayerMask) {
                 layer.addEventListener('click', this.onClickAway);
-                classNames.push('variant-mask');
             }
             // 否则我们给 window 加事件绑定
             else {
@@ -74,9 +75,12 @@ export default class Layer extends Component {
                 setTimeout(() => {
                     window.addEventListener('click', this.onClickAway);
                 }, 0);
+
             }
 
-            layer.className = classNames.join(' ');
+            layer.className = cx(this.props)
+                .addVariants(useLayerMask ? 'mask' : null)
+                .build();
 
             document.body.appendChild(layer);
         }
