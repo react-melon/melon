@@ -158,6 +158,7 @@ export default class BoxGroup extends InputComponent {
     render() {
 
         const className = cx(this.props)
+            .addVariants(this.props.boxModel)
             .addStates(this.getStyleStates())
             .build();
 

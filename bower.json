@@ -1,6 +1,6 @@
 {
   "name": "melon",
-  "version": "0.5.0",
+  "version": "0.5.12",
   "homepage": "http://react-melon.github.io/melon",
   "authors": [
     "ludafa@outlook.com"
@@ -28,9 +28,8 @@
     "asset"
   ],
   "dependencies": {
-    "melon-core": "^0.3.2",
-    "react": "^0.14.8",
-    "react-dom": "0.14.8",
-    "react-motion": "^0.4.2"
+    "melon-core": "^0.4",
+    "react": "^15",
+    "react-motion": "^0.4"
   }
 }

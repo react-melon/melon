@@ -50,7 +50,7 @@ class View extends React.Component {
 
                 <p>Uncontrolled Component Usage</p>
 
-                <p>Don't set `value`, use `defaultValue` instead.</p>
+                <p>{'Don\'t set `value`, use `defaultValue` instead.'}</p>
 
                 <div className="melon-row">
                     <div className="melon-column melon-column-4">

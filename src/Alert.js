@@ -40,6 +40,7 @@ export default function Alert(props) {
     return (
         <Dialog
             {...rest}
+            size={size}
             actions={actions}
             variants={[...variants, 'alert']}
             size={size} />

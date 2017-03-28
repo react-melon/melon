@@ -62,6 +62,14 @@ class View extends React.Component {
                         </Select>
                     </div>
                 </div>
+                <div className="melon-row">
+                    <div className="melon-column melon-column-12">
+                        <Title level={6}>fluid</Title>
+                        <Select name="a" defaultValue={this.state.a} variants={['fluid']}>
+                            {Select.createOptions(datasource)}
+                        </Select>
+                    </div>
+                </div>
                 <p>Controlled Select</p>
                 <div className="melon-row">
                     <div className="melon-column melon-column-6">
