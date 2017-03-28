@@ -29,7 +29,8 @@ export default class TableRow extends Component {
 
         const {
             tableWidth,
-            rowHasChanged
+            rowHasChanged,
+            data
         } = this.props;
 
         if (tableWidth !== nextProps.tableWidth) {
@@ -49,7 +50,7 @@ export default class TableRow extends Component {
 
         // 行数据是否发生了变化
         if (rowHasChanged) {
-            return rowHasChanged(this.props, nextProps);
+            return rowHasChanged(data, nextProps.data);
         }
 
         return true;
