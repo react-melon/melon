@@ -28,7 +28,7 @@ describe('Zippy', () => {
     it('horizontal', () => {
 
         component = TestUtils.renderIntoDocument(
-            <Zippy horizontal>
+            <Zippy direction="horizontal">
                 <p>test</p>
             </Zippy>
         );
