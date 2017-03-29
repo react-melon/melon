@@ -260,7 +260,7 @@ export default class Dialog extends Component {
 
         return (
             <div className={cx().part('actions').build()}>
-                {actions}
+                {actions.length === 1 ? actions[0] : actions}
             </div>
         );
 
