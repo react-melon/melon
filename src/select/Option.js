@@ -8,6 +8,12 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('SelectOption');
 
+/**
+ * SelectOption
+ *
+ * @class
+ * @param {*} props 属性
+ */
 export default function SelectOption(props)  {
 
     const {
@@ -16,7 +22,8 @@ export default function SelectOption(props)  {
         disabled,
         selected,
         value,
-        onClick
+        onClick,
+        style
     } = props;
 
     const className = cx(props)
@@ -27,8 +34,9 @@ export default function SelectOption(props)  {
         .build();
 
     return (
-        <div className={className}
-            key={value}
+        <div
+            className={className}
+            style={style}
             data-value={value}
             data-role="option"
             title={label || children}

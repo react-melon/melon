@@ -7,6 +7,10 @@ import React from 'react';
 import {mount} from 'enzyme';
 import Select from '../../src/Select';
 
+import '../../src/css/theme/default/index.styl';
+import '../../src/css/base.styl';
+import '../../src/css/Select.styl';
+
 /* eslint-disable max-nested-callbacks */
 
 describe('Select', function () {
@@ -39,7 +43,16 @@ describe('Select', function () {
         setTimeout(() => {
 
             expect(select.isOpen()).toBeTruthy();
-            document.querySelectorAll('.ui-select-option')[1].click();
+
+            let options = document.querySelectorAll('.ui-select-option');
+
+            // 有 6 个选项
+            expect(options.length).toBe(6);
+
+            // 第一项被选中
+            expect(document.querySelectorAll('.ui-select-option.state-selected').length).toBe(1);
+
+            options[1].click();
 
             setTimeout(() => {
 

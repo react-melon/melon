@@ -9,9 +9,21 @@ import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('SelectOptionGroup');
 
+/**
+ * OptionGroup
+ *
+ * @class
+ * @param {*} props 属性
+ */
 export default function SelectOptionGroup(props) {
 
-    const {children, disabled, label, onClick} = props;
+    const {
+        value,
+        children,
+        disabled,
+        label,
+        onClick
+    } = props;
 
     return (
         <div className={cx(props).build()}>
@@ -27,6 +39,7 @@ export default function SelectOptionGroup(props) {
                         <Option
                             {...child.props}
                             key={child.props.value}
+                            selected={child.props.value === value}
                             disabled={child.props.disabled || disabled}
                             onClick={onClick} />
                     );
