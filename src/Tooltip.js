@@ -4,11 +4,29 @@
  */
 
 import React, {Component, PropTypes} from 'react';
-import ReactDOM from 'react-dom';
-import * as dom from './common/util/dom';
 import {create} from 'melon-core/classname/cxBuilder';
+import Popover from './Popover';
 
 const cx = create('Tooltip');
+
+const DIRECTION_ALIGNMENT_MAP = {
+    top: ['tc', 'bc'],
+    bottom: ['bc', 'tc'],
+    left: ['cl', 'cr'],
+    right: ['cr', 'cl']
+};
+
+const DIRECTION_OFFSET_MAP = {
+    top: [0, -1],
+    bottom: [0, 1],
+    left: [-1, 0],
+    right: [1, 0]
+};
+
+const MODES = {
+    over: 'over',
+    click: 'click'
+};
 
 /**
  * melon/Tooltip
@@ -32,6 +50,8 @@ export default class Tooltip extends Component {
         this.onClick = this.onClick.bind(this);
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onRequestClose = this.onRequestClose.bind(this);
+        this.hide = this.hide.bind(this);
 
         /**
          * 状态
@@ -40,48 +60,9 @@ export default class Tooltip extends Component {
          * @type {Object}
          */
         this.state = {
-            isShown: false
+            open: false
         };
 
-    }
-
-    /**
-     * 将要Mount时的处理
-     *
-     * @public
-     * @override
-     */
-    componentDidMount() {
-        const popup = this.popup = Tooltip.createPopup();
-        this.renderPopup(popup, this.props.content);
-    }
-
-    /**
-     * 将要Unmount时的处理
-     *
-     * @public
-     * @override
-     */
-    componentWillUnmount() {
-        Tooltip.destroyPopup(this.popup);
-
-        /**
-         * 弹出层的dom
-         *
-         * @protected
-         * @type {HTMLElement}
-         */
-        this.popup = null;
-    }
-
-    /**
-     * 状态更新时的处理
-     *
-     * @public
-     * @override
-     */
-    componentDidUpdate() {
-        this.renderPopup(this.popup, this.props.content);
     }
 
     /**
@@ -114,14 +95,10 @@ export default class Tooltip extends Component {
         this.hide();
     }
 
-    /**
-     * 当前是否显示
-     *
-     * @public
-     * @return {boolean}
-     */
-    isShown() {
-        return this.state.isShown;
+    onRequestClose() {
+        if (this.props.mode === 'click') {
+            this.hide();
+        }
     }
 
     /**
@@ -130,7 +107,7 @@ export default class Tooltip extends Component {
      * @public
      */
     toggle() {
-        this.isShown() ? this.hide() : this.show();
+        this.state.open ? this.hide() : this.show();
     }
 
     /**
@@ -139,7 +116,7 @@ export default class Tooltip extends Component {
      * @public
      */
     show() {
-        this.setState({isShown: true});
+        this.setState({open: true});
     }
 
     /**
@@ -148,85 +125,24 @@ export default class Tooltip extends Component {
      * @public
      */
     hide() {
-        this.setState({isShown: false});
+        this.setState({open: false});
     }
 
-    /**
-     * 获取位置的样式
-     *
-     * @protected
-     * @return {Object}
-     */
-    getPosition() {
+    getPopoverAlignment() {
 
-        const main = this.main;
+        let {
+            offset,
+            direction
+        } = this.props;
 
-        if (!this.isShown() || !main) {
-            return {
-                left: -10000,
-                top: 0,
-                opacity: 0,
-                width: 'auto',
-                height: 'auto'
-            };
-        }
+        let [layerAlignment, anchorAlignment] = DIRECTION_ALIGNMENT_MAP[direction];
+        let layerOffset = DIRECTION_OFFSET_MAP[direction].map(i => i * offset);
 
-        const props = this.props;
-
-        const {
-            direction,
-            offsetX,
-            offsetY
-        } = props;
-
-        const popup = this.popup.childNodes[0];
-
-        const position = dom.getPosition(main);
-
-        const {offsetWidth, offsetHeight} = popup;
-
-        const styles = {opacity: 1};
-
-        switch (direction) {
-            case 'top':
-                styles.left = position.left + (position.width - offsetWidth) / 2;
-                styles.top = position.top - offsetHeight - offsetY;
-                break;
-            case 'bottom':
-                styles.left = (position.width - offsetWidth) / 2 + position.left;
-                styles.top = position.top + position.height + offsetY;
-                break;
-            case 'left':
-                styles.top = (position.height - offsetHeight) / 2 + position.top;
-                styles.left = position.left - offsetWidth - offsetY;
-                break;
-            case 'right':
-                styles.top = (position.height - offsetHeight) / 2 + position.top;
-                styles.left = position.left + position.width + offsetX;
-                break;
-        }
-
-        return styles;
-
-    }
-
-    /**
-     * 渲染弹出层
-     *
-     * @protected
-     * @param  {HTMLElement} target  目标dom
-     * @param  {string|ReactElement} content 内容
-     */
-    renderPopup(target, content) {
-
-        ReactDOM.render(
-            <div
-                className={cx().part('popup').build()}
-                style={this.getPosition()}>
-                {content}
-            </div>,
-            target
-        );
+        return {
+            layerAlignment,
+            anchorAlignment,
+            layerOffset
+        };
 
     }
 
@@ -238,32 +154,53 @@ export default class Tooltip extends Component {
      */
     render() {
 
-        const props = this.props;
-
-        const {
+        let {
             mode,
             direction,
             children,
-            style
-        } = props;
+            style,
+            content,
+            maxHeight,
+            closeDelay
+        } = this.props;
 
-        const onClick = mode === 'click' ? this.onClick : null;
-        const onMouseEnter = mode === 'over' ? this.onMouseEnter : null;
-        const onMouseLeave = mode === 'over' ? this.onMouseLeave : null;
+        let eventHanlders = mode === MODES.click
+            ? {
+                onClick: this.onClick
+            }
+            : {
+                onMouseEnter: this.onMouseEnter,
+                onMouseLeave: this.onMouseLeave
+            };
+
+        let innerEventHandlers = mode === MODES.over ? eventHanlders : null;
+
+        let className = cx(this.props).addVariants(direction).build();
+        let alignment = this.getPopoverAlignment();
 
         return (
             <div
-                ref={main => {
-                    if (main) {
-                        this.main = main;
-                    }
-                }}
+                {...eventHanlders}
+                ref="main"
                 style={style}
-                className={cx(props).addStates({direction}).build()}
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}>
+                className={className}>
                 {children}
+                <Popover
+                    {...alignment}
+                    closeDelay={closeDelay}
+                    open={this.state.open}
+                    variants={['tooltip']}
+                    maxHeight={maxHeight}
+                    autoWidth={true}
+                    useLayerMask={false}
+                    anchor={this.refs.main}
+                    onRequestClose={this.onRequestClose}>
+                    <div
+                        {...innerEventHandlers}
+                        className={cx.getPartClassName('popover')}>
+                        {content}
+                    </div>
+                </Popover>
             </div>
         );
     }
@@ -273,43 +210,15 @@ export default class Tooltip extends Component {
 Tooltip.displayName = 'Tooltip';
 
 Tooltip.propTypes = {
-    arrow: PropTypes.bool.isRequired,
     direction: PropTypes.oneOf(['top', 'bottom', 'left', 'right']).isRequired,
     mode: PropTypes.oneOf(['over', 'click']),
-    content: PropTypes.node.isRequired
+    content: PropTypes.node.isRequired,
+    offset: PropTypes.number,
+    closeDelay: PropTypes.number
 };
 
 Tooltip.defaultProps = {
-    arrow: true,
     direction: 'bottom',
     mode: 'over',
-    offsetX: 14,
-    offsetY: 14
+    offset: 14
 };
-
-(function () {
-
-    let container;
-
-    Tooltip.createPopup = function () {
-
-        if (!container) {
-            container = document.createElement('div');
-            container.className = cx().part('container').build();
-            document.body.appendChild(container);
-        }
-
-        const popup = document.createElement('div');
-
-        container.appendChild(popup);
-
-        return popup;
-
-    };
-
-    Tooltip.destroyPopup = function (popup) {
-        ReactDOM.unmountComponentAtNode(popup);
-        container.removeChild(popup);
-    };
-
-})();
