@@ -33,7 +33,7 @@ export default function Alert(props) {
             key="submit"
             size={size}
             type="button"
-            onClick={onConfirm ? e => onConfirm() : null}
+            onClick={onConfirm}
             variants={buttonVariants} />
     );
 
@@ -83,4 +83,4 @@ Alert.defaultProps = {
  * @param {Object} options 警告窗参数
  * @return {Function} 清理函数
  */
-Alert.show = createCommand(Alert);
+Alert.show = createCommand(Alert, ['onConfirm']);

@@ -11,10 +11,11 @@ let container = null;
 /**
  * 创建一个对话框构造器
  *
- * @param  {Function} Dialog ReactComponent
- * @return {Function}        一个可以实时创建对话框的函数
+ * @param  {Function}      Dialog      ReactComponent
+ * @param  {Array<string>} closeEvents 指定的事件会被包裹成高阶函数，获得一个 close 函数
+ * @return {Function} 一个可以实时创建对话框的函数
  */
-export default function createDialogCommand(Dialog) {
+export default function createDialogCommand(Dialog, closeEvents = []) {
 
     return function (options) {
 
@@ -27,16 +28,41 @@ export default function createDialogCommand(Dialog) {
         let element = document.createElement('div');
         container.appendChild(element);
 
-        ReactDOM.render(
-            <Dialog {...options} open={true} />,
-            element,
+        options = closeEvents.reduce(
+            (options, event) => {
+
+                return {
+                    ...options,
+                    [event]: (...args) => options[event](close, ...args)
+                };
+
+            },
+            options
         );
 
-        return function () {
-            ReactDOM.unmountComponentAtNode(element);
-            container.removeChild(element);
-            element = null;
-        };
+        ReactDOM.render(
+            <Dialog {...options} open={true} />,
+            element
+        );
+
+        function close() {
+
+            ReactDOM.render(
+                <Dialog {...options} open={false} />,
+                element
+            );
+
+            setTimeout(() => {
+
+                ReactDOM.unmountComponentAtNode(element);
+                container.removeChild(element);
+                element = null;
+
+            }, 1000);
+
+        }
+
+        return close;
 
     };
 
