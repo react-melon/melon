@@ -9,11 +9,7 @@ import InputComponent from 'melon-core/InputComponent';
 import Group from './select/OptionGroup';
 import Option from './select/Option';
 import {create} from 'melon-core/classname/cxBuilder';
-import Layer from './Layer';
-import align from 'dom-align';
-import {Motion, spring} from 'react-motion';
-import {throttle} from './common/util/fn';
-import {getClientHeight, getClientWidth} from './common/util/dom';
+import Popover, {alignments} from './Popover';
 
 const cx = create('Select');
 
@@ -49,97 +45,9 @@ export default class Select extends InputComponent {
 
         this.onClick = this.onClick.bind(this);
         this.onClickOption = this.onClickOption.bind(this);
-        this.onMotionEnd = this.onMotionEnd.bind(this);
-        this.onWindowResizeOrScroll = throttle(
-            this.onWindowResizeOrScroll.bind(this),
-            200,
-            {leading: true, trailing: true}
-        );
-
         this.hideOptions = this.hideOptions.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
-
-    }
-
-    componentDidUpdate() {
-
-        if (!this.layer || !this.main || !this.state.open) {
-            return;
-        }
-
-        let {
-            mainArchor,
-            layerArchor
-        } = this.props;
-
-        if (this.layer.offsetWidth < this.main.offsetWidth) {
-            this.layer.style.width = `${this.main.offsetWidth}px`;
-        }
-
-        align(
-            this.layer,
-            this.main,
-            {
-                points: [layerArchor, mainArchor],
-                overflow: {
-                    adjustX: true,
-                    adjustY: true
-                }
-            }
-        );
-
-
-    }
-
-    componentWillUnmount() {
-        this.unbindToWindow();
-    }
-
-    onWindowResizeOrScroll() {
-
-        if (!this.state.open || !this.layer || !this.main) {
-            return;
-        }
-
-        let {
-            bottom,
-            top,
-            left,
-            right
-        } = this.main.getBoundingClientRect();
-
-        let windowHeight = getClientHeight();
-        let windowWidth = getClientWidth();
-
-        // 在视野内
-        if (
-            top > 0
-            && bottom < windowHeight
-            && left > 0
-            && right < windowWidth
-        ) {
-
-            let {
-                mainArchor,
-                layerArchor
-            } = this.props;
-
-            align(
-                this.layer,
-                this.main,
-                {
-                    points: [layerArchor, mainArchor],
-                    overflow: {
-                        adjustX: true,
-                        adjustY: true
-                    }
-                }
-            );
-
-            return;
-        }
-
-        this.hideOptions();
+        this.showSelectedOption = this.showSelectedOption.bind(this);
 
     }
 
@@ -153,40 +61,14 @@ export default class Select extends InputComponent {
 
         let children = Children.map(
             this.props.children,
-            this.renderItem,
+            this.renderOption,
             this
         );
 
-        let className = cx.getPartClassName('popup');
-        let {open, closing} = this.state;
-        let begin = open && !closing ? 0 : 1;
-        let end = open && !closing ? 1 : 0;
-
         return (
-            <Motion
-                defaultStyle={{
-                    opacity: begin,
-                    scale: begin
-                }}
-                style={{
-                    opacity: spring(end),
-                    scale: spring(end, {stiffness: 260, damping: 20})
-                }}
-                onRest={this.onMotionEnd}>
-                {({scale, opacity}) => (
-                    <div
-                        className={className}
-                        style={{
-                            opacity: opacity,
-                            transform: `scale(${scale}, ${scale})`
-                        }}
-                        ref={layer => {
-                            this.layer = layer;
-                        }}>
-                        {children}
-                    </div>
-                )}
-            </Motion>
+            <div className={cx.getPartClassName('popup')}>
+                {children}
+            </div>
         );
 
     }
@@ -199,7 +81,7 @@ export default class Select extends InputComponent {
      * @param  {number} index 序号
      * @return {ReactElement}
      */
-    renderItem(child, index) {
+    renderOption(child, index) {
 
         if (!child) {
             return null;
@@ -209,6 +91,7 @@ export default class Select extends InputComponent {
             return (
                 <Option
                     {...child.props}
+                    selected={this.state.value === child.props.value}
                     onClick={this.onClickOption}
                     key={index} />
             );
@@ -218,6 +101,7 @@ export default class Select extends InputComponent {
             return (
                 <Group
                     {...child.props}
+                    value={this.state.value}
                     onClick={this.onClickOption}
                     key={index} />
             );
@@ -294,7 +178,9 @@ export default class Select extends InputComponent {
         }
 
         for (let i = 0, len = children.length; i < len; ++i) {
+
             const child = children[i];
+
             if (child.type === 'optgroup') {
                 const option = this.findOption(value, child.props.children);
                 if (option) {
@@ -338,8 +224,7 @@ export default class Select extends InputComponent {
     showOptions() {
         this.setState({
             open: true
-        });
-        this.bindToWindow();
+        }, this.showSelectedOption);
     }
 
     /**
@@ -349,32 +234,30 @@ export default class Select extends InputComponent {
      */
     hideOptions() {
         this.setState({
-            closing: true
+            open: false
         });
-        this.unbindToWindow();
     }
 
-    bindToWindow() {
-        window.addEventListener('resize', this.onWindowResizeOrScroll);
-        window.addEventListener('scroll', this.onWindowResizeOrScroll);
-    }
 
-    unbindToWindow() {
-        window.addEventListener('resize', this.onWindowResizeOrScroll);
-        window.removeEventListener('scroll', this.onWindowResizeOrScroll);
-    }
+    showSelectedOption() {
 
-    /**
-     * 当动画完成时的回调
-     */
-    onMotionEnd() {
-        if (this.state.closing) {
-            this.setState({
-                closing: false,
-                open: false
-            });
+        let value = this.state.value;
+        let layer = this.popover.getLayer();
+
+        if (value == null || !layer) {
+            return;
         }
+
+        let selectedOption = layer.querySelector(`[data-value="${value}"]`);
+
+        if (selectedOption) {
+            setTimeout(() => {
+                selectedOption.scrollIntoView();
+            }, 50);
+        }
+
     }
+
 
     /**
      * 点击时处理
@@ -434,22 +317,32 @@ export default class Select extends InputComponent {
     render() {
 
         let className = cx(this.props).addStates(this.getStyleStates()).build();
-        let {open, closing} = this.state;
+        let {
+            autoWidth,
+            style,
+            maxHeight
+        } = this.props;
 
         return (
             <div
                 onClick={this.onClick}
                 className={className}
-                ref={main => {
-                    this.main = main;
-                }}>
+                style={style}
+                ref="main">
                 {this.renderLabel()}
                 {this.renderHiddenInput()}
                 {this.renderIcon()}
-                <Layer
-                    open={open || closing}
-                    onClickAway={this.hideOptions}
-                    render={this.renderOptions} />
+                <Popover
+                    ref={popover => (this.popover = popover)}
+                    maxHeight={maxHeight}
+                    autoWidth={autoWidth}
+                    variants={['select']}
+                    anchor={this.refs.main}
+                    useLayerMask={false}
+                    open={this.state.open}
+                    onRequestClose={this.hideOptions}>
+                    {this.renderOptions()}
+                </Popover>
             </div>
         );
 
@@ -459,25 +352,22 @@ export default class Select extends InputComponent {
 
 Select.displayName = 'Select';
 
-let archor = PropTypes.oneOf([
-    'tl', 'tc', 'tr',
-    'cl', 'cc', 'cr',
-    'bl', 'bc', 'br'
-]);
-
 Select.propTypes = {
     ...InputComponent.propTypes,
     placeholder: PropTypes.string,
     children: PropTypes.node.isRequired,
-    layerArchor: archor,
-    mainArchor: archor
+    layerArchor: PropTypes.oneOf(alignments),
+    mainArchor: PropTypes.oneOf(alignments),
+    maxHeight: PropTypes.number,
+    autoWidth: PropTypes.bool
 };
 
 Select.defaultProps = {
     ...InputComponent.defaultProps,
     placeholder: '请选择',
     layerArchor: 'tl',
-    mainArchor: 'tl'
+    mainArchor: 'tl',
+    autoWidth: false
 };
 
 Select.childContextTypes = InputComponent.childContextTypes;
@@ -493,12 +383,18 @@ export function createOptions(dataSource) {
 
     return dataSource.map(function (option, index) {
 
+        let {
+            disabled,
+            value,
+            name
+        } = option;
+
         return (
             <option
-                key={index}
-                disabled={option.disabled}
-                value={option.value}
-                label={option.name} />
+                key={value}
+                disabled={disabled}
+                value={value}
+                label={name} />
         );
 
     });
@@ -506,3 +402,8 @@ export function createOptions(dataSource) {
 }
 
 Select.createOptions = createOptions;
+
+export {
+    Option,
+    Group as OptionGroup
+};
