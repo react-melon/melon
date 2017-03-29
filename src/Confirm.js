@@ -8,65 +8,54 @@ import Dialog from './Dialog';
 import Button from './Button';
 import createCommand from './dialog/commander';
 
-// 这里我们尝试做过 function component
-// 但是在 TestUtils 中渲染出来的组件树中找不到 funciton component，非常诡异；
-// 先把这货改成正常的 component，后面再看能不能优化
+/* eslint-disable fecs-prefer-class */
 
 /**
  * melon/Confirm
  *
  * @extends {React.Component}
  * @class
+ * @param {Object} props 属性
  */
-export default class Confirm extends React.Component {
+export default function Confirm(props) {
 
-    /**
-     * 渲染
-     *
-     * @public
-     * @return {ReactElement}
-     */
-    render() {
 
-        const props = this.props;
+    const {
+        size,
+        buttonVariants,
+        variants = [],
+        onConfirm,
+        onCancel,
+        cancelButtonText,
+        confirmButtonText,
+        ...rest
+    } = props;
 
-        const {
-            size,
-            buttonVariants,
-            variants = [],
-            onConfirm,
-            onCancel,
-            ...rest
-        } = props;
+    const actions = [
+        <Button
+            label={cancelButtonText}
+            key="cancel"
+            size={size}
+            type="button"
+            onClick={onCancel ? () => onCancel() : null}
+            variants={[...buttonVariants, 'cancel']} />,
+        <Button
+            label={confirmButtonText}
+            key="submit"
+            type="button"
+            size={size}
+            onClick={onConfirm ? () => onConfirm() : null}
+            variants={[...buttonVariants, 'confirm']} />
+    ];
 
-        const actions = [
-            <Button
-                label="取消"
-                key="cancel"
-                size={size}
-                type="button"
-                onClick={onCancel ? () => onCancel() : null}
-                variants={[...buttonVariants, 'cancel']} />,
-            <Button
-                label="确定"
-                key="submit"
-                type="button"
-                size={size}
-                onClick={onConfirm ? () => onConfirm() : null}
-                variants={[...buttonVariants, 'confirm']} />
-        ];
-
-        return (
-            <Dialog
-                {...rest}
-                size={size}
-                title={null}
-                maskClickClose={false}
-                actions={actions}
-                variants={[...variants, 'confirm']} />
-        );
-
-    }
+    return (
+        <Dialog
+            {...rest}
+            size={size}
+            maskClickClose={false}
+            actions={actions}
+            variants={[...variants, 'confirm']} />
+    );
 
 }
 
@@ -88,4 +77,4 @@ Confirm.defaultProps = {
     buttonVariants: ['primary']
 };
 
-Confirm.show = createCommand(Confirm);
+Confirm.show = createCommand(Confirm, ['onConfirm', 'onCancel']);
