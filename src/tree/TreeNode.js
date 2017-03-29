@@ -141,7 +141,7 @@ TreeNode.propTypes = {
     expand: PropTypes.bool,
     selected: PropTypes.bool,
     level: PropTypes.number
-},
+};
 
 TreeNode.defaultProps = {
     label: '',
