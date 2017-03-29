@@ -15,36 +15,21 @@ import Layer from '../../src/Layer';
 
 describe('Dialog', function () {
 
-    it('mask will lock scroll', function (done) {
+    it('mask will lock scroll', function () {
 
-        let TestComponent = React.createClass({
+        let wrapper = mount(
+            <Mask
+                show={false}
+                lockScrollingOnShow={true} />
+        );
 
-            getInitialState() {
-                return {
-                    show: false
-                };
-            },
+        expect(document.body.style.overflow).toBe('');
 
-            componentDidMount() {
-                this.setState({show: true}, () => {
-                    const body = document.getElementsByTagName('body')[0];
-                    expect(body.style.overflow).toBe('hidden');
-                    done();
-                });
-            },
+        wrapper.setProps({show: true});
 
-            render() {
+        expect(document.body.style.overflow).toBe('hidden');
 
-                return (
-                    <Mask
-                        show={this.state.show}
-                        lockScrollingOnShow={true} />
-                );
-
-            }
-        });
-
-        mount(<TestComponent />);
+        wrapper.unmount();
 
     });
 
@@ -55,7 +40,7 @@ describe('Dialog', function () {
                 title="test"
                 open={false}
                 actions={
-                    <footer></footer>
+                    <footer key="1"></footer>
                 } />
         );
 
@@ -108,7 +93,7 @@ describe('Dialog', function () {
             dialog.unmount();
             done();
 
-        }, 1000);
+        }, 2000);
 
 
     });
@@ -135,7 +120,7 @@ describe('Dialog', function () {
             dialog.unmount();
             done();
 
-        }, 1000);
+        }, 2000);
 
     });
 
