@@ -1,21 +1,31 @@
 @require './base.styl'
 @require './Icon.styl'
+@require 'react-sticky-state/src/sticky-state.css'
 
 .{$-melon-class-prefix}-table
     box-sizing: border-box
     width: 100%
     border-radius: 2px
     border: 1px solid $-melon-colors.grey400
-    overflow: auto
 
     &-row
-        display: inline-block
-        white-space: nowrap
+        display: flex
+        flex-flow: row nowrap
         border-top: 1px solid $-melon-colors.grey400
 
         &.state-selected
             .{$-melon-variant-prefix}-table-selector
                 color: $-melon-colors.blue500
+
+    &-header
+
+        background: #fff
+
+        &.sticky
+            top: 0
+
+        &.is-sticky
+            border-bottom: 1px solid #bdbdbd
 
     &-header &-row
         height: 56px
@@ -41,6 +51,7 @@
         &:hover
             background-color: $-melon-colors.grey200
 
+
     &-body-empty
 
         height: 10em
@@ -56,26 +67,19 @@
             vertical-align: middle
 
     &-cell
-        display: inline-block
-        vertical-align: top
-        font-size: $-melon-x-small-font-size
+        display: flex
+        box-sizing: border-box;
+        justify-content: center
+        align-items: center
+        padding: 0.5em
+
         color: rgba($-melon-colors.black, .87)
-        white-space: normal
+        font-size: $-melon-x-small-font-size
 
         &:first-child
             padding-left: 1em
-
-        &-wrap1
-            display: table
-            table-layout: fixed
-
-        &-wrap2
-            display: table-row
-
-        &-wrap3
-            display: table-cell
-            vertical-align: middle
-            padding: 0.5em
+        &:last-child
+            padding-right: 1em
 
         .{$-melon-class-prefix}-select
             border-bottom-width: 0
@@ -139,3 +143,23 @@
     &.state-sort-by-asc &-sorter,
     &.state-sort-by-desc &-sorter
         color: rgba(0, 0, 0, .87)
+
+.{$-melon-class-prefix}-table-cell-text-editor
+
+    cursor: pointer;
+
+    &-layer
+        box-sizing: border-box
+        padding: 0.5em 1em 1em 1em
+
+        &.variant-confirm
+            padding: 1em
+
+            >.ui-title
+                margin-top: 0
+
+    &-footer
+        display: flex
+        flex-flow: row nowrap
+        justify-content: flex-end
+        margin-top: 1em

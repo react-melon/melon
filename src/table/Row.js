@@ -76,8 +76,6 @@ export default class TableRow extends Component {
         } = props;
 
         const {
-            width,
-            align,
             dataKey,
             cellRenderer
         } = columnData;
@@ -89,8 +87,6 @@ export default class TableRow extends Component {
         const cellProps = {
             part,
             height,
-            width,
-            align,
             rowIndex,
             columnData,
             cellData,
@@ -132,14 +128,17 @@ export default class TableRow extends Component {
      */
     render() {
 
-        const props = this.props;
-        const {columns, tableWidth} = props;
+        const columns = this.props.columns;
 
         return (
-            <div
-                className={cx(props).build()}
-                style={{width: tableWidth ? tableWidth - 2 : null}}>
-                {columns.map((column, index) => this.renderCell(props, column.props, index))}
+            <div className={cx(this.props).build()}>
+                {columns.map(
+                    (column, index) => this.renderCell(
+                        this.props,
+                        column.props,
+                        index
+                    )
+                )}
             </div>
         );
 
