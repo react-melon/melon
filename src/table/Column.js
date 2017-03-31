@@ -7,6 +7,7 @@ import React, {PropTypes, Component} from 'react';
 import Tooltip from '../Tooltip';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
+import TableCellTextEditor from './TextEditor';
 
 const cx = create('TableColumnHeader');
 
@@ -77,6 +78,32 @@ TableColumn.propTypes = {
     width: PropTypes.number.isRequired,
 
     /**
+     * 列宽度增长度
+     * @type {number}
+     */
+    grow: PropTypes.number.isRequired,
+
+    /**
+     * 列宽度收缩度
+     * @type {number}
+     */
+    shrink: PropTypes.number.isRequired,
+
+    /**
+     * 最大宽度
+     *
+     * @type {number}
+     */
+    maxWidth: PropTypes.number,
+
+    /**
+     * 最小宽度
+     *
+     * @type {number}
+     */
+    minWidth: PropTypes.number,
+
+    /**
      * 是否可排序
      *
      * @type {boolean}
@@ -88,7 +115,49 @@ TableColumn.propTypes = {
      *
      * @type {string}
      */
-    sortBy: PropTypes.oneOf(['asc', 'desc', 'none'])
+    sortBy: PropTypes.oneOf(['asc', 'desc', 'none']),
+
+    /**
+     * 是否可编辑
+     *
+     * @type {boolean}
+     */
+    editable: PropTypes.bool,
+
+    /**
+    * 编辑器选项
+    *
+    * @type {Object}
+    */
+    editorMode: PropTypes.oneOf(['inline', 'confirm']),
+
+    /**
+     * 编辑器标题
+     *
+     * @type {string}
+     */
+    editorTitle: PropTypes.string,
+
+    /**
+     * placeholder
+     *
+     * @type {string}
+     */
+    placeholder: PropTypes.string,
+
+    /**
+     * 文本编辑回调
+     *
+     * @type {Function}
+     * @param {string} propName 属性名
+     * @param {Object} props    属性
+     * @return {Error?}
+     */
+    onChange(propName, props) {
+        if (props.editable && props.onChange == null) {
+            return new Error('You muse set `onChange` handler while column is `editable`');
+        }
+    }
 
 };
 
@@ -152,9 +221,44 @@ TableColumn.headerRenderer = function (props) {
 
 };
 
+TableColumn.bodyRenderer = function (props) {
+
+    let {columnData, rowData, cellData, columnIndex, rowIndex} = props;
+
+    let {
+        editable,
+        editorMode,
+        onChange,
+        placeholder = '',
+        dataKey,
+        editorTitle
+    } = columnData;
+
+    let content = cellData == null ? placeholder : (cellData + '');
+
+    return editable
+        ? (
+            <TableCellTextEditor
+                mode={editorMode}
+                title={editorTitle}
+                onChange={onChange}
+                dataKey={dataKey}
+                columnData={columnData}
+                rowData={rowData}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}>
+                {content}
+            </TableCellTextEditor>
+        )
+        : cellData;
+};
+
 TableColumn.defaultProps = {
     align: 'left',
-    headerRenderer: TableColumn.headerRenderer
+    headerRenderer: TableColumn.headerRenderer,
+    bodyRenderer: TableColumn.bodyRenderer,
+    grow: 1,
+    shrink: 1
 };
 
 TableColumn._TABLE_COMPONENT_ = 'COLUMN';

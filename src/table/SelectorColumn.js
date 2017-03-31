@@ -97,6 +97,8 @@ TableSelectorColumn.propTypes = {
 TableSelectorColumn.defaultProps = {
     ...Column.defaultProps,
     width: 66,
+    grow: 0,
+    shrink: 0,
     cellRenderer: TableSelectorColumn.cellRenderer,
     headerRenderer: TableSelectorColumn.headerRenderer,
     footerRenderer: TableSelectorColumn.footerRenderer,

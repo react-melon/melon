@@ -7,6 +7,12 @@ import React, {Component, PropTypes, Children, cloneElement} from 'react';
 import Row from './table/Row';
 import {create} from 'melon-core/classname/cxBuilder';
 import Column from './table/Column';
+import Sticky from 'react-sticky-state';
+
+const SCROLL_CLASS = {
+    down: 'sticky-scroll-down',
+    up: 'sticky-scroll-up'
+};
 
 const cx = create('Table');
 
@@ -18,21 +24,6 @@ const cx = create('Table');
 class Table extends Component {
 
     /**
-     * 构造函数
-     *
-     * @public
-     * @param {*} props 属性
-     */
-    constructor(props) {
-
-        super(props);
-
-        this.state = {};
-
-        this.onWindowResize = this.onWindowResize.bind(this);
-    }
-
-    /**
      * 即将挂载到 DOM 时处理函数
      *
      * @public
@@ -41,16 +32,6 @@ class Table extends Component {
         this.setState({
             columns: this.getColumns(this.props)
         });
-    }
-
-    /**
-     * 已完成首次渲染时的处理函数
-     *
-     * @public
-     */
-    componentDidMount() {
-        this.onWindowResize();
-        window.addEventListener('resize', this.onWindowResize);
     }
 
     /**
@@ -66,15 +47,6 @@ class Table extends Component {
     }
 
     /**
-     * 即将被销毁时的处理函数
-     *
-     * @public
-     */
-    componentWillUnmount() {
-        window.addEventListener('resize', this.onWindowResize);
-    }
-
-    /**
      * 从属性中解析出列配置
      *
      * @protected
@@ -83,32 +55,12 @@ class Table extends Component {
      */
     getColumns(props) {
 
+        let {children, rowHasChanged} = props;
+
         return Children
-            .toArray(props.children)
-            .reduce(
-                (children, child) => {
-
-                    if (child != null) {
-
-                        if (child.type._TABLE_COMPONENT_ !== 'COLUMN') {
-                            throw new Error('Table child must be a TableColumn');
-                        }
-
-                        children.push(
-                            cloneElement(
-                                child,
-                                {
-                                    rowHasChanged: props.rowHasChanged
-                                }
-                            )
-                        );
-
-                    }
-
-                    return children;
-                },
-                []
-            );
+            .toArray(children)
+            .filter(child => child.type._TABLE_COMPONENT_ === 'COLUMN')
+            .map((column, i) => cloneElement(column, {rowHasChanged}));
 
     }
 
@@ -117,15 +69,27 @@ class Table extends Component {
      *
      * @protected
      * @param  {Array.Element} columns 表格列
-     * @param  {number} width   表格宽度
+     * @param  {boolean}       sticky  是否为 sticky
      * @return {Element}
      */
-    renderHeader(columns, width) {
-        return (
+    renderHeader(columns, sticky) {
+
+        let header = (
             <div className={cx.getPartClassName('header')}>
-                {this.renderRow('header', columns, null, -1, width)}
+                {this.renderRow('header', columns, null, -1)}
             </div>
         );
+
+        if (sticky) {
+            header = (
+                <Sticky scrollClass={SCROLL_CLASS}>
+                    {header}
+                </Sticky>
+            );
+        }
+
+        return header;
+
     }
 
     /**
@@ -133,21 +97,18 @@ class Table extends Component {
      *
      * @protected
      * @param  {Arra.Element} columns 表格列配置
-     * @param  {number} width   表格宽度
      * @return {Element}
      */
-    renderBody(columns, width) {
+    renderBody(columns) {
 
         const {dataSource, noDataContent} = this.props;
 
         const body = dataSource && dataSource.length
             ? dataSource.map(
-                (rowData, index) => this.renderRow('body', columns, rowData, index, width)
+                (rowData, index) => this.renderRow('body', columns, rowData, index)
             )
             : (
-                <div
-                    className={cx.getPartClassName('body-empty')}
-                    style={{width: width - 2}}>
+                <div className={cx.getPartClassName('body-empty')}>
                     {noDataContent}
                 </div>
             );
@@ -168,10 +129,9 @@ class Table extends Component {
      * @param  {Array.Element} columns    列配置
      * @param  {*}             rowData    行数据
      * @param  {number}        index      行号
-     * @param  {number}        tableWidth 表格宽度
      * @return {Element}
      */
-    renderRow(part, columns, rowData, index, tableWidth) {
+    renderRow(part, columns, rowData, index) {
 
         const {
             rowHeight,
@@ -191,7 +151,6 @@ class Table extends Component {
                 part={part}
                 columns={columns}
                 data={rowData}
-                tableWidth={tableWidth}
                 rowHasChanged={rowHasChanged} />
         );
     }
@@ -208,23 +167,6 @@ class Table extends Component {
     }
 
     /**
-     * 浏览器窗口大小变化处理函数
-     *
-     * @private
-     */
-    onWindowResize() {
-
-        const main = this.main;
-
-        if (this.main) {
-            this.setState({
-                width: main.offsetWidth
-            });
-        }
-
-    }
-
-    /**
      * 渲染
      *
      * @public
@@ -232,37 +174,23 @@ class Table extends Component {
      */
     render() {
 
-        let {width, columns} = this.state;
-
-        if (width) {
-            // 计算出tableWidth和所有的columnWidth，将更大的一个传递给row使用
-            width = Math.max(
-                width,
-                columns.reduce(
-                    (width, columns) => width + columns.props.width,
-                    0
-                )
-            );
-        }
-        else {
-            width = '';
-        }
+        let {headerSticky, style} = this.props;
+        let columns = this.state.columns;
 
         return (
             <div
                 className={cx(this.props).build()}
+                style={style}
                 ref={main => {
                     this.main = main;
                 }}>
-                {this.renderHeader(columns, width)}
-                {this.renderBody(columns, width)}
-                {this.renderFooter(columns, width)}
+                {this.renderHeader(columns, headerSticky)}
+                {this.renderBody(columns)}
+                {this.renderFooter(columns)}
             </div>
         );
 
     }
-
-
 
 }
 
@@ -274,7 +202,10 @@ Table.propTypes = {
     headerRowHeight: PropTypes.number,
     dataSource: PropTypes.array.isRequired,
     noDataContent: PropTypes.node,
-    rowHasChanged: PropTypes.func.isRequired
+    rowHasChanged: PropTypes.func.isRequired,
+    headerSticky: PropTypes.bool,
+    height: PropTypes.number,
+    width: PropTypes.number
 },
 
 Table.defaultProps = {
@@ -282,6 +213,7 @@ Table.defaultProps = {
     rowHeight: 48,
     headerRowHeight: 56,
     noDataContent: '没有数据',
+    headerSticky: true,
     rowHasChanged(r1, r2) {
         return r1 !== r2;
     }
@@ -289,7 +221,8 @@ Table.defaultProps = {
 
 Table.Column = Column;
 
+export default Table;
+
 export {
-    Table as default,
     Column
 };
