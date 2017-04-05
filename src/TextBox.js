@@ -65,8 +65,17 @@ export default class TextBox extends InputComponent {
 
         super.componentDidMount();
 
-        if (this.props.multiline && this.state.value != null) {
+        let {
+            multiline,
+            autoFocus
+        } = this.props;
+
+        if (multiline && this.state.value != null) {
             this.syncTextareaHeight();
+        }
+
+        if (autoFocus) {
+            this.input.focus();
         }
 
     }
@@ -265,7 +274,8 @@ TextBox.propTypes = {
     type: PropTypes.oneOf(['text', 'password', 'number']),
     placeholder: PropTypes.string,
     floatingLabel: PropTypes.string,
-    multiline: PropTypes.bool
+    multiline: PropTypes.bool,
+    autoFocus: PropTypes.bool
 };
 
 TextBox.contextTypes = InputComponent.contextTypes;
