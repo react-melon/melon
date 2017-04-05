@@ -13,6 +13,7 @@ const cx = create('Title');
 /**
  * melon/Title
  *
+ * @class
  * @param {Object}  props       属性
  * @param {Object}  props.level 级别
  * @return {ReactElement}
@@ -20,15 +21,12 @@ const cx = create('Title');
 export default function Title(props) {
 
     /* eslint-disable fecs-min-vars-per-destructure */
-    const {level, ...rest} = props;
+    let {level, variants, states, ...rest} = props;
 
-    return React.createElement(
-        `h${level}`,
-        {
-            ...rest,
-            className: cx(props).build()
-        }
-    );
+    let Type = `h${level}`;
+    let className = cx(props).addVariants(variants).addStates(states).build();
+
+    return <Type {...rest} className={className} />;
 
 }
 
