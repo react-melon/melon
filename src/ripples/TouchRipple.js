@@ -83,7 +83,8 @@ export default class TouchRipple extends Component {
         return (
             <TransitionMotion
                 willLeave={this.willLeave}
-                styles={styles}>
+                styles={styles}
+                didLeave={this.props.onMotionEnd}>
                 {interpolatedStyles =>
                     <div
                         onMouseDown={this.onMouseDown}
@@ -118,5 +119,6 @@ TouchRipple.defaultProps = {
 };
 
 TouchRipple.propTypes = {
-    opacity: PropTypes.number
+    opacity: PropTypes.number,
+    onMotionEnd: PropTypes.func
 };
