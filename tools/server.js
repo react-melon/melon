@@ -20,11 +20,20 @@ const middleware = webpackDevMiddleware(compiler, {
     path: path.join(__dirname, '../asset'),
     historyApiFallback: true,
     stats: {
-        colors: true
+        colors: true,
+        // chunks,200多个,有碍视听
+        chunks: false,
+        chunkModules: false
     }
 });
 
+app.use(require('connect-history-api-fallback')());
+
 app.use(middleware);
+
+app.use(require('webpack-hot-middleware')(compiler, {
+    log: false,
+}));
 
 const fs = middleware.fileSystem;
 
