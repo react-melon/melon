@@ -14,6 +14,8 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const config = Object.assign({}, require('./webpack.common'), {
 
     entry: [
+        'webpack-hot-middleware/client?reload=false',
+        'webpack/hot/only-dev-server',
         path.join(__dirname, '../example/index.js')
     ],
 
@@ -21,6 +23,7 @@ const config = Object.assign({}, require('./webpack.common'), {
         loaders: [{
             test: /\.js?$/,
             loaders: [
+                'react-hot',
                 'babel?cacheDirectory'
             ],
             exclude: [
