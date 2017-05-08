@@ -10,6 +10,7 @@ import HashLocator from 'numen/HashLocator';
 import BoxGroup from './BoxGroup';
 import Breadcrumb from './Breadcrumb';
 import Button from './Button';
+import Chip from './Chip';
 import Dialog from './Dialog';
 import Drawer from './Drawer';
 import Grid from './Grid';
@@ -37,6 +38,7 @@ const routes = {
     BoxGroup,
     Breadcrumb,
     Button,
+    Chip,
     Dialog,
     Drawer,
     Grid,
@@ -79,7 +81,6 @@ function bootstrap(account) {
     });
 
     locator.start();
-
 }
 
 bootstrap();
