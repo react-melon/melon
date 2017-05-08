@@ -1,0 +1,42 @@
+@require './base.styl'
+
+.{$-melon-class-prefix}-chip
+    display: inline-block
+    color: $-melon-chip.color
+    background-color: $-melon-chip.background-color
+    line-height: 32px
+    white-space: nowrap
+    border-radius: 16px / 50%
+    overflow: hidden
+    &.state-active
+        {$-melon-chip-shadow}
+        &:hover
+            color: $-melon-chip.color-hover
+            background-color: $-melon-chip.background-color-hover
+
+    &-avatar
+        display: table-cell
+        vertical-align: middle
+        width: 32px
+        height: 32px
+        border-radius: 50%
+    &-label
+        display: table-cell
+        padding-left: 8px
+        padding-right: 12px
+        vertical-align: middle
+    &-icon
+        display: table-cell
+        vertical-align: middle
+        padding-left: 8px
+        padding-right: 8px
+        .{$-melon-class-prefix}-icon
+            display: table-cell
+            font-size: inherit
+            color: $-melon-chip.icon.color
+            background-color: $-melon-chip.icon.background-color
+            border-radius: 50%
+            &:hover
+                color: $-melon-chip.icon.color-hover
+                background-color: $-melon-chip.icon.background-color-hover
+

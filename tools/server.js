@@ -32,7 +32,7 @@ app.use(require('connect-history-api-fallback')());
 app.use(middleware);
 
 app.use(require('webpack-hot-middleware')(compiler, {
-    log: false,
+    quiet: true
 }));
 
 const fs = middleware.fileSystem;
