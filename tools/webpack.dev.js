@@ -28,7 +28,7 @@ const config = Object.assign({}, require('./webpack.common'), {
             ]
         }, {
             test: /\.styl$/,
-            loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url']
+            loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url&include css']
         }, {
             test: /\.(svg|eot|ttf|woff|woff2|jpg|png)(\?.*)?$/,
             loader: 'file?name=asset/[name].[ext]'
