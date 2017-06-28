@@ -255,7 +255,7 @@ export default class Dialog extends Component {
         }
 
         actions = actions
-            .map(action => cloneElement(action, {size: 'l'}))
+            .map(action => cloneElement(action, {size: action.props.size || 'l'}))
             .reverse();
 
         return (
