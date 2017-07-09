@@ -3,7 +3,8 @@
  * @author leon <ludafa@outlook.com>
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Popover from '../Popover';
 import TextBox from '../TextBox';
 import Button from '../Button';

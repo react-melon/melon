@@ -101,7 +101,8 @@
     "react-dom": "^0.14.8||^15.4.0",
     "react-motion": "^0.4.2",
     "react-sticky-state": "^2.1.5",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "prop-types": "^15.5.10"
   },
   "babel": {
     "env": {

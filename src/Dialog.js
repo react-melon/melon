@@ -3,7 +3,8 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {Component, PropTypes, cloneElement} from 'react';
+import React, {Component, cloneElement} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Mask from './Mask';
 import * as dom from './common/util/dom';

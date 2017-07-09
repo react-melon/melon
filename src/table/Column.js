@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes, Component} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Tooltip from '../Tooltip';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';

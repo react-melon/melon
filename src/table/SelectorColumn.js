@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes, Component} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import Icon from '../Icon';
 import Column from './Column';

@@ -3,7 +3,8 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {Component, PropTypes, Children} from 'react';
+import React, {Component, Children} from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
 import omit from 'lodash/omit';
