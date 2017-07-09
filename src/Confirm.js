@@ -3,7 +3,8 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Dialog from './Dialog';
 import Button from './Button';
 import createCommand from './dialog/commander';

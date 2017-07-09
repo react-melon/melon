@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Mask from './Mask';
 import {create} from 'melon-core/classname/cxBuilder';
 import * as dom from './common/util/dom';

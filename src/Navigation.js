@@ -3,7 +3,8 @@
  * @author leon <ludafa@outlook.com>
  */
 
-import React, {Component, PropTypes, Children, cloneElement} from 'react';
+import React, {Component, Children, cloneElement} from 'react';
+import PropTypes from 'prop-types';
 import NavigationItem from './navigtaion/Item';
 import NavigationHeader from './navigtaion/Header';
 import Divider from './Divider';
