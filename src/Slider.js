@@ -3,7 +3,8 @@
  * @author cxtom <cxtom2008@gmail.com>
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import InputComponent from 'melon-core/InputComponent';

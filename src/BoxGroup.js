@@ -4,7 +4,8 @@
  * @author leon<ludafa@outlook.com>
  */
 
-import React, {PropTypes, Children} from 'react';
+import React, {Children} from 'react';
+import PropTypes from 'prop-types';
 import Option from './boxgroup/Option';
 import {create} from 'melon-core/classname/cxBuilder';
 import InputComponent from 'melon-core/InputComponent';

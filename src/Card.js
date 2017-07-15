@@ -13,6 +13,7 @@ const cx = create('Card');
 /**
  * melon/Card
  *
+ * @class
  * @param {Object}  props           属性
  * @return {ReactElement}
  */
