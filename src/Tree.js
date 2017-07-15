@@ -4,7 +4,8 @@
  *         leon<ludafa@outlook.com>
  */
 
-import React, {Component, PropTypes, cloneElement, Children} from 'react';
+import React, {Component, cloneElement, Children} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import {create} from 'melon-core/classname/cxBuilder';
 import TreeNode from './tree/TreeNode';

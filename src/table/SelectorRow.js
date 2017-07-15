@@ -3,7 +3,7 @@
  * @author leon <lupengyu@baidu.com>
  */
 
-import {PropTypes} from 'react';
+import PropTypes from 'prop-types';
 import Row from './Row';
 
 /**

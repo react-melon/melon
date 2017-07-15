@@ -3,7 +3,8 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Bar from './scrollview/Bar';
 import {create} from 'melon-core/classname/cxBuilder';
 

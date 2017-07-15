@@ -3,7 +3,8 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('TabsPanel');
@@ -11,6 +12,7 @@ const cx = create('TabsPanel');
 /**
  * melon/Tabs/TabPanel
  *
+ * @class
  * @param {Object}  props        属性
  * @param {boolean} props.active 是否选中
  * @return {ReactElement}

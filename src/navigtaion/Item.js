@@ -3,7 +3,8 @@
  * @author leon <ludafa@outlook.com>
  */
 
-import React, {Component, Children, PropTypes} from 'react';
+import React, {Component, Children} from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
 import TouchRipple from '../ripples/TouchRipple';

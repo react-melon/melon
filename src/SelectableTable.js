@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Table from './Table';
 import SelectorColumn from './table/SelectorColumn';
 import SelectorRow from './table/SelectorRow';

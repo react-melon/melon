@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {PropTypes, Children} from 'react';
+import React, {Children} from 'react';
+import PropTypes from 'prop-types';
 import Icon from './Icon';
 import InputComponent from 'melon-core/InputComponent';
 import Group from './select/OptionGroup';

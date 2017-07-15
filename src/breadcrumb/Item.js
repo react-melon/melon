@@ -4,6 +4,7 @@
   */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 
 const cx = create('BreadcrumbItem');
@@ -27,5 +28,5 @@ export default function BreadcrumbItem(props) {
 }
 
 BreadcrumbItem.propTypes = {
-    href: React.PropTypes.string
+    href: PropTypes.string
 };

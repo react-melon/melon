@@ -3,8 +3,8 @@
  * @author Ma63d(chuck7liu@gmail.com)
  */
 
-import React, {Component, PropTypes} from 'react';
-
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Icon from './Icon';
 
 // import {emphasize} from './common/util/color';

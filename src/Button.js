@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import TouchRipple from './ripples/TouchRipple';
 import omit from 'lodash/omit';
@@ -59,6 +60,6 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-    hasRipple: React.PropTypes.bool,
-    disabled: React.PropTypes.bool
+    hasRipple: PropTypes.bool,
+    disabled: PropTypes.bool
 };
