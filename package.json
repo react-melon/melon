@@ -11,7 +11,9 @@
     "setup": "rimraf asset && NODE_ENV=production webpack --config=tools/webpack.dll.js",
     "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
     "test-ci": "NODE_ENV=test karma start ./test/karma.ci.conf.js",
-    "coveralls": "cat ./test/coverage/lcov/lcov.info | ./node_modules/.bin/coveralls"
+    "coveralls": "cat ./test/coverage/lcov/lcov.info | ./node_modules/.bin/coveralls",
+    "demo": "start-storybook -p 9001 -c ./demo",
+    "build-demo": "build-storybook -c ./demo -o ./demo-site"
   },
   "directories": {
     "doc": "doc",
@@ -19,6 +21,10 @@
     "example": "example"
   },
   "devDependencies": {
+    "@kadira/react-storybook-addon-info": "^3.3.0",
+    "@kadira/storybook": "^2.35.3",
+    "@kadira/storybook-addon-actions": "^1.1.1",
+    "@kadira/storybook-addon-options": "^1.0.2",
     "babel-istanbul": "^0.11.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-external-helpers": "^6.8.0",
@@ -59,6 +65,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-jasmine-expect-jsx": "^1.0.2",
     "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "^0.0.30",
     "karma-webpack": "^1.8.0",
     "nib": "^1.1.2",
     "numen": "^0.2.0",
@@ -69,7 +76,8 @@
     "stylus-loader": "^2.3.1",
     "watchify": "^3.7.0",
     "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.8.3"
+    "webpack-dev-middleware": "^1.8.3",
+    "why-did-you-update": "^0.0.8"
   },
   "repository": {
     "type": "git",
@@ -96,7 +104,8 @@
     "melon-core": "^0.4.1",
     "react": "^0.14.8||^15.4.0",
     "react-dom": "^0.14.8||^15.4.0",
-    "react-motion": "^0.4.2"
+    "react-motion": "^0.4.2",
+    "react-sticky-state": "^2.1.5"
   },
   "babel": {
     "env": {

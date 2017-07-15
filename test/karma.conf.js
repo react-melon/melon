@@ -15,7 +15,6 @@ module.exports = {
     ],
 
     files: [
-        // 'test/components/ScrollView.spec.js'
         'test/components/**/*.spec.js'
     ],
 
@@ -70,7 +69,26 @@ module.exports = {
     autoWatch: true,
 
     // logLevel: config.LOG_DEBUG,
-    reporters: ['progress', 'coverage'],
+    reporters: ['coverage', 'spec'],
+
+    // plugins: [
+    //     'karma-jasmine',
+    //     'karma-jasmine-expect-jsx',
+    //     'karam-webpack',
+    //     'karam-coverage',
+    //     'karam-soucemap',
+    //     'karma-spec-reporter'
+    // ],
+    //
+    specReporter: {
+        maxLogLines: 5,             // limit number of lines logged per test
+        suppressErrorSummary: true, // do not print error summary
+        suppressFailed: true,      // do not print information about failed tests
+        suppressPassed: true,      // do not print information about passed tests
+        suppressSkipped: true,      // do not print information about skipped tests
+        showSpecTiming: true,      // print the time elapsed for each spec
+        failFast: true              // test would finish with error when a first fail occurs.
+    },
 
     coverageReporter: {
         dir: path.join(__dirname, './coverage'),
