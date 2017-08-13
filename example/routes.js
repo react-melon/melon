@@ -3,12 +3,17 @@
  * @author leon <ludafa@outlook.com>
  */
 
+// 首页
 import Home from './Home';
-import Button from './components/Button.md';
+
+// 指南
 import Installation from './guides/installation.md';
 import Usage from './guides/usage.md';
 
+// 组件
+import Button from './components/Button.md';
 import BoxGroup from './components/BoxGroup.md';
+import Dialog from './components/Dialog.md';
 
 export default [
     {
@@ -45,6 +50,11 @@ export default [
                 name: 'BoxGroup',
                 pathname: '/BoxGroup',
                 component: BoxGroup
+            },
+            {
+                name: 'Dialog',
+                pathname: '/Dialog',
+                component: Dialog
             }
         ]
     }
