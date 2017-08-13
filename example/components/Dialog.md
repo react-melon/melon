@@ -110,6 +110,52 @@ export default class DialogDemo extends PureComponent {
 }
 ```
 
+### Alert & Confirm
+
+对于系统中常用的 `window.alert` 和 `window.confirm` 来讲，`Dialog` 使用起来稍显示复杂。
+
+因此，我们提供了更加简单的命令式 API，简化开发。
+
+```react Alert & Confirm API
+import {Alert, Confirm, Button} from 'melon';
+import React from 'react';
+export default () => (
+    <div>
+        <Button
+            variants={['dange']}
+            onClick={() => {
+                Alert.show({
+                    title: '出错了',
+                    children: '对不起，服务异常，请稍候再试',
+                    onConfirm: close => close(),
+                    width: 400
+                });
+            }}>
+            弹出警告对话窗
+        </Button>
+        <Button
+            variants={['dange']}
+            onClick={() => {
+                Confirm.show({
+                    title: '请确认',
+                    children: '此消息被删除后无法恢复，确认要删除它吗？',
+                    width: 400,
+                    // onCancel(close) {
+                    //    如果不指定 onCancel / onConfirm 的处理函数，会自动关闭掉对话窗
+                    // },
+                    onConfirm(close) {
+                        // 这里可以做一些额外的处理
+                        // 如果指定了 onCancel / onConfirm 那么需要手动关闭对话窗
+                        close();
+                    }
+                });
+            }}>
+            弹出确认对话窗
+        </Button>
+    </div>
+)
+```
+
 ### 属性
 
 |名称|类型|默认值|描述|

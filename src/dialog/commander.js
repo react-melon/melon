@@ -33,7 +33,13 @@ export default function createDialogCommand(Dialog, closeEvents = []) {
 
                 return {
                     ...options,
-                    [event]: (...args) => options[event](close, ...args)
+                    [event]: (...args) => {
+                        if (typeof options[event] !== 'function') {
+                            close();
+                            return;
+                        }
+                        options[event](close, ...args);
+                    }
                 };
 
             },
