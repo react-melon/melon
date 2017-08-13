@@ -98,7 +98,7 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            title: 'index',
+            title: 'melon',
             template: path.join(__dirname, '../example/index.html')
         })
     ],

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=dev webpack-dev-server --config tools/webpack.dev.js",
     "build": "rimraf lib && NODE_ENV=production gulp build",
-    "build-doc": "rimraf publich && NODE_ENV=production webpack --config tools/webpack.doc.js",
+    "build-doc": "rimraf public && NODE_ENV=production webpack --config tools/webpack.doc.js",
     "lint": "fecs",
     "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
     "test-ci": "NODE_ENV=test karma start ./test/karma.ci.conf.js",

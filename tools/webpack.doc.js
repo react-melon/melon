@@ -7,7 +7,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: {
@@ -98,6 +98,11 @@ module.exports = {
             output: {
                 comments: false
             }
+        }),
+        new HtmlWebpackPlugin({
+            filename: '200.html',
+            title: 'melon',
+            template: path.join(__dirname, '../example/index.html')
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
