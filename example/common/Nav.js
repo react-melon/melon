@@ -3,15 +3,16 @@
  * @author leon(ludafa@outlook.com)
  */
 
-var React = require('react');
+let React = require('react');
+let PropTypes = require('prop-types');
 
-var NavItem = require('./NavItem');
+let NavItem = require('./NavItem');
 
 class Nav extends React.Component {
 
     render() {
 
-        var {components, name} = this.props;
+        let {components, name} = this.props;
 
         return (
             <nav className="nav">
@@ -33,7 +34,7 @@ class Nav extends React.Component {
 }
 
 Nav.propsTypes = {
-    components: React.PropTypes.array.isRequired
+    components: PropTypes.array.isRequired
 };
 
 module.exports = Nav;

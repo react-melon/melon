@@ -15,6 +15,7 @@ const cx = create('Link');
 /**
  * melon/Link
  *
+ * @class
  * @param {Object} props     属性
  * @return {ReactElement}
  */

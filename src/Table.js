@@ -3,7 +3,8 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {Component, PropTypes, Children, cloneElement} from 'react';
+import React, {Component, Children, cloneElement} from 'react';
+import PropTypes from 'prop-types';
 import Row from './table/Row';
 import {create} from 'melon-core/classname/cxBuilder';
 import Column from './table/Column';
