@@ -7,8 +7,11 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Button from 'melon/Button';
 import Icon from 'melon/Icon';
-import hljs from 'highlight.js';
 import Tooltip from 'melon/Tooltip';
+
+import prism from 'prismjs';
+
+/* eslint-disable fecs-min-vars-per-destructure */
 
 export default class ReactDemoCodeBlock extends PureComponent {
 
@@ -23,8 +26,16 @@ export default class ReactDemoCodeBlock extends PureComponent {
     };
 
     componentDidMount() {
+        this.highlight();
+    }
+
+    componentDidUpdate() {
+        this.highlight();
+    }
+
+    highlight() {
         try {
-            hljs.highlightBlock(this.refs.code);
+            prism.highlightElement(this.refs.code);
         }
         catch (e) {
             console.log(e);
@@ -45,8 +56,8 @@ export default class ReactDemoCodeBlock extends PureComponent {
                     </Tooltip>
                 </header>
                 <section style={{maxHeight: open ? '1000px' : '0'}}>
-                    <pre ref="code" className="jsx">
-                        <code className="language-jsx">
+                    <pre>
+                        <code ref="code" className="language-javascript">
                             {JSON.parse(`{"content":"${content}"}`).content}
                         </code>
                     </pre>
