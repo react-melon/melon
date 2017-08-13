@@ -40,6 +40,7 @@
     "gulp-babel-external-helpers": "^2.0.2",
     "gulp-clean": "^0.3.2",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.6.0",
     "html-loader": "^0.4.5",
     "html-webpack-plugin": "^2.30.1",
     "jasmine": "^2.4.1",
