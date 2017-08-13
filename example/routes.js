@@ -8,6 +8,8 @@ import Button from './components/Button.md';
 import Installation from './guides/installation.md';
 import Usage from './guides/usage.md';
 
+import BoxGroup from './components/BoxGroup.md';
+
 export default [
     {
         pathname: '/',
@@ -40,9 +42,9 @@ export default [
                 component: Button
             },
             {
-                name: 'Button1',
-                pathname: '/Button1',
-                component: Button
+                name: 'BoxGroup',
+                pathname: '/BoxGroup',
+                component: BoxGroup
             }
         ]
     }

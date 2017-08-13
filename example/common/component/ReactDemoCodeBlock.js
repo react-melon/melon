@@ -34,12 +34,7 @@ export default class ReactDemoCodeBlock extends PureComponent {
     }
 
     highlight() {
-        try {
-            prism.highlightElement(this.refs.code);
-        }
-        catch (e) {
-            console.log(e);
-        }
+        prism.highlightElement(this.refs.code);
     }
 
     render() {
@@ -55,7 +50,10 @@ export default class ReactDemoCodeBlock extends PureComponent {
                         </Button>
                     </Tooltip>
                 </header>
-                <section style={{maxHeight: open ? '1000px' : '0'}}>
+                <section style={{
+                    maxHeight: open ? '10000px' : '0',
+                    overflowY: open ? 'auto' : 'hidden'
+                }}>
                     <pre>
                         <code ref="code" className="language-javascript">
                             {JSON.parse(`{"content":"${content}"}`).content}
