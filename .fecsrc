@@ -10,7 +10,8 @@
                     "pragma": "React"
                 }
             ],
-            "fecs-no-require": -1
+            "fecs-no-require": -1,
+            "fecs-prefer-class": -1
         }
     },
     "files": ["src"]

@@ -1,0 +1,51 @@
+/**
+ * @file app stylus
+ * @author leon <ludafa@outlook.com>
+ */
+
+@require '../src/css/mixin.styl'
+
+*
+    -webkit-font-smoothing: antialiased;
+
+.app
+    background-color: #ececec;
+    padding-bottom: 5rem
+
+.app-bar
+    display: flex;
+    align-items: center;
+    background-color: $-melon-colors.blue500;
+    padding: 0 1rem
+    box-shadow: melon-get-z-depth('1')
+
+    >.ui-button
+        margin-left: -1rem;
+
+    >label
+        flex: 1 1 auto
+        color: #fff
+
+.content
+    min-width: 60rem
+    margin: 2rem
+    padding: 1rem 2rem
+    border-radius: 3px
+    background-color: #fff;
+
+@require 'highlight.js/styles/atom-one-dark.css'
+@require 'github-markdown-css/github-markdown.css'
+
+.markdown-body
+    ul
+        list-style: disc
+    ol
+        list-style: decimal;;
+
+
+.hljs
+    background: #282c34 !important;
+
+@require './common/component/ReactDemoCodeBlock.styl'
+@require './common/component/Link.styl'
+@require './Home/index.styl'

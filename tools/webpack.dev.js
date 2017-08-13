@@ -3,87 +3,113 @@
  * @author chenxiao07 <chenxiao07@baidu.com>
  */
 
-'use strict';
-
 const webpack = require('webpack');
 const path = require('path');
-const fs = require('fs');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const port = process.env.PORT || 9000;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
-const config = Object.assign({}, require('./webpack.common'), {
-
-    entry: [
-        'webpack-hot-middleware/client?reload=false&&quiet=false&&noInfo=true',
-        'webpack/hot/only-dev-server',
-        path.join(__dirname, '../example/index.js')
-    ],
-
-    module: {
-        loaders: [{
-            test: /\.js?$/,
-            loaders: [
-                'react-hot',
-                'babel?cacheDirectory'
-            ],
-            exclude: [
-                /node_modules/
-            ]
-        }, {
-            test: /\.styl$/,
-            loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url&include css']
-        }, {
-            test: /\.(svg|eot|ttf|woff|woff2|jpg|png)(\?.*)?$/,
-            loader: 'file?name=asset/[name].[ext]'
-        }, {
-            test: /\.json(\?.*)?$/,
-            loader: 'json'
-        }, {
-            test: /\.css$/,
-            loader: 'style!css'
-        }]
+module.exports = {
+    entry: {
+        index: [
+            'react-hot-loader/patch',
+            `webpack-dev-server/client?http://localhost:${port}`,
+            'webpack/hot/only-dev-server',
+            path.join(__dirname, '../example/index.js')
+        ]
     },
-
+    devtool: 'inline-source-map',
     output: {
-        path: path.resolve(__dirname, '../asset'),
         publicPath: '/',
         filename: '[name].js'
     },
-
-    cache: true,
-
-    debug: true,
-
-    devtool: 'eval-source-map',
-
+    resolve: {
+        alias: {
+            melon: path.join(__dirname, '../src')
+        }
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                use: 'babel-loader',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.styl$/,
+                use: ['css-hot-loader'].concat(
+                    ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader'
+                            },
+                            {
+                                loader: 'stylus-loader',
+                                options: {
+                                    'paths': 'node_modules',
+                                    'resolve url': true,
+                                    'include css': true
+                                }
+                            }
+                        ]
+                    })
+                )
+            },
+            {
+                test: /\.md$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'rct-md-loader',
+                        options: {
+                            codeBlock: {
+                                loader: 'babel-loader',
+                                props: {
+                                    className: 'markdown-body'
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
+            },
+            {
+                test: /\.(eot|woff|ttf|woff2|svg|png|jpe?g|gif)$/,
+                loader: 'file-loader'
+            }
+        ]
+    },
     plugins: [
-        new webpack.DllReferencePlugin({
-            context: '.',
-            manifest: require('../asset/inf-manifest.json')
-        }),
-        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new HtmlWebpackPlugin({
-            inject: true,
-            templateContent: (function () {
-                return fs
-                    .readFileSync(
-                        path.join(__dirname, '../example/index.html'),
-                        'utf8'
-                    )
-                    .replace(/<!--@inject=([\w._-]+)-->/ig, function ($0, $1) {
-                        return `<script src="${$1}"></script>`;
-                    });
-            })(),
-            filename: path.resolve(__dirname, '../asset/index.html'),
-            alwaysWriteToDisk: true
+        new ExtractTextPlugin({
+            filename: '[name].css',
+            ignoreOrder: true
         }),
-        new HtmlWebpackHarddiskPlugin(),
-        new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
-        new webpack.IgnorePlugin(/locale/, /moment/)
-    ]
-
-});
-
-
-module.exports = config;
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            title: 'index',
+            template: path.join(__dirname, '../example/index.html')
+        })
+    ],
+    devServer: {
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        compress: true,
+        historyApiFallback: true,
+        port,
+        hot: true,
+        inline: true
+    }
+};

@@ -1,102 +1,13 @@
-@require 'nib'
-@require '../src/css/mixin.styl'
-@require '../src/css/theme/default'
+@require 'nib';
 
 global-reset()
 
 body
     font-size: 16px
-    font-family: 'Helvetica Neue', Helvetica, 'Microsoft YaHei', Arial, '宋体', SimSun, sans-serif
 
-melon-generate-grid()
-
-#app
-    margin-left 200px
-    padding 0 10px
-
-.nav
-    fixed: top left bottom
-    width: 200px
-    background: #1b1c1d
-    text-align: right
-    overflow-y: auto
-
-    > h1
-        height: 2em
-        color: rgb(0, 159, 147)
-        font-size: 32px
-        line-height: @height
-        padding-right 10px
-
-    > ul
-
-        border: 1px solid rgba(255, 255, 255, .3)
-        border-width: 1px 0 1px 0
-
-        a
-            display block
-            height 3em
-            padding-right 10px
-            color #888
-            line-height @height
-            text-decoration none
-            transition all .3s
-
-            &.current, &:hover
-                background-color: #1b1c1d + 10%
-                color: #fff
-
-.row
-    padding: 10px 0
-
-.line
-    float: left
-    box-sizing: border-box
-    width: 25%
-    padding: 10px
-    text-align center
-
-    .cell
-        margin: 10px 0
-        height: 120px
-        font-size: 16px
-
-        &:hover
-            color: $-melon-colors.teal500
-
-        >label
-            display: block
-            height: 30px
-            line-height 30px
-
-.melon-row
-    margin-top: 1em
-
-p
-    font-size: 1.2rem
-    color: #aaa
-    line-height: 1.5
-    padding: 1rem 0
-
-@require '../src/css/**'
-@require 'BoxGroup.styl'
-@require 'Breadcrumb.styl'
-@require 'Button.styl'
-@require 'Chip.styl'
-@require 'Dialog.styl'
-@require 'Drawer.styl'
-@require 'Pager.styl'
-@require 'Progress.styl'
-@require 'Region.styl'
-@require 'ScrollView.styl'
-@require 'Select.styl'
-@require 'SnackBar.styl'
-@require 'Table.styl'
-@require 'Tabs.styl'
-@require 'TextBox.styl'
-@require 'Tooltip.styl'
-@require 'Tree.styl'
-@require 'Uploader.styl'
-@require 'Zippy.styl'
-@require '../src/css/Slider.styl'
-@require '../src/css/Zippy.styl'
+@require '../src/css/theme/default/index.styl'
+@require '../src/css/Navigation.styl'
+@require '../src/css/Button.styl'
+@require '../src/css/Icon.styl'
+@require '../src/css/Drawer.styl'
+@require './App.styl'

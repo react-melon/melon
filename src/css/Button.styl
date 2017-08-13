@@ -20,7 +20,10 @@ melon-button-swatch($swatches, $revert = false)
 
 .{$-melon-class-prefix}-button
 
-    display: inline-block
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    flex-flow: nowrap;
     box-sizing: border-box
     position: relative
 
@@ -28,14 +31,12 @@ melon-button-swatch($swatches, $revert = false)
     height: 2em
 
     font-size: $-melon-medium-font-size
-    line-height: 2em
     text-transform: uppercase
 
     text-align: center
 
     outline: 0
     vertical-align: middle
-
 
     border-radius: 2px
     border: none
@@ -78,15 +79,26 @@ melon-button-swatch($swatches, $revert = false)
         >.{$-melon-class-prefix}-touch-ripple
             border-radius: 50%
 
-    >.{$-melon-class-prefix}-icon:first-child
-
-        display: inline-block
-        width: 2em
-        height: 2em
+    >.ui-icon
         font-size: 1em
-        line-height: 2em
-        vertical-align: top
-        margin-left: -1em
+
+    // withButtonBlock = @block {
+    //     display: inline-block
+    //     width: 2em
+    //     height: 2em
+    //     font-size: 1em
+    //     line-height: 2em
+    //     vertical-align: top
+    // }
+    //
+    // >.{$-melon-class-prefix}-icon:first-child
+    //     {withButtonBlock}
+    //     margin-left: -1em
+    //
+    // >.{$-melon-class-prefix}-icon:last-child
+    //     {withButtonBlock}
+    //     margin-left: 0.25px
+    //     margin-right: -1em
 
     &.variant-icon
         padding: 0
@@ -97,3 +109,5 @@ melon-button-swatch($swatches, $revert = false)
 
     &.variant-ripple
         position: relative
+
+@require './ButtonGroup.styl'

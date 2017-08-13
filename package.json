@@ -4,11 +4,9 @@
   "description": "ui components for react",
   "main": "./src",
   "scripts": {
-    "start": "NODE_ENV=dev node tools/server.js",
+    "start": "NODE_ENV=dev webpack-dev-server --config tools/webpack.dev.js",
     "build": "rimraf lib && NODE_ENV=production gulp build",
     "lint": "fecs",
-    "docs": "esdoc -c esdoc.json",
-    "setup": "rimraf asset && NODE_ENV=production webpack --config=tools/webpack.dll.js",
     "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
     "test-ci": "NODE_ENV=test karma start ./test/karma.ci.conf.js",
     "coveralls": "cat ./test/coverage/lcov/lcov.info | ./node_modules/.bin/coveralls"
@@ -19,35 +17,30 @@
     "example": "example"
   },
   "devDependencies": {
+    "babel-core": "^6.24.1",
     "babel-istanbul": "^0.11.0",
-    "babel-loader": "^6.2.5",
-    "babel-plugin-external-helpers": "^6.8.0",
-    "babel-plugin-external-helpers-insert-require": "^1.0.0",
+    "babel-loader": "^7.1.1",
     "babel-plugin-istanbul": "^3.0.0",
-    "babel-plugin-transform-es2015-modules-umd": "^6.12.0",
-    "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
-    "babel-plugin-transform-es3-property-literals": "^6.8.0",
-    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-2": "^6.13.0",
     "connect-history-api-fallback": "^1.3.0",
     "coveralls": "^2.11.12",
-    "css-loader": "^0.24.0",
+    "css-hot-loader": "^1.3.0",
+    "css-loader": "^0.28.4",
     "enzyme": "^2.6.0",
-    "esdoc": "^0.4.8",
-    "esdoc-es7-plugin": "0.0.3",
-    "express": "^4.14.0",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "^3.0.0",
     "fecs": "^0.8.6",
-    "file-loader": "^0.9.0",
+    "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-babel-external-helpers": "^2.0.2",
     "gulp-clean": "^0.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "html-webpack-harddisk-plugin": "0.0.2",
-    "html-webpack-plugin": "^2.22.0",
+    "highlight.js": "^9.12.0",
+    "html-loader": "^0.4.5",
+    "html-webpack-plugin": "^2.30.1",
     "jasmine": "^2.4.1",
     "jasmine-expect-jsx": "^1.1.2",
     "json-loader": "^0.5.4",
@@ -61,18 +54,23 @@
     "karma-jasmine-expect-jsx": "^1.0.2",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
+    "lodash-decorators": "^4.4.0",
+    "lodash.unescape": "^4.0.1",
     "nib": "^1.1.2",
     "numen": "^0.2.0",
+    "rct-md-loader": "^1.0.0",
+    "react": "^15.5.4",
     "react-addons-test-utils": "^0.14.8||^15.4.0",
-    "react-hot-loader": "^1.3.1",
+    "react-dom": "^15.5.4",
+    "react-hot-loader": "3.0.0-beta.6",
     "rimraf": "^2.5.4",
-    "style-loader": "^0.13.1",
+    "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1",
-    "watchify": "^3.7.0",
-    "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.8.3",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack": "^3.4.1",
+    "github-markdown-css": "^2.8.0",
+    "lodash.camelcase": "^4.3.0",
+    "webpack-dev-server": "^2.6.1"
   },
   "repository": {
     "type": "git",
@@ -97,50 +95,10 @@
     "dom-align": "^1.5.3",
     "lodash": "^4.17.2",
     "melon-core": "^0.4.1",
+    "prop-types": "^15.5.10",
     "react": "^0.14.8||^15.4.0",
     "react-dom": "^0.14.8||^15.4.0",
     "react-motion": "^0.4.2",
-    "react-sticky-state": "^2.1.5",
-    "prop-types": "^15.5.10"
-  },
-  "babel": {
-    "env": {
-      "dev": {
-        "presets": [
-          "es2015",
-          "stage-2",
-          "react"
-        ]
-      },
-      "test": {
-        "presets": [
-          "es2015",
-          "stage-2",
-          "react"
-        ],
-        "plugins": [
-          "istanbul"
-        ]
-      },
-      "production": {
-        "presets": [
-          [
-            "es2015",
-            {
-              "loose": true,
-              "modules": "umd"
-            }
-          ],
-          "stage-2",
-          "react"
-        ],
-        "plugins": [
-          "external-helpers",
-          "external-helpers-insert-require",
-          "transform-es3-property-literals",
-          "transform-es3-member-expression-literals"
-        ]
-      }
-    }
+    "react-sticky-state": "^2.1.5"
   }
 }
