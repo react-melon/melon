@@ -7,6 +7,7 @@
     "start": "NODE_ENV=dev webpack-dev-server --config tools/webpack.dev.js",
     "build": "rimraf lib && NODE_ENV=production gulp build",
     "build-doc": "rimraf public && NODE_ENV=production webpack --config tools/webpack.doc.js",
+    "deploy-doc": "npm run build-doc && surge public react-melon.surge.sh",
     "lint": "fecs",
     "test": "NODE_ENV=test karma start ./test/karma.local.conf.js",
     "test-ci": "NODE_ENV=test karma start ./test/karma.ci.conf.js",
@@ -73,6 +74,7 @@
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.3.1",
+    "surge": "^0.19.0",
     "webpack": "^3.4.1",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.6.1"

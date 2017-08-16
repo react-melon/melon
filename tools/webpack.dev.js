@@ -80,7 +80,7 @@ module.exports = {
                                         permalink: true,
                                         permalinkBefore: true,
                                         slugify(title) {
-                                            return title;
+                                            return title.replace(/ /g, '_');
                                         }
                                     }
                                 ]
