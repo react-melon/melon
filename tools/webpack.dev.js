@@ -9,6 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const port = process.env.PORT || 9000;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MarkdownItAnchor = require('markdown-it-anchor');
+const MarkdownItClass = require('./markdown-it-class');
 
 module.exports = {
     entry: {
@@ -83,6 +84,10 @@ module.exports = {
                                             return title.replace(/ /g, '_');
                                         }
                                     }
+                                ],
+                                [
+                                    MarkdownItClass,
+                                    'md'
                                 ]
                             ]
                         }
