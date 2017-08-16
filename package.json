@@ -59,6 +59,7 @@
     "lodash-decorators": "^4.4.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.unescape": "^4.0.1",
+    "markdown-it-anchor": "^4.0.0",
     "nib": "^1.1.2",
     "numen": "^0.2.0",
     "prism-theme-one-dark": "^1.0.0",

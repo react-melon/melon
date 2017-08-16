@@ -42,6 +42,18 @@
     ol
         list-style: decimal
 
+    h1,
+    h2,
+    h3,
+    h4,
+    h5
+        >.header-anchor
+            margin-left: -1em
+            opacity: 0
+            text-decoration: none
+
+        &:hover >.header-anchor
+            opacity: 1
 
 .hljs
     background: #282c34 !important;

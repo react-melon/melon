@@ -8,6 +8,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const port = process.env.PORT || 9000;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MarkdownItAnchor = require('markdown-it-anchor');
 
 module.exports = {
     entry: {
@@ -70,7 +71,20 @@ module.exports = {
                                 props: {
                                     className: 'markdown-body'
                                 }
-                            }
+                            },
+                            use: [
+                                [
+                                    MarkdownItAnchor,
+                                    {
+                                        level: 1,
+                                        permalink: true,
+                                        permalinkBefore: true,
+                                        slugify(title) {
+                                            return title;
+                                        }
+                                    }
+                                ]
+                            ]
                         }
                     }
                 ]
