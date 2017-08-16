@@ -1,29 +1,40 @@
 @require "./base.styl"
+@require "./Icon.styl"
 
 .{$-melon-class-prefix}-breadcrumb
 
-    display: inline-block
+    display: flex
+    align-items: center;
+
+    &-seperator
+        padding: 0 0.5em
+        color: $-melon-breadcrumb.seperator.color
+        font-style: normal
 
     &-item
 
-        display: inline-block
-        text-decoration: none
+        display: inline-flex
+        align-items: center
         color: $-melon-breadcrumb.item.color
         line-height: 2em
+        cursor: default;
+
+        &[href]
+            text-decoration: none
+            cursor: pointer;
+            transition: color .3s ease-out
 
         &[href]:hover
-            color: $-melon-breadcrumb.item.hover.color
+            color: lighten($-melon-breadcrumb.item.hover.color, 20%)
 
-        &:after
-            display: inline-block
-            content: '/'
-            padding: 0 0.5em
-            color: $-melon-breadcrumb.seperator.color
+        &[href]:active
+            color: darken($-melon-breadcrumb.item.hover.color, 20%)
 
         &:last-child
             color: $-melon-breadcrumb.item.lastChild.color
-            &:after
-                display: none
 
         &>.ui-icon
-            display: inline-block
+            font-size: 1em
+
+        &>.ui-icon + span
+            margin-left: 0.25em

@@ -3,9 +3,11 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React from 'react';
+import React, {Children, cloneElement} from 'react';
+import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import Item from './breadcrumb/Item';
+import Icon from './Icon';
 
 const cx = create('Breadcrumb');
 
@@ -21,28 +23,50 @@ const cx = create('Breadcrumb');
 function Breadcrumb(props) {
 
     /* eslint-disable fecs-min-vars-per-destructure */
-    const {
+    let {
         children,
+        seperator,
         ...rest
     } = props;
 
+    children = Children
+        .toArray(children)
+        .filter(child => child && child.type === Item)
+        .reduce(
+            (result, child, index) => {
+
+                result.push(cloneElement(child, {level: index}));
+
+                if (index !== children.length - 1) {
+                    result.push(
+                        <i
+                            key={`sep-${index}`}
+                            className={cx.getPartClassName('seperator')}>
+                            {seperator}
+                        </i>
+                    );
+                }
+                return result;
+            },
+            []
+        );
+
     return (
         <div {...rest} className={cx(props).build()}>
-            {React.Children.map(
-                children,
-                (child, index) => (
-                    child && child.type === Item
-                        ? React.cloneElement(child, {
-                            key: index,
-                            level: index
-                        })
-                        : null
-                )
-            )}
+            {children}
         </div>
     );
 
 }
+
+Breadcrumb.propTypes = {
+    seperator: PropTypes.node
+};
+
+Breadcrumb.defaultProps = {
+    seperator: '/'
+};
+
 /* eslint-enable fecs-prefer-class */
 
 Breadcrumb.Item = Item;
@@ -51,14 +75,15 @@ Breadcrumb.createCrumbs = function (crumbs) {
 
     return crumbs.map(function (crumb, index) {
 
-        const {text, ...rest} = crumb;
+        const {text, icon, ...rest} = crumb;
 
         return (
             <Item
                 {...rest}
                 key={index}
                 level={index}>
-                {text}
+                {icon ? <Icon icon={icon} /> : null}
+                <span>{text}</span>
             </Item>
         );
     });

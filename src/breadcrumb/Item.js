@@ -16,14 +16,15 @@ const cx = create('BreadcrumbItem');
  * @param {*} props 属性
  */
 export default function BreadcrumbItem(props) {
-
-    const {level, ...rest} = props;
-
-    return (
-        <a
-            {...rest}
-            data-level={level}
-            className={cx(props).addVariants(`level-${level}`).build()} />
+    const {level, href, ...rest} = props;
+    return React.createElement(
+        href ? 'a' : 'span',
+        {
+            ...rest,
+            href,
+            'data-level': level,
+            'className': cx(props).addVariants(`level-${level}`).build()
+        }
     );
 }
 

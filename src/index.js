@@ -5,7 +5,7 @@
 
 export {default as Alert} from './Alert';
 export {default as BoxGroup} from './BoxGroup';
-export {default as Breadcrumb} from './Breadcrumb';
+export {default as Breadcrumb, Item as BreadcrumbItem} from './Breadcrumb';
 export {default as Button} from './Button';
 export {default as Card} from './Card';
 export {default as Chip} from './Chip';
