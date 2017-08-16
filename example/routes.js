@@ -14,6 +14,7 @@ import Usage from './guides/usage.md';
 import Button from './components/Button.md';
 import BoxGroup from './components/BoxGroup.md';
 import Dialog from './components/Dialog.md';
+import Breadcrumb from './components/Breadcrumb.md';
 
 export default [
     {
@@ -55,6 +56,11 @@ export default [
                 name: 'Dialog',
                 pathname: '/Dialog',
                 component: Dialog
+            },
+            {
+                name: 'Breadcrumb',
+                pathname: '/Breadcrumb',
+                component: Breadcrumb
             }
         ]
     }
