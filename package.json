@@ -65,7 +65,7 @@
     "numen": "^0.2.0",
     "prism-theme-one-dark": "^1.0.0",
     "prismjs": "^1.6.0",
-    "rct-md-loader": "^1.0.0",
+    "rct-md-loader": "^1.0.1",
     "react": "^15.5.4",
     "react-addons-test-utils": "^0.14.8||^15.4.0",
     "react-dom": "^15.5.4",
@@ -100,6 +100,7 @@
   "homepage": "https://github.com/react-melon/melon#readme",
   "dependencies": {
     "dom-align": "^1.5.3",
+    "hash-sum": "^1.0.2",
     "lodash": "^4.17.2",
     "melon-core": "^0.4.1",
     "prop-types": "^15.5.10",
