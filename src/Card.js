@@ -31,3 +31,9 @@ export default function Card(props) {
 /* eslint-enable fecs-prefer-class */
 
 Card.displayName = 'Card';
+
+export {default as CardActions} from './card/Actions';
+export {default as CardHeader} from './card/Header';
+export {default as CardTitle} from './card/Title';
+export {default as CardMedia} from './card/Media';
+export {default as CardText} from './card/Text';

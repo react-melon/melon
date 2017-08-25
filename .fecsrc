@@ -11,7 +11,8 @@
                 }
             ],
             "fecs-no-require": -1,
-            "fecs-prefer-class": -1
+            "fecs-prefer-class": -1,
+            "fecs-valid-class-jsdoc": -1
         }
     },
     "files": ["src"]

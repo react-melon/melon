@@ -34,3 +34,6 @@ melon-generate-grid($columns = 12, $gap = 0.3)
     for $i in (1..$columns)
         .melon-column-{$i}
             width: unit(($i * $single-width - $gap-width) * 100, '%') !important
+
+melon-font-family(args...)
+    return Roboto sans-serif args

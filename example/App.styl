@@ -13,11 +13,14 @@
     padding-bottom: 5rem
 
 .app-bar
+    position: sticky;
+    top: 0
     display: flex;
     align-items: center;
     background-color: $-melon-colors.blue500;
     padding: 0 1rem
     box-shadow: melon-get-z-depth('1')
+    z-index: 100
 
     >.ui-button
         margin-left: -1rem;
