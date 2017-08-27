@@ -3,7 +3,7 @@
  * @author cxtom<cxtom2008@gmail.com>
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import * as windowScrollHelper from './dialog/windowScrollHelper';
@@ -17,7 +17,9 @@ const cx = create('Mask');
  * @extends {React.Component}
  * @class
  */
-export default class Mask extends Component {
+export default class Mask extends PureComponent {
+
+    locked = false;
 
     /**
      * Mount时的处理
@@ -26,34 +28,10 @@ export default class Mask extends Component {
      * @override
      */
     componentDidMount() {
-
         const {show, lockScrollingOnShow} = this.props;
-
         if (show && lockScrollingOnShow) {
             this.lockScroll();
         }
-    }
-
-    /**
-     * 是否更新组件
-     *
-     * @public
-     * @override
-     * @return {boolean}
-     */
-    shouldComponentUpdate({show}) {
-        return this.props.show !== show;
-    }
-
-    /**
-     * 更新时处理
-     *
-     * @public
-     * @override
-     */
-    componentDidUpdate() {
-        const {show, lockScrollingOnShow} = this.props;
-        show && lockScrollingOnShow ? this.lockScroll() : this.unlockScroll();
     }
 
     /**
@@ -72,7 +50,10 @@ export default class Mask extends Component {
      * @public
      */
     lockScroll() {
-        windowScrollHelper.stop();
+        if (!this.locked) {
+            windowScrollHelper.stop();
+            this.locked = true;
+        }
     }
 
     /**
@@ -81,7 +62,9 @@ export default class Mask extends Component {
      * @public
      */
     unlockScroll() {
-        windowScrollHelper.restore();
+        if (this.locked) {
+            windowScrollHelper.restore();
+        }
     }
 
     /**
@@ -94,6 +77,7 @@ export default class Mask extends Component {
 
         const {
             show,
+            closing,
             variants,
             states,
             ...rest
@@ -103,7 +87,8 @@ export default class Mask extends Component {
             .addVariants(variants)
             .addStates({
                 ...states,
-                show
+                show,
+                closing
             })
             .build();
 

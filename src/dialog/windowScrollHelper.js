@@ -9,10 +9,9 @@ const originalHTMLBodySize = {};
 
 function stopWindowScrolling(name) {
 
-    const element = document.getElementsByTagName(name)[0];
+    let element = document.getElementsByTagName(name)[0];
 
-    let lockNum = element.getAttribute('data-lock') || '0';
-    lockNum = parseInt(lockNum, 10);
+    let lockNum = +element.getAttribute('data-lock') || 0;
 
     element.setAttribute('data-lock', lockNum + 1);
 
@@ -22,10 +21,11 @@ function stopWindowScrolling(name) {
             height: element.style.height,
             overflow: element.style.overflow
         };
-        element.style.width = '100%';
+
         element.style.height = '100%';
 
         if (name !== 'html') {
+            element.style.marginRight = `${window.innerWidth - element.offsetWidth}px`;
             element.style.overflow = 'hidden';
         }
     }
@@ -35,23 +35,24 @@ function stopWindowScrolling(name) {
 
 function restoreWindowScrolling(name) {
 
-    const element = document.getElementsByTagName(name)[0];
-    let lockNum = element.getAttribute('data-lock') || '0';
-    lockNum = parseInt(lockNum, 10);
+    let element = document.getElementsByTagName(name)[0];
+    let lockNum = +element.getAttribute('data-lock') || 0;
 
     if (lockNum > 1) {
         element.setAttribute('data-lock', lockNum - 1);
     }
     else {
         element.removeAttribute('data-lock');
-        const size = originalHTMLBodySize[name];
-        element.style.width = size.width;
+        let size = originalHTMLBodySize[name];
         element.style.height = size.height;
 
         if (name !== 'html') {
-            element.style.overflow = size.overflow;
+            element.style.marginRight = '';
+            element.style.overflow = '';
         }
+        /* eslint-disable */
         delete originalHTMLBodySize[name];
+        /* eslint-enable */
     }
 
     return element;

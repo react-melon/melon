@@ -17,6 +17,8 @@ import BoxGroup from './components/BoxGroup.md';
 import Dialog from './components/Dialog.md';
 import Breadcrumb from './components/Breadcrumb.md';
 import Card from './components/Card.md';
+import Chip from './components/Chip.md';
+import Ripple from './components/Ripple.md';
 
 export default [
     {
@@ -50,19 +52,9 @@ export default [
                 component: Avatar
             },
             {
-                name: 'Button',
-                pathname: '/Button',
-                component: Button
-            },
-            {
                 name: 'BoxGroup',
                 pathname: '/BoxGroup',
                 component: BoxGroup
-            },
-            {
-                name: 'Dialog',
-                pathname: '/Dialog',
-                component: Dialog
             },
             {
                 name: 'Breadcrumb',
@@ -70,9 +62,29 @@ export default [
                 component: Breadcrumb
             },
             {
+                name: 'Button',
+                pathname: '/Button',
+                component: Button
+            },
+            {
                 name: 'Card',
                 pathname: '/Card',
                 component: Card
+            },
+            {
+                name: 'Chip',
+                pathname: '/Chip',
+                component: Chip
+            },
+            {
+                name: 'Dialog',
+                pathname: '/Dialog',
+                component: Dialog
+            },
+            {
+                name: 'Ripple',
+                pathname: '/Ripple',
+                component: Ripple
             }
         ]
     }

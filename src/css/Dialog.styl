@@ -5,37 +5,35 @@
 .{$-melon-class-prefix}-dialog
 
     position: fixed
+    display: flex
     box-sizing: border-box
     -webkit-tap-highlight-color: $-melon-colors.transparent
     z-index: $-melon-z-index.dialog
     top: 0
     left: 0
-    width: 100%
-    height: 100%
-    overflow: auto
+    bottom: 0
+    right: 0
     opacity: 0
     visibility: hidden
-    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms
+    overflow-y: auto
+    padding: 1rem 0
 
     &.state-open
-
         opacity: 1
         visibility: visible
 
     &-window
+        margin: auto
         box-sizing: border-box
         -webkit-tap-highlight-color: $-melon-colors.transparent
-        position: absolute
-        width: 75%
-        max-width: 768px
-        top: 50%
-        left: 50%
+        min-width: 50rem
         z-index: $-melon-z-index.dialog
         background-color: $-melon-colors.white
         box-shadow: 0 14px 45px rgba(0, 0, 0, 0.25), 0 10px 18px rgba(0, 0, 0, 0.22)
         border-radius: 2px
         padding: 1.5em 1.5em 0 1.5em
-        margin-bottom: 16px
+        transition: transform 450ms cubic-bezier(0.23, 1, 0.32, 1), opacity 450ms cubic-bezier(0.23, 1, 0.32, 1)
+        will-change: transform, opacity;
 
     &-window.variant-no-title &-body
         margin: 0 0 1.5em

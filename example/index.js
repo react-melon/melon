@@ -14,12 +14,14 @@ import {AppContainer} from 'react-hot-loader';
 const container = document.getElementById('app');
 
 function render(App) {
+    window.fuck = 1;
     ReactDOM.render(
         <AppContainer>
             <App />
         </AppContainer>,
         container
     );
+    window.fuck = 2;
 }
 
 render(App);

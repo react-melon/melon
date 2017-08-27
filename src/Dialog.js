@@ -5,14 +5,10 @@
 
 import React, {Component, cloneElement} from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import Mask from './Mask';
-import * as dom from './common/util/dom';
 import DialogWindow from './dialog/DialogWindow';
 import Layer from './Layer';
 import {create} from 'melon-core/classname/cxBuilder';
-
-import {Motion, spring} from 'react-motion';
 
 const cx = create('Dialog');
 
@@ -24,17 +20,9 @@ const cx = create('Dialog');
  */
 export default class Dialog extends Component {
 
-    /**
-     * 构造函数
-     *
-     * @public
-     * @constructor
-     * @param {*} props 属性
-     * @param {*} context 上下文
-     */
-    constructor(props, context) {
+    constructor(...args) {
 
-        super(props, context);
+        super(...args);
 
         /**
          * 初始状态
@@ -43,7 +31,7 @@ export default class Dialog extends Component {
          * @type {Object}
          */
         this.state = {
-            open: props.open
+            open: this.props.open
         };
 
         this.onShow = this.onShow.bind(this);
@@ -55,86 +43,23 @@ export default class Dialog extends Component {
     }
 
     /**
-     * Mount时的处理
-     *
-     * @public
-     * @override
-     */
-    componentDidMount() {
-        if (this.state.open) {
-            this.positionDialog();
-        }
-    }
-
-    /**
-     * 状态更新时的处理
-     *
-     * @public
-     * @override
-     */
-    componentDidUpdate() {
-        if (this.state.open) {
-            this.positionDialog();
-        }
-    }
-
-    /**
      * 接受新属性时的处理
      *
      * @public
      * @override
-     * @param {Object} nextProps 新属性
+     * @param {boolean} nextProps.open 下一个状态是打开窗口
      */
-    componentWillReceiveProps(nextProps) {
-
-        const open = nextProps.open;
+    componentWillReceiveProps({open}) {
 
         if (open === this.state.open) {
             return;
         }
 
-        // 如果是打开，那么就直接打开。
-        if (open) {
-            this.setState({open: true});
-            return;
-        }
+        console.log('willReceiveProps', this.state.open, open, this.state.open && !open);
 
-        // 如果是关闭，但我们正在关闭，就算了。
-        if (!this.state.closing) {
-            this.hide();
-        }
-
-    }
-
-    /**
-     * 定位对话框
-     *
-     * @protected
-     */
-    positionDialog() {
-
-        let dialogWindow = this.dialogWindow;
-
-        if (!dialogWindow) {
-            return;
-        }
-
-        dialogWindow = ReactDOM.findDOMNode(this.dialogWindow);
-
-        if (this.state.open) {
-            let marginTop = -dialogWindow.offsetHeight / 2;
-            let windowHeight = dom.getClientHeight();
-
-            marginTop = dialogWindow.offsetHeight > windowHeight
-            ? (-windowHeight / 2 + 16)
-            : marginTop;
-
-            dialogWindow.style.marginTop = marginTop + 'px';
-        }
-        else {
-            dialogWindow.style.marginTop = 0;
-        }
-
+        this.setState(
+            open ? {open, closing: false} : {open, closing: this.state.open && !open}
+        );
 
     }
 
@@ -146,11 +71,12 @@ export default class Dialog extends Component {
      */
     onMaskClick(e) {
 
-        if (this.props.maskClickClose) {
-            this.hide();
-        }
-        else {
-            e.stopPropagation();
+        let {maskClickClose} = this.props;
+
+        e.stopPropagation();
+
+        if (maskClickClose) {
+            this.setState({open: false, closing: true});
         }
 
     }
@@ -186,20 +112,21 @@ export default class Dialog extends Component {
      */
     onMotionEnd() {
 
-        if (this.state.closing) {
-
-            this.setState({
-                closing: false,
-                open: false
-            });
-
-            let onHide = this.props.onHide;
-
-            if (onHide) {
-                onHide();
-            }
-
+        if (!this.state.closing) {
+            return;
         }
+
+        this.setState({
+            closing: false,
+            open: false
+        });
+
+        let onHide = this.props.onHide;
+
+        if (onHide) {
+            onHide();
+        }
+
 
     }
 
@@ -210,13 +137,13 @@ export default class Dialog extends Component {
      */
     hide() {
 
-        let {open, closing} = this.state;
+        let {open} = this.state;
 
-        if (!open || closing) {
+        if (!open) {
             return;
         }
 
-        this.setState({closing: true});
+        this.setState({open: false});
 
     }
 
@@ -300,52 +227,29 @@ export default class Dialog extends Component {
             .part('window')
             .addVariants(
                 width === 'adaptive' ? 'adaptive' : null,
-                title ? null : 'no-title'
+                title ? null : 'no-title',
             )
             .build();
 
-        let className = cx(props).addStates({open}).build();
-
-        let opening = open && !closing;
-
-        let distance = dom.getClientHeight() * 0.4 * (opening ? -1 : 1);
-        let yBegin = opening ? distance : 0;
-        let yEnd = opening ? 0 : distance;
-        let opacityBegin = opening ? 0 : 1;
-        let opacityEnd = opening ? 1 : 0;
-        let control = {stiffness: 200, damping: 18, precision: 1};
+        let className = cx(props)
+            .addStates({
+                open: open || closing
+            }).build();
 
         return (
-            <div className={className} style={!opening ? {overflow: 'hidden'} : null}>
-                <Motion
-                    defaultStyle={{
-                        top: yBegin,
-                        opacity: opacityBegin
-                    }}
-                    style={{
-                        top: spring(yEnd, control),
-                        opacity: spring(opacityEnd, control)
-                    }}
-                    onRest={this.onMotionEnd}>
-                    {({top, opacity}) => (
-                        <DialogWindow
-                           ref={dialogWindow => {
-                               this.dialogWindow = dialogWindow;
-                           }}
-                           width={width}
-                           title={title}
-                           footer={footer}
-                           className={windowPartClassName}
-                           style={{
-                               opacity: opacity,
-                               transform: `translate(-50%, ${Math.round(top)}px)`
-                           }}>
-                           {body}
-                       </DialogWindow>
-                   )}
-                </Motion>
+            <div className={className}>
+                <DialogWindow
+                   closing={closing}
+                   width={width}
+                   title={title}
+                   footer={footer}
+                   className={windowPartClassName}
+                   onMotionEnd={this.onMotionEnd}>
+                   {body}
+               </DialogWindow>
                 <Mask
-                    show={open}
+                    show={open || closing}
+                    closing={closing}
                     lockScrollingOnShow={true}
                     onClick={this.onMaskClick} />
             </div>
@@ -360,10 +264,9 @@ export default class Dialog extends Component {
      */
     render() {
         let {open, closing} = this.state;
+        console.log('render', open, closing, open || closing);
         return (
-            <Layer
-                open={open || closing}
-                render={this.renderLayer} />
+            <Layer open={open || closing} render={this.renderLayer} />
         );
     }
 
