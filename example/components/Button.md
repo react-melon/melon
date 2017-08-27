@@ -35,22 +35,88 @@ export default function () {
 
 ```react Raised 按钮
 import React from 'react';
-import Button from 'melon/Button';
+import {RaisedButton} from 'melon/Button';
 import Icon from 'melon/Icon';
 export default function () {
     return (
-        <div style={{display: 'flex', justifyContent: 'space-around'}}>
-            <Button variants={['primary', 'raised']}>default</Button>
-            <Button variants={['primary', 'raised']}>primary</Button>
-            <Button variants={['secondery', 'raised']}>secondery</Button>
-            <Button variants={['success', 'raised']}>success</Button>
-            <Button variants={['info', 'raised']}>info</Button>
-            <Button variants={['warning', 'raised']}>warning</Button>
-            <Button variants={['danger', 'raised']}>danger</Button>
-            <Button variants={['danger', 'raised']}><Icon icon="add" /></Button>
+        <div style={{display: 'flex'}}>
+            <RaisedButton variants={['primary']}>default</RaisedButton>
+            <RaisedButton
+                variants={['primary']}
+                style={{marginLeft: '1rem'}}>
+                primary
+            </RaisedButton>
+            <RaisedButton
+                variants={['secondery']}
+                style={{marginLeft: '1rem'}}>
+                secondery
+            </RaisedButton>
+            <RaisedButton
+                variants={['success']}
+                style={{marginLeft: '1rem'}}>
+                success
+            </RaisedButton>
+            <RaisedButton
+                variants={['info']}
+                style={{marginLeft: '1rem'}}>
+                info
+            </RaisedButton>
+            <RaisedButton
+                variants={['warning']}
+                style={{marginLeft: '1rem'}}>
+                warning
+            </RaisedButton>
+            <RaisedButton
+                variants={['danger']}
+                style={{marginLeft: '1rem'}}>
+                danger
+            </RaisedButton>
+            <RaisedButton
+                variants={['danger']}
+                style={{marginLeft: '1rem'}}>
+                <Icon icon="add" />
+            </RaisedButton>
         </div>
     );
 };
+```
+
+### IconButton
+
+An Icon Button generates a button element around an icon. Also, focus styles will happen on tab but not on click. There are three ways to add an icon:
+
+1. For icon font stylesheets: Set the prop iconClassName to the classname for your icon. Certain icon fonts support ligatures, allowing the icon to be specified as a string. Refer to this article to learn more about including font icons in your project.
+2. For SVG icons: Insert the SVG component as a child of icon buttons.
+3. Alternative: You can also insert a FontIcon component as a child of IconButton. This is similar to how the iconClassName prop from method 1 is handled.
+
+```react IconButton
+import React from 'react';
+import {IconButton} from 'melon/Button';
+import Icon from 'melon/Icon';
+
+export default () => (
+    <div style={{display: 'flex'}}>
+        <IconButton variants={['success']} icon="add" />
+        <IconButton variants={['primary']}>
+            <Icon icon="edit" />
+        </IconButton>
+        <IconButton>
+            <svg
+                viewBox="0 0 24 24"
+                style={{
+                    display: 'block',
+                    color: 'rgba(0, 0, 0, 0.87)',
+                    fill: 'currentcolor',
+                    height: '24px',
+                    width: '24px',
+                    userSelect: 'none',
+                    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+                }}>
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+            </svg>
+        </IconButton>
+    </div>
+);
 ```
 
 ### Floating Action Button
@@ -59,17 +125,17 @@ export default function () {
 
 ```react FloatingAction 按钮
 import React from 'react';
-import Button from 'melon/Button';
+import {FloatingButton} from 'melon/Button';
 import Icon from 'melon/Icon';
 
 export default () => (
     <div style={{display: 'flex'}}>
-        <Button variants={['floating', 'success']}>
+        <FloatingButton variants={['success']}>
             <Icon icon="add" />
-        </Button>
-        <Button variants={['floating', 'primary']} style={{marginLeft: '1rem'}}>
+        </FloatingButton>
+        <FloatingButton variants={['primary']} style={{marginLeft: '1rem'}}>
             <Icon icon="edit" />
-        </Button>
+        </FloatingButton>
     </div>
 );
 ```
@@ -85,10 +151,12 @@ export default () => (
     <div style={{display: 'flex'}}>
         <Button><Icon icon="add" style={{marginRight: '.5rem'}}/>添加</Button>
         <Button variants={['raised', 'primary']} style={{marginLeft: '1rem'}}>
-            <Icon icon="edit" style={{marginRight: '.5rem'}}/>编辑
+            <Icon icon="edit"/>
+            <span>编辑</span>
         </Button>
         <Button variants={['raised', 'danger']} style={{marginLeft: '1rem'}}>
-            喜欢 <Icon icon="favorite" style={{marginLeft: '.5rem'}}/>
+            <span>喜欢</span>
+            <Icon icon="favorite" />
         </Button>
     </div>
 );
@@ -98,21 +166,21 @@ export default () => (
 
 ```react 按钮组
 import React from 'react';
-import Button from 'melon/Button';
+import {FlatButton, RaisedButton} from 'melon/Button';
 export default function View(props) {
     return (
         <div className="melon-row">
             <div className="melon-column melon-column-12">
                 <div className="ui-buttongroup">
-                    <Button variants={['raised', 'info']}>
+                    <FlatButton variants={['raised', 'info']}>
                         添加
-                    </Button>
-                    <Button variants={['raised', 'info']}>
+                    </FlatButton>
+                    <RaisedButton variants={['raised', 'info']}>
                         删除
-                    </Button>
-                    <Button variants={['raised', 'info']}>
+                    </RaisedButton>
+                    <RaisedButton variants={['raised', 'info']}>
                         启用
-                    </Button>
+                    </RaisedButton>
                 </div>
             </div>
         </div>

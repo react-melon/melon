@@ -79,33 +79,29 @@ melon-button-swatch($swatches, $revert = false)
         >.{$-melon-class-prefix}-touch-ripple
             border-radius: 50%
 
-    >.ui-icon
+        >.{$-melon-class-prefix}-icon
+            font-size: 1.2em
+
+    >span + .{$-melon-class-prefix}-icon,
+    >.{$-melon-class-prefix}-icon + span
+        margin-left: .5em
+
+    >.{$-melon-class-prefix}-icon
         font-size: 1em
 
-    // withButtonBlock = @block {
-    //     display: inline-block
-    //     width: 2em
-    //     height: 2em
-    //     font-size: 1em
-    //     line-height: 2em
-    //     vertical-align: top
-    // }
-    //
-    // >.{$-melon-class-prefix}-icon:first-child
-    //     {withButtonBlock}
-    //     margin-left: -1em
-    //
-    // >.{$-melon-class-prefix}-icon:last-child
-    //     {withButtonBlock}
-    //     margin-left: 0.25px
-    //     margin-right: -1em
-
     &.variant-icon
-        padding: 0
-        min-width: 2em
+        width: 3em
+        height: 3em
+        display: inline-flex;
+        align-items: center
+        justify-content: center
+        border-radius: 50%
 
-        >.{$-melon-class-prefix}-icon
-            margin-left: 0
+        &:hover
+            background-color: transparent !important;
+
+        >.{$-melon-class-prefix}-center-ripple
+            border-radius: 50%
 
     &.variant-ripple
         position: relative
