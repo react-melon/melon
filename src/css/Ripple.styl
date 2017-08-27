@@ -1,11 +1,11 @@
 @require "./base.styl"
 
 .{$-melon-class-prefix}-touch-ripple
-    height: 100%
-    width: 100%
     position: absolute
     top: 0
     left: 0
+    right: 0
+    bottom: 0
     overflow: hidden
     z-index: 1
 
@@ -20,8 +20,9 @@
     position: absolute
     top: 0
     left: 0
-    height: 100%
-    width: 100%
+    right: 0
+    bottom: 0
+    overflow: hidden
 
     &-circle
         width: 100%
@@ -31,3 +32,23 @@
         border-radius: 100em
         top: 0
         left: 0
+
+
+.{$-melon-class-prefix}-ripple
+    position: absolute;
+    background-color: currentColor;
+    border-radius: 50%
+    user-select: none
+    transition: transform 450ms ease-in-out, opacity 450ms linear
+
+    &.state-appearing
+        opacity: 0.1;
+        transform: scale(0)
+
+    &.state-entering
+        opacity: 0.35;
+        transform: scale(1);
+
+    &.state-exiting
+        opacity: 0;
+        // transform: scale(2);

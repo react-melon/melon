@@ -3,19 +3,29 @@
  * @author leon(ludafa@outlook.com)
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from '../Icon';
-import CenterRipple from '../ripples/CenterRipple';
+import CenterRipple from '../ripple/CenterRipple';
 
 const cx = create('BoxGroupOption');
 
-export default class BoxGroupOption extends Component {
+function createRippleHandler(instance, action) {
+    return () => {
+        if (!instance.refs.ripple || instance.props.disabled || instance.props.disabled) {
+            return;
+        }
+        instance.refs.ripple[action]();
+    };
+}
+
+export default class BoxGroupOption extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
+        this.addRipple = createRippleHandler(this, 'addRipple');
+        this.removeRipple = createRippleHandler(this, 'removeRipple');
     }
 
     onClick() {
@@ -43,7 +53,11 @@ export default class BoxGroupOption extends Component {
         const icon = this.getIcon(boxModel, checked);
 
         return (
-            <label className={className} onClick={disabled || readOnly ? null : this.onClick}>
+            <label
+                className={className}
+                onMouseDown={this.addRipple}
+                onMouseUp={this.removeRipple}
+                onMouseLeave={this.removeRipple}>
                 <input
                     disabled={disabled}
                     checked={checked}
@@ -52,10 +66,11 @@ export default class BoxGroupOption extends Component {
                     readOnly={readOnly}
                     name={props.name}
                     onChange={readOnly ? null : onChange} />
-                <Icon icon={icon}>
+                <div className={cx.getPartClassName('icon')}>
+                    <Icon icon={icon} />
                     {disabled || readOnly ? null : <CenterRipple ref="ripple" />}
-                </Icon>
-                {props.label}
+                </div>
+                <span>{props.label}</span>
             </label>
         );
 

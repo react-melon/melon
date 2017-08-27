@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import InputComponent from 'melon-core/InputComponent';
 import {create} from 'melon-core/classname/cxBuilder';
-import CenterRipple from './ripples/CenterRipple';
+import CenterRipple from './ripple/CenterRipple';
 
 const cx = create('Toggle');
 

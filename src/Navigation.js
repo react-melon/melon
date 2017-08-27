@@ -11,7 +11,7 @@ import Divider from './Divider';
 import {create} from 'melon-core/classname/cxBuilder';
 import Icon from './Icon';
 import Zippy from './Zippy';
-import TouchRipple from './ripples/TouchRipple';
+import TouchRipple from './ripple/TouchRipple';
 
 const cx = create('Navigation');
 
