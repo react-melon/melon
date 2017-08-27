@@ -3,124 +3,149 @@
  * @author Ma63d(chuck7liu@gmail.com)
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent, Children, cloneElement} from 'react';
 import PropTypes from 'prop-types';
+import Avatar from './Avatar';
 import Icon from './Icon';
 
 import {create} from 'melon-core/classname/cxBuilder';
 const cx = create('Chip');
 
 
-export default class Chip extends Component {
+export default class Chip extends PureComponent {
 
     static displayName = 'Chip';
 
+    static defaultProps = {
+        removable: false
+    };
+
     static propTypes = {
-        style: PropTypes.object,
-        removeIconStyle: PropTypes.object,
-        avatar: PropTypes.element,
-        onClick: PropTypes.func,
-        onRemove: PropTypes.func
+        removable: PropTypes.bool,
+        onRemove: PropTypes.func,
+        removeButtonStyle: PropTypes.object
     }
 
-    constructor(props) {
-        super(props);
-
-
+    constructor(...args) {
+        super(...args);
         this.state = {
-            active: false
+            active: false,
+            iconActive: false
         };
-        // 当chip有onClick回调或onRemove回调时, hover和active时元素有相关样式变动
-        if (this.props.onClick || this.props.onRemove) {
-            this.state.active = true;
-        }
-
+        this.setActive = this.setActive.bind(this);
+        this.unsetActive = this.unsetActive.bind(this);
+        this.setIconActive = this.setIconActive.bind(this);
+        this.unsetIconActive = this.unsetIconActive.bind(this);
+        this.remove = this.remove.bind(this);
     }
 
-
-    handleClick = event => {
-        if (this.props.onClick) {
-            this.props.onClick(event);
-        }
+    setIconActive(e) {
+        e.stopPropagation();
+        this.setState({iconActive: true});
+    }
+    unsetIconActive(e) {
+        e.stopPropagation();
+        this.setState({iconActive: false});
     }
 
-    handleRemoveIconClick = event => {
-        event.stopPropagation();
+    remove(e) {
+        e.stopPropagation();
         if (this.props.onRemove) {
-            this.props.onRemove(event);
+            this.props.onRemove();
         }
     }
 
-
-    renderAvatar = () => {
-
-        let avatarUiClassName = cx.getPartClassName('avatar');
-
-        let {avatar = null} = this.props;
-        if (avatar) {
-            let className = avatar.props.className
-                ? ~avatar.props.className.indexOf(avatarUiClassName)
-                    ? avatar.props.className
-                    : `${avatar.props.className} ${avatarUiClassName}`
-                : avatarUiClassName;
-
-            avatar = React.cloneElement(avatar, {
-                className
-            });
-        }
-
-        return avatar;
+    setActive() {
+        this.setState({active: true});
     }
 
-    renderRemoveIcon() {
-        const {
-            onRemove,
-            removeIconStyle
-        } = this.props;
-        if (onRemove) {
-            return (
-                <div
-                    className={cx.getPartClassName('icon')}>
-                    <Icon
-                        icon="close"
-                        onClick={this.handleRemoveIconClick}
-                        style={removeIconStyle}/>
-                </div>
-            );
-        }
-    }
-
-    renderLabel() {
-        // 如果有remove icon 那么label的padding-right为0
-        let labelStyle = {};
-        if (this.props.onRemove) {
-            labelStyle.paddingRight = 0;
-        }
-
-        return (
-            <span
-                className={cx.getPartClassName('label')}
-                style={labelStyle}>
-                    {this.props.children}
-            </span>
-        );
+    unsetActive() {
+        this.setState({active: false});
     }
 
     render() {
-        let active = this.state.active;
-        let className = cx(this.props).addStates({
-            active
-        }).build();
+
+        let {
+            children,
+            removable,
+            variants,
+            states,
+            label,
+            /* eslint-disable no-unused-vars */
+            onRemove,
+            /* eslint-enable no-unused-vars */
+            removeButtonStyle,
+            ...rest
+        } = this.props;
+
+        let hasAvatar = false;
+        let {iconActive, active} = this.state;
+
+        let parts = children
+            ? Children
+            .toArray(children)
+            .reduce((parts, child) => {
+
+                if (!child || child.type !== Avatar) {
+                    parts.content.push(child);
+                }
+                else {
+                    hasAvatar = true;
+                    let {variants = []} = child.props;
+                    parts.avatar = cloneElement(
+                        child,
+                        {
+                            variants: [
+                                ...variants,
+                                'chip'
+                            ]
+                        }
+                    );
+                }
+
+                return parts;
+
+            }, {
+                content: [],
+                removeButton: removable
+                    ? <Icon
+                        style={removeButtonStyle}
+                        icon="clear"
+                        states={{active: iconActive}}
+                        variants={['chip-remove-button']}
+                        onMouseDown={this.setIconActive}
+                        onMouseUp={this.unsetIconActive}
+                        onMouseLeave={this.unsetIconActive}
+                        onClick={this.remove} />
+                    : null
+            })
+            : label;
+
+        let className = cx()
+            .addVariants(
+                variants,
+                hasAvatar ? 'avatar' : null,
+                removable ? 'removable' : null
+            )
+            .addStates({
+                ...states,
+                active
+            })
+            .build();
 
         return (
-            <div className={className} onClick={this.handleClick} style={this.props.style}>
-                <div style={{display: 'table'}}>
-                    {this.renderAvatar()}
-                    {this.renderLabel()}
-                    {this.renderRemoveIcon()}
+            <div
+                {...rest}
+                className={className}
+                onMouseDown={this.setActive}
+                onMouseUp={this.unsetActive}
+                onMouseLeave={this.unsetActive}>
+                {parts.avatar}
+                <div className={cx.getPartClassName('content')}>
+                    {parts.content}
                 </div>
+                {parts.removeButton}
             </div>
-
         );
     }
 

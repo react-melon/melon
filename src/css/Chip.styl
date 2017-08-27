@@ -1,43 +1,69 @@
 @require './base.styl'
 
 .{$-melon-class-prefix}-chip
-    display: inline-block
+    display: inline-flex
+    align-items: center;
+    height: 2em
+    border-radius: 1em
+    font-size: 1em
     color: $-melon-chip.color
     background-color: $-melon-chip.background-color
-    line-height: 32px
-    white-space: nowrap
-    border-radius: 16px / 50%
-    overflow: hidden
+    padding: 0 1em
+    cursor: pointer
+    transition: background-color .2s ease-in-out, box-shadow .2s ease-out;
+    user-select: none
+
+    &:hover
+        background-color: darken($-melon-chip.background-color, 10%);
+
+    &-content
+        display: flex
+        flex: 1 1 auto
+        align-items: center
+        cursor: pointer
+        font-size: .9em
+        font-family: melon-font-family()
+
+    &-remove-button
+        width: 1.5em
+        height: 1.5em
+        border-radius: 50%
+        border: none
+        font-size: 1em
+
     &.state-active
         {$-melon-chip-shadow}
-        cursor: pointer
-        &:hover
-            color: $-melon-chip.color-hover
-            background-color: $-melon-chip.background-color-hover
 
-    &-avatar
-        display: table-cell
-        vertical-align: middle
-        width: 32px
-        height: 32px
-        border-radius: 50%
-    &-label
-        display: table-cell
-        padding-left: 8px
-        padding-right: 12px
-        vertical-align: middle
-    &-icon
-        display: table-cell
-        vertical-align: middle
-        padding-left: 8px
-        padding-right: 8px
-        .{$-melon-class-prefix}-icon
-            display: table-cell
-            font-size: inherit
-            color: $-melon-chip.icon.color
-            background-color: $-melon-chip.icon.background-color
-            border-radius: 50%
-            &:hover
-                color: $-melon-chip.icon.color-hover
-                background-color: $-melon-chip.icon.background-color-hover
+    &.variant-avatar
+        padding-left: 0
 
+    &.variant-removable
+        padding-right: .5em;
+
+
+.{$-melon-class-prefix}-avatar.variant-chip
+    font-size: 1em
+    margin-right: .5em
+    background-color: #bcbcbc;
+    color: #fff
+
+.{$-melon-class-prefix}-icon.variant-chip-remove-button
+    flex: 0 0 auto;
+    background-color: darken($-melon-chip.background-color, 20%)
+    border-radius: 50%
+    font-size: .75em
+    width: 1.5em
+    height: 1.5em
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    color: $-melon-colors.white
+    font-weight: 700
+    margin-left: .5em;
+    transition: background-color .45s ease-in-out;
+
+    &:hover
+        background-color: darken($-melon-chip.background-color, 35%)
+
+    &.state-active
+        background-color: darken($-melon-chip.background-color, 50%)
