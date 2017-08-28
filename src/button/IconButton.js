@@ -55,7 +55,7 @@ IconButton.propTypes = {
     disabled: PropTypes.bool,
     rippleColor: PropTypes.string,
     variants: PropTypes.arrayOf(PropTypes.string),
-    icon: PropTypes.element
+    icon: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
 };
 
 IconButton.defaultProps = {
