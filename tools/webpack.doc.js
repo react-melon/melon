@@ -9,13 +9,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MarkdownItAnchor = require('markdown-it-anchor');
 const MarkdownItClass = require('./markdown-it-class');
-const pkg = require('../package.json');
-const blacklist = [
-    'roboto-fontface',
-    'melon-core'
-];
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-module.exports = {
+const config = {
     entry: {
         index: [
             path.join(__dirname, '../example/index.js')
@@ -106,7 +102,6 @@ module.exports = {
         ]
     },
     plugins: [
-        // new BundleAnalyzerPlugin(),
         new ExtractTextPlugin({
             filename: '[name].[contenthash].css',
             ignoreOrder: true
@@ -115,7 +110,6 @@ module.exports = {
             name: 'common',
             minChunks(module) {
                 let context = module.context;
-                console.log(context);
                 if (typeof context !== 'string') {
                     return false;
                 }
@@ -145,3 +139,9 @@ module.exports = {
         })
     ]
 };
+
+if (process.env.DEBUG) {
+    config.plugins.push(new BundleAnalyzerPlugin());
+}
+
+module.exports = config;

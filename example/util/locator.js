@@ -6,7 +6,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Locator from 'numen/HistoryLocator';
-import {Bind} from 'lodash-decorators';
+import bind from 'lodash-decorators/bind';
 
 export function createProvider({routes, components}) {
 
@@ -66,7 +66,7 @@ export function createProvider({routes, components}) {
             this.locator.stop();
         }
 
-        @Bind()
+        @bind()
         route(location) {
 
             console.log(location);

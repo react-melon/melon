@@ -4,7 +4,7 @@
  */
 
 import LinkButton from 'melon/Link';
-import {Bind} from 'lodash-decorators';
+import bind from 'lodash-decorators/bind';
 import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 
@@ -14,7 +14,7 @@ export default class Link extends PureComponent {
         locator: PropTypes.object
     };
 
-    @Bind()
+    @bind()
     onClick(e) {
 
         let {href, onClick} = this.props;

@@ -5,7 +5,7 @@
 
 /* eslint-disable fecs-min-vars-per-destructure */
 
-import {Bind} from 'lodash-decorators';
+import bind from 'lodash-decorators/bind';
 import React, {PureComponent, cloneElement} from 'react';
 import './index.styl';
 import routes from './routes';
@@ -23,7 +23,7 @@ class App extends PureComponent {
         navOpen: false
     };
 
-    @Bind()
+    @bind()
     renderNavItem({name, component, components, pathname}, currentRoute) {
 
         if (components) {
