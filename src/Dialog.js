@@ -55,8 +55,6 @@ export default class Dialog extends Component {
             return;
         }
 
-        console.log('willReceiveProps', this.state.open, open, this.state.open && !open);
-
         this.setState(
             open ? {open, closing: false} : {open, closing: this.state.open && !open}
         );
@@ -238,15 +236,18 @@ export default class Dialog extends Component {
 
         return (
             <div className={className}>
-                <DialogWindow
-                   closing={closing}
-                   width={width}
-                   title={title}
-                   footer={footer}
-                   className={windowPartClassName}
-                   onMotionEnd={this.onMotionEnd}>
-                   {body}
-               </DialogWindow>
+                {/* 这一层用来提供顶部、底部的 padding 空间，主要是超长对话窗好看 */}
+                <div className={cx.getPartClassName('content')}>
+                    <DialogWindow
+                        closing={closing}
+                        width={width}
+                        title={title}
+                        footer={footer}
+                        className={windowPartClassName}
+                        onMotionEnd={this.onMotionEnd}>
+                        {body}
+                    </DialogWindow>
+                </div>
                 <Mask
                     show={open || closing}
                     closing={closing}
@@ -264,7 +265,6 @@ export default class Dialog extends Component {
      */
     render() {
         let {open, closing} = this.state;
-        console.log('render', open, closing, open || closing);
         return (
             <Layer open={open || closing} render={this.renderLayer} />
         );

@@ -16,11 +16,15 @@
     opacity: 0
     visibility: hidden
     overflow-y: auto
-    padding: 1rem 0
 
     &.state-open
         opacity: 1
         visibility: visible
+
+    &-content
+        padding: 1em 0
+        display: flex
+        margin: auto
 
     &-window
         margin: auto
@@ -37,7 +41,6 @@
 
     &-window.variant-no-title &-body
         margin: 0 0 1.5em
-
 
     .variant-adaptive
         width: auto
