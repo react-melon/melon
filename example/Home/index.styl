@@ -11,18 +11,25 @@
     background: linear-gradient(to left bottom, hsl(100, 100%, 85%) 0%,hsl(159, 100%, 85%) 100%)
 
     .logo
+        width: 15rem
         height: 10rem
-        margin: 2rem
-        background: url(./logo.png) center center no-repeat;
+        margin: 2rem auto 3rem
+        background-image: url(../common/img/logo.png)
+        background-image: -webkit-image-set(url(../common/img/logo.png) 1x, url(../common/img/logo@2x.png) 2x, url(../common/img/logo@3x.png) 3x)
+        background-position: center center
+        background-repeat: no-repeat;
+        background-size: contain;
 
     .title
-        font-size: 1.5rem
+        font-size: 2.5rem
+        letter-spacing: .5rem
         text-align: center
         color: #000
 
     .desc
         margin-top: 1rem;
-        color: #333
+        color: #666
+        text-align: center;
 
     .buttons
         margin-top: 2rem
