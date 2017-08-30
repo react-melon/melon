@@ -126,6 +126,16 @@ class View extends React.Component {
                         </Select>
                     </div>
                 </div>
+                <p>MaxHeight</p>
+                <Select defaultValue="2" maxHeight={200}>
+                    {
+                        Select.createOptions(
+                            Array
+                                .from({length: 30})
+                                .map((_, i) => ({value: `${i}`, name: `第${i}项`}))
+                        )
+                    }
+                </Select>
             </div>
         );
     }

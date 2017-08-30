@@ -48,7 +48,7 @@ export default class Select extends InputComponent {
         this.onClickOption = this.onClickOption.bind(this);
         this.hideOptions = this.hideOptions.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
-        this.showSelectedOption = this.showSelectedOption.bind(this);
+        this.scrollSelectedOptionInView = this.scrollSelectedOptionInView.bind(this);
 
     }
 
@@ -225,7 +225,7 @@ export default class Select extends InputComponent {
     showOptions() {
         this.setState({
             open: true
-        }, this.showSelectedOption);
+        }, this.scrollSelectedOptionInView);
     }
 
     /**
@@ -239,8 +239,12 @@ export default class Select extends InputComponent {
         });
     }
 
-
-    showSelectedOption() {
+    /**
+     * 把已选中的选项滚动进视野
+     *
+     * @private
+     */
+    scrollSelectedOptionInView() {
 
         let value = this.state.value;
         let layer = this.popover.getLayer();
@@ -249,13 +253,13 @@ export default class Select extends InputComponent {
             return;
         }
 
-        let selectedOption = layer.querySelector(`[data-value="${value}"]`);
+        let selectedOptionElement = layer.querySelector(`[data-value="${value}"]`);
 
-        if (selectedOption) {
-            setTimeout(() => {
-                selectedOption.scrollIntoView();
-            }, 50);
+        if (!selectedOptionElement) {
+            return;
         }
+
+        layer.scrollTop = Math.max(selectedOptionElement.offsetTop - 32, 0);
 
     }
 
