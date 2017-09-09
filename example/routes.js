@@ -19,6 +19,7 @@ import Breadcrumb from './components/Breadcrumb.md';
 import Card from './components/Card.md';
 import Chip from './components/Chip.md';
 import Ripple from './components/Ripple.md';
+import Drawer from './components/Drawer.md';
 
 export default [
     {
@@ -80,6 +81,11 @@ export default [
                 name: 'Dialog',
                 pathname: '/Dialog',
                 component: Dialog
+            },
+            {
+                name: 'Drawer',
+                pathname: '/Drawer',
+                component: Drawer
             },
             {
                 name: 'Ripple',

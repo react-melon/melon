@@ -50,6 +50,7 @@ class App extends PureComponent {
                 onClick={() => {
                     this.props.locator.redirect(pathname);
                     this.setState({navOpen: false});
+                    window.scrollTo(0, 0);
                 }}
             />
         );
