@@ -45,8 +45,8 @@
     &.variant-horizontal
         display: inline-flex
         align-items: center
-        margin-left: -1em
         width: auto
+        margin: 1em 0
 
         .{$-melon-class-prefix}-box-group-option
             display: inline-flex
@@ -54,6 +54,9 @@
 
             > .{$-melon-class-prefix}-icon
                 margin-right: .5em
+
+            &:first-child
+                margin-left -0.5em
 
         .{$-melon-class-prefix}-validity
             margin-left: 1.5em

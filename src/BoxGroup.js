@@ -164,7 +164,7 @@ export default class BoxGroup extends InputComponent {
             .build();
 
         return (
-            <div className={className}>
+            <div className={className} style={this.props.style}>
                 {Children.map(this.props.children, this.renderOption)}
             </div>
         );
