@@ -5,7 +5,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
 import {mount, shallow} from 'enzyme';
 import Tabs from '../../src/Tabs';
 import TabsPanel from '../../src/tabs/Panel';
@@ -15,39 +14,21 @@ const Tab = Tabs.Tab;
 
 describe('Tabs', function () {
 
-    let renderer;
-    let container;
-
-    beforeEach(function () {
-        renderer = TestUtils.createRenderer();
-    });
-
-    afterEach(function () {
-        renderer = null;
-    });
-
-    afterAll(function () {
-        ReactDOM.unmountComponentAtNode(container);
-        document.body.removeChild(container);
-        container = null;
-    });
-
     it('Tab', function () {
-
         const tab = shallow(
             <Tab label="Tab1" selected />
         );
-
         expect(tab.hasClass('ui-tabs-item')).toBe(true);
         expect(tab.hasClass('state-selected')).toBe(true);
-
     });
 
     it('TabsPanel', function () {
-        renderer.render(<TabsPanel active />);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (<div className="ui-tabs-panel state-active" />);
-        expect(actualElement).toEqualJSX(expectedElement);
+        let wrapper = shallow(<TabsPanel active />);
+        expect(wrapper.hasClass('ui-tabs-panel')).toBe(true);
+        expect(wrapper.hasClass('state-active')).toBe(true);
+        // let actualElement = renderer.getRenderOutput();
+        // let expectedElement = (<div className="ui-tabs-panel state-active" />);
+        // expect(actualElement).toEqualJSX(expectedElement);
     });
 
     it('Tabs functions', function (done) {

@@ -9,22 +9,18 @@ const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 const config = Object.assign({}, require('./webpack.common'), {
 
-    entry: [
-        'webpack-hot-middleware/client?reload=false&&quiet=false&&noInfo=true',
-        'webpack/hot/only-dev-server',
-        path.join(__dirname, '../example/index.js')
-    ],
+    entry: {
+        index: path.join(__dirname, '../example/index.js')
+    },
 
     module: {
         loaders: [{
             test: /\.js?$/,
             loaders: [
-                'react-hot',
-                'babel?cacheDirectory'
+                'babel'
             ],
             exclude: [
                 /node_modules/
@@ -61,6 +57,7 @@ const config = Object.assign({}, require('./webpack.common'), {
             context: '.',
             manifest: require('../asset/inf-manifest.json')
         }),
+        new webpack.NamedModulesPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
@@ -72,16 +69,17 @@ const config = Object.assign({}, require('./webpack.common'), {
                         'utf8'
                     )
                     .replace(/<!--@inject=([\w._-]+)-->/ig, function ($0, $1) {
-                        return `<script src="${$1}"></script>`;
+                        return `<script src="/asset/${$1}"></script>`;
                     });
-            })(),
-            filename: path.resolve(__dirname, '../asset/index.html'),
-            alwaysWriteToDisk: true
+            })()
         }),
-        new HtmlWebpackHarddiskPlugin(),
         new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
         new webpack.IgnorePlugin(/locale/, /moment/)
-    ]
+    ],
+    devServer: {
+        host: 'localhost',
+        port: 8080
+    }
 
 });
 

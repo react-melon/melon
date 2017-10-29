@@ -75,7 +75,7 @@ describe('TextBox', function () {
     it('change', done => {
 
         const input = textbox.find('input');
-        input.get(0).value = 'aaa';
+        input.instance().value = 'aaa';
         input.simulate('change');
 
         then(() => {
@@ -177,6 +177,8 @@ describe('TextBox floating-label:', () => {
                     .prop('floating')
             ).toBe(false);
 
+            textbox.unmount();
+
             done();
 
         });
@@ -220,7 +222,7 @@ describe('TextBox multiline & controled', () => {
 
         const changeValue = 't';
         const textarea = textbox.find('textarea');
-        textarea.get(0).value = changeValue;
+        textarea.instance().value = changeValue;
         textarea.simulate('change');
 
         then(() => {

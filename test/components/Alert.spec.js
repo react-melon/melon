@@ -7,10 +7,6 @@ import React from 'react';
 import {mount} from 'enzyme';
 import Alert from '../../src/Alert';
 
-import '../../src/css/theme/default/index.styl';
-import '../../src/css/base.styl';
-import '../../src/css/Dialog.styl';
-
 describe('Alert', () => {
 
     it('as a component', done => {

@@ -10,13 +10,11 @@ module.exports = {
     basePath: path.join(__dirname, '../'),
 
     frameworks: [
-        'jasmine',
-        'jasmine-expect-jsx'
+        'jasmine'
     ],
 
     files: [
-        // 'test/components/ScrollView.spec.js'
-        'test/components/**/*.spec.js'
+        'test/index.js'
     ],
 
     browsers: [
@@ -43,7 +41,11 @@ module.exports = {
                 },
                 {
                     test: /\.styl$/,
-                    loaders: ['style', 'css', 'stylus?paths=node_modules&resolve url']
+                    loaders: [
+                        'style',
+                        'css',
+                        'stylus?paths=node_modules&resolve url'
+                    ]
                 },
                 {
                     test: /\.(svg|eot|ttf|woff|woff2|jpg|png)(\?.*)?$/,

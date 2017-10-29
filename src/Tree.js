@@ -12,6 +12,8 @@ import TreeNode from './tree/TreeNode';
 
 const cx = create('Tree');
 
+export {TreeNode};
+
 /**
  * melon/Tree
  *
@@ -135,38 +137,26 @@ export default class Tree extends Component {
 Tree.TreeNode = TreeNode;
 
 Tree.createTreeNodes = function (datasource, level = 1) {
-
     if (datasource == null) {
         return null;
     }
-
-    if (!Array.isArray(datasource)) {
-        datasource = [datasource];
-    }
-
     return datasource.map(function (item, index) {
-
         return (
             <TreeNode
                 level={level}
                 label={item.text}
-                key={item.id} >
+                key={item.id || index} >
                 {Tree.createTreeNodes(item.children, level + 1)}
-           </TreeNode>
+            </TreeNode>
         );
-
     });
-
 };
 
 Tree.displayName = 'Tree';
 
 Tree.propTypes = {
     defaultExpandAll: PropTypes.bool,
-    datasource: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object
-    ])
+    datasource: PropTypes.array
 },
 
 Tree.defaultProps = {

@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import Row from './table/Row';
 import {create} from 'melon-core/classname/cxBuilder';
 import Column from './table/Column';
-import Sticky from 'react-sticky-state';
 
 const SCROLL_CLASS = {
     down: 'sticky-scroll-down',
@@ -74,23 +73,11 @@ class Table extends Component {
      * @return {Element}
      */
     renderHeader(columns, sticky) {
-
-        let header = (
+        return (
             <div className={cx.getPartClassName('header')}>
                 {this.renderRow('header', columns, null, -1)}
             </div>
         );
-
-        if (sticky) {
-            header = (
-                <Sticky scrollClass={SCROLL_CLASS}>
-                    {header}
-                </Sticky>
-            );
-        }
-
-        return header;
-
     }
 
     /**

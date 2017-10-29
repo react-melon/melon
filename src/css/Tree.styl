@@ -31,11 +31,6 @@
             &:hover
                 background-color: $-melon-colors.cyan100
 
-            &.state-selected
-                font-weight: 700
-                color: $-melon-colors.white
-                background-color: $-melon-colors.cyan200
-
 
     .{$-melon-class-prefix}-tree-node-root
 
@@ -47,3 +42,8 @@
 
             height: auto
             overflow: auto
+
+.{$-melon-class-prefix}-tree-node.state-selected .{$-melon-class-prefix}-tree-node-label
+    font-weight: 700
+    color: $-melon-colors.white
+    background-color: $-melon-colors.cyan200

@@ -5,67 +5,34 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-
+import {shallow} from 'enzyme';
 import then from '../then';
 
 import Zippy from '../../src/Zippy';
 
 describe('Zippy', () => {
 
-    let component;
-
-    it('work', () => {
-
-        component = TestUtils.renderIntoDocument(
-            <Zippy><p>test</p></Zippy>
-        );
-
-        expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
-        expect(ReactDOM.findDOMNode(component).className).toMatch('variant-vertical');
-    });
-
-    it('horizontal', () => {
-
-        component = TestUtils.renderIntoDocument(
-            <Zippy direction="horizontal">
-                <p>test</p>
-            </Zippy>
-        );
-
-        expect(ReactDOM.findDOMNode(component).className).toMatch('variant-horizontal');
-        expect(ReactDOM.findDOMNode(component).className).toMatch('state-close');
+    it('horizontal / vertical', () => {
+        let wrapper = shallow(<Zippy><p>test</p></Zippy>);
+        expect(wrapper.hasClass('variant-vertical')).toBe(true);
+        wrapper.setProps({direction: 'horizontal'});
+        expect(wrapper.hasClass('variant-horizontal')).toBe(true);
     });
 
     it('expand', done => {
 
-        const TestComponent = React.createClass({
+        let wrapper = shallow(
+            <Zippy expand={false} size={10}>
+                <p>test</p>
+            </Zippy>
+        );
 
-            getInitialState() {
-                return {
-                    expand: false
-                };
-            },
+        expect(wrapper.hasClass('state-close')).toBe(true);
 
-            render() {
-
-                return (
-                    <Zippy expand={this.state.expand} size={10}>
-                        <p>test</p>
-                    </Zippy>
-                );
-            }
-        });
-
-        component = TestUtils.renderIntoDocument(<TestComponent />);
-
-        const zippy = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-zippy');
-        expect(TestUtils.isDOMComponent(zippy)).toBe(true);
-
-        component.setState({expand: true});
+        wrapper.setProps({expand: true});
 
         then(() => {
-            expect(zippy.className).not.toMatch('state-close');
+            expect(wrapper.hasClass('state-close')).toBe(false);
             done();
         });
 

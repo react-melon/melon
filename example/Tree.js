@@ -14,7 +14,7 @@ class View extends React.Component {
 
     render() {
 
-        const datasource = {
+        const datasource = [{
             id: '1',
             text: '百度',
             children: [
@@ -50,7 +50,7 @@ class View extends React.Component {
                     text: '百度音乐'
                 }
             ]
-        };
+        }];
 
         return (
             <div>

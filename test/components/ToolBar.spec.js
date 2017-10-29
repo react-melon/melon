@@ -4,22 +4,15 @@
  */
 
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
-
+import {shallow} from 'enzyme';
 import ToolBar from '../../src/ToolBar';
 
 describe('ToolBar', function () {
 
     it('work', function () {
-        const renderer = createRenderer();
-        renderer.render(
-            <ToolBar>test</ToolBar>
-        );
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <div className={'ui-tool-bar'}>test</div>
-        );
-        expect(actualElement).toEqualJSX(expectedElement);
+        const wrapper = shallow(<ToolBar>test</ToolBar>);
+        expect(wrapper.hasClass('ui-tool-bar')).toBe(true);
+        expect(wrapper.text()).toBe('test');
     });
 
 });

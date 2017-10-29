@@ -3,17 +3,13 @@
  * @author cxtom(cxtom2008@gmail.com)
  */
 
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
-
+import {mount, shallow} from 'enzyme';
 import then from '../then';
+import Tree, {TreeNode} from '../../src/Tree';
 
-import Tree from '../../src/Tree';
-
-const TreeNode = Tree.TreeNode;
-
-const datasource = {
+const datasource = [{
     id: '1',
     text: '百度',
     children: [{
@@ -45,45 +41,60 @@ const datasource = {
         id: '4',
         text: '百度音乐'
     }]
-};
+}];
 
 describe('Tree', () => {
 
-    it('work', done => {
+    it('dom', () => {
 
-        const component = TestUtils.renderIntoDocument(
+        const wrapper = shallow(
             <Tree>
                 {Tree.createTreeNodes(datasource)}
             </Tree>
         );
 
-        expect(TestUtils.isCompositeComponent(component)).toBe(true);
-
-        const nodes = TestUtils.scryRenderedComponentsWithType(component, TreeNode);
+        let nodes = wrapper.find(TreeNode);
         expect(nodes.length).toBe(14);
-        expect(nodes[0].state.expand).toBe(false);
-        expect(nodes[0].props.children.length).toBe(3);
+        expect(nodes.at(0).prop('level')).toBe(1);
 
-        const label = TestUtils.scryRenderedDOMComponentsWithTag(nodes[0], 'span');
-        TestUtils.Simulate.click(label[0]);
-        TestUtils.Simulate.click(ReactDOM.findDOMNode(nodes[0]));
+        nodes = nodes.at(0).children();
+        expect(nodes.length).toBe(3);
+        expect(nodes.at(0).prop('level')).toBe(2);
 
-        then(() => {
-
-            expect(ReactDOM.findDOMNode(nodes[0]).className).toMatch('state-selected');
-
-            expect(nodes[0].state.expand).toBe(true);
-            expect(label[0].className).toMatch('state-expand');
-
-            done();
-
-        });
+        nodes = nodes.at(0).children();
+        expect(nodes.length).toBe(4);
+        expect(nodes.at(0).prop('level')).toBe(3);
 
     });
 
-    it('defaultExpandAll', () => {
+    it('expand / collapse', done => {
 
-        const component = TestUtils.renderIntoDocument(
+        let wrapper = mount(
+            <Tree>
+                {Tree.createTreeNodes(datasource)}
+            </Tree>
+        );
+
+        let node = wrapper.findWhere(wrapper => (
+            wrapper.is(TreeNode) && wrapper.prop('label') === '贴吧事业部'
+        ));
+
+        expect(node.instance().state.expand).toBe(false);
+
+        node.find('li >span').at(0).simulate('click');
+
+        then(() => {
+            expect(node.instance().state.expand).toBe(true);
+            wrapper.unmount();
+            done();
+        });
+
+
+    });
+
+
+    it('defaultExpandAll', () => {
+        const component = shallow(
             <Tree defaultExpandAll>
                 <TreeNode label="爷爷">
                     <TreeNode label="叔叔" />
@@ -97,47 +108,30 @@ describe('Tree', () => {
             </Tree>
         );
 
-        const nodes = TestUtils.scryRenderedComponentsWithType(component, TreeNode);
+        let nodes = component.find(TreeNode);
         expect(nodes.length).toBe(6);
-        expect(nodes[0].state.expand).toBe(true);
+        expect(nodes.everyWhere(node => node.prop('expand'))).toBe(true);
+
     });
 
     it('Controlled', done => {
 
-        const TestComponent = React.createClass({
+        const component = shallow(
+            <Tree defaultExpandAll={false}>
+                <TreeNode label="爷爷" />
+                <TreeNode label="二爷爷" />
+                <TreeNode label="三爷爷" />
+            </Tree>
+        );
 
-            getInitialState() {
-                return {
-                    expand: false
-                };
-            },
+        const nodes = component.find(TreeNode);
+        expect(nodes.at(0).prop('expand')).toBe(false);
 
-            render() {
-
-                return (
-                    <Tree defaultExpandAll={this.state.expand}>
-                        <TreeNode label="爷爷">
-                        </TreeNode>
-                        <TreeNode label="二爷爷">
-                        </TreeNode>
-                        <TreeNode label="三爷爷">
-                        </TreeNode>
-                    </Tree>
-                );
-            }
-        });
-
-        const component = TestUtils.renderIntoDocument(<TestComponent />);
-        const nodes = TestUtils.scryRenderedComponentsWithType(component, TreeNode);
-        expect(nodes[0].state.expand).toBe(false);
-
-        component.setState({expand: true});
+        component.setProps({defaultExpandAll: true})
 
         then(() => {
-            expect(nodes[0].state.expand).toBe(true);
-            component.setState({expand: true});
-        })
-        .then(() => {
+            const nodes = component.find(TreeNode);
+            expect(nodes.at(0).prop('expand')).toBe(true);
             done();
         });
 
