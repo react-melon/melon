@@ -359,11 +359,14 @@ export default class Dialog extends Component {
      * @return {ReactElement}
      */
     render() {
-        let {open, closing} = this.state;
+        let {open, closing, children} = this.state;
         return (
             <Layer
                 open={open || closing}
-                render={this.renderLayer} />
+                render={this.renderLayer}
+                onClickAway={() => {}}>
+                {this.renderLayer()}
+            </Layer>
         );
     }
 

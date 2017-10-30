@@ -243,7 +243,6 @@ export default class Popover extends Component {
     }
     /* eslint-enable fecs-prefer-destructure */
 
-
     setRef(prop, obj) {
         this[prop] = obj;
     }
@@ -281,7 +280,9 @@ export default class Popover extends Component {
                 {({scale, opacity}) => (
                     <div
                         className={className}
-                        ref={this.setLayer}
+                        ref={layer => {
+                            this.layer = layer;
+                        }}
                         style={{
                             opacity: opacity,
                             transform: `scale(${scale}, ${scale})`,
@@ -309,9 +310,11 @@ export default class Popover extends Component {
             <Layer
                 variants={variants}
                 render={this.renderLayer}
-                open={anchor && (open || closing)}
+                open={!!(anchor && (open || closing))}
                 useLayerMask={useLayerMask}
-                onClickAway={onRequestClose} />
+                onClickAway={onRequestClose}>
+                {this.renderLayer()}
+            </Layer>
         );
 
     }

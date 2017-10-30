@@ -10,3 +10,4 @@ coverage
 *.orig
 .bower.json
 asset
+package-lock.json

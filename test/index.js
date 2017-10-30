@@ -14,13 +14,13 @@ import './index.styl';
 
 // const WHITE_LIST = [
 //     // './Alert.spec',
-//     './BoxGroup.spec',
+//     // './BoxGroup.spec',
 //     // './Breadcrumb.spec',
 //     // './Button.spec',
 //     // './Card.spec',
 //     // './Chip.spec',
 //     // './Confirm.spec',
-//     // './Dialog.spec',
+//     './Dialog.spec',
 //     // './Icon.spec',
 //     // './Layer.spec',
 //     // './Link.spec',
@@ -38,10 +38,17 @@ import './index.styl';
 //     // './Uploader.spec',
 //     // './Zippy.spec',
 // ];
-
+const BLACK_LIST = [
+    './Alert.spec',
+    './Confirm.spec',
+    './Dialog.spec',
+    './Tooltip.spec',
+    './SnackBar.spec',
+    './Select.spec'
+];
 const specContext = require.context('./components', true)
 const specs = specContext
     .keys()
     .filter(spec => !/\.js$/.test(spec))
-    // .filter(spec => WHITE_LIST.indexOf(spec) > -1)
+    .filter(spec => BLACK_LIST.indexOf(spec) === -1)
     .forEach(specContext)

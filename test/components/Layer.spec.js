@@ -4,45 +4,48 @@
  */
 
 import Layer from '../../src/Layer';
-import {mount} from 'enzyme';
 import React from 'react';
+import {render, unmountComponentAtNode} from 'react-dom';
 import then from '../then';
 
 describe('Layer', () => {
 
-    it('use layer as mask', () => {
+    it('use layer with a mask', done => {
 
         let mock = {
-            render() {
-                return <div>aaa</div>;
-            },
             onClickAway() {
             }
         };
 
-        spyOn(mock, 'render').and.callThrough();
         spyOn(mock, 'onClickAway').and.callThrough();
 
-        let wrapper = mount(
+        let container = document.createElement('div');
+        document.body.appendChild(container);
+
+        let wrapper = render(
             <Layer
                 open={false}
-                render={mock.render}
-                onClickAway={mock.onClickAway} />
+                onClickAway={mock.onClickAway}>
+                <div>aaa</div>
+            </Layer>,
+            container
         );
 
-        let instance = wrapper.instance();
+        expect(wrapper.getLayer() == null).toBe(true);
 
-        expect(mock.render).not.toHaveBeenCalled();
-        expect(instance.getLayer() == null).toBe(true);
+        wrapper = render(
+            <Layer
+                open={true}
+                onClickAway={mock.onClickAway}>
+                <div>aaa</div>
+            </Layer>,
+            container
+        );
 
-        wrapper.setProps({open: true});
-
-        expect(mock.render).toHaveBeenCalled();
-
-        let layer = instance.getLayer();
+        let layer = wrapper.getLayer();
 
         expect(layer.nodeType).toBe(1);
-        expect(layer.parentNode).toBe(document.body);
+        expect(layer.classList.contains('ui-layer-mask')).toBe(true);
         expect(mock.onClickAway).not.toHaveBeenCalled();
 
         layer.childNodes[0].click();
@@ -50,68 +53,104 @@ describe('Layer', () => {
 
         layer.click();
 
-        expect(mock.onClickAway).toHaveBeenCalled();
-
-        wrapper.unmount();
-
-        expect(instance.getLayer() == null).toBe(true);
+        then(() => {
+            expect(mock.onClickAway).toHaveBeenCalled();
+            wrapper = render(
+                <Layer
+                    open={false}
+                    onClickAway={mock.onClickAway}>
+                    <div>aaa</div>
+                </Layer>,
+                container
+            );
+            expect(wrapper.getLayer() == null).toBe(true);
+            unmountComponentAtNode(container);
+            expect(wrapper.container == null).toBe(true);
+            container.parentNode.removeChild(container);
+            container = null;
+            done()
+        });
 
     });
 
-    it('not use layer as mask', done => {
+    it('instant open', () => {
+        let container = document.createElement('div');
+        document.body.appendChild(container);
+        let text = (+(Math.random() + '').substr(2, 10)).toString(36);
+        let wrapper = render(
+            <Layer
+                open={true}
+                onClickAway={() => {}}>
+                {text}
+            </Layer>,
+            container
+        );
+
+        let layer = wrapper.getLayer();
+
+        expect(layer != null).toBe(true);
+        expect(layer.innerHTML).toBe(text);
+        unmountComponentAtNode(container);
+        expect(wrapper.container == null).toBe(true);
+        container.parentNode.removeChild(container);
+        container = null;
+    });
+
+    it('use layer without a mask', done => {
 
         let mock = {
-            render() {
-                return <div>aaa</div>;
-            },
             onClickAway() {
             }
         };
 
-        spyOn(mock, 'render').and.callThrough();
         spyOn(mock, 'onClickAway').and.callThrough();
 
-        let wrapper = mount(
+        let container = document.createElement('div');
+        document.body.appendChild(container);
+
+        let wrapper = render(
             <Layer
                 open={false}
                 useLayerMask={false}
-                render={mock.render}
-                onClickAway={mock.onClickAway} />
+                onClickAway={mock.onClickAway}>
+                <div>aaa</div>
+            </Layer>,
+            container
         );
 
-        let instance = wrapper.instance();
+        expect(wrapper.getLayer() == null).toBe(true);
 
-        expect(mock.render).not.toHaveBeenCalled();
-        expect(instance.getLayer() == null).toBe(true);
+        wrapper = render(
+            <Layer
+                open={true}
+                useLayerMask={false}
+                onClickAway={mock.onClickAway}>
+                <div>aaa</div>
+            </Layer>,
+            container
+        );
 
-        wrapper.setProps({open: true});
+        let layer = wrapper.getLayer();
+
+        expect(layer.nodeType).toBe(1);
+        expect(layer.classList.contains('ui-layer-mask')).toBe(false);
+        expect(mock.onClickAway).not.toHaveBeenCalled();
+
+        layer.childNodes[0].click();
+        expect(mock.onClickAway).not.toHaveBeenCalled();
+
+        wrapper.onClickAway({target: document.body});
 
         then(() => {
-
-            expect(mock.render).toHaveBeenCalled();
-
-            let layer = instance.getLayer();
-
-            expect(layer.nodeType).toBe(1);
-            expect(layer.parentNode).toBe(document.body);
-            expect(mock.onClickAway).not.toHaveBeenCalled();
-
-            layer.childNodes[0].click();
-            expect(mock.onClickAway).not.toHaveBeenCalled();
-
-            document.body.click();
-
             expect(mock.onClickAway).toHaveBeenCalled();
-
-            wrapper.unmount();
-
-            expect(instance.getLayer() == null).toBe(true);
-
-            done();
-
+            unmountComponentAtNode(container);
+            expect(wrapper.getLayer() == null).toBe(true);
+            container.parentNode.removeChild(container);
+            container = null;
+            done()
         });
 
-
     });
+
 
 });

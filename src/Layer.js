@@ -3,128 +3,121 @@
  * @author leon <ludafa@outlook.com>
  */
 
-import {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {create} from 'melon-core/classname/cxBuilder';
-import {
-    unstable_renderSubtreeIntoContainer,
-    unmountComponentAtNode
-} from 'react-dom';
+import {createPortal} from 'react-dom';
 
 const cx = create('Layer');
 
-export default class Layer extends Component {
+export default class Layer extends PureComponent {
 
     constructor(...args) {
         super(...args);
         this.onClickAway = this.onClickAway.bind(this);
+        this.onMaskClick = this.onMaskClick.bind(this);
     }
 
     componentDidMount() {
-        this.renderLayer();
+        let {open, useLayerMask} = this.props;
+        if (open) {
+            this.addGlobalEventListeners(useLayerMask);
+        }
     }
 
-    componentDidUpdate() {
-        this.renderLayer();
+    componentWillReceiveProps({open, useLayerMask}) {
+        open
+            ? this.addGlobalEventListeners(useLayerMask)
+            : this.removeGlobalEventListeners(useLayerMask);
     }
 
     componentWillUnmount() {
-        this.unmountLayer();
+        this.removeGlobalEventListeners(this.props.useLayerMask);
+        if (this.container) {
+            document.body.removeChild(this.container);
+            this.container = null;
+        }
     }
 
     onClickAway(e) {
-
         let {target, defaultPrevented} = e;
         let {onClickAway, open} = this.props;
-        let layer = this.layer;
-
-        if (defaultPrevented || !open || !layer) {
+        if (defaultPrevented || !open || !this.container) {
             return;
         }
-
-        if (target === layer || !layer.contains(target)) {
+        if (!this.container.contains(target)) {
             onClickAway && onClickAway();
         }
-
     }
 
-    renderLayer() {
-
-        let {open, render, useLayerMask} = this.props;
-
-        if (!open) {
-            this.unmountLayer();
+    onMaskClick(e) {
+        if (e.target !== e.currentTarget) {
             return;
         }
-
-        let layer = this.layer;
-
-        if (!layer) {
-
-            layer = this.layer = document.createElement('div');
-
-            // 如果使用一个 div 作为遮罩，那么这里给 div 加 click 绑定
-            if (useLayerMask) {
-                layer.addEventListener('click', this.onClickAway);
-            }
-            // 否则我们给 window 加事件绑定
-            else {
-
-                // 这么干是因为 Layer 通常是被 click 触发展现的
-                // 事件会继续冒泡到 window 上，这样我们这里就会被直接关闭掉
-                // 所以，这里用 setTimeout 做事件绑定
-                setTimeout(() => {
-                    window.addEventListener('click', this.onClickAway);
-                }, 0);
-
-            }
-
-            layer.className = cx(this.props)
-                .addVariants(useLayerMask ? 'mask' : null)
-                .build();
-
-            document.body.appendChild(layer);
+        let {onClickAway} = this.props;
+        if (onClickAway) {
+            onClickAway(e);
         }
-
-        this.layerContent = unstable_renderSubtreeIntoContainer(
-            this,
-            render(),
-            layer
-        );
-
     }
 
-    unmountLayer() {
-
-        let layer = this.layer;
-
-        if (!layer) {
-            return;
+    addGlobalEventListeners(useLayerMask) {
+        if (!useLayerMask) {
+            setTimeout(() => {
+                window.addEventListener('click', this.onClickAway);
+            }, 0);
         }
-
-        layer.removeEventListener('click', this.onClickAway);
-        window.removeEventListener('click', this.onClickAway);
-
-        unmountComponentAtNode(layer);
-        document.body.removeChild(layer);
-        this.layer = null;
-
+    }
+    removeGlobalEventListeners(useLayerMask) {
+        if (!useLayerMask) {
+            window.removeEventListener('click', this.onClickAway);
+        }
     }
 
     getLayer() {
-        return this.layer;
+
+        let {open, useLayerMask} = this.props;
+        let container = this.container;
+
+        if (!open || !container) {
+            return null;
+        }
+
+        return useLayerMask ? container.firstChild : container;
+
+    }
+
+    getContainer() {
+        let container = this.container;
+        if (!container) {
+            container = this.container = document.createElement('div');
+            document.body.appendChild(container);
+        }
+        return container;
     }
 
     render() {
-        return null;
+        let {open, children, useLayerMask} = this.props;
+        return open
+            ? createPortal(
+                useLayerMask
+                    ? (
+                        <div
+                            className="ui-layer-mask"
+                            onClick={this.onMaskClick}>
+                            {children}
+                        </div>
+                    )
+                    : children,
+                this.getContainer()
+            )
+            : null;
     }
 
 }
 
 Layer.propTypes = {
-    onClickAway: PropTypes.func,
+    onClickAway: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
-    render: PropTypes.func.isRequired,
     useLayerMask: PropTypes.bool.isRequired
 };
 
