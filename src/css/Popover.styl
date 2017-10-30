@@ -14,3 +14,11 @@
     box-shadow: melon-get-z-depth('2')
     border-radius: 2px
     z-index: $-melon-z-index.popover
+
+    &.exited
+        transform: scale(0, 0)
+        transition: transform .45s ease-in-out
+
+    &.entering,
+    &.entered
+        transform: scale(1, 1)

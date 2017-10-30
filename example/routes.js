@@ -20,6 +20,8 @@ import Card from './components/Card.md';
 import Chip from './components/Chip.md';
 import Ripple from './components/Ripple.md';
 import Drawer from './components/Drawer.md';
+import DropDownMenu from './components/DropDownMenu.md';
+import Popover from './components/Popover.md';
 
 export default [
     {
@@ -88,10 +90,31 @@ export default [
                 component: Drawer
             },
             {
+                name: 'DropDownMenu',
+                pathname: '/DropDownMenu',
+                component: DropDownMenu
+            },
+            {
                 name: 'Ripple',
                 pathname: '/Ripple',
                 component: Ripple
+            },
+            {
+                name: 'Popover',
+                pathname: '/Popover',
+                component: Popover
             }
         ]
-    }
+    },
+    // {
+    //     name: '资源',
+    //     pathname: '/resource',
+    //     components: [
+    //         {
+    //             name: '图标',
+    //             pathname: '/icons',
+    //             component: Icon
+    //         }
+    //     ]
+    // }
 ];

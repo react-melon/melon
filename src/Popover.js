@@ -11,6 +11,7 @@ import {Motion, spring} from 'react-motion';
 import {throttle} from './common/util/fn';
 import {getClientHeight, getClientWidth} from './common/util/dom';
 import {create} from 'melon-core/classname/cxBuilder';
+import Transition from 'react-transition-group/Transition';
 
 const cx = create('Popover');
 
@@ -97,7 +98,7 @@ export default class Popover extends Component {
 
         if (open && anchor && layer) {
 
-            this.alignLayerToAnchor(layer, anchor);
+            // this.alignLayerToAnchor(layer, anchor);
 
             if (maxHeight != null) {
                 layer.style.maxHeight = `${maxHeight}px`;
@@ -250,45 +251,83 @@ export default class Popover extends Component {
         return this.layer;
     }
 
+    // renderLayer() {
+
+    //     let className = cx.getPartClassName('layer');
+    //     let {open, closing} = this.state;
+
+    //     let begin = open && !closing ? 0 : 1;
+    //     let end = open && !closing ? 1 : 0;
+
+    //     let transformOrigin = this.props.anchorAlignment
+    //         .split('')
+    //         .map(direction => ALIGNMENT_TRANSFORM_ORIGIN_MAP[direction])
+    //         // 我们的方向是先垂直再水平，和 css 中的 tranform-origin 是反的，所以要 reverse 一下
+    //         .reverse()
+    //         .join(' ');
+
+    //     return (
+    //         <Motion
+    //             defaultStyle={{
+    //                 opacity: begin,
+    //                 scale: begin
+    //             }}
+    //             style={{
+    //                 opacity: spring(end),
+    //                 scale: spring(end, {stiffness: 260, damping: 20})
+    //             }}
+    //             onRest={this.onMotionEnd}>
+    //             {({scale, opacity}) => (
+    //                 <div
+    //                     className={className}
+    //                     ref={this.setLayer}
+    //                     style={{
+    //                         opacity: opacity,
+    //                         transform: `scale(${scale}, ${scale})`,
+    //                         transformOrigin
+    //                     }}>
+    //                     {this.props.children}
+    //                 </div>
+    //             )}
+    //         </Motion>
+    //     );
+    // }
+
     renderLayer() {
-
         let className = cx.getPartClassName('layer');
-        let {open, closing} = this.state;
-
-        let begin = open && !closing ? 0 : 1;
-        let end = open && !closing ? 1 : 0;
-
-        let transformOrigin = this.props.anchorAlignment
-            .split('')
-            .map(direction => ALIGNMENT_TRANSFORM_ORIGIN_MAP[direction])
-            // 我们的方向是先垂直再水平，和 css 中的 tranform-origin 是反的，所以要 reverse 一下
-            .reverse()
-            .join(' ');
-
         return (
-            <Motion
-                defaultStyle={{
-                    opacity: begin,
-                    scale: begin
+            <Transition
+                appear={true}
+                enter={true}
+                exit={true}
+                in={true}
+                mountOnEnter={true}
+                timeout={3000}
+                onEnter={() => {
+                    console.log('enter callback')
+                    let layer = this.getLayer();
+                    let anchor = this.props.anchor;
+                    console.log(layer.offsetHeight, layer.getBoundingClientRect());
+                    this.alignLayerToAnchor(layer, anchor)
+                }}>
+                {status => {
+                    console.log(status)
+                    return (
+                        <div
+                            className={`${className} ${status}`}
+                            ref={this.setLayer}
+                        >
+                            {Array
+                                .from({
+                                    length: 10
+                                })
+                                .map((_, index) => (
+                                    <div key={index}>{index}</div>
+                                ))}
+                        </div>
+                    );
                 }}
-                style={{
-                    opacity: spring(end),
-                    scale: spring(end, {stiffness: 260, damping: 20})
-                }}
-                onRest={this.onMotionEnd}>
-                {({scale, opacity}) => (
-                    <div
-                        className={className}
-                        ref={this.setLayer}
-                        style={{
-                            opacity: opacity,
-                            transform: `scale(${scale}, ${scale})`,
-                            transformOrigin
-                        }}>
-                        {this.props.children}
-                    </div>
-                )}
-            </Motion>
+            </Transition>
         );
     }
 
@@ -302,6 +341,7 @@ export default class Popover extends Component {
         } = this.props;
 
         let {open, closing} = this.state;
+        console.log(open || closing);
 
         return (
             <Layer

@@ -3,10 +3,12 @@
  * @author leon <ludafa@outlook.com>
  */
 
+
 .home
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     height: 100vh;
     background: linear-gradient(to left bottom, hsl(100, 100%, 85%) 0%,hsl(159, 100%, 85%) 100%)
 
@@ -32,7 +34,7 @@
         text-align: center;
 
     .buttons
-        margin-top: 2rem
+        padding: 2rem 0
         display: flex;
         justify-content: center
 
@@ -42,3 +44,7 @@
 
             &:nth-child(2)
                 margin-left: 1rem;
+
+@media (max-height: 408px)
+    .home
+        height: 408px;
