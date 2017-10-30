@@ -24,11 +24,12 @@ describe('Toggle', () => {
 
         const input = toggle.find('input');
 
-        input.get(0).checked = false;
+        input.instance().checked = false;
         input.at(0).simulate('change');
 
         then(() => {
             expect(toggle.state('value')).toBe('off');
+            toggle.unmount();
             done();
         });
 
@@ -50,7 +51,7 @@ describe('Toggle', () => {
 
         const input = toggle.find('input');
 
-        input.get(0).checked = false;
+        input.instance().checked = false;
         input.at(0).simulate('change');
 
         then(() => {
@@ -60,6 +61,7 @@ describe('Toggle', () => {
         })
         .then(() => {
             expect(toggle.state('value')).toBe('off');
+            toggle.unmount();
             done();
         });
 
@@ -82,12 +84,13 @@ describe('Toggle', () => {
 
         const input = toggle.find('input');
 
-        input.get(0).checked = false;
+        input.instance().checked = false;
         input.at(0).simulate('change');
 
         then(() => {
             expect(spy).not.toHaveBeenCalled();
             expect(toggle.state('value')).toBe('on');
+            toggle.unmount();
             done();
         });
 
@@ -110,12 +113,13 @@ describe('Toggle', () => {
 
         const input = toggle.find('input');
 
-        input.get(0).checked = false;
+        input.instance().checked = false;
         input.at(0).simulate('change');
 
         then(() => {
             expect(spy).not.toHaveBeenCalled();
             expect(toggle.state('value')).toBe('on');
+            toggle.unmount();
             done();
         });
 

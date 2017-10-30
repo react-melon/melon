@@ -154,11 +154,10 @@ describe('Dialog:Mask', () => {
 
     it('dom', function () {
         const mask = mount(<Mask />);
-
         expect(mask.prop('lockScrollingOnShow')).toBe(true);
         expect(mask.prop('show')).toBe(false);
         expect(mask.find('div').hasClass('ui-mask')).toBe(true);
-
+        mask.unmount();
     });
 
 });

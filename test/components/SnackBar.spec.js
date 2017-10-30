@@ -5,7 +5,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
+import {shallow, mount} from 'enzyme';
 
 import SnackBar from '../../src/SnackBar';
 import Button from '../../src/Button';
@@ -15,42 +15,39 @@ import waitFor from '../waitFor';
 
 describe('SnackBar', function () {
 
-    it('dom', function () {
-        const renderer = TestUtils.createRenderer();
-        renderer.render(
-            <SnackBar message={'hello'}/>
-        );
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <div className={'ui-snack-bar variant-direction-bl'}>
-                <span className={'ui-snack-bar-message'}>
-                    hello
-                </span>
-                <Button
-                    variants={['snackbar']}
-                    className={'ui-snack-bar-action'}
-                    onClick={() => {}} >
-                    关闭
-                </Button>
-            </div>
-        );
-        expect(actualElement).toEqualJSX(expectedElement);
-    });
-
     beforeEach(() => {
         waitFor.clear();
     });
 
+    it('dom', function () {
+
+        const wrapper = shallow(
+            <SnackBar message={'hello'} />,
+            {disableLifecycleMethods: true}
+        );
+
+        expect(wrapper.hasClass('ui-snack-bar')).toBe(true);
+        expect(wrapper.hasClass('variant-direction-bl')).toBe(true);
+        expect(wrapper.children().length).toBe(2);
+
+        let message = wrapper.find('.ui-snack-bar-message');
+        expect(message.length).toBe(1);
+        expect(message.text()).toBe('hello');
+
+        let button = wrapper.find(Button);
+        expect(button.length).toBe(1);
+        expect(button.prop('variants')).toEqual(['snackbar']);
+
+    });
+
     it('show', done => {
         SnackBar.show('test', 0, 'bc');
-
         then(() => {
             let snackbar = document.querySelector('.ui-snack-bar');
-            expect(TestUtils.isDOMComponent(snackbar)).toBe(true);
             expect(snackbar.className).toBe('ui-snack-bar variant-direction-bc state-open');
             let button = document.querySelector('button');
             jasmine.clock().install();
-            TestUtils.Simulate.click(button);
+            button.click();
             jasmine.clock().tick(1);
 
             snackbar = document.querySelector('.ui-snack-bar');
@@ -65,50 +62,50 @@ describe('SnackBar', function () {
     });
 
     it('autoHideDuration', done => {
-        let component = TestUtils.renderIntoDocument(
+        let component = mount(
             <SnackBar
                 message="test"
                 autoHideDuration={10}
                 openOnMount={true} />
         );
 
-        expect(component.state.open).toBe(true);
+        expect(component.state('open')).toBe(true);
+
         waitFor(
-            () => component.state.open === false,
+            () => component.state('open') === false,
             'SnackBar did not hide after 10ms',
-            done
+            () => {
+                component.unmount();
+                done();
+            }
         );
+
     });
 
-    // it('clickAway', done => {
-    //     let showSpy = jasmine.createSpy();
-    //     let hideSpy = jasmine.createSpy();
-    //     let component = TestUtils.renderIntoDocument(
-    //         <SnackBar
-    //             message="test"
-    //             direction="lc"
-    //             onShow={showSpy}
-    //             onHide={hideSpy}
-    //             openOnMount={true} />
-    //     );
-    //
-    //     expect(component.state.open).toBe(true);
-    //     expect(showSpy).toHaveBeenCalled();
-    //
-    //     component.onMouseUp({target: document.body});
-    //
-    //     // for IE9
-    //     window.event = {target: document.body};
-    //
-    //     then(() => {
-    //         expect(component.state.open).toBe(false);
-    //         expect(hideSpy).toHaveBeenCalled();
-    //         done();
-    //     });
-    // });
-    //
-    // afterAll(() => {
-    //     window.event = null;
-    // });
+    it('clickAway', done => {
+        let showSpy = jasmine.createSpy();
+        let hideSpy = jasmine.createSpy();
+        let component = mount(
+            <SnackBar
+                message="test"
+                direction="lc"
+                onShow={showSpy}
+                onHide={hideSpy}
+                openOnMount={true} />
+        );
+
+        expect(component.state('open')).toBe(true);
+        expect(showSpy).toHaveBeenCalled();
+
+        component.instance().onMouseUp({target: document.body});
+
+        then(() => {
+            expect(component.state('open')).toBe(false);
+            expect(hideSpy).toHaveBeenCalled();
+            component.unmount();
+            done();
+        });
+
+    });
 
 });

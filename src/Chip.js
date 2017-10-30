@@ -23,21 +23,6 @@ export default class Chip extends Component {
         onRemove: PropTypes.func
     }
 
-    constructor(props) {
-        super(props);
-
-
-        this.state = {
-            active: false
-        };
-        // 当chip有onClick回调或onRemove回调时, hover和active时元素有相关样式变动
-        if (this.props.onClick || this.props.onRemove) {
-            this.state.active = true;
-        }
-
-    }
-
-
     handleClick = event => {
         if (this.props.onClick) {
             this.props.onClick(event);
@@ -107,13 +92,20 @@ export default class Chip extends Component {
     }
 
     render() {
-        let active = this.state.active;
-        let className = cx(this.props).addStates({
-            active
-        }).build();
+
+        let {onClick, onRemove, style} = this.props;
+
+        let className = cx(this.props)
+            .addStates({
+                active: !!(onClick || onRemove)
+            })
+            .build();
 
         return (
-            <div className={className} onClick={this.handleClick} style={this.props.style}>
+            <div
+                className={className}
+                onClick={this.handleClick}
+                style={style}>
                 <div style={{display: 'table'}}>
                     {this.renderAvatar()}
                     {this.renderLabel()}

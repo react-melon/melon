@@ -10,10 +10,6 @@ import then from '../then';
 import Tooltip from '../../src/Tooltip';
 import Button from '../../src/Button';
 
-import '../../src/css/theme/default/index.styl';
-import '../../src/css/base.styl';
-import '../../src/css/Tooltip.styl';
-
 describe('Tooltip', () => {
 
     it('over mode', done => {

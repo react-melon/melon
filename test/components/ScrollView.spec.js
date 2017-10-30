@@ -6,9 +6,6 @@
 import React from 'react';
 import ScrollView from '../../src/ScrollView';
 import {mount} from 'enzyme';
-import '../../src/css/theme/default/index.styl';
-import '../../src/css/base.styl';
-import '../../src/css/ScrollView.styl';
 import then from '../then';
 
 function getMockText() {

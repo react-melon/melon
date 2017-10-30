@@ -97,8 +97,6 @@ export default class Popover extends Component {
 
         if (open && anchor && layer) {
 
-            this.alignLayerToAnchor(layer, anchor);
-
             if (maxHeight != null) {
                 layer.style.maxHeight = `${maxHeight}px`;
                 layer.style.overflowY = 'auto';
@@ -106,6 +104,8 @@ export default class Popover extends Component {
             else {
                 layer.style.overflowY = layer.style.maxHeight = '';
             }
+
+            this.alignLayerToAnchor(layer, anchor);
 
             if (!autoWidth) {
                 this.adjustWidth(layer, anchor);
@@ -172,6 +172,8 @@ export default class Popover extends Component {
     onMotionEnd() {
 
         if (!this.state.closing) {
+            let onOpened = this.props.onOpened;
+            onOpened && onOpened();
             return;
         }
 

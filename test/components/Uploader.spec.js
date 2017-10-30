@@ -7,7 +7,7 @@ import Uploader from '../../src/Uploader';
 import {mount} from 'enzyme';
 import React from 'react';
 
-const IMG_URL = 'http://react-melon.github.io/melon/asset/common/img/melon-logo.ffb5dd37.png';
+const IMG_URL = 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/logo_white_fe6da1ec.png';
 
 describe('`Uploader` controlled', () => {
 
@@ -37,16 +37,16 @@ describe('`Uploader` controlled', () => {
 
         expect(wrapper.find('div.ui-uploader-uploading').length).toBe(1);
 
-        wrapper.setProps({uploading: false, value: 'http://xxxxx'});
+        wrapper.setProps({uploading: false, value: IMG_URL});
 
         expect(wrapper.state()).toEqual({
             uploading: false,
-            value: 'http://xxxxx'
+            value: IMG_URL
         });
 
         expect(wrapper.find('div.ui-uploader-uploading').length).toBe(0);
         expect(wrapper.find('.ui-link').length).toBe(1);
-
+        wrapper.unmount();
 
     });
 
@@ -58,7 +58,7 @@ describe('`Uploader` controlled', () => {
 
         let obj = {
             onFileChange() {
-                wrapper.setProps({value: 'aaa'});
+                wrapper.setProps({value: IMG_URL});
             },
             value: ''
         };
@@ -77,11 +77,12 @@ describe('`Uploader` controlled', () => {
         instance.onFileChange({target: {files}});
 
         expect(obj.onFileChange).toHaveBeenCalledWith(files);
-        expect(wrapper.state('value')).toBe('aaa');
+        expect(wrapper.state('value')).toBe(IMG_URL);
 
         instance.onClear();
         expect(obj.onFileChange).toHaveBeenCalledWith(null);
 
+        wrapper.unmount();
 
     });
 
@@ -120,6 +121,7 @@ describe('`Uploader` controlled', () => {
         instance.onUploadCancel();
         expect(obj.onUploadCancel).toHaveBeenCalled();
         expect(wrapper.state('uploading')).toBe(false);
+        wrapper.unmount();
 
     });
 
@@ -214,6 +216,7 @@ describe('`Uploader` uncontrolled', () => {
                 uploading: false,
                 value: IMG_URL
             });
+            wrapper.unmount();
             done();
         }, 50);
 
@@ -265,6 +268,7 @@ describe('`Uploader` uncontrolled', () => {
                 uploading: false,
                 value: ''
             });
+            wrapper.unmount();
             done();
         }, 50);
 
@@ -325,6 +329,7 @@ describe('`Uploader` uncontrolled', () => {
         setTimeout(() => {
             expect(obj.onUploadSucceed).not.toHaveBeenCalled();
             expect(obj.onUploadFailed).not.toHaveBeenCalled();
+            wrapper.unmount();
             done();
         }, 200);
 
@@ -356,6 +361,7 @@ describe('`Uploader` uncontrolled', () => {
             uploading: false
         });
 
+        wrapper.unmount();
     });
 
     it('unmount clear async token', done => {

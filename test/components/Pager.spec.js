@@ -1,10 +1,9 @@
-/**
- * @file Pager单测
- * @author cxtom(cxtom2008@gmail.com)
- */
-
+// /**
+//  * @file Pager单测
+//  * @author cxtom(cxtom2008@gmail.com)
+//  */
+//
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
 import {shallow, mount} from 'enzyme';
 import then from '../then';
 
@@ -27,8 +26,8 @@ describe('Pager', () => {
         const pager = mount(
             <Pager total={1} page={0} showAlways={false} />
         );
-
         expect(pager.find('.ui-pager-item').length).toBe(0);
+        pager.unmount();
     });
 
 });
@@ -43,56 +42,46 @@ describe('Pager:click', () => {
     let next;
 
     beforeEach(() => {
-        component = TestUtils.renderIntoDocument(<Pager total={10} page={1} />);
-        items = TestUtils.scryRenderedDOMComponentsWithClass(component, 'ui-pager-item');
-
-        current = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-pager-item state-current');
-        prev = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-pager-item state-prev');
-        next = TestUtils.findRenderedDOMComponentWithClass(component, 'ui-pager-item state-next');
+        component = mount(<Pager total={10} page={1} />);
+        items = component.find('.ui-pager-item');
+        current = component.find('.ui-pager-item.state-current');
+        prev = component.find('.ui-pager-item.state-prev');
+        next = component.find('.ui-pager-item.state-next');
     });
 
     afterEach(() => {
+        component.unmount();
         component = current = prev = next = null;
         items.length = 0;
         items = null;
     });
 
     it('base', () => {
-        expect(TestUtils.isCompositeComponent(component)).toBeTruthy();
-        expect(TestUtils.isDOMComponent(current)).toBeTruthy();
-        expect(TestUtils.isDOMComponent(prev)).toBeTruthy();
-        expect(TestUtils.isDOMComponent(next)).toBeTruthy();
         expect(items.length).toEqual(9);
-        expect(component.props.page).toEqual(1);
-        expect(component.state.page).toEqual(1);
+        expect(component.prop('page')).toEqual(1);
+        expect(component.state('page')).toEqual(1);
     });
 
     it('click page', done => {
-
-        TestUtils.Simulate.click(items[5]);
-
+        items.at(5).simulate('click');
         then(() => {
-            expect(component.state.page).toEqual(4);
+            expect(component.state('page')).toEqual(4);
             done();
         });
     });
 
     it('click prev', done => {
-
-        TestUtils.Simulate.click(prev);
-
+        prev.simulate('click');
         then(() => {
-            expect(component.state.page).toEqual(0);
+            expect(component.state('page')).toEqual(0);
             done();
         });
     });
 
     it('click next', done => {
-
-        TestUtils.Simulate.click(next);
-
+        next.simulate('click');
         then(() => {
-            expect(component.state.page).toEqual(2);
+            expect(component.state('page')).toEqual(2);
             done();
         });
     });
@@ -102,16 +91,12 @@ describe('Pager:click', () => {
 describe('Pager:controlled', () => {
 
     it('click', done => {
-        const spy = jasmine.createSpy();
-        let pager;
 
         class TestComponent extends React.Component {
-
             constructor(props) {
                 super(props);
                 this.state = {page: 0};
             }
-
             render() {
                 return (
                     <Pager
@@ -119,25 +104,22 @@ describe('Pager:controlled', () => {
                         page={this.state.page}
                         onChange={({page, target}) => {
                             expect(page).toEqual(4);
-                            expect(target).toEqual(pager);
+                            expect(target).toBe(pager.instance());
                             this.setState({page});
-                            spy();
                         }} />
                 );
             }
         }
 
-        const component = TestUtils.renderIntoDocument(
-            <TestComponent />
-        );
+        const component = mount(<TestComponent />);
+        const pager = component.find(Pager);
+        const items = component.find('li');
 
-        pager = TestUtils.findRenderedComponentWithType(component, Pager);
+        items.at(5).simulate('click');
 
-        const items = TestUtils.scryRenderedDOMComponentsWithTag(component, 'li');
-        TestUtils.Simulate.click(items[5]);
         then(() => {
-            expect(spy.calls.count()).toEqual(1);
-            expect(component.state.page).toEqual(4);
+            expect(component.state('page')).toEqual(4);
+            component.unmount();
             done();
         });
     });

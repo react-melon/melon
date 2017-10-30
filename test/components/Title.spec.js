@@ -4,38 +4,21 @@
  */
 
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
-
+import {shallow} from 'enzyme';
 import Title from '../../src/Title';
 
 describe('Title', function () {
 
-    let renderer;
-
-    beforeEach(function () {
-        renderer = createRenderer();
-    });
-
-    afterEach(function () {
-        renderer = null;
-    });
-
     it('work h1', function () {
-        renderer.render(<Title>title1</Title>);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <h1 className="ui-title">title1</h1>
-        );
-        expect(actualElement).toEqualJSX(expectedElement);
+        let wrapper = shallow(<Title>title</Title>);
+        expect(wrapper.is('h1')).toBe(true);
+        expect(wrapper.hasClass('ui-title')).toBe(true);
+        expect(wrapper.text()).toBe('title');
     });
 
     it('work h2', function () {
-        renderer.render(<Title level={2}>title1</Title>);
-        let actualElement = renderer.getRenderOutput();
-        let expectedElement = (
-            <h2 className="ui-title">title1</h2>
-        );
-        expect(actualElement).toEqualJSX(expectedElement);
+        let wrapper = shallow(<Title level={2}>title</Title>);
+        expect(wrapper.is('h2')).toBe(true);
     });
 
 });
