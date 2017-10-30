@@ -86,7 +86,7 @@
   "dependencies": {
     "dom-align": "^1.5.3",
     "lodash.omit": "^4.5.0",
-    "melon-core": "^0.6.0-0",
+    "melon-core": "^0.5.2",
     "prop-types": "^15.5.10",
     "react-motion": "^0.5.2"
   }
